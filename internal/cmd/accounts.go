@@ -184,7 +184,7 @@ func newAccountsCurrentCmd() *cobra.Command {
 			if accountName == "" {
 				token, err := auth.EnsureFreshToken(instanceName, apiURL)
 				if err != nil || token == "" {
-					fmt.Fprintln(out, "No account selected and not logged in.")
+						_, _ = fmt.Fprintln(out, "No account selected and not logged in.")
 					_, _ = fmt.Fprintf(out, "Run: jetscale auth login && jetscale accounts use <name>\n")
 					return nil
 				}
@@ -201,13 +201,13 @@ func newAccountsCurrentCmd() *cobra.Command {
 					return nil
 				}
 
-				fmt.Fprintln(out, "No account selected.")
-				fmt.Fprintf(out, "Run: jetscale accounts use <name>\n")
-				fmt.Fprintf(out, "See: jetscale accounts list\n")
+				_, _ = fmt.Fprintln(out, "No account selected.")
+				_, _ = fmt.Fprintf(out, "Run: jetscale accounts use <name>\n")
+				_, _ = fmt.Fprintf(out, "See: jetscale accounts list\n")
 				return nil
 			}
 
-			fmt.Fprintf(out, "%s on %s (%s)\n", accountName, instanceName, apiURL)
+			_, _ = fmt.Fprintf(out, "%s on %s (%s)\n", accountName, instanceName, apiURL)
 			return nil
 		},
 	}

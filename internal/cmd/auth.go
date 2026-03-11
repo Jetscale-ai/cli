@@ -62,7 +62,7 @@ Examples:
 				if err := auth.SetToken(instanceName, entry); err != nil {
 					return err
 				}
-				fmt.Fprintf(cmd.OutOrStdout(), "Logged in as %s (%s)\n", who.Email, instanceName)
+				_, _ = fmt.Fprintf(cmd.OutOrStdout(), "Logged in as %s (%s)\n", who.Email, instanceName)
 				return nil
 			}
 
@@ -94,7 +94,7 @@ Examples:
 				return err
 			}
 
-			fmt.Fprintf(cmd.OutOrStdout(), "Logged in to %s (%s)\n", instanceName, apiURL)
+			_, _ = fmt.Fprintf(cmd.OutOrStdout(), "Logged in to %s (%s)\n", instanceName, apiURL)
 			return nil
 		},
 	}
@@ -180,16 +180,16 @@ func newAuthWhoamiCmd() *cobra.Command {
 
 			if p.Format == output.Table {
 				out := cmd.OutOrStdout()
-				fmt.Fprintf(out, "Logged in as %s\n", row.Email)
+				_, _ = fmt.Fprintf(out, "Logged in as %s\n", row.Email)
 				if row.Username != "" && row.Username != row.Email {
-					fmt.Fprintf(out, "Username:    %s\n", row.Username)
+					_, _ = fmt.Fprintf(out, "Username:    %s\n", row.Username)
 				}
-				fmt.Fprintf(out, "Instance:    %s (%s)\n", row.Instance, row.APIURL)
+				_, _ = fmt.Fprintf(out, "Instance:    %s (%s)\n", row.Instance, row.APIURL)
 				refreshStr := ""
 				if refreshable {
 					refreshStr = " (refreshable)"
 				}
-				fmt.Fprintf(out, "Token:       expires %s%s\n", row.TokenExpiry, refreshStr)
+				_, _ = fmt.Fprintf(out, "Token:       expires %s%s\n", row.TokenExpiry, refreshStr)
 				return nil
 			}
 
@@ -222,7 +222,7 @@ Exits 0 if authenticated, 1 if not. Useful in scripts.`,
 				if pErr == nil && p.Format != output.Table {
 					_ = p.Print(statusRow{Authenticated: false, Instance: instanceName}, nil)
 				} else {
-					fmt.Fprintf(cmd.OutOrStdout(), "Not authenticated to %s\n", instanceName)
+					_, _ = fmt.Fprintf(cmd.OutOrStdout(), "Not authenticated to %s\n", instanceName)
 				}
 				os.Exit(1)
 			}
@@ -234,7 +234,7 @@ Exits 0 if authenticated, 1 if not. Useful in scripts.`,
 				if pErr == nil && p.Format != output.Table {
 					_ = p.Print(statusRow{Authenticated: false, Instance: instanceName}, nil)
 				} else {
-					fmt.Fprintf(cmd.OutOrStdout(), "Token invalid for %s\n", instanceName)
+					_, _ = fmt.Fprintf(cmd.OutOrStdout(), "Token invalid for %s\n", instanceName)
 				}
 				os.Exit(1)
 			}
@@ -246,7 +246,7 @@ Exits 0 if authenticated, 1 if not. Useful in scripts.`,
 				return p.Print(row, nil)
 			}
 
-			fmt.Fprintf(cmd.OutOrStdout(), "Authenticated as %s on %s\n", who.Email, instanceName)
+			_, _ = fmt.Fprintf(cmd.OutOrStdout(), "Authenticated as %s on %s\n", who.Email, instanceName)
 			return nil
 		},
 	}
@@ -272,7 +272,7 @@ func newAuthLogoutCmd() *cobra.Command {
 				return err
 			}
 
-			fmt.Fprintf(cmd.OutOrStdout(), "Logged out of %s\n", instanceName)
+			_, _ = fmt.Fprintf(cmd.OutOrStdout(), "Logged out of %s\n", instanceName)
 			return nil
 		},
 	}

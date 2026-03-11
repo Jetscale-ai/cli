@@ -31,7 +31,7 @@ func newConfigShowCmd() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			fmt.Fprintf(cmd.OutOrStdout(), "%s → %s\n", name, url)
+			_, _ = fmt.Fprintf(cmd.OutOrStdout(), "%s → %s\n", name, url)
 			return nil
 		},
 	}
@@ -123,7 +123,7 @@ Examples:
 					cfg.Instances = make(map[string]config.Instance)
 				}
 				cfg.Instances[name] = config.Instance{APIURL: value}
-				fmt.Fprintf(cmd.OutOrStdout(), "Added instance %q → %s\n", name, value)
+				_, _ = fmt.Fprintf(cmd.OutOrStdout(), "Added instance %q → %s\n", name, value)
 
 			default:
 				return fmt.Errorf("unknown config key %q (supported: default-instance, instance.<name>)", key)
@@ -132,7 +132,7 @@ Examples:
 			if err := config.Save(cfg); err != nil {
 				return err
 			}
-			fmt.Fprintf(cmd.OutOrStdout(), "Saved.\n")
+			_, _ = fmt.Fprintf(cmd.OutOrStdout(), "Saved.\n")
 			return nil
 		},
 	}
@@ -160,14 +160,14 @@ func newConfigGetCmd() *cobra.Command {
 				if def == "" {
 					def = "production"
 				}
-				fmt.Fprintln(cmd.OutOrStdout(), def)
+				_, _ = fmt.Fprintln(cmd.OutOrStdout(), def)
 
 			case "api-url":
 				_, url, err := config.Resolve(cfg, flagInstance, flagLocal, flagAPIURL)
 				if err != nil {
 					return err
 				}
-				fmt.Fprintln(cmd.OutOrStdout(), url)
+				_, _ = fmt.Fprintln(cmd.OutOrStdout(), url)
 
 			default:
 				return fmt.Errorf("unknown config key %q (supported: default-instance, api-url)", key)

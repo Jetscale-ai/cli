@@ -59,14 +59,14 @@ repos:
   # ------------------------------------------------------------------
   # Go: Lint + Test
   # ------------------------------------------------------------------
+  - repo: https://github.com/golangci/golangci-lint
+    rev: v2.11.3
+    hooks:
+      - id: golangci-lint-full
+        name: golangci-lint
+
   - repo: local
     hooks:
-      - id: go-lint
-        name: golangci-lint
-        entry: golangci-lint run
-        language: system
-        files: \.go$
-        pass_filenames: false
       - id: go-test
         name: go test
         entry: go test ./...
