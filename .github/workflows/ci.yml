@@ -23,25 +23,25 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-go@v6
         with:
-          go-version: "1.22"
-      - uses: golangci/golangci-lint-action@v6
-        with:
-          version: latest
+          go-version-file: go.mod
+      - uses: golangci/golangci-lint-action@v7
+        env:
+          FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-go@v6
         with:
-          go-version: "1.22"
+          go-version-file: go.mod
       - run: go test -race -coverprofile=coverage.out ./...
       - name: Upload coverage
         if: github.event_name == 'push'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: coverage
           path: coverage.out
@@ -51,14 +51,14 @@ jobs:
     runs-on: ubuntu-latest
     needs: [lint, test]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
           token: ${{ secrets.JETSCALEBOT_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
 
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v6
         with:
-          go-version: "1.22"
+          go-version-file: go.mod
 
       - name: Calculate Next Version
         id: semrel
@@ -70,7 +70,7 @@ jobs:
 
       - name: Release with GoReleaser
         if: steps.semrel.outputs.version != ''
-        uses: goreleaser/goreleaser-action@v6
+        uses: goreleaser/goreleaser-action@v7
         with:
           version: latest
           args: release --clean
