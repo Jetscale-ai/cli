@@ -80,6 +80,8 @@ jobs:
       - name: Calculate Next Version
         id: semrel
         uses: go-semantic-release/action@v1
+        env:
+          FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
         with:
           github-token: ${{ secrets.JETSCALEBOT_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
           dry: true
@@ -106,7 +108,7 @@ jobs:
         if: steps.semrel.outputs.version != ''
         uses: goreleaser/goreleaser-action@v7
         with:
-          version: latest
+          version: "~> v2"
           args: release --clean
         env:
           GITHUB_TOKEN: ${{ secrets.JETSCALEBOT_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}

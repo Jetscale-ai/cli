@@ -25,9 +25,10 @@ archives:
   - id: default
     formats:
       - tar.gz
-    format_overrides:
+    formats_override:
       - goos: windows
-        format: zip
+        formats:
+          - zip
     name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
 
 checksum:
