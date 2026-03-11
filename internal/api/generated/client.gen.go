@@ -149,8 +149,8 @@ type AzureDiscoveryRequestBody struct {
 
 // BaseApiResponse defines model for BaseApiResponse.
 type BaseApiResponse struct {
-	Data interface{}                               `json:"data"`
-	Meta ApiV2ModulesBaseModelsBaseApiMetaMetaInfo `json:"meta"`
+	Data interface{} `json:"data"`
+	Meta MetaInfo    `json:"meta"`
 }
 
 // BillingInterval Billing intervals. Values match DB/schema: MONTHLY, YEARLY.
@@ -360,6 +360,17 @@ type LinkCloudAccountRequest struct {
 	CloudAccountIntegration CreateCloudAccountIntegrationRequest `json:"cloud_account_integration"`
 }
 
+// MetaInfo defines model for MetaInfo.
+type MetaInfo struct {
+	Count       *int          `json:"count,omitempty"`
+	Environment *string       `json:"environment,omitempty"`
+	Limit       *int          `json:"limit,omitempty"`
+	Offset      *int          `json:"offset,omitempty"`
+	Resource    *string       `json:"resource,omitempty"`
+	Security    *SecurityInfo `json:"security,omitempty"`
+	TotalCount  *int          `json:"total_count,omitempty"`
+}
+
 // RecommendationGenerateResponse Response model for recommendation generation
 type RecommendationGenerateResponse struct {
 	Data []RecommendationResult `json:"data"`
@@ -499,6 +510,12 @@ type SavingsInfo struct {
 	Amount   float32 `json:"amount"`
 	Currency string  `json:"currency"`
 	Cycle    string  `json:"cycle"`
+}
+
+// SecurityInfo defines model for SecurityInfo.
+type SecurityInfo struct {
+	Granted            bool   `json:"granted"`
+	RequiredPermission string `json:"required_permission"`
 }
 
 // SendOwnerSignupInvitationRequest Request body for sending owner signup invitation.
@@ -842,23 +859,6 @@ type ValidationErrorLoc1 = int
 // ValidationError_Loc_Item defines model for ValidationError.loc.Item.
 type ValidationError_Loc_Item struct {
 	union json.RawMessage
-}
-
-// ApiV2ModulesBaseModelsBaseApiMetaMetaInfo defines model for api_v2__Modules__Base__Models__BaseApiMeta__MetaInfo.
-type ApiV2ModulesBaseModelsBaseApiMetaMetaInfo struct {
-	Count       *int                                           `json:"count,omitempty"`
-	Environment *string                                        `json:"environment,omitempty"`
-	Limit       *int                                           `json:"limit,omitempty"`
-	Offset      *int                                           `json:"offset,omitempty"`
-	Resource    *string                                        `json:"resource,omitempty"`
-	Security    *ApiV2ModulesBaseModelsBaseApiMetaSecurityInfo `json:"security,omitempty"`
-	TotalCount  *int                                           `json:"total_count,omitempty"`
-}
-
-// ApiV2ModulesBaseModelsBaseApiMetaSecurityInfo defines model for api_v2__Modules__Base__Models__BaseApiMeta__SecurityInfo.
-type ApiV2ModulesBaseModelsBaseApiMetaSecurityInfo struct {
-	Granted            bool   `json:"granted"`
-	RequiredPermission string `json:"required_permission"`
 }
 
 // FetchBitbucketRepositoriesApiV2IntegrationsBitbucketRepositoriesGetParams defines parameters for FetchBitbucketRepositoriesApiV2IntegrationsBitbucketRepositoriesGet.
