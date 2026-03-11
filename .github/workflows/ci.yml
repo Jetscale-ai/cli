@@ -27,9 +27,7 @@ jobs:
       - uses: actions/setup-go@v6
         with:
           go-version-file: go.mod
-      - uses: golangci/golangci-lint-action@v7
-        env:
-          FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+      - uses: golangci/golangci-lint-action@v9
 
   test:
     runs-on: ubuntu-latest
@@ -96,6 +94,10 @@ jobs:
         run: |
           git config user.name "jetscalebot"
           git config user.email "devops@jetscale.ai"
+
+          # go-semantic-release leaves behind artifacts that dirty the tree
+          rm -rf .semrel .generated-go-semantic-release-changelog.md
+          git checkout -- .
 
           git tag "v${VERSION}"
           git push origin "v${VERSION}"

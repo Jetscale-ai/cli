@@ -41,3 +41,7 @@ go.work.sum
 
 # env file
 .env
+
+# go-semantic-release artifacts
+.semrel/
+.generated-go-semantic-release-changelog.md
