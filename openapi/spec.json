@@ -1,0 +1,6270 @@
+{
+  "components": {
+    "schemas": {
+      "AwsDiscoveryRequestBody": {
+        "description": "Request body for POST /action/discover endpoint.",
+        "properties": {
+          "cloud_account_id": {
+            "description": "Cloud account UUID — scopes discovery",
+            "format": "uuid",
+            "title": "Cloud Account Id",
+            "type": "string"
+          },
+          "resource_types": {
+            "description": "Resource types to discover (e.g., ['AWS_EC2_INSTANCE', 'AWS_S3_BUCKET']). Defaults to all.",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true,
+            "title": "Resource Types",
+            "type": "array"
+          }
+        },
+        "required": [
+          "cloud_account_id"
+        ],
+        "title": "AwsDiscoveryRequestBody",
+        "type": "object"
+      },
+      "AzureDiscoveryRequestBody": {
+        "description": "Request body for Azure resource discovery.\n\nAllows filtering by resource types and locations.",
+        "properties": {
+          "locations": {
+            "description": "List of Azure locations/regions to filter (e.g., ['eastus', 'westus'])",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true,
+            "title": "Locations",
+            "type": "array"
+          },
+          "resource_types": {
+            "description": "List of Azure resource types to discover (e.g., ['Microsoft.Storage/storageAccounts', 'Microsoft.Compute/virtualMachines'])",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true,
+            "title": "Resource Types",
+            "type": "array"
+          }
+        },
+        "title": "AzureDiscoveryRequestBody",
+        "type": "object"
+      },
+      "BaseApiResponse": {
+        "properties": {
+          "data": {
+            "title": "Data"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/api_v2__Modules__Base__Models__BaseApiMeta__MetaInfo"
+          }
+        },
+        "required": [
+          "meta",
+          "data"
+        ],
+        "title": "BaseApiResponse",
+        "type": "object"
+      },
+      "BillingInterval": {
+        "description": "Billing intervals. Values match DB/schema: MONTHLY, YEARLY.",
+        "enum": [
+          "MONTHLY",
+          "YEARLY"
+        ],
+        "title": "BillingInterval",
+        "type": "string"
+      },
+      "BitbucketConnectRequestBody": {
+        "properties": {
+          "api_token": {
+            "title": "Api Token",
+            "type": "string"
+          },
+          "email": {
+            "title": "Email",
+            "type": "string"
+          },
+          "server_url": {
+            "title": "Server Url",
+            "type": "string"
+          }
+        },
+        "required": [
+          "server_url",
+          "email",
+          "api_token"
+        ],
+        "title": "BitbucketConnectRequestBody",
+        "type": "object"
+      },
+      "BitbucketCreatePullRequestRequestBody": {
+        "properties": {
+          "close_source_branch": {
+            "default": false,
+            "nullable": true,
+            "title": "Close Source Branch",
+            "type": "boolean"
+          },
+          "commit_message": {
+            "description": "Commit message for file changes (required if files are provided)",
+            "nullable": true,
+            "title": "Commit Message",
+            "type": "string"
+          },
+          "description": {
+            "nullable": true,
+            "title": "Description",
+            "type": "string"
+          },
+          "destination_branch": {
+            "title": "Destination Branch",
+            "type": "string"
+          },
+          "files": {
+            "description": "List of files to push to the source branch before creating the PR",
+            "items": {
+              "$ref": "#/components/schemas/BitbucketFileData"
+            },
+            "nullable": true,
+            "title": "Files",
+            "type": "array"
+          },
+          "repository_slug": {
+            "title": "Repository Slug",
+            "type": "string"
+          },
+          "reviewers": {
+            "items": {
+              "type": "string"
+            },
+            "nullable": true,
+            "title": "Reviewers",
+            "type": "array"
+          },
+          "source_branch": {
+            "title": "Source Branch",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "workspace": {
+            "nullable": true,
+            "title": "Workspace",
+            "type": "string"
+          }
+        },
+        "required": [
+          "repository_slug",
+          "title",
+          "source_branch",
+          "destination_branch"
+        ],
+        "title": "BitbucketCreatePullRequestRequestBody",
+        "type": "object"
+      },
+      "BitbucketCreateRepositoryRequestBody": {
+        "properties": {
+          "description": {
+            "nullable": true,
+            "title": "Description",
+            "type": "string"
+          },
+          "is_private": {
+            "default": true,
+            "title": "Is Private",
+            "type": "boolean"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "project_key": {
+            "nullable": true,
+            "title": "Project Key",
+            "type": "string"
+          },
+          "scm": {
+            "default": "git",
+            "title": "Scm",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "BitbucketCreateRepositoryRequestBody",
+        "type": "object"
+      },
+      "BitbucketFileData": {
+        "description": "Individual file data for pushing to Bitbucket",
+        "properties": {
+          "content": {
+            "description": "File content as string",
+            "title": "Content",
+            "type": "string"
+          },
+          "filename": {
+            "description": "Name of the file (e.g., main.tf)",
+            "title": "Filename",
+            "type": "string"
+          },
+          "path": {
+            "description": "Optional path where the file should be created (e.g., terraform/)",
+            "nullable": true,
+            "title": "Path",
+            "type": "string"
+          }
+        },
+        "required": [
+          "filename",
+          "content"
+        ],
+        "title": "BitbucketFileData",
+        "type": "object"
+      },
+      "CloudProviderType": {
+        "description": "Cloud provider identifier.",
+        "enum": [
+          "AWS",
+          "AZURE",
+          "GCP"
+        ],
+        "title": "CloudProviderType",
+        "type": "string"
+      },
+      "CompanyStatus": {
+        "description": "Status of a company.",
+        "enum": [
+          "ACTIVE",
+          "INACTIVE"
+        ],
+        "title": "CompanyStatus",
+        "type": "string"
+      },
+      "CreateBusinessUnitRequest": {
+        "description": "Request body for creating a business unit (jetscale_organization_public.business_unit).",
+        "properties": {
+          "assigned_to": {
+            "description": "User UUID this business unit is assigned to (optional)",
+            "format": "uuid",
+            "nullable": true,
+            "title": "Assigned To",
+            "type": "string"
+          },
+          "company_id": {
+            "description": "Company UUID",
+            "format": "uuid",
+            "title": "Company Id",
+            "type": "string"
+          },
+          "description": {
+            "nullable": true,
+            "title": "Description",
+            "type": "string"
+          },
+          "image_url": {
+            "maxLength": 500,
+            "nullable": true,
+            "title": "Image Url",
+            "type": "string"
+          },
+          "name": {
+            "description": "Business unit name",
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Name",
+            "type": "string"
+          },
+          "slug": {
+            "description": "Slug; omit to derive from name",
+            "maxLength": 100,
+            "nullable": true,
+            "title": "Slug",
+            "type": "string"
+          }
+        },
+        "required": [
+          "company_id",
+          "name"
+        ],
+        "title": "CreateBusinessUnitRequest",
+        "type": "object"
+      },
+      "CreateCloudAccountIntegrationRequest": {
+        "description": "Request body for creating a cloud account integration (jetscale_cloud_public.cloud_account_integration).",
+        "properties": {
+          "cloud_provider_type": {
+            "$ref": "#/components/schemas/CloudProviderType"
+          },
+          "integration_data": {
+            "additionalProperties": true,
+            "nullable": true,
+            "title": "Integration Data",
+            "type": "object"
+          }
+        },
+        "required": [
+          "cloud_provider_type"
+        ],
+        "title": "CreateCloudAccountIntegrationRequest",
+        "type": "object"
+      },
+      "CreateCloudAccountRequest": {
+        "description": "Request body for creating a cloud account (jetscale_cloud_public.cloud_account).",
+        "properties": {
+          "assigned_to": {
+            "description": "User UUID this cloud account is assigned to (optional)",
+            "format": "uuid",
+            "nullable": true,
+            "title": "Assigned To",
+            "type": "string"
+          },
+          "business_unit_id": {
+            "description": "Business unit UUID",
+            "format": "uuid",
+            "title": "Business Unit Id",
+            "type": "string"
+          },
+          "cloud_account_integration_id": {
+            "format": "uuid",
+            "nullable": true,
+            "title": "Cloud Account Integration Id",
+            "type": "string"
+          },
+          "cloud_provider_type": {
+            "$ref": "#/components/schemas/CloudProviderType"
+          },
+          "description": {
+            "nullable": true,
+            "title": "Description",
+            "type": "string"
+          },
+          "metadata": {
+            "additionalProperties": true,
+            "nullable": true,
+            "title": "Metadata",
+            "type": "object"
+          },
+          "name": {
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "business_unit_id",
+          "name",
+          "cloud_provider_type"
+        ],
+        "title": "CreateCloudAccountRequest",
+        "type": "object"
+      },
+      "CreateCompanyRequest": {
+        "description": "Request body for creating a company (jetscale_organization_public.company).",
+        "properties": {
+          "address": {
+            "nullable": true,
+            "title": "Address",
+            "type": "string"
+          },
+          "contact_email": {
+            "maxLength": 255,
+            "nullable": true,
+            "title": "Contact Email",
+            "type": "string"
+          },
+          "country": {
+            "maxLength": 50,
+            "nullable": true,
+            "title": "Country",
+            "type": "string"
+          },
+          "description": {
+            "description": "Optional description",
+            "nullable": true,
+            "title": "Description",
+            "type": "string"
+          },
+          "domain_email": {
+            "description": "Domain email (unique)",
+            "maxLength": 255,
+            "title": "Domain Email",
+            "type": "string"
+          },
+          "is_root": {
+            "default": false,
+            "description": "Whether this is the root company",
+            "title": "Is Root",
+            "type": "boolean"
+          },
+          "name": {
+            "description": "Company name",
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Name",
+            "type": "string"
+          },
+          "phone_number": {
+            "maxLength": 50,
+            "nullable": true,
+            "title": "Phone Number",
+            "type": "string"
+          },
+          "slug": {
+            "description": "Slug; auto-derived from name if omitted",
+            "maxLength": 100,
+            "nullable": true,
+            "title": "Slug",
+            "type": "string"
+          },
+          "website_url": {
+            "maxLength": 500,
+            "nullable": true,
+            "title": "Website Url",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "domain_email"
+        ],
+        "title": "CreateCompanyRequest",
+        "type": "object"
+      },
+      "CreateRoleAssignmentRequest": {
+        "description": "Request body for creating a role assignment.",
+        "properties": {
+          "allowed_cloud_account_ids": {
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "nullable": true,
+            "title": "Allowed Cloud Account Ids",
+            "type": "array"
+          },
+          "business_unit_id": {
+            "description": "Business unit UUID",
+            "format": "uuid",
+            "title": "Business Unit Id",
+            "type": "string"
+          },
+          "role_id": {
+            "description": "Role UUID (optional)",
+            "format": "uuid",
+            "nullable": true,
+            "title": "Role Id",
+            "type": "string"
+          },
+          "user_id": {
+            "description": "User UUID",
+            "format": "uuid",
+            "title": "User Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "user_id",
+          "business_unit_id"
+        ],
+        "title": "CreateRoleAssignmentRequest",
+        "type": "object"
+      },
+      "CreateRoleRequest": {
+        "description": "Request body for creating a role (jetscale_authentication_public.role).",
+        "properties": {
+          "description": {
+            "description": "Optional role description",
+            "nullable": true,
+            "title": "Description",
+            "type": "string"
+          },
+          "image_url": {
+            "description": "Optional image URL",
+            "maxLength": 500,
+            "nullable": true,
+            "title": "Image Url",
+            "type": "string"
+          },
+          "is_superrole": {
+            "description": "Whether this role is a superrole",
+            "nullable": true,
+            "title": "Is Superrole",
+            "type": "boolean"
+          },
+          "name": {
+            "description": "Role name (unique)",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Name",
+            "type": "string"
+          },
+          "permissions": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "items": {},
+                "type": "array"
+              }
+            ],
+            "description": "Optional permissions (JSONB); object or array",
+            "nullable": true,
+            "title": "Permissions"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "CreateRoleRequest",
+        "type": "object"
+      },
+      "GenerateCustomRecommendationRequest": {
+        "description": "Request body for generating custom recommendations for a cloud account.",
+        "properties": {
+          "resource_identifiers": {
+            "description": "Resource ARNs to generate recommendations for. If null, generates for all top-level resources.",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true,
+            "title": "Resource Identifiers",
+            "type": "array"
+          }
+        },
+        "title": "GenerateCustomRecommendationRequest",
+        "type": "object"
+      },
+      "GenerateRecommendationRequestV2": {
+        "description": "Request model for generating recommendations V2 (resource-based)",
+        "properties": {
+          "resource_arns": {
+            "description": "List of AWS resource ARNs from ResourceDiscovery (max 10 for batch processing)",
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 10,
+            "minItems": 1,
+            "title": "Resource Arns",
+            "type": "array"
+          }
+        },
+        "required": [
+          "resource_arns"
+        ],
+        "title": "GenerateRecommendationRequestV2",
+        "type": "object"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "title": "Detail",
+            "type": "array"
+          }
+        },
+        "title": "HTTPValidationError",
+        "type": "object"
+      },
+      "JiraConnectRequestBody": {
+        "properties": {
+          "api_token": {
+            "title": "Api Token",
+            "type": "string"
+          },
+          "email": {
+            "title": "Email",
+            "type": "string"
+          },
+          "server_url": {
+            "title": "Server Url",
+            "type": "string"
+          }
+        },
+        "required": [
+          "server_url",
+          "email",
+          "api_token"
+        ],
+        "title": "JiraConnectRequestBody",
+        "type": "object"
+      },
+      "JiraCreateIssueRequestBody": {
+        "properties": {
+          "assignee": {
+            "nullable": true,
+            "title": "Assignee",
+            "type": "string"
+          },
+          "description": {
+            "nullable": true,
+            "title": "Description",
+            "type": "string"
+          },
+          "issue_type": {
+            "title": "Issue Type",
+            "type": "string"
+          },
+          "labels": {
+            "items": {
+              "type": "string"
+            },
+            "nullable": true,
+            "title": "Labels",
+            "type": "array"
+          },
+          "priority": {
+            "nullable": true,
+            "title": "Priority",
+            "type": "string"
+          },
+          "project_key": {
+            "title": "Project Key",
+            "type": "string"
+          },
+          "recommendation_plan_session_id": {
+            "nullable": true,
+            "title": "Recommendation Plan Session Id",
+            "type": "string"
+          },
+          "summary": {
+            "title": "Summary",
+            "type": "string"
+          }
+        },
+        "required": [
+          "project_key",
+          "issue_type",
+          "summary"
+        ],
+        "title": "JiraCreateIssueRequestBody",
+        "type": "object"
+      },
+      "LinkCloudAccountRequest": {
+        "description": "Request body for linking a cloud account with a new integration (create integration then account).",
+        "properties": {
+          "cloud_account": {
+            "$ref": "#/components/schemas/CreateCloudAccountRequest",
+            "description": "Cloud account payload (cloud_account_integration_id is ignored and set from created integration)."
+          },
+          "cloud_account_integration": {
+            "$ref": "#/components/schemas/CreateCloudAccountIntegrationRequest",
+            "description": "Integration payload (cloud_provider_type and integration_data). Must match cloud_account.cloud_provider_type."
+          }
+        },
+        "required": [
+          "cloud_account",
+          "cloud_account_integration"
+        ],
+        "title": "LinkCloudAccountRequest",
+        "type": "object"
+      },
+      "RecommendationGenerateResponse": {
+        "description": "Response model for recommendation generation",
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/RecommendationResult"
+            },
+            "title": "Data",
+            "type": "array"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
+          }
+        },
+        "required": [
+          "meta",
+          "data"
+        ],
+        "title": "RecommendationGenerateResponse",
+        "type": "object"
+      },
+      "RecommendationResult": {
+        "description": "Result model for generated recommendations",
+        "properties": {
+          "action_type": {
+            "title": "Action Type",
+            "type": "string"
+          },
+          "aws_recommendation_id": {
+            "title": "Aws Recommendation Id",
+            "type": "string"
+          },
+          "cost": {
+            "$ref": "#/components/schemas/SavingsInfo"
+          },
+          "created_at": {
+            "title": "Created At",
+            "type": "string"
+          },
+          "current_resource_summary": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/ResourceSummaryItem"
+            },
+            "title": "Current Resource Summary",
+            "type": "array"
+          },
+          "current_resource_type": {
+            "title": "Current Resource Type",
+            "type": "string"
+          },
+          "generation_id": {
+            "title": "Generation Id",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "implementation_effort": {
+            "title": "Implementation Effort",
+            "type": "string"
+          },
+          "processing_status": {
+            "title": "Processing Status",
+            "type": "string"
+          },
+          "reason": {
+            "title": "Reason",
+            "type": "string"
+          },
+          "recommended_resource_summary": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/ResourceSummaryItem"
+            },
+            "title": "Recommended Resource Summary",
+            "type": "array"
+          },
+          "recommended_resource_type": {
+            "title": "Recommended Resource Type",
+            "type": "string"
+          },
+          "region": {
+            "title": "Region",
+            "type": "string"
+          },
+          "resource_name": {
+            "title": "Resource Name",
+            "type": "string"
+          },
+          "restart_needed": {
+            "title": "Restart Needed",
+            "type": "boolean"
+          },
+          "rollback_possible": {
+            "title": "Rollback Possible",
+            "type": "string"
+          },
+          "savings": {
+            "$ref": "#/components/schemas/SavingsInfo"
+          },
+          "savings_percentage": {
+            "title": "Savings Percentage",
+            "type": "number"
+          },
+          "updated_at": {
+            "title": "Updated At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "aws_recommendation_id",
+          "generation_id",
+          "processing_status",
+          "region",
+          "resource_name",
+          "current_resource_type",
+          "recommended_resource_type",
+          "action_type",
+          "implementation_effort",
+          "restart_needed",
+          "rollback_possible",
+          "cost",
+          "savings",
+          "savings_percentage",
+          "reason",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "RecommendationResult",
+        "type": "object"
+      },
+      "RefreshTokenRequest": {
+        "description": "Refresh token for issuing new access and refresh tokens.",
+        "properties": {
+          "refresh_token": {
+            "description": "JWT refresh token",
+            "title": "Refresh Token",
+            "type": "string"
+          }
+        },
+        "required": [
+          "refresh_token"
+        ],
+        "title": "RefreshTokenRequest",
+        "type": "object"
+      },
+      "ResetPasswordFromInvitationRequest": {
+        "description": "Request body for resetting password using the token from the reset-password invitation email.",
+        "properties": {
+          "password": {
+            "description": "New password (plain; backend hashes before persist)",
+            "minLength": 1,
+            "title": "Password",
+            "type": "string"
+          },
+          "reset_password_token": {
+            "description": "Token from the reset password invitation link (reset_password_token query param)",
+            "minLength": 1,
+            "title": "Reset Password Token",
+            "type": "string"
+          }
+        },
+        "required": [
+          "reset_password_token",
+          "password"
+        ],
+        "title": "ResetPasswordFromInvitationRequest",
+        "type": "object"
+      },
+      "ResetPasswordRequest": {
+        "description": "Email and new password for reset-password.",
+        "properties": {
+          "email": {
+            "description": "User email",
+            "format": "email",
+            "title": "Email",
+            "type": "string"
+          },
+          "new_password": {
+            "description": "New password (plain; backend hashes before persist)",
+            "minLength": 1,
+            "title": "New Password",
+            "type": "string"
+          }
+        },
+        "required": [
+          "email",
+          "new_password"
+        ],
+        "title": "ResetPasswordRequest",
+        "type": "object"
+      },
+      "ResourceConfigItem": {
+        "description": "Single configuration item with explicit unit.\n\nSupports nested configs via List[List[ResourceConfigItem]] for complex\nstructures like lifecycle rules:\n\n{\"key\": \"lifecycle_rules\", \"value\": [\n  [\n    {\"key\": \"rule_name\", \"value\": \"TransitionToIA\", \"unit\": null},\n    {\"key\": \"transition_days\", \"value\": 30, \"unit\": \"days\"},\n    {\"key\": \"storage_class\", \"value\": \"STANDARD_IA\", \"unit\": null}\n  ]\n], \"unit\": null}",
+        "properties": {
+          "key": {
+            "title": "Key",
+            "type": "string"
+          },
+          "unit": {
+            "nullable": true,
+            "title": "Unit",
+            "type": "string"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "items": {
+                  "items": {
+                    "$ref": "#/components/schemas/ResourceConfigItem"
+                  },
+                  "type": "array"
+                },
+                "type": "array"
+              }
+            ],
+            "title": "Value"
+          }
+        },
+        "required": [
+          "key",
+          "value"
+        ],
+        "title": "ResourceConfigItem",
+        "type": "object"
+      },
+      "ResourceSummaryItem": {
+        "description": "Single resource in summary array.\n\nresource_config is an array of config items with explicit units:\n[\n    {\"key\": \"size\", \"value\": 100, \"unit\": \"GB\"},\n    {\"key\": \"iops\", \"value\": 3000, \"unit\": \"IOPS\"},\n    {\"key\": \"throughput\", \"value\": 125, \"unit\": \"MB/s\"},\n    {\"key\": \"engine\", \"value\": \"mysql\", \"unit\": null},\n    {\"key\": \"multi_az\", \"value\": true, \"unit\": null},\n    {\"key\": \"num_nodes\", \"value\": 3, \"unit\": \"nodes\"}\n]",
+        "properties": {
+          "action_type": {
+            "nullable": true,
+            "title": "Action Type",
+            "type": "string"
+          },
+          "arn": {
+            "nullable": true,
+            "title": "Arn",
+            "type": "string"
+          },
+          "resource_config": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/ResourceConfigItem"
+            },
+            "title": "Resource Config",
+            "type": "array"
+          },
+          "resource_id": {
+            "nullable": true,
+            "title": "Resource Id",
+            "type": "string"
+          },
+          "resource_name": {
+            "nullable": true,
+            "title": "Resource Name",
+            "type": "string"
+          },
+          "resource_type": {
+            "title": "Resource Type",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "resource_type",
+          "type"
+        ],
+        "title": "ResourceSummaryItem",
+        "type": "object"
+      },
+      "ResponseMeta": {
+        "description": "Generic response metadata for API responses",
+        "properties": {
+          "count": {
+            "title": "Count",
+            "type": "integer"
+          },
+          "environment": {
+            "default": "DEBUG",
+            "title": "Environment",
+            "type": "string"
+          },
+          "limit": {
+            "title": "Limit",
+            "type": "integer"
+          },
+          "offset": {
+            "default": 0,
+            "title": "Offset",
+            "type": "integer"
+          },
+          "resource": {
+            "default": "recommendations",
+            "title": "Resource",
+            "type": "string"
+          },
+          "security": {
+            "additionalProperties": true,
+            "default": {
+              "granted": true,
+              "required_permission": "admin:recommendations:generate:execute"
+            },
+            "title": "Security",
+            "type": "object"
+          },
+          "total_count": {
+            "title": "Total Count",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "count",
+          "limit",
+          "total_count"
+        ],
+        "title": "ResponseMeta",
+        "type": "object"
+      },
+      "SavingsInfo": {
+        "description": "Savings information structure",
+        "properties": {
+          "amount": {
+            "title": "Amount",
+            "type": "number"
+          },
+          "currency": {
+            "title": "Currency",
+            "type": "string"
+          },
+          "cycle": {
+            "title": "Cycle",
+            "type": "string"
+          }
+        },
+        "required": [
+          "amount",
+          "currency",
+          "cycle"
+        ],
+        "title": "SavingsInfo",
+        "type": "object"
+      },
+      "SendOwnerSignupInvitationRequest": {
+        "description": "Request body for sending owner signup invitation.",
+        "properties": {
+          "company_id": {
+            "description": "Root company to invite an owner for",
+            "format": "uuid",
+            "title": "Company Id",
+            "type": "string"
+          },
+          "custom_message": {
+            "description": "Optional custom message in the invitation",
+            "maxLength": 2000,
+            "nullable": true,
+            "title": "Custom Message",
+            "type": "string"
+          },
+          "owner_email": {
+            "description": "Email address of the future owner",
+            "format": "email",
+            "title": "Owner Email",
+            "type": "string"
+          },
+          "owner_name": {
+            "description": "Optional display name for the owner",
+            "maxLength": 255,
+            "nullable": true,
+            "title": "Owner Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "company_id",
+          "owner_email"
+        ],
+        "title": "SendOwnerSignupInvitationRequest",
+        "type": "object"
+      },
+      "SendResetPasswordInvitationRequest": {
+        "description": "Request body for sending reset password invitation.",
+        "properties": {
+          "custom_message": {
+            "description": "Optional custom message in the invitation",
+            "maxLength": 2000,
+            "nullable": true,
+            "title": "Custom Message",
+            "type": "string"
+          },
+          "user_email": {
+            "description": "Email address of the user to send reset link to",
+            "format": "email",
+            "title": "User Email",
+            "type": "string"
+          }
+        },
+        "required": [
+          "user_email"
+        ],
+        "title": "SendResetPasswordInvitationRequest",
+        "type": "object"
+      },
+      "SendSignupInvitationRequest": {
+        "description": "Request body for sending a signup invitation (member/superuser).",
+        "properties": {
+          "company_id": {
+            "description": "Company to invite the user to",
+            "format": "uuid",
+            "title": "Company Id",
+            "type": "string"
+          },
+          "custom_message": {
+            "description": "Optional custom message in the invitation",
+            "maxLength": 2000,
+            "nullable": true,
+            "title": "Custom Message",
+            "type": "string"
+          },
+          "invitation_type": {
+            "$ref": "#/components/schemas/UserInvitationType",
+            "description": "Type of invitation (e.g. SIGNUP_MEMBER, SIGNUP_SUPERUSER)"
+          },
+          "invitee_email": {
+            "description": "Email address of the invitee",
+            "format": "email",
+            "title": "Invitee Email",
+            "type": "string"
+          },
+          "invitee_name": {
+            "description": "Optional display name for the invitee",
+            "maxLength": 255,
+            "nullable": true,
+            "title": "Invitee Name",
+            "type": "string"
+          },
+          "role_assignments": {
+            "description": "Optional list of role assignments to create for the invitee after user creation",
+            "items": {
+              "$ref": "#/components/schemas/SignUpRoleAssignmentRequest"
+            },
+            "nullable": true,
+            "title": "Role Assignments",
+            "type": "array"
+          }
+        },
+        "required": [
+          "company_id",
+          "invitee_email",
+          "invitation_type"
+        ],
+        "title": "SendSignupInvitationRequest",
+        "type": "object"
+      },
+      "SetUserStatusRequest": {
+        "description": "Request body for POST /{user_id}/action/set-status.\n\nSets the user's status. If status is DEACTIVATED or TERMINATED,\nall open sessions for that user are closed before updating.",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/UserStatus",
+            "description": "User status: ACTIVE, PENDING_ACTIVATION, DEACTIVATED, TERMINATED"
+          }
+        },
+        "required": [
+          "status"
+        ],
+        "title": "SetUserStatusRequest",
+        "type": "object"
+      },
+      "SetupRootCompanyCompanyPayload": {
+        "description": "Company payload for setup-root-company.",
+        "properties": {
+          "address": {
+            "nullable": true,
+            "title": "Address",
+            "type": "string"
+          },
+          "contact_email": {
+            "description": "Contact email",
+            "maxLength": 255,
+            "nullable": true,
+            "title": "Contact Email",
+            "type": "string"
+          },
+          "country": {
+            "description": "Country code or name (e.g. US)",
+            "maxLength": 50,
+            "nullable": true,
+            "title": "Country",
+            "type": "string"
+          },
+          "description": {
+            "description": "Optional company description",
+            "nullable": true,
+            "title": "Description",
+            "type": "string"
+          },
+          "domain_email": {
+            "description": "Domain email (unique across companies)",
+            "maxLength": 255,
+            "title": "Domain Email",
+            "type": "string"
+          },
+          "name": {
+            "description": "Company name",
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Name",
+            "type": "string"
+          },
+          "phone_number": {
+            "maxLength": 50,
+            "nullable": true,
+            "title": "Phone Number",
+            "type": "string"
+          },
+          "slug": {
+            "description": "Company slug; auto-derived from name if omitted",
+            "maxLength": 100,
+            "nullable": true,
+            "title": "Slug",
+            "type": "string"
+          },
+          "website_url": {
+            "maxLength": 500,
+            "nullable": true,
+            "title": "Website Url",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "domain_email"
+        ],
+        "title": "SetupRootCompanyCompanyPayload",
+        "type": "object"
+      },
+      "SetupRootCompanyLicensePayload": {
+        "description": "Minimal license payload; backend fills other params from pricing plan.",
+        "properties": {
+          "billing_interval": {
+            "$ref": "#/components/schemas/BillingInterval",
+            "description": "Billing interval; defaults to plan's default_billing_interval",
+            "nullable": true
+          },
+          "description": {
+            "description": "Optional license description",
+            "nullable": true,
+            "title": "Description",
+            "type": "string"
+          },
+          "name": {
+            "description": "Optional license name",
+            "maxLength": 255,
+            "nullable": true,
+            "title": "Name",
+            "type": "string"
+          },
+          "valid_from": {
+            "description": "License start date (ISO 8601). Defaults to now if omitted.",
+            "format": "date-time",
+            "nullable": true,
+            "title": "Valid From",
+            "type": "string"
+          },
+          "valid_until": {
+            "description": "License end date (ISO 8601). Optional; null means no end date.",
+            "format": "date-time",
+            "nullable": true,
+            "title": "Valid Until",
+            "type": "string"
+          }
+        },
+        "title": "SetupRootCompanyLicensePayload",
+        "type": "object"
+      },
+      "SetupRootCompanyPricingPlanPayload": {
+        "description": "New pricing plan payload for setup-root-company.",
+        "properties": {
+          "currency_code": {
+            "description": "Currency code (e.g. USD)",
+            "maxLength": 3,
+            "minLength": 1,
+            "title": "Currency Code",
+            "type": "string"
+          },
+          "default_billing_interval": {
+            "$ref": "#/components/schemas/BillingInterval",
+            "default": "YEARLY",
+            "description": "Default billing interval"
+          },
+          "description": {
+            "nullable": true,
+            "title": "Description",
+            "type": "string"
+          },
+          "display_name": {
+            "description": "Display name",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Display Name",
+            "type": "string"
+          },
+          "internal_name": {
+            "description": "Internal plan name (unique)",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Internal Name",
+            "type": "string"
+          },
+          "max_accounts": {
+            "minimum": 0,
+            "nullable": true,
+            "title": "Max Accounts",
+            "type": "integer"
+          },
+          "max_business_units": {
+            "minimum": 0,
+            "nullable": true,
+            "title": "Max Business Units",
+            "type": "integer"
+          },
+          "max_granted_tokens": {
+            "minimum": 0,
+            "nullable": true,
+            "title": "Max Granted Tokens",
+            "type": "integer"
+          },
+          "max_seats": {
+            "minimum": 0,
+            "nullable": true,
+            "title": "Max Seats",
+            "type": "integer"
+          },
+          "price_per_month": {
+            "minimum": 0,
+            "nullable": true,
+            "title": "Price Per Month",
+            "type": "number"
+          },
+          "price_per_year": {
+            "minimum": 0,
+            "nullable": true,
+            "title": "Price Per Year",
+            "type": "number"
+          }
+        },
+        "required": [
+          "internal_name",
+          "display_name",
+          "currency_code"
+        ],
+        "title": "SetupRootCompanyPricingPlanPayload",
+        "type": "object"
+      },
+      "SetupRootCompanyRequest": {
+        "description": "Request body for POST /organization/action/setup-root-company.",
+        "properties": {
+          "company": {
+            "$ref": "#/components/schemas/SetupRootCompanyCompanyPayload",
+            "description": "Company data"
+          },
+          "license": {
+            "$ref": "#/components/schemas/SetupRootCompanyLicensePayload"
+          },
+          "pricing_plan": {
+            "$ref": "#/components/schemas/SetupRootCompanyPricingPlanPayload",
+            "description": "New pricing plan"
+          }
+        },
+        "required": [
+          "company",
+          "pricing_plan"
+        ],
+        "title": "SetupRootCompanyRequest",
+        "type": "object"
+      },
+      "SignInRequest": {
+        "description": "Email or username plus password for sign-in.",
+        "properties": {
+          "login": {
+            "description": "User email or username",
+            "title": "Login",
+            "type": "string"
+          },
+          "password": {
+            "description": "User password",
+            "title": "Password",
+            "type": "string"
+          }
+        },
+        "required": [
+          "login",
+          "password"
+        ],
+        "title": "SignInRequest",
+        "type": "object"
+      },
+      "SignUpRequest": {
+        "description": "Profile-only signup with signup_token. Email is taken from the invitation (invitee_email).",
+        "properties": {
+          "first_name": {
+            "description": "Optional first name",
+            "maxLength": 255,
+            "nullable": true,
+            "title": "First Name",
+            "type": "string"
+          },
+          "last_name": {
+            "description": "Optional last name",
+            "maxLength": 255,
+            "nullable": true,
+            "title": "Last Name",
+            "type": "string"
+          },
+          "password": {
+            "description": "Password (plain; backend hashes before persist)",
+            "minLength": 1,
+            "title": "Password",
+            "type": "string"
+          },
+          "signup_token": {
+            "description": "Token from the invitation link (raw token)",
+            "minLength": 1,
+            "title": "Signup Token",
+            "type": "string"
+          },
+          "username": {
+            "description": "Username for login/display",
+            "minLength": 1,
+            "title": "Username",
+            "type": "string"
+          }
+        },
+        "required": [
+          "signup_token",
+          "username",
+          "password"
+        ],
+        "title": "SignUpRequest",
+        "type": "object"
+      },
+      "SignUpRoleAssignmentRequest": {
+        "description": "Role assignment to create for an invitee when sending a signup invitation.",
+        "properties": {
+          "allowed_cloud_account_ids": {
+            "description": "Optional list of cloud account UUIDs the user can access in this business unit",
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "nullable": true,
+            "title": "Allowed Cloud Account Ids",
+            "type": "array"
+          },
+          "business_unit_id": {
+            "description": "Business unit UUID",
+            "format": "uuid",
+            "title": "Business Unit Id",
+            "type": "string"
+          },
+          "role_id": {
+            "description": "Role UUID",
+            "format": "uuid",
+            "title": "Role Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "business_unit_id",
+          "role_id"
+        ],
+        "title": "SignUpRoleAssignmentRequest",
+        "type": "object"
+      },
+      "SystemSettingsResetRequest": {
+        "description": "Request to reset system settings",
+        "properties": {
+          "all": {
+            "default": false,
+            "description": "Reset all settings to defaults",
+            "title": "All",
+            "type": "boolean"
+          },
+          "keys": {
+            "description": "Specific keys to reset",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true,
+            "title": "Keys",
+            "type": "array"
+          },
+          "reason": {
+            "description": "Reason for the reset",
+            "nullable": true,
+            "title": "Reason",
+            "type": "string"
+          }
+        },
+        "title": "SystemSettingsResetRequest",
+        "type": "object"
+      },
+      "SystemSettingsUpdateRequest": {
+        "description": "Request to update system settings",
+        "properties": {
+          "reason": {
+            "description": "Reason for the change",
+            "nullable": true,
+            "title": "Reason",
+            "type": "string"
+          },
+          "settings": {
+            "additionalProperties": true,
+            "description": "Settings to update",
+            "title": "Settings",
+            "type": "object"
+          }
+        },
+        "required": [
+          "settings"
+        ],
+        "title": "SystemSettingsUpdateRequest",
+        "type": "object"
+      },
+      "UpdateBusinessUnitRequest": {
+        "description": "Request body for PATCH business unit. All fields are optional.\nOnly fields present in the request body are updated; omitted fields are left unchanged.",
+        "properties": {
+          "assigned_to": {
+            "description": "User UUID this business unit is assigned to (optional)",
+            "format": "uuid",
+            "nullable": true,
+            "title": "Assigned To",
+            "type": "string"
+          },
+          "company_id": {
+            "format": "uuid",
+            "nullable": true,
+            "title": "Company Id",
+            "type": "string"
+          },
+          "description": {
+            "nullable": true,
+            "title": "Description",
+            "type": "string"
+          },
+          "image_url": {
+            "maxLength": 500,
+            "nullable": true,
+            "title": "Image Url",
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 255,
+            "minLength": 1,
+            "nullable": true,
+            "title": "Name",
+            "type": "string"
+          },
+          "slug": {
+            "maxLength": 100,
+            "nullable": true,
+            "title": "Slug",
+            "type": "string"
+          }
+        },
+        "title": "UpdateBusinessUnitRequest",
+        "type": "object"
+      },
+      "UpdateCloudAccountIntegrationRequest": {
+        "description": "Request body for PATCH cloud account integration. All fields are optional.\nOnly fields present in the request body are updated; omitted fields are left unchanged.",
+        "properties": {
+          "cloud_provider_type": {
+            "$ref": "#/components/schemas/CloudProviderType",
+            "nullable": true
+          },
+          "integration_data": {
+            "additionalProperties": true,
+            "nullable": true,
+            "title": "Integration Data",
+            "type": "object"
+          }
+        },
+        "title": "UpdateCloudAccountIntegrationRequest",
+        "type": "object"
+      },
+      "UpdateCloudAccountRequest": {
+        "description": "Request body for PATCH cloud account. All fields are optional.\nOnly fields present in the request body are updated; omitted fields are left unchanged.",
+        "properties": {
+          "assigned_to": {
+            "description": "User UUID this cloud account is assigned to (optional)",
+            "format": "uuid",
+            "nullable": true,
+            "title": "Assigned To",
+            "type": "string"
+          },
+          "business_unit_id": {
+            "format": "uuid",
+            "nullable": true,
+            "title": "Business Unit Id",
+            "type": "string"
+          },
+          "cloud_account_integration_id": {
+            "format": "uuid",
+            "nullable": true,
+            "title": "Cloud Account Integration Id",
+            "type": "string"
+          },
+          "cloud_provider_type": {
+            "$ref": "#/components/schemas/CloudProviderType",
+            "nullable": true
+          },
+          "description": {
+            "nullable": true,
+            "title": "Description",
+            "type": "string"
+          },
+          "metadata": {
+            "additionalProperties": true,
+            "nullable": true,
+            "title": "Metadata",
+            "type": "object"
+          },
+          "name": {
+            "maxLength": 255,
+            "minLength": 1,
+            "nullable": true,
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "title": "UpdateCloudAccountRequest",
+        "type": "object"
+      },
+      "UpdateCompanyRequest": {
+        "description": "Request body for PATCH company. All fields are optional.\nOnly fields present in the request body are updated; omitted fields are left unchanged.",
+        "properties": {
+          "address": {
+            "nullable": true,
+            "title": "Address",
+            "type": "string"
+          },
+          "contact_email": {
+            "maxLength": 255,
+            "nullable": true,
+            "title": "Contact Email",
+            "type": "string"
+          },
+          "country": {
+            "maxLength": 50,
+            "nullable": true,
+            "title": "Country",
+            "type": "string"
+          },
+          "description": {
+            "nullable": true,
+            "title": "Description",
+            "type": "string"
+          },
+          "domain_email": {
+            "maxLength": 255,
+            "nullable": true,
+            "title": "Domain Email",
+            "type": "string"
+          },
+          "is_root": {
+            "nullable": true,
+            "title": "Is Root",
+            "type": "boolean"
+          },
+          "logo_url": {
+            "maxLength": 500,
+            "nullable": true,
+            "title": "Logo Url",
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 255,
+            "minLength": 1,
+            "nullable": true,
+            "title": "Name",
+            "type": "string"
+          },
+          "phone_number": {
+            "maxLength": 50,
+            "nullable": true,
+            "title": "Phone Number",
+            "type": "string"
+          },
+          "slug": {
+            "maxLength": 100,
+            "nullable": true,
+            "title": "Slug",
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/CompanyStatus",
+            "nullable": true
+          },
+          "website_url": {
+            "maxLength": 500,
+            "nullable": true,
+            "title": "Website Url",
+            "type": "string"
+          }
+        },
+        "title": "UpdateCompanyRequest",
+        "type": "object"
+      },
+      "UpdateRoleAssignmentRequest": {
+        "description": "Request body for PATCH role assignment. All fields are optional.\nOnly fields present in the request body are updated; omitted fields are left unchanged.",
+        "properties": {
+          "allowed_cloud_account_ids": {
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "nullable": true,
+            "title": "Allowed Cloud Account Ids",
+            "type": "array"
+          },
+          "business_unit_id": {
+            "format": "uuid",
+            "nullable": true,
+            "title": "Business Unit Id",
+            "type": "string"
+          },
+          "role_id": {
+            "format": "uuid",
+            "nullable": true,
+            "title": "Role Id",
+            "type": "string"
+          },
+          "user_id": {
+            "format": "uuid",
+            "nullable": true,
+            "title": "User Id",
+            "type": "string"
+          }
+        },
+        "title": "UpdateRoleAssignmentRequest",
+        "type": "object"
+      },
+      "UpdateRoleRequest": {
+        "description": "Request body for PATCH role. All fields are optional.\n\nOnly fields that are **present** in the request body are updated.\nOmitted fields (key not sent at all) are left unchanged on the role.",
+        "properties": {
+          "description": {
+            "description": "Role description; omit to leave unchanged",
+            "nullable": true,
+            "title": "Description",
+            "type": "string"
+          },
+          "image_url": {
+            "description": "Image URL; omit to leave unchanged",
+            "maxLength": 500,
+            "nullable": true,
+            "title": "Image Url",
+            "type": "string"
+          },
+          "is_superrole": {
+            "description": "Whether this role is a superrole; omit to leave unchanged",
+            "nullable": true,
+            "title": "Is Superrole",
+            "type": "boolean"
+          },
+          "name": {
+            "description": "Role name (unique); omit to leave unchanged",
+            "maxLength": 100,
+            "minLength": 1,
+            "nullable": true,
+            "title": "Name",
+            "type": "string"
+          },
+          "permissions": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "items": {},
+                "type": "array"
+              }
+            ],
+            "description": "Permissions (JSONB); omit to leave unchanged",
+            "nullable": true,
+            "title": "Permissions"
+          }
+        },
+        "title": "UpdateRoleRequest",
+        "type": "object"
+      },
+      "UpdateUserRequest": {
+        "description": "Request body for PATCH user. All fields are optional.\n\nOnly fields that are **present** in the request body are updated.\nOmitted fields are left unchanged. Plain `password` is hashed by the service before storage.",
+        "properties": {
+          "first_name": {
+            "description": "First name; omit to leave unchanged",
+            "maxLength": 255,
+            "nullable": true,
+            "title": "First Name",
+            "type": "string"
+          },
+          "hashed_password": {
+            "description": "Hashed password (internal; do not send from API); omit to leave unchanged",
+            "nullable": true,
+            "title": "Hashed Password",
+            "type": "string"
+          },
+          "is_owner": {
+            "description": "Whether user is owner; omit to leave unchanged",
+            "nullable": true,
+            "title": "Is Owner",
+            "type": "boolean"
+          },
+          "is_superuser": {
+            "description": "Whether user is superuser; omit to leave unchanged",
+            "nullable": true,
+            "title": "Is Superuser",
+            "type": "boolean"
+          },
+          "last_name": {
+            "description": "Last name; omit to leave unchanged",
+            "maxLength": 255,
+            "nullable": true,
+            "title": "Last Name",
+            "type": "string"
+          },
+          "password": {
+            "description": "Plain password (hashed by service); omit to leave unchanged",
+            "minLength": 1,
+            "nullable": true,
+            "title": "Password",
+            "type": "string"
+          },
+          "phone_number": {
+            "description": "Phone number; omit to leave unchanged",
+            "maxLength": 50,
+            "nullable": true,
+            "title": "Phone Number",
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/UserStatus",
+            "description": "User status (e.g. ACTIVE, PENDING_ACTIVATION); omit to leave unchanged",
+            "nullable": true
+          },
+          "username": {
+            "description": "Username; omit to leave unchanged",
+            "maxLength": 255,
+            "minLength": 1,
+            "nullable": true,
+            "title": "Username",
+            "type": "string"
+          }
+        },
+        "title": "UpdateUserRequest",
+        "type": "object"
+      },
+      "UserInvitationType": {
+        "description": "Type of user invitation.",
+        "enum": [
+          "SIGNUP_SUPERUSER",
+          "SIGNUP_OWNER",
+          "SIGNUP_MEMBER",
+          "RESET_PASSWORD"
+        ],
+        "title": "UserInvitationType",
+        "type": "string"
+      },
+      "UserStatus": {
+        "description": "Status of a user account.",
+        "enum": [
+          "ACTIVE",
+          "PENDING_ACTIVATION",
+          "DEACTIVATED",
+          "TERMINATED"
+        ],
+        "title": "UserStatus",
+        "type": "string"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "title": "Location",
+            "type": "array"
+          },
+          "msg": {
+            "title": "Message",
+            "type": "string"
+          },
+          "type": {
+            "title": "Error Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError",
+        "type": "object"
+      },
+      "api_v2__Modules__Base__Models__BaseApiMeta__MetaInfo": {
+        "properties": {
+          "count": {
+            "default": 0,
+            "title": "Count",
+            "type": "integer"
+          },
+          "environment": {
+            "default": "DEBUG",
+            "title": "Environment",
+            "type": "string"
+          },
+          "limit": {
+            "default": 10,
+            "title": "Limit",
+            "type": "integer"
+          },
+          "offset": {
+            "default": 0,
+            "title": "Offset",
+            "type": "integer"
+          },
+          "resource": {
+            "default": "UNKNOWN",
+            "title": "Resource",
+            "type": "string"
+          },
+          "security": {
+            "$ref": "#/components/schemas/api_v2__Modules__Base__Models__BaseApiMeta__SecurityInfo",
+            "nullable": true
+          },
+          "total_count": {
+            "default": 0,
+            "title": "Total Count",
+            "type": "integer"
+          }
+        },
+        "title": "MetaInfo",
+        "type": "object"
+      },
+      "api_v2__Modules__Base__Models__BaseApiMeta__SecurityInfo": {
+        "properties": {
+          "granted": {
+            "title": "Granted",
+            "type": "boolean"
+          },
+          "required_permission": {
+            "title": "Required Permission",
+            "type": "string"
+          }
+        },
+        "required": [
+          "required_permission",
+          "granted"
+        ],
+        "title": "SecurityInfo",
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "HTTPBearer": {
+        "scheme": "bearer",
+        "type": "http"
+      }
+    }
+  },
+  "info": {
+    "description": "JetScale Multi-agent AI system",
+    "title": "JetScale Backend (Tilt)",
+    "version": "v4.10.0"
+  },
+  "openapi": "3.0.3",
+  "paths": {
+    "/api/v2/auth/action/send-owner-signup-invitation": {
+      "post": {
+        "description": "Send owner invitation email for an existing root company.\nGenerates signup_token (1 day, single-use) and sends invitation.\nRequires permission auth:send_owner_signup_invitation (e.g. superuser).",
+        "operationId": "send_owner_signup_invitation_api_v2_auth_action_send_owner_signup_invitation_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendOwnerSignupInvitationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Send Owner Signup Invitation",
+        "tags": [
+          "authentication"
+        ]
+      }
+    },
+    "/api/v2/auth/action/send-reset-password-invitation": {
+      "post": {
+        "description": "Send reset password invitation email for a user.\nGenerates signup_token (1 day, single-use) and sends invitation. User must exist and have a company.\nRequires permission auth:send_reset_password_invitation.",
+        "operationId": "send_reset_password_invitation_api_v2_auth_action_send_reset_password_invitation_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendResetPasswordInvitationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Send Reset Password Invitation",
+        "tags": [
+          "authentication"
+        ]
+      }
+    },
+    "/api/v2/auth/action/send-signup-invitation": {
+      "post": {
+        "description": "Send signup invitation email for a company. Requires invitation_type.\nInvitee email must use the company domain (domain_email is the domain only, e.g. jetscale.ai). Uses company-only template.\nRequires permission auth:send_signup_invitation.",
+        "operationId": "send_signup_invitation_api_v2_auth_action_send_signup_invitation_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendSignupInvitationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Send Signup Invitation",
+        "tags": [
+          "authentication"
+        ]
+      }
+    },
+    "/api/v2/auth/me": {
+      "get": {
+        "description": "Current user and active session. Requires valid Bearer token.",
+        "operationId": "me_api_v2_auth_me_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Me",
+        "tags": [
+          "authentication"
+        ]
+      }
+    },
+    "/api/v2/auth/reset-password": {
+      "post": {
+        "description": "Reset password by email and new password. Updates the user's password.\nRequires permission auth:reset_password.",
+        "operationId": "reset_password_api_v2_auth_reset_password_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetPasswordRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Reset Password",
+        "tags": [
+          "authentication"
+        ]
+      }
+    },
+    "/api/v2/auth/reset-password-from-invitation": {
+      "post": {
+        "description": "Reset password using the token from the reset-password invitation email.\nValidates invitation (exists, not expired, not used, type RESET_PASSWORD), updates the user's\npassword, then marks the invitation as used. Public; no auth required.",
+        "operationId": "reset_password_from_invitation_api_v2_auth_reset_password_from_invitation_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetPasswordFromInvitationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Reset Password From Invitation",
+        "tags": [
+          "authentication"
+        ]
+      }
+    },
+    "/api/v2/auth/role-assignments": {
+      "get": {
+        "description": "List role assignments with pagination, sort, field filters.\nSuperuser and owner bypass permission checks.",
+        "operationId": "list_role_assignments_api_v2_auth_role_assignments_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Role Assignments",
+        "tags": [
+          "authentication",
+          "auth-role-assignments"
+        ]
+      },
+      "post": {
+        "description": "Create a role assignment. Returns 409 if (user, business_unit) already assigned.",
+        "operationId": "create_role_assignment_api_v2_auth_role_assignments_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateRoleAssignmentRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Create Role Assignment",
+        "tags": [
+          "authentication",
+          "auth-role-assignments"
+        ]
+      }
+    },
+    "/api/v2/auth/role-assignments/{assignment_id}": {
+      "get": {
+        "description": "Get a role assignment by UUID.\nSuperuser and owner bypass permission checks.",
+        "operationId": "get_role_assignment_by_id_api_v2_auth_role_assignments__assignment_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assignment_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Assignment Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Role Assignment By Id",
+        "tags": [
+          "authentication",
+          "auth-role-assignments"
+        ]
+      },
+      "patch": {
+        "description": "Update a role assignment by UUID (partial). 404 if not found, 409 if (user, business_unit) conflict.",
+        "operationId": "update_role_assignment_api_v2_auth_role_assignments__assignment_id__patch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assignment_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Assignment Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateRoleAssignmentRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Update Role Assignment",
+        "tags": [
+          "authentication",
+          "auth-role-assignments"
+        ]
+      }
+    },
+    "/api/v2/auth/roles": {
+      "get": {
+        "description": "List roles with pagination, sort, field filters, and response field selection.\n\n**Query params (from request):**\n- BaseApiFilterQueryParams: api_offset, api_limit, api_sort (e.g. ?api_offset=0\u0026api_limit=10\u0026api_sort=name).\n- BaseApiResponseQueryParams: api_fields, api_include (e.g. ?api_fields=id,name,description).\n- Model filters (Role fields): id, name, description, is_superrole, etc. with BaseApiModelQueryOperation\n  (e.g. ?name=eq admin, ?is_superrole=true).",
+        "operationId": "list_roles_api_v2_auth_roles_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Roles",
+        "tags": [
+          "authentication",
+          "auth-roles"
+        ]
+      },
+      "post": {
+        "description": "Create a new role.\n\n**Body:** name (required), description, image_url, is_superrole, permissions (optional).\nReturns 409 Conflict if a role with the same name already exists.",
+        "operationId": "create_role_api_v2_auth_roles_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateRoleRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Create Role",
+        "tags": [
+          "authentication",
+          "auth-roles"
+        ]
+      }
+    },
+    "/api/v2/auth/roles/{role_id}": {
+      "get": {
+        "description": "Get a role by UUID.\n\n**Query params:**\n- BaseApiResponseQueryParams: api_fields, api_include (e.g. ?api_fields=id,name,description).",
+        "operationId": "get_role_by_id_api_v2_auth_roles__role_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "role_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Role Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Role By Id",
+        "tags": [
+          "authentication",
+          "auth-roles"
+        ]
+      },
+      "patch": {
+        "description": "Update a role by UUID (partial). Only provided body fields are updated.\n\n**Body:** name, description, image_url, is_superrole, permissions (all optional).\nReturns 404 if role not found, 409 Conflict if name is changed to an existing role name.",
+        "operationId": "update_role_api_v2_auth_roles__role_id__patch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "role_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Role Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateRoleRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Update Role",
+        "tags": [
+          "authentication",
+          "auth-roles"
+        ]
+      }
+    },
+    "/api/v2/auth/roles/{role_id}/action/delete": {
+      "post": {
+        "description": "Delete a role by UUID. Returns 409 if the role has any assignments linked to it.\nReturns 404 if role not found.",
+        "operationId": "delete_role_api_v2_auth_roles__role_id__action_delete_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "role_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Role Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Delete Role",
+        "tags": [
+          "authentication",
+          "auth-roles"
+        ]
+      }
+    },
+    "/api/v2/auth/sign-in": {
+      "post": {
+        "description": "Sign in with login (email or username) and password.\nReturns user_session (if user has a company) and tokens. Validates user exists, is active,\nhas company/role when not superuser/owner, then closes open sessions and creates a new OPEN session.",
+        "operationId": "sign_in_api_v2_auth_sign_in_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignInRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Sign In",
+        "tags": [
+          "authentication"
+        ]
+      }
+    },
+    "/api/v2/auth/sign-out": {
+      "post": {
+        "description": "Sign out by closing the current session. Requires valid Bearer token.",
+        "operationId": "sign_out_api_v2_auth_sign_out_post",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Sign Out",
+        "tags": [
+          "authentication"
+        ]
+      }
+    },
+    "/api/v2/auth/sign-up": {
+      "post": {
+        "description": "Invitation-based sign-up. Accepts signup_token and user profile (username, password,\noptional first_name, last_name). Email is taken from the invitation (invitee_email).\nSets is_owner/is_superuser and company based on invitation type, then signs the user in.\nReturns user_session and tokens (same as sign-in). Public; no auth required.",
+        "operationId": "sign_up_api_v2_auth_sign_up_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignUpRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Sign Up",
+        "tags": [
+          "authentication"
+        ]
+      }
+    },
+    "/api/v2/auth/token/refresh-token": {
+      "post": {
+        "description": "Exchange a valid refresh token for new access and refresh tokens.\nDoes not require authentication. Returns new Token (access_token, refresh_token, expires_in).\nErrors are raised by the service (e.g. invalid/expired token).",
+        "operationId": "refresh_token_api_v2_auth_token_refresh_token_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshTokenRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Refresh Token",
+        "tags": [
+          "authentication",
+          "auth-token"
+        ]
+      }
+    },
+    "/api/v2/auth/user-activity": {
+      "get": {
+        "description": "List user activities with pagination, sort, field filters, and response field selection.",
+        "operationId": "list_user_activities_api_v2_auth_user_activity_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List User Activities",
+        "tags": [
+          "authentication",
+          "auth-user-activity"
+        ]
+      }
+    },
+    "/api/v2/auth/user-activity/{user_activity_id}": {
+      "get": {
+        "description": "Get a user activity by UUID.\n\n**Query params:**\n- BaseApiResponseQueryParams: api_fields, api_include (e.g. ?api_fields=id,action_type,occurred_at).",
+        "operationId": "get_user_activity_by_id_api_v2_auth_user_activity__user_activity_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_activity_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "User Activity Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get User Activity By Id",
+        "tags": [
+          "authentication",
+          "auth-user-activity"
+        ]
+      }
+    },
+    "/api/v2/auth/user-invitations": {
+      "get": {
+        "description": "List user invitations with pagination, sort, field filters, and response field selection.",
+        "operationId": "list_user_invitations_api_v2_auth_user_invitations_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List User Invitations",
+        "tags": [
+          "authentication",
+          "auth-user-invitations"
+        ]
+      }
+    },
+    "/api/v2/auth/user-invitations/{user_invitation_id}": {
+      "get": {
+        "description": "Get a user invitation by UUID.\n\n**Query params:**\n- BaseApiResponseQueryParams: api_fields, api_include (e.g. ?api_fields=id,company,invitee_email).",
+        "operationId": "get_user_invitation_by_id_api_v2_auth_user_invitations__user_invitation_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_invitation_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "User Invitation Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get User Invitation By Id",
+        "tags": [
+          "authentication",
+          "auth-user-invitations"
+        ]
+      }
+    },
+    "/api/v2/auth/user-sessions": {
+      "get": {
+        "description": "List user sessions with pagination, sort, field filters, and response field selection.",
+        "operationId": "list_user_sessions_api_v2_auth_user_sessions_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List User Sessions",
+        "tags": [
+          "authentication",
+          "auth-user-sessions"
+        ]
+      }
+    },
+    "/api/v2/auth/user-sessions/{user_session_id}": {
+      "get": {
+        "description": "Get a user session by UUID.\n\n**Query params:**\n- BaseApiResponseQueryParams: api_fields, api_include (e.g. ?api_fields=id,user,started_at).",
+        "operationId": "get_user_session_by_id_api_v2_auth_user_sessions__user_session_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_session_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "User Session Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get User Session By Id",
+        "tags": [
+          "authentication",
+          "auth-user-sessions"
+        ]
+      }
+    },
+    "/api/v2/auth/users": {
+      "get": {
+        "description": "List users with pagination, sort, field filters, and response field selection.",
+        "operationId": "list_users_api_v2_auth_users_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Users",
+        "tags": [
+          "authentication",
+          "auth-users"
+        ]
+      }
+    },
+    "/api/v2/auth/users/{user_id}": {
+      "get": {
+        "description": "Get a user by UUID.\n\n**Query params:**\n- BaseApiResponseQueryParams: api_fields, api_include (e.g. ?api_fields=id,email,username).",
+        "operationId": "get_user_by_id_api_v2_auth_users__user_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "User Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get User By Id",
+        "tags": [
+          "authentication",
+          "auth-users"
+        ]
+      },
+      "patch": {
+        "description": "Update a user by UUID (partial). Only provided body fields are updated.\n\n**Body:** username, password, first_name, last_name, is_owner, is_superuser, company (all optional).\nReturns 404 if user not found.",
+        "operationId": "update_user_api_v2_auth_users__user_id__patch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "User Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Update User",
+        "tags": [
+          "authentication",
+          "auth-users"
+        ]
+      }
+    },
+    "/api/v2/auth/users/{user_id}/action/delete": {
+      "post": {
+        "description": "Delete a user and all their role assignments. Returns 404 if user not found.",
+        "operationId": "delete_user_api_v2_auth_users__user_id__action_delete_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "User Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Delete User",
+        "tags": [
+          "authentication",
+          "auth-users"
+        ]
+      }
+    },
+    "/api/v2/auth/users/{user_id}/action/set-status": {
+      "post": {
+        "description": "Set the user's status. Body: status (UserStatus).\nIf status is DEACTIVATED or TERMINATED, all open sessions for that user are closed first, then the user is updated.\nReturns 404 if user not found. Returns the updated user data.",
+        "operationId": "set_user_status_api_v2_auth_users__user_id__action_set_status_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "User Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetUserStatusRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Set User Status",
+        "tags": [
+          "authentication",
+          "auth-users"
+        ]
+      }
+    },
+    "/api/v2/cloud/aws/discovery/resources/": {
+      "get": {
+        "description": "List AWS resource discoveries with pagination, sort, field filters, and response field selection.",
+        "operationId": "list_aws_resource_discoveries_api_v2_cloud_aws_discovery_resources__get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Aws Resource Discoveries",
+        "tags": [
+          "cloud",
+          "aws",
+          "aws-resource-discoveries"
+        ]
+      }
+    },
+    "/api/v2/cloud/aws/discovery/resources/action/discover": {
+      "post": {
+        "description": "Trigger AWS resource discovery for a cloud account.\n\nDiscovers resources across specified regions and types, persists results,\nand soft-deletes stale resources.",
+        "operationId": "discover_aws_resources_api_v2_cloud_aws_discovery_resources_action_discover_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AwsDiscoveryRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Discover Aws Resources",
+        "tags": [
+          "cloud",
+          "aws",
+          "aws-resource-discoveries"
+        ]
+      }
+    },
+    "/api/v2/cloud/aws/sourced-recommendations": {
+      "get": {
+        "description": "List AWS sourced recommendations with pagination, sort, field filters, and response field selection.",
+        "operationId": "list_aws_sourced_recommendations_api_v2_cloud_aws_sourced_recommendations_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Aws Sourced Recommendations",
+        "tags": [
+          "cloud",
+          "aws",
+          "aws-sourced-recommendations"
+        ]
+      }
+    },
+    "/api/v2/cloud/aws/sourced-recommendations/{aws_sourced_recommendation_id}": {
+      "get": {
+        "description": "Get an AWS sourced recommendation by UUID.\n\n**Query params:**\n- BaseApiResponseQueryParams: api_fields, api_include (e.g. ?api_include=cloud_account,aws_resource).",
+        "operationId": "get_aws_sourced_recommendation_by_id_api_v2_cloud_aws_sourced_recommendations__aws_sourced_recommendation_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "aws_sourced_recommendation_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Aws Sourced Recommendation Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Aws Sourced Recommendation By Id",
+        "tags": [
+          "cloud",
+          "aws",
+          "aws-sourced-recommendations"
+        ]
+      }
+    },
+    "/api/v2/cloud/azure/credentials/action/validate": {
+      "post": {
+        "description": "Validate Azure credentials from environment variables.\n\nUses Azure credentials from environment variables:\n- JETSCALE_CLIENT_AZURE_TENANT_ID\n- JETSCALE_CLIENT_AZURE_CLIENT_ID\n- JETSCALE_CLIENT_AZURE_CLIENT_SECRET (or JETSCALE_CLIENT_AZURE_CERTIFICATE_PATH)\n- JETSCALE_CLIENT_AZURE_SUBSCRIPTION_ID\n\nReturns validation status and subscription details if successful.",
+        "operationId": "validate_azure_credentials_api_v2_cloud_azure_credentials_action_validate_post",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Validate Azure Credentials",
+        "tags": [
+          "cloud",
+          "azure",
+          "azure-credentials"
+        ]
+      }
+    },
+    "/api/v2/cloud/azure/credentials/auth-methods": {
+      "get": {
+        "description": "Get supported Azure authentication methods.",
+        "operationId": "get_azure_auth_methods_api_v2_cloud_azure_credentials_auth_methods_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Azure Auth Methods",
+        "tags": [
+          "cloud",
+          "azure",
+          "azure-credentials"
+        ]
+      }
+    },
+    "/api/v2/cloud/azure/discovery/resources/": {
+      "get": {
+        "description": "Retrieve the discovered Azure resources.\n\nArgs:\n    request: The FastAPI request object containing query parameters.\n    current_user_session: The current active user session.\n\nReturns:\n    A BaseApiResponse containing the list of discovered resources and metadata.\n\nRaises:\n    HTTPException: If the user doesn't have required permissions or an internal error occurs.",
+        "operationId": "get_discovered_azure_resources_api_v2_cloud_azure_discovery_resources__get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Discovered Azure Resources",
+        "tags": [
+          "cloud",
+          "azure",
+          "azure-discovery"
+        ]
+      }
+    },
+    "/api/v2/cloud/azure/discovery/resources/action/discover": {
+      "post": {
+        "description": "Discover and list Azure resources.\n\nUses Azure credentials from environment variables to discover resources\nin real-time using Azure SDK (equivalent to 'az resource list').\n\nArgs:\n    request_body: The request body containing resource_types and locations filters.\n    response: The FastAPI response object to set headers.\n    current_user_session: The current active user session.\n\nReturns:\n    A BaseApiResponse containing the results or None if an error occurred.\n\nRaises:\n    HTTPException: If the user doesn't have required permissions or an internal error occurs.\n\n**Request Body:**\n- `resource_types`: Filter by resource types (optional)\n- `locations`: Filter by Azure regions (optional)\n\n**Supported Resource Types:**\nAll Azure resource types are supported (e.g., Microsoft.Storage/storageAccounts, Microsoft.Compute/virtualMachines).",
+        "operationId": "discovered_azure_resources_api_v2_cloud_azure_discovery_resources_action_discover_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AzureDiscoveryRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Discovered Azure Resources",
+        "tags": [
+          "cloud",
+          "azure",
+          "azure-discovery"
+        ]
+      }
+    },
+    "/api/v2/cloud/cloud-account-integrations": {
+      "get": {
+        "description": "List cloud account integrations with pagination, sort, field filters, and response field selection.",
+        "operationId": "list_cloud_account_integrations_api_v2_cloud_cloud_account_integrations_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Cloud Account Integrations",
+        "tags": [
+          "cloud",
+          "cloud-account-integrations"
+        ]
+      },
+      "post": {
+        "description": "Create a new cloud account integration.",
+        "operationId": "create_cloud_account_integration_api_v2_cloud_cloud_account_integrations_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCloudAccountIntegrationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Create Cloud Account Integration",
+        "tags": [
+          "cloud",
+          "cloud-account-integrations"
+        ]
+      }
+    },
+    "/api/v2/cloud/cloud-account-integrations/{cloud_account_integration_id}": {
+      "get": {
+        "description": "Get a cloud account integration by UUID.\n\n**Query params:**\n- BaseApiResponseQueryParams: api_fields, api_include (e.g. ?api_fields=id,cloud_provider_type).",
+        "operationId": "get_cloud_account_integration_by_id_api_v2_cloud_cloud_account_integrations__cloud_account_integration_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "cloud_account_integration_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Cloud Account Integration Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Cloud Account Integration By Id",
+        "tags": [
+          "cloud",
+          "cloud-account-integrations"
+        ]
+      },
+      "patch": {
+        "description": "Update a cloud account integration by UUID (partial). 404 if not found.",
+        "operationId": "update_cloud_account_integration_api_v2_cloud_cloud_account_integrations__cloud_account_integration_id__patch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "cloud_account_integration_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Cloud Account Integration Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCloudAccountIntegrationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Update Cloud Account Integration",
+        "tags": [
+          "cloud",
+          "cloud-account-integrations"
+        ]
+      }
+    },
+    "/api/v2/cloud/cloud-accounts": {
+      "get": {
+        "description": "List cloud accounts with pagination, sort, field filters, and response field selection.",
+        "operationId": "list_cloud_accounts_api_v2_cloud_cloud_accounts_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Cloud Accounts",
+        "tags": [
+          "cloud",
+          "cloud-accounts"
+        ]
+      },
+      "post": {
+        "description": "Create a new cloud account.",
+        "operationId": "create_cloud_account_api_v2_cloud_cloud_accounts_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCloudAccountRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Create Cloud Account",
+        "tags": [
+          "cloud",
+          "cloud-accounts"
+        ]
+      }
+    },
+    "/api/v2/cloud/cloud-accounts/{cloud_account_id}": {
+      "get": {
+        "description": "Get a cloud account by UUID.\n\n**Query params:**\n- BaseApiResponseQueryParams: api_fields, api_include (e.g. ?api_fields=id,name,cloud_provider_type).",
+        "operationId": "get_cloud_account_by_id_api_v2_cloud_cloud_accounts__cloud_account_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "cloud_account_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Cloud Account Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Cloud Account By Id",
+        "tags": [
+          "cloud",
+          "cloud-accounts"
+        ]
+      },
+      "patch": {
+        "description": "Update a cloud account by UUID (partial). 404 if not found.",
+        "operationId": "update_cloud_account_api_v2_cloud_cloud_accounts__cloud_account_id__patch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "cloud_account_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Cloud Account Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCloudAccountRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Update Cloud Account",
+        "tags": [
+          "cloud",
+          "cloud-accounts"
+        ]
+      }
+    },
+    "/api/v2/cloud/cloud-accounts/{cloud_account_id}/action/generate-custom-recommendation": {
+      "post": {
+        "description": "Generate custom recommendations for resources in a cloud account.",
+        "operationId": "generate_custom_recommendation_api_v2_cloud_cloud_accounts__cloud_account_id__action_generate_custom_recommendation_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "cloud_account_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Cloud Account Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenerateCustomRecommendationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Generate Custom Recommendation",
+        "tags": [
+          "cloud",
+          "cloud-accounts"
+        ]
+      }
+    },
+    "/api/v2/cloud/cloud-accounts/{cloud_account_id}/custom-recommendations": {
+      "get": {
+        "description": "List custom recommendations scoped to a cloud account.",
+        "operationId": "list_custom_recommendations_for_account_api_v2_cloud_cloud_accounts__cloud_account_id__custom_recommendations_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "cloud_account_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Cloud Account Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Custom Recommendations For Account",
+        "tags": [
+          "cloud",
+          "cloud-accounts"
+        ]
+      }
+    },
+    "/api/v2/cloud/link-cloud-account": {
+      "post": {
+        "description": "Create a cloud account integration and link a cloud account to it.\nCloud account and integration must share the same cloud_provider_type (AWS or AZURE).\nintegration_data must match the provider schema (e.g. AWS: CLIENT_AWS_REGION, CLIENT_AWS_ROLE_ARN, etc.).\nReturns the created cloud account with cloud_account_integration included.",
+        "operationId": "link_cloud_account_api_v2_cloud_link_cloud_account_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LinkCloudAccountRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Link Cloud Account",
+        "tags": [
+          "cloud"
+        ]
+      }
+    },
+    "/api/v2/cloud/recommendation-agent-operations": {
+      "get": {
+        "description": "List recommendation agent operations with pagination, sort, field filters, and response field selection.",
+        "operationId": "list_recommendation_agent_operations_api_v2_cloud_recommendation_agent_operations_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Recommendation Agent Operations",
+        "tags": [
+          "cloud",
+          "recommendation-agent-operations"
+        ]
+      }
+    },
+    "/api/v2/cloud/recommendation-agent-operations/{recommendation_agent_operation_id}": {
+      "get": {
+        "description": "Get a recommendation agent operation by UUID.\n\n**Query params:**\n- BaseApiResponseQueryParams: api_fields, api_include (e.g. ?api_fields=id,operation_type,started_at).",
+        "operationId": "get_recommendation_agent_operation_by_id_api_v2_cloud_recommendation_agent_operations__recommendation_agent_operation_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "recommendation_agent_operation_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Recommendation Agent Operation Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Recommendation Agent Operation By Id",
+        "tags": [
+          "cloud",
+          "recommendation-agent-operations"
+        ]
+      }
+    },
+    "/api/v2/integrations/bitbucket/me": {
+      "get": {
+        "operationId": "getCurrentUserBitbucketConnection_api_v2_integrations_bitbucket_me_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Getcurrentuserbitbucketconnection",
+        "tags": [
+          "bitbucket"
+        ]
+      }
+    },
+    "/api/v2/integrations/bitbucket/me/action/connect": {
+      "post": {
+        "operationId": "connectToBitbucket_api_v2_integrations_bitbucket_me_action_connect_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BitbucketConnectRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Connecttobitbucket",
+        "tags": [
+          "bitbucket"
+        ]
+      }
+    },
+    "/api/v2/integrations/bitbucket/pullrequests/action/create": {
+      "post": {
+        "operationId": "createBitbucketPullRequest_api_v2_integrations_bitbucket_pullrequests_action_create_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BitbucketCreatePullRequestRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Createbitbucketpullrequest",
+        "tags": [
+          "bitbucket"
+        ]
+      }
+    },
+    "/api/v2/integrations/bitbucket/repositories": {
+      "get": {
+        "operationId": "fetchBitbucketRepositories_api_v2_integrations_bitbucket_repositories_get",
+        "parameters": [
+          {
+            "description": "Workspace slug/identifier to fetch repositories from. If not provided, uses the workspace from the user's connection.",
+            "in": "query",
+            "name": "workspace",
+            "required": false,
+            "schema": {
+              "description": "Workspace slug/identifier to fetch repositories from. If not provided, uses the workspace from the user's connection.",
+              "nullable": true,
+              "title": "Workspace",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Fetchbitbucketrepositories",
+        "tags": [
+          "bitbucket"
+        ]
+      }
+    },
+    "/api/v2/integrations/bitbucket/repositories/action/create": {
+      "post": {
+        "operationId": "createBitbucketRepository_api_v2_integrations_bitbucket_repositories_action_create_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BitbucketCreateRepositoryRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Createbitbucketrepository",
+        "tags": [
+          "bitbucket"
+        ]
+      }
+    },
+    "/api/v2/integrations/bitbucket/repositories/{repository_slug}/branches": {
+      "get": {
+        "operationId": "fetchBitbucketBranches_api_v2_integrations_bitbucket_repositories__repository_slug__branches_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "repository_slug",
+            "required": true,
+            "schema": {
+              "title": "Repository Slug",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Workspace slug/identifier where the repository exists. If not provided, uses the workspace from the user's connection.",
+            "in": "query",
+            "name": "workspace",
+            "required": false,
+            "schema": {
+              "description": "Workspace slug/identifier where the repository exists. If not provided, uses the workspace from the user's connection.",
+              "nullable": true,
+              "title": "Workspace",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Fetchbitbucketbranches",
+        "tags": [
+          "bitbucket"
+        ]
+      }
+    },
+    "/api/v2/integrations/bitbucket/workspaces": {
+      "get": {
+        "operationId": "fetchBitbucketWorkspaces_api_v2_integrations_bitbucket_workspaces_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Fetchbitbucketworkspaces",
+        "tags": [
+          "bitbucket"
+        ]
+      }
+    },
+    "/api/v2/integrations/jira/issues/action/create": {
+      "post": {
+        "operationId": "createJiraIssue_api_v2_integrations_jira_issues_action_create_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JiraCreateIssueRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Createjiraissue",
+        "tags": [
+          "jira"
+        ]
+      }
+    },
+    "/api/v2/integrations/jira/issues/priorities": {
+      "get": {
+        "operationId": "fetchJiraIssuePriorities_api_v2_integrations_jira_issues_priorities_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Fetchjiraissuepriorities",
+        "tags": [
+          "jira"
+        ]
+      }
+    },
+    "/api/v2/integrations/jira/issues/types": {
+      "get": {
+        "operationId": "fetchJiraIssueTypes_api_v2_integrations_jira_issues_types_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Fetchjiraissuetypes",
+        "tags": [
+          "jira"
+        ]
+      }
+    },
+    "/api/v2/integrations/jira/me": {
+      "get": {
+        "operationId": "getCurrentUserJiraConnection_api_v2_integrations_jira_me_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Getcurrentuserjiraconnection",
+        "tags": [
+          "jira"
+        ]
+      }
+    },
+    "/api/v2/integrations/jira/me/action/connect": {
+      "post": {
+        "operationId": "connectToJira_api_v2_integrations_jira_me_action_connect_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JiraConnectRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Connecttojira",
+        "tags": [
+          "jira"
+        ]
+      }
+    },
+    "/api/v2/integrations/jira/projects": {
+      "get": {
+        "operationId": "fetchJiraProjects_api_v2_integrations_jira_projects_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Fetchjiraprojects",
+        "tags": [
+          "jira"
+        ]
+      }
+    },
+    "/api/v2/license-and-billing/licenses": {
+      "get": {
+        "description": "List licenses with pagination, sort, field filters, and response field selection.",
+        "operationId": "list_licenses_api_v2_license_and_billing_licenses_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Licenses",
+        "tags": [
+          "license-and-billing",
+          "license"
+        ]
+      }
+    },
+    "/api/v2/license-and-billing/licenses/active": {
+      "get": {
+        "description": "Get the last active, non-expired license for a company.\nSupports api_fields and api_include (e.g. ?api_include=company,pricing_plan).\nReturns 404 if no active license exists for the company.",
+        "operationId": "get_active_license_api_v2_license_and_billing_licenses_active_get",
+        "parameters": [
+          {
+            "description": "Company UUID to get the active license for",
+            "in": "query",
+            "name": "company_id",
+            "required": true,
+            "schema": {
+              "description": "Company UUID to get the active license for",
+              "format": "uuid",
+              "title": "Company Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Active License",
+        "tags": [
+          "license-and-billing",
+          "license"
+        ]
+      }
+    },
+    "/api/v2/license-and-billing/licenses/{license_id}": {
+      "get": {
+        "description": "Get a license by UUID.\n\n**Query params:**\n- BaseApiResponseQueryParams: api_fields, api_include (e.g. ?api_fields=id,company,status).",
+        "operationId": "get_license_by_id_api_v2_license_and_billing_licenses__license_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "license_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "License Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get License By Id",
+        "tags": [
+          "license-and-billing",
+          "license"
+        ]
+      }
+    },
+    "/api/v2/license-and-billing/pricing-plans": {
+      "get": {
+        "description": "List pricing plans with pagination, sort, field filters, and response field selection.",
+        "operationId": "list_pricing_plans_api_v2_license_and_billing_pricing_plans_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Pricing Plans",
+        "tags": [
+          "license-and-billing",
+          "pricing-plan"
+        ]
+      }
+    },
+    "/api/v2/license-and-billing/pricing-plans/{pricing_plan_id}": {
+      "get": {
+        "description": "Get a pricing plan by UUID.\n\n**Query params:**\n- BaseApiResponseQueryParams: api_fields, api_include (e.g. ?api_fields=id,internal_name,display_name).",
+        "operationId": "get_pricing_plan_by_id_api_v2_license_and_billing_pricing_plans__pricing_plan_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "pricing_plan_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Pricing Plan Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Pricing Plan By Id",
+        "tags": [
+          "license-and-billing",
+          "pricing-plan"
+        ]
+      }
+    },
+    "/api/v2/organization/action/setup-root-company": {
+      "post": {
+        "description": "Create root company, new pricing plan, and license in one transaction.\nRequires authenticated superuser. Returns the created Company.",
+        "operationId": "setup_root_company_api_v2_organization_action_setup_root_company_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetupRootCompanyRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Setup Root Company",
+        "tags": [
+          "organization"
+        ]
+      }
+    },
+    "/api/v2/organization/business-units": {
+      "get": {
+        "description": "List business units with pagination, sort, field filters, and response field selection.",
+        "operationId": "list_business_units_api_v2_organization_business_units_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Business Units",
+        "tags": [
+          "organization",
+          "organization-business-unit"
+        ]
+      },
+      "post": {
+        "description": "Create a new business unit. Returns 409 Conflict if (company, slug) already exists.",
+        "operationId": "create_business_unit_api_v2_organization_business_units_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateBusinessUnitRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Create Business Unit",
+        "tags": [
+          "organization",
+          "organization-business-unit"
+        ]
+      }
+    },
+    "/api/v2/organization/business-units/{business_unit_id}": {
+      "get": {
+        "description": "Get a business unit by UUID.\n\n**Query params:**\n- BaseApiResponseQueryParams: api_fields, api_include (e.g. ?api_fields=id,name,slug).",
+        "operationId": "get_business_unit_by_id_api_v2_organization_business_units__business_unit_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "business_unit_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Business Unit Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Business Unit By Id",
+        "tags": [
+          "organization",
+          "organization-business-unit"
+        ]
+      },
+      "patch": {
+        "description": "Update a business unit by UUID (partial). 404 if not found, 409 if (company, slug) conflict.",
+        "operationId": "update_business_unit_api_v2_organization_business_units__business_unit_id__patch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "business_unit_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Business Unit Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateBusinessUnitRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Update Business Unit",
+        "tags": [
+          "organization",
+          "organization-business-unit"
+        ]
+      }
+    },
+    "/api/v2/organization/business-units/{business_unit_id}/users": {
+      "get": {
+        "description": "List users assigned to this business unit (via role assignments).\nReturns a list of User objects.",
+        "operationId": "list_users_for_business_unit_api_v2_organization_business_units__business_unit_id__users_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "business_unit_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Business Unit Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Users For Business Unit",
+        "tags": [
+          "organization",
+          "organization-business-unit"
+        ]
+      }
+    },
+    "/api/v2/organization/companies": {
+      "get": {
+        "description": "List companies with pagination, sort, field filters, and response field selection.",
+        "operationId": "list_companies_api_v2_organization_companies_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Companies",
+        "tags": [
+          "organization",
+          "organization-company"
+        ]
+      },
+      "post": {
+        "description": "Create a new company. Returns 409 Conflict if slug or domain_email already exists.",
+        "operationId": "create_company_api_v2_organization_companies_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCompanyRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Create Company",
+        "tags": [
+          "organization",
+          "organization-company"
+        ]
+      }
+    },
+    "/api/v2/organization/companies/{company_id}": {
+      "get": {
+        "description": "Get a company by UUID.\n\n**Query params:**\n- BaseApiResponseQueryParams: api_fields, api_include (e.g. ?api_fields=id,name,slug).",
+        "operationId": "get_company_by_id_api_v2_organization_companies__company_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "company_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Company Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Company By Id",
+        "tags": [
+          "organization",
+          "organization-company"
+        ]
+      },
+      "patch": {
+        "description": "Update a company by UUID (partial). Only provided body fields are updated. 404 if not found, 409 if slug/domain_email conflict.",
+        "operationId": "update_company_api_v2_organization_companies__company_id__patch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "company_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Company Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCompanyRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Update Company",
+        "tags": [
+          "organization",
+          "organization-company"
+        ]
+      }
+    },
+    "/api/v2/recommendations-v2/generate": {
+      "post": {
+        "description": "Generate recommendations for resources from ResourceDiscovery (V2).\n\nV2 Changes:\n- Accepts resource_arns in request body instead of recommendation_ids\n- Uses ResourceDiscovery as source of truth\n- Starts workflow from resource data instead of COH recommendations\n- Currently supports ElastiCache only\n\nRequest Body:\n- resource_arns: List of AWS resource ARNs (1-10 resources)",
+        "operationId": "generate_recommendations_v2_api_v2_recommendations_v2_generate_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenerateRecommendationRequestV2"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecommendationGenerateResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Generate Recommendations V2",
+        "tags": [
+          "recommendations-v2",
+          "recommendations-v2"
+        ]
+      }
+    },
+    "/api/v2/settings/system": {
+      "get": {
+        "description": "Get all system settings with their current values and metadata.\nRequires superuser privileges.\n\nReturns settings with:\n- Current value (resolved from env \u003e db \u003e default)\n- Source (where the value came from)\n- Category and description\n- Whether it's overridden by environment variable",
+        "operationId": "get_system_settings_api_v2_settings_system_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get System Settings",
+        "tags": [
+          "settings"
+        ]
+      },
+      "post": {
+        "description": "Update system settings.\nRequires superuser privileges.\n\nSettings are merged with existing values (partial update).\nChanges are logged in the audit trail.\n\nNote: Settings with environment variable overrides will still show\nthe env value when retrieved, but the DB value will be stored.",
+        "operationId": "update_system_settings_api_v2_settings_system_put_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SystemSettingsUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Update System Settings",
+        "tags": [
+          "settings"
+        ]
+      },
+      "put": {
+        "description": "Update system settings.\nRequires superuser privileges.\n\nSettings are merged with existing values (partial update).\nChanges are logged in the audit trail.\n\nNote: Settings with environment variable overrides will still show\nthe env value when retrieved, but the DB value will be stored.",
+        "operationId": "update_system_settings_api_v2_settings_system_put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SystemSettingsUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Update System Settings",
+        "tags": [
+          "settings"
+        ]
+      }
+    },
+    "/api/v2/settings/system/audit": {
+      "get": {
+        "description": "Get audit log of system settings changes.\nRequires superuser privileges.\n\nReturns a paginated list of all changes made to system settings,\nincluding who made the change, when, and what was changed.",
+        "operationId": "get_settings_audit_log_api_v2_settings_system_audit_get",
+        "parameters": [
+          {
+            "description": "Number of entries to return",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "description": "Number of entries to return",
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Number of entries to skip",
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "description": "Number of entries to skip",
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Settings Audit Log",
+        "tags": [
+          "settings"
+        ]
+      }
+    },
+    "/api/v2/settings/system/check": {
+      "get": {
+        "description": "Check if the current user has superuser privileges.\nAvailable to all authenticated users.\n\nReturns the user's superuser status for frontend UI decisions.",
+        "operationId": "check_superuser_status_api_v2_settings_system_check_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Check Superuser Status",
+        "tags": [
+          "settings"
+        ]
+      }
+    },
+    "/api/v2/settings/system/reset": {
+      "post": {
+        "description": "Reset system settings to defaults.\nRequires superuser privileges.\n\nCan reset specific keys or all settings.\nResetting removes the value from the database, causing the system\nto fall back to environment variables or code defaults.",
+        "operationId": "reset_system_settings_api_v2_settings_system_reset_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SystemSettingsResetRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Reset System Settings",
+        "tags": [
+          "settings"
+        ]
+      }
+    },
+    "/api/v2/settings/user": {
+      "get": {
+        "description": "Get user-specific settings (placeholder for future implementation).\nAvailable to all authenticated users.",
+        "operationId": "get_user_settings_api_v2_settings_user_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get User Settings",
+        "tags": [
+          "settings"
+        ]
+      }
+    },
+    "/api/v2/system/diagnostics": {
+      "get": {
+        "operationId": "diagnostics_api_v2_system_diagnostics_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Diagnostics",
+        "tags": [
+          "system"
+        ]
+      }
+    },
+    "/api/v2/system/info": {
+      "get": {
+        "operationId": "info_api_v2_system_info_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Info",
+        "tags": [
+          "system"
+        ]
+      }
+    },
+    "/api/v2/system/live": {
+      "get": {
+        "operationId": "live_api_v2_system_live_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Live",
+        "tags": [
+          "system"
+        ]
+      }
+    },
+    "/api/v2/system/ready": {
+      "get": {
+        "operationId": "ready_api_v2_system_ready_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Ready",
+        "tags": [
+          "system"
+        ]
+      }
+    },
+    "/api/v2/system/version": {
+      "get": {
+        "operationId": "version_api_v2_system_version_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Version",
+        "tags": [
+          "system"
+        ]
+      }
+    },
+    "/api/v2/system/ws/info": {
+      "get": {
+        "operationId": "websocket_info_api_v2_system_ws_info_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Websocket Info",
+        "tags": [
+          "system"
+        ]
+      }
+    },
+    "/api/v2/system/ws/live": {
+      "get": {
+        "operationId": "websocket_live_api_v2_system_ws_live_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Websocket Live",
+        "tags": [
+          "system"
+        ]
+      }
+    },
+    "/api/v2/system/ws/ready": {
+      "get": {
+        "operationId": "websocket_ready_api_v2_system_ws_ready_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Websocket Ready",
+        "tags": [
+          "system"
+        ]
+      }
+    },
+    "/api/v2/temp-dashboard/cost-usage": {
+      "get": {
+        "operationId": "get_cost_usage_api_v2_temp_dashboard_cost_usage_get",
+        "parameters": [
+          {
+            "description": "Start date in YYYY-MM-DD format. If not provided, defaults to 30 days ago",
+            "in": "query",
+            "name": "start_date",
+            "required": false,
+            "schema": {
+              "description": "Start date in YYYY-MM-DD format. If not provided, defaults to 30 days ago",
+              "nullable": true,
+              "title": "Start Date",
+              "type": "string"
+            }
+          },
+          {
+            "description": "End date in YYYY-MM-DD format. If not provided, defaults to today",
+            "in": "query",
+            "name": "end_date",
+            "required": false,
+            "schema": {
+              "description": "End date in YYYY-MM-DD format. If not provided, defaults to today",
+              "nullable": true,
+              "title": "End Date",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filter by categories. Use comma-separated list (e.g., 'compute,storage'). When blank: returns all categories",
+            "in": "query",
+            "name": "categories_filter",
+            "required": false,
+            "schema": {
+              "description": "Filter by categories. Use comma-separated list (e.g., 'compute,storage'). When blank: returns all categories",
+              "nullable": true,
+              "title": "Categories Filter",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Cost Usage",
+        "tags": [
+          "temp-dashboard"
+        ]
+      }
+    },
+    "/api/v2/temp-dashboard/governance-gaps": {
+      "get": {
+        "operationId": "get_governance_gaps_api_v2_temp_dashboard_governance_gaps_get",
+        "parameters": [
+          {
+            "description": "Filter by categories. Use comma-separated list (e.g., 'compute,storage'). When blank: returns all categories",
+            "in": "query",
+            "name": "categories_filter",
+            "required": false,
+            "schema": {
+              "description": "Filter by categories. Use comma-separated list (e.g., 'compute,storage'). When blank: returns all categories",
+              "nullable": true,
+              "title": "Categories Filter",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filter by gap types. Use comma-separated list (e.g., 'encryption,backup'). When blank: returns all gap types",
+            "in": "query",
+            "name": "gap_types",
+            "required": false,
+            "schema": {
+              "description": "Filter by gap types. Use comma-separated list (e.g., 'encryption,backup'). When blank: returns all gap types",
+              "nullable": true,
+              "title": "Gap Types",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Governance Gaps",
+        "tags": [
+          "temp-dashboard"
+        ]
+      }
+    },
+    "/api/v2/temp-dashboard/open-recommendation": {
+      "get": {
+        "operationId": "get_open_recommendations_api_v2_temp_dashboard_open_recommendation_get",
+        "parameters": [
+          {
+            "description": "Filter by categories. Use comma-separated list (e.g., 'compute,storage'). When blank: returns all categories",
+            "in": "query",
+            "name": "categories_filter",
+            "required": false,
+            "schema": {
+              "description": "Filter by categories. Use comma-separated list (e.g., 'compute,storage'). When blank: returns all categories",
+              "nullable": true,
+              "title": "Categories Filter",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Open Recommendations",
+        "tags": [
+          "temp-dashboard"
+        ]
+      }
+    },
+    "/api/v2/temp-dashboard/resources-count": {
+      "get": {
+        "operationId": "get_resources_count_api_v2_temp_dashboard_resources_count_get",
+        "parameters": [
+          {
+            "description": "Filter by categories. Use comma-separated list (e.g., 'compute,storage'). When blank: returns all categories",
+            "in": "query",
+            "name": "categories_filter",
+            "required": false,
+            "schema": {
+              "description": "Filter by categories. Use comma-separated list (e.g., 'compute,storage'). When blank: returns all categories",
+              "nullable": true,
+              "title": "Categories Filter",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Resources Count",
+        "tags": [
+          "temp-dashboard"
+        ]
+      }
+    },
+    "/api/v2/temp-dashboard/resources/health/details": {
+      "get": {
+        "operationId": "get_resource_health_details_api_v2_temp_dashboard_resources_health_details_get",
+        "parameters": [
+          {
+            "description": "Start date in YYYY-MM-DD format. If not provided, defaults to 30 days ago",
+            "in": "query",
+            "name": "start_date",
+            "required": false,
+            "schema": {
+              "description": "Start date in YYYY-MM-DD format. If not provided, defaults to 30 days ago",
+              "nullable": true,
+              "title": "Start Date",
+              "type": "string"
+            }
+          },
+          {
+            "description": "End date in YYYY-MM-DD format. If not provided, defaults to today",
+            "in": "query",
+            "name": "end_date",
+            "required": false,
+            "schema": {
+              "description": "End date in YYYY-MM-DD format. If not provided, defaults to today",
+              "nullable": true,
+              "title": "End Date",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filter by categories. Use comma-separated list (e.g., 'compute,storage'). When blank: returns all categories",
+            "in": "query",
+            "name": "categories_filter",
+            "required": false,
+            "schema": {
+              "description": "Filter by categories. Use comma-separated list (e.g., 'compute,storage'). When blank: returns all categories",
+              "nullable": true,
+              "title": "Categories Filter",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Resource Health Details",
+        "tags": [
+          "temp-dashboard"
+        ]
+      }
+    },
+    "/api/v2/temp-dashboard/resources/health/summary": {
+      "get": {
+        "operationId": "get_resource_health_summary_api_v2_temp_dashboard_resources_health_summary_get",
+        "parameters": [
+          {
+            "description": "Start date in YYYY-MM-DD format. If not provided, defaults to 30 days ago",
+            "in": "query",
+            "name": "start_date",
+            "required": false,
+            "schema": {
+              "description": "Start date in YYYY-MM-DD format. If not provided, defaults to 30 days ago",
+              "nullable": true,
+              "title": "Start Date",
+              "type": "string"
+            }
+          },
+          {
+            "description": "End date in YYYY-MM-DD format. If not provided, defaults to today",
+            "in": "query",
+            "name": "end_date",
+            "required": false,
+            "schema": {
+              "description": "End date in YYYY-MM-DD format. If not provided, defaults to today",
+              "nullable": true,
+              "title": "End Date",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filter by categories. Use comma-separated list (e.g., 'compute,storage'). When blank: returns all categories",
+            "in": "query",
+            "name": "categories_filter",
+            "required": false,
+            "schema": {
+              "description": "Filter by categories. Use comma-separated list (e.g., 'compute,storage'). When blank: returns all categories",
+              "nullable": true,
+              "title": "Categories Filter",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Resource Health Summary",
+        "tags": [
+          "temp-dashboard"
+        ]
+      }
+    },
+    "/api/v2/temp-dashboard/savings": {
+      "get": {
+        "operationId": "get_savings_api_v2_temp_dashboard_savings_get",
+        "parameters": [
+          {
+            "description": "Filter by categories. Use comma-separated list (e.g., 'compute,storage'). When blank: returns all categories",
+            "in": "query",
+            "name": "categories_filter",
+            "required": false,
+            "schema": {
+              "description": "Filter by categories. Use comma-separated list (e.g., 'compute,storage'). When blank: returns all categories",
+              "nullable": true,
+              "title": "Categories Filter",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Savings",
+        "tags": [
+          "temp-dashboard"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+# CODEOWNERS - Defines code ownership for pull request reviews
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default: engineering team owns all code
+* @Jetscale-ai/backend-team
+
+# DevOps owns CI/CD and release config
+/.github/workflows/ @Jetscale-ai/devops
+/.goreleaser.yml @Jetscale-ai/devops
+
+# Governance files require broader review
+/AGENTS.md @Jetscale-ai/backend-team @Jetscale-ai/devops
+/.agents/ @Jetscale-ai/backend-team @Jetscale-ai/devops

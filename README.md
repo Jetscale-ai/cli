@@ -3,16 +3,12 @@
 The JetScale CLI — an operator tool for managing cloud cost optimization from
 the terminal.
 
-```text
-jetscale recommendations list --account prod-us-east-1 --format table
-jetscale analyze "Rightsize our RDS fleet in eu-west-1"
-jetscale plan show plan-8f3a --terraform
-```
-
 ## Status
 
-**Pre-alpha.** This repo has been inflated but does not yet produce a working
-binary. See [ROADMAP.md](ROADMAP.md) for the build plan.
+**Alpha.** The CLI authenticates, targets multiple environments, manages cloud
+accounts, and has a fully generated typed client covering all v2 API endpoints.
+Core operator commands (recommendations, analyze, plan) are next. See
+[ROADMAP.md](ROADMAP.md) for the build plan.
 
 ## What This Is
 
@@ -29,18 +25,62 @@ The CLI is a **first-class product surface**, not a thin wrapper. It has its own
 release cadence, install path, and compatibility contract against the Backend
 API.
 
+## Quick Start
+
+### Build from Source
+
+```bash
+go install github.com/magefile/mage@latest
+mage build        # → bin/jetscale
+```
+
+### Authenticate
+
+```bash
+jetscale auth login
+# Email + password prompt, stores token in ~/.config/jetscale/tokens.yaml
+```
+
+### Use
+
+```bash
+jetscale auth whoami                         # check who you are
+jetscale accounts list                       # discover cloud accounts
+jetscale accounts use prod-us-east-1         # set active account
+jetscale system info -o json                 # backend version info
+
+# Script-friendly
+jetscale auth whoami -o json | jq -r '.email'
+JETSCALE_TOKEN=eyJ... jetscale auth status   # CI/headless auth
+```
+
+### Local Development
+
+```bash
+cd ../stack && tilt up                       # start backend
+cd ../cli
+mage syncSpec                                # fetch OpenAPI spec from localhost
+mage generate                                # regenerate typed Go client
+mage build                                   # compile
+./bin/jetscale --local auth login            # authenticate to local backend
+./bin/jetscale --local system info -o json   # test
+```
+
+See [docs/local-dev.md](docs/local-dev.md) for the full developer workflow.
+
 ## Architecture
 
 ```text
 ┌─────────────────────────────────────────────────────────┐
 │  jetscale CLI (this repo)                               │
 │                                                         │
-│  cmd/jetscale/          ← entrypoint + root command     │
-│  internal/cmd/          ← subcommand implementations    │
-│  internal/api/generated/← OpenAPI-generated Go client   │
-│  internal/api/client.go ← auth, retries, base URL       │
-│  internal/config/       ← ~/.config/jetscale/ handling  │
-│  internal/output/       ← table / json / yaml formatters│
+│  cmd/jetscale/          ← entrypoint                    │
+│  internal/cmd/          ← Cobra command tree             │
+│  internal/api/generated/← oapi-codegen typed client      │
+│  internal/api/          ← service layer (account tree)   │
+│  internal/auth/         ← service layer (token refresh)  │
+│  internal/config/       ← ~/.config/jetscale/ handling   │
+│  internal/output/       ← table / json / yaml formatters │
 └────────────────┬────────────────────────────────────────┘
                  │  HTTPS + JWT
                  ▼
@@ -53,98 +93,97 @@ API.
 ### Contract Boundary
 
 The CLI never hard-codes endpoint paths or request shapes. All API interaction
-flows through a **generated Go client** derived from the Backend's OpenAPI spec.
-When the Backend API changes:
+flows through a **generated Go client** (`internal/api/generated/client.gen.go`,
+~14k lines, ~264 types) derived from the Backend's OpenAPI spec.
 
-1. Backend CI exports a pinned OpenAPI spec artifact
-2. Backend sends `repository_dispatch` to this repo
-3. CLI CI regenerates `internal/api/generated/`, runs tests, opens a PR
-4. If only generated code changed and checks pass, the PR auto-merges
+- **Local dev:** `mage syncSpec` fetches from the running Tilt backend
+- **CI:** Backend sends `repository_dispatch`, CLI regenerates and opens a PR
 
-This gives auditable diffs, independent releases, and no hidden cross-repo
-mutation.
+### Commands
+
+```text
+jetscale auth login|logout|whoami|status     # authentication
+jetscale accounts list|use|current           # cloud account selection
+jetscale config show|set|get|instances       # CLI configuration
+jetscale system info|diagnostics             # backend health
+jetscale version                             # build metadata
+```
+
+### Global Flags
+
+```text
+-i, --instance <name>   target a named instance (local, staging, production)
+    --local              shorthand for -i local
+    --api-url <url>      override API URL directly
+    --account <name>     cloud account override
+-o, --output <format>   table, json, yaml (default: table)
+```
+
+### Environment Variables
+
+```text
+JETSCALE_TOKEN       bearer token (overrides stored auth)
+JETSCALE_API_URL     API URL (overrides instance resolution)
+JETSCALE_INSTANCE    instance name (overrides config default)
+JETSCALE_ACCOUNT     cloud account (overrides stored selection)
+```
 
 ## Project Layout
 
 ```text
 cli/
-├── AGENTS.md                  # Repo constitution (federated from Governance)
+├── AGENTS.md                  # Repo constitution
 ├── README.md                  # You are here
 ├── ROADMAP.md                 # Phased build plan
 ├── go.mod / go.sum            # Go module
-├── Makefile                   # Dev shortcuts (build, test, lint, generate)
+├── magefile.go                # Build system (mage)
 ├── .goreleaser.yml            # Multi-platform release builds
 │
 ├── cmd/jetscale/
 │   └── main.go                # Entrypoint
 │
 ├── internal/
-│   ├── cmd/                   # Subcommands (auth, analyze, recommendations, …)
+│   ├── cmd/                   # Cobra subcommands
+│   │   ├── root.go            # root + global flags
+│   │   ├── auth.go            # auth login|logout|whoami|status
+│   │   ├── accounts.go        # accounts list|use|current
+│   │   ├── config.go          # config show|set|get|instances
+│   │   ├── system.go          # system info|diagnostics
+│   │   └── version.go         # version
 │   ├── api/
-│   │   ├── client.go          # Authenticated HTTP client
-│   │   └── generated/         # OpenAPI-generated code (do not hand-edit)
-│   ├── config/                # Config file + keychain helpers
-│   └── output/                # Formatters (table, json, yaml)
+│   │   ├── generated/         # oapi-codegen output (do not hand-edit)
+│   │   └── client.go          # account tree service layer
+│   ├── auth/
+│   │   ├── client.go          # auth service layer (sign-in, refresh, whoami)
+│   │   └── token.go           # per-instance token storage
+│   ├── config/                # config file + instance resolution
+│   └── output/                # table / json / yaml formatters
 │
 ├── openapi/
-│   └── spec.json              # Pinned OpenAPI spec (fetched from Backend)
+│   └── spec.json              # v2-only OpenAPI spec (synced from backend)
 │
-├── .agents/
-│   └── AGENTS.md              # Operational overlay (local agent rules)
+├── docs/
+│   ├── local-dev.md           # Developer workflow
+│   └── adr-001-account-selection.md
 │
-└── .github/
-    └── workflows/
-        ├── ci.yml             # Lint → Test → Build on push/PR
-        └── sync-openapi.yml   # Reconcile spec on repository_dispatch
+└── .github/workflows/
+    ├── ci.yml                 # Lint → Test → Build
+    └── sync-openapi.yml       # Reconcile spec on repository_dispatch
 ```
 
-## Quick Start (once binary exists)
-
-### Install
+## Build Targets
 
 ```bash
-# Homebrew (macOS / Linux)
-brew install jetscale-ai/tap/jetscale
-
-# Go install
-go install github.com/Jetscale-ai/cli/cmd/jetscale@latest
-
-# Binary download
-curl -sSfL https://github.com/Jetscale-ai/cli/releases/latest/download/jetscale_$(uname -s)_$(uname -m).tar.gz | tar xz
-```
-
-### Authenticate
-
-```bash
-jetscale auth login
-# Opens browser for OAuth flow, stores token in OS keychain
-```
-
-### Use
-
-```bash
-jetscale recommendations list
-jetscale analyze "What EC2 instances are oversized?"
-jetscale plan show plan-abc123
-jetscale config set default-account prod-us-east-1
-```
-
-## Development
-
-### Prerequisites
-
-- Go 1.22+
-- [golangci-lint](https://golangci-lint.run/)
-- [oapi-codegen](https://github.com/oapi-codegen/oapi-codegen) (for client
-  regeneration)
-
-### Build & Test
-
-```bash
-make build       # → bin/jetscale
-make test        # go test ./...
-make lint        # golangci-lint run
-make generate    # regenerate OpenAPI client from openapi/spec.json
+mage build          # compile bin/jetscale
+mage test           # go test -race ./...
+mage lint           # golangci-lint
+mage syncSpec       # fetch OpenAPI from running backend
+mage generate       # oapi-codegen → generated client
+mage codegen        # syncSpec + generate
+mage smoke          # build + quick sanity checks
+mage crossBuild     # all OS/arch pairs
+mage clean          # remove bin/
+mage all            # lint + test + build
 ```
 
 ## Governance

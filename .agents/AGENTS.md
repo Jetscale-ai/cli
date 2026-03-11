@@ -31,7 +31,7 @@ audit_log:
 ## Verification Oracle
 
 ```bash
-make test && make lint
+mage test && mage lint
 ```
 
 Run this before suggesting any commit. If it fails, fix the issue first.
@@ -41,7 +41,7 @@ Run this before suggesting any commit. If it fails, fix the issue first.
 ### Generated Code
 
 - `internal/api/generated/` is machine-generated. Never hand-edit.
-- Regenerate with `make generate` after updating `openapi/spec.json`.
+- Regenerate with `mage generate` after updating `openapi/spec.json`.
 - If regeneration breaks the build, fix in the spec or in wrapper code, not in
   the generated output.
 
@@ -65,7 +65,7 @@ internal/cmd/
 1. Create `internal/cmd/<name>.go` with a `newXxxCmd()` function.
 2. Register it in `root.go` via `root.AddCommand(newXxxCmd())`.
 3. Add a test in `internal/cmd/<name>_test.go`.
-4. Verify: `make test && make lint`.
+4. Verify: `mage test && mage lint`.
 
 ## Branch Strategy
 

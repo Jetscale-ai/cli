@@ -1,6 +1,11 @@
-# Binaries
+# Binaries for programs and plugins
 bin/
 dist/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
 
 # OS
 .DS_Store
@@ -13,17 +18,26 @@ Thumbs.db
 *.swo
 *~
 
-# Go
-*.exe
-*.exe~
-*.dll
-*.so
-*.dylib
+# Test binary, built with `go test -c`
 *.test
+
+# Code coverage profiles and other test artifacts
 *.out
-coverage.out
+coverage.*
+*.coverprofile
+profile.cov
 
 # Credentials (never commit)
 credentials.json
 *.pem
 *.key
+
+# Dependency directories (remove the comment below to include it)
+# vendor/
+
+# Go workspace file
+go.work
+go.work.sum
+
+# env file
+.env

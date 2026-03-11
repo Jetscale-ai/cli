@@ -1,0 +1,14 @@
+# Gitleaks configuration - allowlist known false positives
+# https://github.com/gitleaks/gitleaks#configuration
+
+[allowlist]
+  description = "Allowlist for known test/dev files"
+
+  # Test fixtures with dummy tokens
+  paths = [
+    '''testdata/.*''',
+  ]
+
+  regexes = [
+    '''YOUR_JWT_TOKEN''',
+  ]

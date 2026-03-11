@@ -38,10 +38,12 @@ jobs:
           echo "SPEC_VERSION=${SPEC_VERSION}" >> "$GITHUB_ENV"
 
       - name: Regenerate client
-        run: make generate
+        run: |
+          go install github.com/magefile/mage@latest
+          mage generate
 
       - name: Run tests
-        run: make test
+        run: mage test
 
       - name: Check for changes
         id: diff
