@@ -444,6 +444,56 @@ func deduplicateOperationIDs(spec map[string]interface{}) {
 	}
 }
 
+// ProcessSpec applies v2 filtering, 3.1→3.0 downgrade, schema pruning, and
+// operationId dedup to an existing openapi/spec.json (e.g. one downloaded from
+// a CI artifact). This is the same transform pipeline that SyncSpec runs after
+// fetching from a live backend.
+func ProcessSpec() error {
+	const specPath = "openapi/spec.json"
+
+	raw, err := os.ReadFile(specPath)
+	if err != nil {
+		return fmt.Errorf("read %s: %w", specPath, err)
+	}
+
+	var spec map[string]interface{}
+	if err := json.Unmarshal(raw, &spec); err != nil {
+		return fmt.Errorf("parse %s: %w", specPath, err)
+	}
+
+	totalPaths := 0
+	v2Paths := 0
+
+	paths, ok := spec["paths"].(map[string]interface{})
+	if ok {
+		totalPaths = len(paths)
+		filtered := make(map[string]interface{})
+		for k, v := range paths {
+			if strings.HasPrefix(k, "/api/v2") {
+				filtered[k] = v
+				v2Paths++
+			}
+		}
+		spec["paths"] = filtered
+	}
+
+	pruneOrphanedSchemas(spec)
+	downgradeToOpenAPI30(spec)
+	deduplicateOperationIDs(spec)
+
+	out, err := json.MarshalIndent(spec, "", "  ")
+	if err != nil {
+		return fmt.Errorf("marshal spec: %w", err)
+	}
+
+	if err := os.WriteFile(specPath, append(out, '\n'), 0o644); err != nil {
+		return fmt.Errorf("write spec: %w", err)
+	}
+
+	fmt.Printf("Processed openapi/spec.json (%d v2 paths out of %d total)\n", v2Paths, totalPaths)
+	return nil
+}
+
 // Generate runs oapi-codegen against openapi/spec.json to produce a typed Go client.
 func Generate() error {
 	if _, err := os.Stat("openapi/spec.json"); os.IsNotExist(err) {
