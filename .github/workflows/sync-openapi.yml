@@ -29,7 +29,7 @@ jobs:
 
       - name: Fetch OpenAPI spec from Backend
         env:
-          GH_TOKEN: ${{ secrets.BACKEND_REPO_TOKEN }}
+          GH_TOKEN: ${{ secrets.JETSCALEBOT_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           SPEC_SHA="${{ github.event.client_payload.spec_sha }}"
           SPEC_VERSION="${{ github.event.client_payload.spec_version }}"
