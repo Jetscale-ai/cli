@@ -73,6 +73,15 @@ jobs:
         with:
           fetch-depth: 0
           token: ${{ secrets.JETSCALEBOT_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
+          ref: ${{ github.ref }}
+
+      - name: Verify checkout
+        run: |
+          echo "Trigger SHA: ${GITHUB_SHA}"
+          echo "Checked out: $(git rev-parse HEAD)"
+          if [ "$(git rev-parse HEAD)" != "${GITHUB_SHA}" ]; then
+            echo "Building current main tip (queued run caught up to newer commits)"
+          fi
 
       - uses: actions/setup-go@v6
         with:
