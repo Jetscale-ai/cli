@@ -107,14 +107,14 @@ func (p Printer) printTable(data interface{}, columns []Column) error {
 	for i, c := range columns {
 		headers[i] = strings.ToUpper(c.Header)
 	}
-	fmt.Fprintln(w, strings.Join(headers, "\t"))
+	_, _ = fmt.Fprintln(w, strings.Join(headers, "\t"))
 
 	for _, row := range rows {
 		vals := make([]string, len(columns))
 		for i, c := range columns {
 			vals[i] = c.Field(row)
 		}
-		fmt.Fprintln(w, strings.Join(vals, "\t"))
+		_, _ = fmt.Fprintln(w, strings.Join(vals, "\t"))
 	}
 
 	return w.Flush()

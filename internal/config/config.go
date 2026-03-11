@@ -114,7 +114,7 @@ func probeLocal() (string, error) {
 	for _, base := range localPorts {
 		resp, err := client.Get(base + "/api/v2/system/live")
 		if err == nil {
-			resp.Body.Close()
+			_ = resp.Body.Close()
 			if resp.StatusCode < 500 {
 				return base, nil
 			}
@@ -122,11 +122,10 @@ func probeLocal() (string, error) {
 	}
 
 	return "", fmt.Errorf(
-		"no local backend found (tried %v)\n\n"+
-			"Start one with:\n"+
-			"  cd ../stack && tilt up          # full stack on :8000\n"+
-			"  cd ../backend && just tilt-setup # backend-only on :8010\n\n"+
-			"Or drop the --local / -i local flag to hit production.",
+		"no local backend found (tried %v); "+
+			"start one with: cd ../stack && tilt up (full stack on :8000) "+
+			"or cd ../backend && just tilt-setup (backend-only on :8010), "+
+			"or drop the --local / -i local flag to hit production",
 		localPorts,
 	)
 }

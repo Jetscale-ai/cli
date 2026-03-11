@@ -80,8 +80,8 @@ func newAccountsListCmd() *cobra.Command {
 			}
 
 			if len(tree.Accounts) == 0 {
-				fmt.Fprintln(cmd.OutOrStdout(), "No cloud accounts found.")
-				fmt.Fprintln(cmd.OutOrStdout(), "\nLink one at https://console.jetscale.ai or via the API.")
+				_, _ = fmt.Fprintln(cmd.OutOrStdout(), "No cloud accounts found.")
+				_, _ = fmt.Fprintln(cmd.OutOrStdout(), "\nLink one at https://console.jetscale.ai or via the API.")
 				return nil
 			}
 
@@ -157,7 +157,7 @@ func newAccountsUseCmd() *cobra.Command {
 				return err
 			}
 
-			fmt.Fprintf(cmd.OutOrStdout(), "Active account: %s (%s) on %s\n", acct.Name, acct.CloudProviderType, instanceName)
+			_, _ = fmt.Fprintf(cmd.OutOrStdout(), "Active account: %s (%s) on %s\n", acct.Name, acct.CloudProviderType, instanceName)
 			return nil
 		},
 	}
@@ -185,7 +185,7 @@ func newAccountsCurrentCmd() *cobra.Command {
 				token, err := auth.EnsureFreshToken(instanceName, apiURL)
 				if err != nil || token == "" {
 					fmt.Fprintln(out, "No account selected and not logged in.")
-					fmt.Fprintf(out, "Run: jetscale auth login && jetscale accounts use <name>\n")
+					_, _ = fmt.Fprintf(out, "Run: jetscale auth login && jetscale accounts use <name>\n")
 					return nil
 				}
 
@@ -197,7 +197,7 @@ func newAccountsCurrentCmd() *cobra.Command {
 
 				if len(tree.Accounts) == 1 {
 					acct := tree.Accounts[0]
-					fmt.Fprintf(out, "%s (%s) on %s (auto-selected, only account)\n", acct.Name, acct.CloudProviderType, instanceName)
+					_, _ = fmt.Fprintf(out, "%s (%s) on %s (auto-selected, only account)\n", acct.Name, acct.CloudProviderType, instanceName)
 					return nil
 				}
 

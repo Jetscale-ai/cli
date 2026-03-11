@@ -46,10 +46,29 @@ jobs:
           name: coverage
           path: coverage.out
 
+  build:
+    runs-on: ubuntu-latest
+    needs: [lint, test]
+    strategy:
+      matrix:
+        goos: [linux, darwin, windows]
+        goarch: [amd64, arm64]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+      - name: Build
+        env:
+          GOOS: ${{ matrix.goos }}
+          GOARCH: ${{ matrix.goarch }}
+          CGO_ENABLED: "0"
+        run: go build -o /dev/null ./cmd/jetscale
+
   release:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    needs: [lint, test]
+    needs: [build]
     steps:
       - uses: actions/checkout@v5
         with:
@@ -65,8 +84,21 @@ jobs:
         uses: go-semantic-release/action@v1
         with:
           github-token: ${{ secrets.JETSCALEBOT_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
+          dry: true
           allow-initial-development-versions: true
           force-bump-patch-version: true
+
+      - name: Tag Release
+        if: steps.semrel.outputs.version != ''
+        env:
+          VERSION: ${{ steps.semrel.outputs.version }}
+          GH_TOKEN: ${{ secrets.JETSCALEBOT_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "jetscalebot"
+          git config user.email "devops@jetscale.ai"
+
+          git tag "v${VERSION}"
+          git push origin "v${VERSION}"
 
       - name: Release with GoReleaser
         if: steps.semrel.outputs.version != ''
@@ -76,3 +108,4 @@ jobs:
           args: release --clean
         env:
           GITHUB_TOKEN: ${{ secrets.JETSCALEBOT_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
+          GORELEASER_CURRENT_TAG: v${{ steps.semrel.outputs.version }}

@@ -68,16 +68,16 @@ Examples:
 
 			reader := bufio.NewReader(os.Stdin)
 
-			fmt.Fprint(cmd.OutOrStderr(), "Email: ")
+			_, _ = fmt.Fprint(cmd.OutOrStderr(), "Email: ")
 			email, err := reader.ReadString('\n')
 			if err != nil {
 				return fmt.Errorf("read email: %w", err)
 			}
 			email = strings.TrimSpace(email)
 
-			fmt.Fprint(cmd.OutOrStderr(), "Password: ")
+			_, _ = fmt.Fprint(cmd.OutOrStderr(), "Password: ")
 			passwordBytes, err := term.ReadPassword(int(os.Stdin.Fd()))
-			fmt.Fprintln(cmd.OutOrStderr())
+			_, _ = fmt.Fprintln(cmd.OutOrStderr())
 			if err != nil {
 				return fmt.Errorf("read password: %w", err)
 			}
