@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   sync:
-    runs-on: ubuntu-latest
+    runs-on: namespace-profile-jetscale-validate
     steps:
       - uses: actions/checkout@v5
 

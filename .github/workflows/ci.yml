@@ -21,7 +21,7 @@ permissions:
 
 jobs:
   lint:
-    runs-on: ubuntu-latest
+    runs-on: namespace-profile-jetscale-build
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-go@v6
@@ -30,7 +30,7 @@ jobs:
       - uses: golangci/golangci-lint-action@v9
 
   test:
-    runs-on: ubuntu-latest
+    runs-on: namespace-profile-jetscale-build
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-go@v6
@@ -46,7 +46,7 @@ jobs:
 
   build:
     if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
+    runs-on: namespace-profile-jetscale-build
     needs: [lint, test]
     strategy:
       matrix:
@@ -66,7 +66,7 @@ jobs:
 
   release:
     if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
+    runs-on: namespace-profile-jetscale-build
     needs: [lint, test]
     steps:
       - uses: actions/checkout@v5
