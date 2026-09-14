@@ -3,10 +3,9 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"net/http"
 
 	"github.com/Jetscale-ai/cli/internal/api/generated"
-	"github.com/Jetscale-ai/cli/internal/auth"
+
 	"github.com/spf13/cobra"
 )
 
@@ -39,10 +38,10 @@ func newSystemInfoCmd() *cobra.Command {
 
 			resp, err := client.InfoApiV2SystemInfoGetWithResponse(context.Background())
 			if err != nil {
-				return fmt.Errorf("connect to %s: %w", apiURL, err)
+				return fmt.Errorf("system info request failed")
 			}
 			if resp.StatusCode() >= 400 {
-				return fmt.Errorf("HTTP %d: %s", resp.StatusCode(), string(resp.Body))
+				return fmt.Errorf("HTTP %d", resp.StatusCode())
 			}
 
 			p, err := printer(cmd)
@@ -64,27 +63,24 @@ func newSystemDiagnosticsCmd() *cobra.Command {
 				return err
 			}
 
-			token, err := auth.EnsureFreshToken(instanceName, apiURL)
+			session, err := commandSession(cmd, instanceName, apiURL)
 			if err != nil {
 				return err
 			}
-			if token == "" {
-				return fmt.Errorf("not logged in to %s — run: jetscale auth login", instanceName)
-			}
 
 			client, err := generated.NewClientWithResponses(apiURL,
-				generated.WithRequestEditorFn(bearerAuthEditor(token)),
+				generated.WithHTTPClient(session.HTTPClient),
 			)
 			if err != nil {
 				return err
 			}
 
-			resp, err := client.DiagnosticsApiV2SystemDiagnosticsGetWithResponse(context.Background())
+			resp, err := client.DiagnosticsApiV2SystemDiagnosticsGetWithResponse(context.Background(), nil)
 			if err != nil {
-				return fmt.Errorf("connect to %s: %w", apiURL, err)
+				return fmt.Errorf("diagnostics request failed")
 			}
 			if resp.StatusCode() >= 400 {
-				return fmt.Errorf("HTTP %d: %s", resp.StatusCode(), string(resp.Body))
+				return fmt.Errorf("HTTP %d", resp.StatusCode())
 			}
 
 			p, err := printer(cmd)
@@ -93,12 +89,5 @@ func newSystemDiagnosticsCmd() *cobra.Command {
 			}
 			return p.PrintRaw(resp.Body)
 		},
-	}
-}
-
-func bearerAuthEditor(token string) generated.RequestEditorFn {
-	return func(_ context.Context, req *http.Request) error {
-		req.Header.Set("Authorization", "Bearer "+token)
-		return nil
 	}
 }

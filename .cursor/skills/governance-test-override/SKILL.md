@@ -1,0 +1,1 @@
+../../../../governance/.agents/codex/skills/playtest/governance-test-override/skill.md

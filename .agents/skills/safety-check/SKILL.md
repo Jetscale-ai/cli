@@ -1,0 +1,1 @@
+../../../../governance/.agents/codex/skills/core/safety-check/skill.md

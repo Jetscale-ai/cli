@@ -1,0 +1,1 @@
+../../../../governance/.agents/vendor/gsd-runtime/cursor/skills/gsd-code-review/SKILL.md

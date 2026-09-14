@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/Jetscale-ai/cli/internal/buildinfo"
 	"gopkg.in/yaml.v3"
 )
 
@@ -15,7 +16,7 @@ const (
 	DefaultConfigDir = ".config/jetscale"
 	ConfigFileName   = "config.yaml"
 
-	ProductionURL = "https://console.jetscale.ai"
+	ProductionURL = buildinfo.LiveURL
 )
 
 // Instance is a named API target.
@@ -34,6 +35,7 @@ type Config struct {
 var BuiltinInstances = map[string]Instance{
 	"production": {APIURL: ProductionURL},
 	"staging":    {APIURL: "https://jetscale.staging.jetscale.ai"},
+	"unstable":   {APIURL: buildinfo.UnstableURL},
 	"local":      {APIURL: "auto"},
 }
 
@@ -48,8 +50,12 @@ func DefaultConfig() Config {
 	for k, v := range BuiltinInstances {
 		instances[k] = v
 	}
+	// Preserve live's legacy local auto-probe; non-live builds use explicit TLS.
+	if buildinfo.Channel != "live" {
+		instances["local"] = Instance{APIURL: buildinfo.LocalURL}
+	}
 	return Config{
-		DefaultInstance: "production",
+		DefaultInstance: buildinfo.DefaultInstance(),
 		Instances:       instances,
 	}
 }
@@ -57,20 +63,23 @@ func DefaultConfig() Config {
 // Resolve determines the API URL to use. Resolution order:
 //
 //  1. apiURLFlag   (--api-url flag, exact URL)
-//  2. JETSCALE_API_URL env var
+//  2. channel API_URL env var (JETSCALE_API_URL for live)
 //  3. instanceFlag (-i/--instance flag or --local, named lookup)
-//  4. JETSCALE_INSTANCE env var
+//  4. channel INSTANCE env var
 //  5. cfg.DefaultInstance
-//  6. "production" hardcoded fallback
+//  6. compiled channel default (never a fallback to live for non-live builds)
 func Resolve(cfg Config, instanceFlag string, localFlag bool, apiURLFlag string) (resolvedName string, resolvedURL string, err error) {
+	if err := buildinfo.Validate(); err != nil {
+		return "", "", err
+	}
 	// 1. --api-url flag (exact URL, highest priority)
 	if apiURLFlag != "" {
 		return "--api-url", apiURLFlag, nil
 	}
 
-	// 2. JETSCALE_API_URL env var
-	if v := os.Getenv("JETSCALE_API_URL"); v != "" {
-		return "JETSCALE_API_URL", v, nil
+	// 2. Channel-specific URL override.
+	if key := buildinfo.EnvVar("API_URL"); os.Getenv(key) != "" {
+		return key, os.Getenv(key), nil
 	}
 
 	// 3. --local flag (sugar for -i local)
@@ -83,13 +92,13 @@ func Resolve(cfg Config, instanceFlag string, localFlag bool, apiURLFlag string)
 	// 6. config default / hardcoded fallback
 	name := instanceFlag
 	if name == "" {
-		name = os.Getenv("JETSCALE_INSTANCE")
+		name = os.Getenv(buildinfo.EnvVar("INSTANCE"))
 	}
 	if name == "" {
 		name = cfg.DefaultInstance
 	}
 	if name == "" {
-		name = "production"
+		name = buildinfo.DefaultInstance()
 	}
 
 	inst, ok := cfg.Instances[name]
@@ -125,7 +134,7 @@ func probeLocal() (string, error) {
 		"no local backend found (tried %v); "+
 			"start one with: cd ../stack && tilt up (full stack on :8000) "+
 			"or cd ../backend && just tilt-setup (backend-only on :8010), "+
-			"or drop the --local / -i local flag to hit production",
+			"or select the intended backend explicitly with --api-url",
 		localPorts,
 	)
 }
@@ -133,14 +142,29 @@ func probeLocal() (string, error) {
 // --- File I/O ---
 
 func Dir() (string, error) {
-	if v := os.Getenv("JETSCALE_CONFIG_DIR"); v != "" {
+	if err := buildinfo.Validate(); err != nil {
+		return "", err
+	}
+	if v := os.Getenv(buildinfo.EnvVar("CONFIG_DIR")); v != "" {
 		return v, nil
+	}
+	if buildinfo.Channel != "live" {
+		if base := os.Getenv("XDG_CONFIG_HOME"); base != "" {
+			if !filepath.IsAbs(base) {
+				return "", fmt.Errorf("XDG_CONFIG_HOME must be an absolute path")
+			}
+			return filepath.Join(base, "jetscale", buildinfo.Channel), nil
+		}
 	}
 	home, err := os.UserHomeDir()
 	if err != nil {
 		return "", fmt.Errorf("cannot determine home directory: %w", err)
 	}
-	return filepath.Join(home, DefaultConfigDir), nil
+	dir := filepath.Join(home, DefaultConfigDir)
+	if buildinfo.Channel != "live" {
+		dir = filepath.Join(dir, buildinfo.Channel)
+	}
+	return dir, nil
 }
 
 func Path() (string, error) {
@@ -171,7 +195,10 @@ func Load() (Config, error) {
 	if cfg.Instances == nil {
 		cfg.Instances = make(map[string]Instance)
 	}
-	for k, v := range BuiltinInstances {
+	if cfg.DefaultInstance == "" {
+		cfg.DefaultInstance = buildinfo.DefaultInstance()
+	}
+	for k, v := range DefaultConfig().Instances {
 		if _, exists := cfg.Instances[k]; !exists {
 			cfg.Instances[k] = v
 		}
@@ -205,14 +232,14 @@ func instanceNames(cfg Config) []string {
 // ResolveAccount determines the cloud account name to use.
 //
 //  1. accountFlag (--account flag)
-//  2. JETSCALE_ACCOUNT env var
+//  2. channel ACCOUNT env var
 //  3. cfg.Instances[instanceName].ActiveAccount (sticky)
 //  4. empty string (caller decides: auto-select or error)
 func ResolveAccount(cfg Config, instanceName string, accountFlag string) string {
 	if accountFlag != "" {
 		return accountFlag
 	}
-	if v := os.Getenv("JETSCALE_ACCOUNT"); v != "" {
+	if v := os.Getenv(buildinfo.EnvVar("ACCOUNT")); v != "" {
 		return v
 	}
 	if inst, ok := cfg.Instances[instanceName]; ok {

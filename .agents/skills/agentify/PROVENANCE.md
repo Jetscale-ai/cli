@@ -1,0 +1,1 @@
+../../../../governance/.agents/codex/skills/ops/agentify/PROVENANCE.md

@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
-	"os"
+
 	"testing"
 	"time"
 )
@@ -12,7 +12,7 @@ import (
 // --- Token Storage Tests ---
 
 func TestTokenRoundTrip(t *testing.T) {
-	t.Setenv("JETSCALE_CONFIG_DIR", t.TempDir())
+	t.Setenv("JETSCALE_CONFIG_DIR", privateTempDir(t))
 
 	entry := TokenEntry{
 		AccessToken:  "access-123",
@@ -40,7 +40,7 @@ func TestTokenRoundTrip(t *testing.T) {
 }
 
 func TestTokenNotFound(t *testing.T) {
-	t.Setenv("JETSCALE_CONFIG_DIR", t.TempDir())
+	t.Setenv("JETSCALE_CONFIG_DIR", privateTempDir(t))
 
 	_, ok, err := GetToken("nonexistent")
 	if err != nil {
@@ -52,7 +52,7 @@ func TestTokenNotFound(t *testing.T) {
 }
 
 func TestDeleteToken(t *testing.T) {
-	t.Setenv("JETSCALE_CONFIG_DIR", t.TempDir())
+	t.Setenv("JETSCALE_CONFIG_DIR", privateTempDir(t))
 
 	if err := SetToken("staging", TokenEntry{AccessToken: "x"}); err != nil {
 		t.Fatal(err)
@@ -83,24 +83,18 @@ func TestTokenExpired(t *testing.T) {
 }
 
 func TestTokenFilePermissions(t *testing.T) {
-	tmp := t.TempDir()
+	tmp := privateTempDir(t)
 	t.Setenv("JETSCALE_CONFIG_DIR", tmp)
 
 	if err := SetToken("test", TokenEntry{AccessToken: "secret"}); err != nil {
 		t.Fatal(err)
 	}
 
-	info, err := os.Stat(tmp + "/tokens.yaml")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if perm := info.Mode().Perm(); perm != 0o600 {
-		t.Errorf("permissions = %o, want 600", perm)
-	}
+	assertPrivateTokenFile(t, tmp+"/tokens.yaml")
 }
 
 func TestResolveTokenEnvVarWins(t *testing.T) {
-	t.Setenv("JETSCALE_CONFIG_DIR", t.TempDir())
+	t.Setenv("JETSCALE_CONFIG_DIR", privateTempDir(t))
 	t.Setenv("JETSCALE_TOKEN", "env-token-wins")
 
 	if err := SetToken("production", TokenEntry{AccessToken: "stored-token"}); err != nil {
@@ -117,7 +111,7 @@ func TestResolveTokenEnvVarWins(t *testing.T) {
 }
 
 func TestResolveTokenFallsBackToStored(t *testing.T) {
-	t.Setenv("JETSCALE_CONFIG_DIR", t.TempDir())
+	t.Setenv("JETSCALE_CONFIG_DIR", privateTempDir(t))
 	t.Setenv("JETSCALE_TOKEN", "")
 
 	if err := SetToken("production", TokenEntry{AccessToken: "stored-token"}); err != nil {
@@ -134,7 +128,7 @@ func TestResolveTokenFallsBackToStored(t *testing.T) {
 }
 
 func TestMultipleInstances(t *testing.T) {
-	t.Setenv("JETSCALE_CONFIG_DIR", t.TempDir())
+	t.Setenv("JETSCALE_CONFIG_DIR", privateTempDir(t))
 
 	if err := SetToken("local", TokenEntry{AccessToken: "local-tok"}); err != nil {
 		t.Fatal(err)
@@ -306,7 +300,7 @@ func TestSignOut(t *testing.T) {
 }
 
 func TestEnsureFreshTokenRefreshesExpired(t *testing.T) {
-	t.Setenv("JETSCALE_CONFIG_DIR", t.TempDir())
+	t.Setenv("JETSCALE_CONFIG_DIR", privateTempDir(t))
 	t.Setenv("JETSCALE_TOKEN", "")
 
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

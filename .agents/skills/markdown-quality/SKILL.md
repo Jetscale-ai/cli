@@ -1,0 +1,1 @@
+../../../../governance/.agents/skills/markdown-quality/skill.md

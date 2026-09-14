@@ -1,0 +1,1 @@
+../../../../governance/.agents/codex/skills/lang/arch-contract/skill.md

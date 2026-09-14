@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/Jetscale-ai/cli/internal/api/generated"
+	"github.com/Jetscale-ai/cli/internal/buildinfo"
 )
 
 // TokenPayload holds the token pair returned by sign-in and refresh.
@@ -27,13 +28,12 @@ type WhoamiResult struct {
 
 // Client wraps the generated API client with auth-specific business logic.
 type Client struct {
-	gen     *generated.ClientWithResponses
-	baseURL string
+	gen *generated.ClientWithResponses
 }
 
 func NewClient(baseURL string) *Client {
 	gen, _ := generated.NewClientWithResponses(baseURL)
-	return &Client{gen: gen, baseURL: baseURL}
+	return &Client{gen: gen}
 }
 
 // SignIn exchanges credentials for a token pair.
@@ -45,14 +45,14 @@ func (c *Client) SignIn(login, password string) (TokenPayload, error) {
 		},
 	)
 	if err != nil {
-		return TokenPayload{}, fmt.Errorf("connect to %s: %w", c.baseURL, err)
+		return TokenPayload{}, fmt.Errorf("sign-in request failed")
 	}
 
 	if resp.StatusCode() == http.StatusUnauthorized || resp.StatusCode() == http.StatusForbidden {
 		return TokenPayload{}, fmt.Errorf("invalid credentials (HTTP %d)", resp.StatusCode())
 	}
 	if resp.StatusCode() >= 300 {
-		return TokenPayload{}, fmt.Errorf("sign-in failed (HTTP %d): %s", resp.StatusCode(), truncateBytes(resp.Body, 200))
+		return TokenPayload{}, fmt.Errorf("sign-in failed (HTTP %d)", resp.StatusCode())
 	}
 
 	return extractTokens(resp.Body, "sign-in")
@@ -66,14 +66,14 @@ func (c *Client) Refresh(refreshToken string) (TokenPayload, error) {
 		},
 	)
 	if err != nil {
-		return TokenPayload{}, fmt.Errorf("connect to %s: %w", c.baseURL, err)
+		return TokenPayload{}, fmt.Errorf("token refresh request failed")
 	}
 
 	if resp.StatusCode() == http.StatusUnauthorized {
 		return TokenPayload{}, fmt.Errorf("refresh token expired — please run: jetscale auth login")
 	}
 	if resp.StatusCode() >= 300 {
-		return TokenPayload{}, fmt.Errorf("token refresh failed (HTTP %d): %s", resp.StatusCode(), truncateBytes(resp.Body, 200))
+		return TokenPayload{}, fmt.Errorf("token refresh failed (HTTP %d)", resp.StatusCode())
 	}
 
 	return extractTokens(resp.Body, "refresh")
@@ -85,14 +85,14 @@ func (c *Client) Whoami(accessToken string) (WhoamiResult, error) {
 		bearerAuth(accessToken),
 	)
 	if err != nil {
-		return WhoamiResult{}, fmt.Errorf("connect to %s: %w", c.baseURL, err)
+		return WhoamiResult{}, fmt.Errorf("whoami request failed")
 	}
 
 	if resp.StatusCode() == http.StatusUnauthorized {
 		return WhoamiResult{}, fmt.Errorf("not authenticated — run: jetscale auth login")
 	}
 	if resp.StatusCode() >= 300 {
-		return WhoamiResult{}, fmt.Errorf("whoami failed (HTTP %d): %s", resp.StatusCode(), truncateBytes(resp.Body, 200))
+		return WhoamiResult{}, fmt.Errorf("whoami failed (HTTP %d)", resp.StatusCode())
 	}
 
 	var envelope struct {
@@ -104,7 +104,7 @@ func (c *Client) Whoami(accessToken string) (WhoamiResult, error) {
 		} `json:"data"`
 	}
 	if err := json.Unmarshal(resp.Body, &envelope); err != nil {
-		return WhoamiResult{}, fmt.Errorf("decode whoami response: %w", err)
+		return WhoamiResult{}, fmt.Errorf("invalid whoami response")
 	}
 	return WhoamiResult{
 		Email:    envelope.Data.User.Email,
@@ -118,10 +118,10 @@ func (c *Client) SignOut(accessToken string) error {
 		bearerAuth(accessToken),
 	)
 	if err != nil {
-		return fmt.Errorf("connect to %s: %w", c.baseURL, err)
+		return fmt.Errorf("sign-out request failed")
 	}
 	if resp.StatusCode() >= 300 && resp.StatusCode() != http.StatusUnauthorized {
-		return fmt.Errorf("sign-out failed (HTTP %d): %s", resp.StatusCode(), truncateBytes(resp.Body, 200))
+		return fmt.Errorf("sign-out failed (HTTP %d)", resp.StatusCode())
 	}
 	return nil
 }
@@ -135,10 +135,11 @@ func TokenEntryFromPayload(p TokenPayload) TokenEntry {
 	}
 }
 
-// EnsureFreshToken checks the stored token and refreshes if expired.
+// EnsureFreshToken prefers the compiled channel's TOKEN env var, otherwise
+// checks the stored token and refreshes if expired.
 // Returns the valid access token, or empty string if not logged in.
 func EnsureFreshToken(instanceName, baseURL string) (string, error) {
-	if v := os.Getenv("JETSCALE_TOKEN"); v != "" {
+	if v := os.Getenv(buildinfo.EnvVar("TOKEN")); v != "" {
 		return v, nil
 	}
 
@@ -188,14 +189,7 @@ func extractTokens(body []byte, label string) (TokenPayload, error) {
 		} `json:"data"`
 	}
 	if err := json.Unmarshal(body, &envelope); err != nil {
-		return TokenPayload{}, fmt.Errorf("decode %s response: %w", label, err)
+		return TokenPayload{}, fmt.Errorf("invalid %s response", label)
 	}
 	return envelope.Data.Tokens, nil
-}
-
-func truncateBytes(b []byte, max int) string {
-	if len(b) <= max {
-		return string(b)
-	}
-	return string(b[:max]) + "…"
 }

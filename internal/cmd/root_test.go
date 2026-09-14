@@ -183,3 +183,65 @@ func TestAccountsCurrentNoAccount(t *testing.T) {
 		t.Errorf("expected guidance message, got: %q", out)
 	}
 }
+
+func TestRecommendationsHelp(t *testing.T) {
+	root := newRootCmd()
+	buf := new(bytes.Buffer)
+	root.SetOut(buf)
+	root.SetArgs([]string{"recommendations", "--help"})
+
+	if err := root.Execute(); err != nil {
+		t.Fatal(err)
+	}
+
+	out := buf.String()
+	for _, sub := range []string{"list", "show"} {
+		if !strings.Contains(out, sub) {
+			t.Errorf("expected %q in recommendations help, got: %q", sub, out)
+		}
+	}
+}
+
+func TestRecommendationsAliases(t *testing.T) {
+	for _, alias := range []string{"recs", "rec"} {
+		root := newRootCmd()
+		buf := new(bytes.Buffer)
+		root.SetOut(buf)
+		root.SetArgs([]string{alias, "--help"})
+
+		if err := root.Execute(); err != nil {
+			t.Errorf("%s alias failed: %v", alias, err)
+		}
+	}
+}
+
+func TestRecommendationsListHasFlags(t *testing.T) {
+	root := newRootCmd()
+	buf := new(bytes.Buffer)
+	root.SetOut(buf)
+	root.SetArgs([]string{"recommendations", "list", "--help"})
+
+	if err := root.Execute(); err != nil {
+		t.Fatal(err)
+	}
+
+	out := buf.String()
+	for _, flag := range []string{"--limit", "--offset"} {
+		if !strings.Contains(out, flag) {
+			t.Errorf("expected %q in list help, got: %q", flag, out)
+		}
+	}
+}
+
+func TestRecommendationsShowRequiresArg(t *testing.T) {
+	root := newRootCmd()
+	buf := new(bytes.Buffer)
+	root.SetOut(buf)
+	root.SetErr(buf)
+	root.SetArgs([]string{"recommendations", "show"})
+
+	err := root.Execute()
+	if err == nil {
+		t.Error("expected error when no ID provided")
+	}
+}

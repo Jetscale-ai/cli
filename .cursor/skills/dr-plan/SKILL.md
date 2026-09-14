@@ -1,0 +1,1 @@
+../../../../governance/.agents/codex/skills/core/dr-plan/skill.md

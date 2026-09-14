@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/Jetscale-ai/cli/internal/api"
-	"github.com/Jetscale-ai/cli/internal/auth"
+
 	"github.com/Jetscale-ai/cli/internal/config"
 	"github.com/Jetscale-ai/cli/internal/output"
 	"github.com/spf13/cobra"
@@ -35,11 +35,11 @@ Examples:
 }
 
 type accountRow struct {
-	Name          string `json:"name"           yaml:"name"`
-	Provider      string `json:"provider"       yaml:"provider"`
-	BusinessUnit  string `json:"business_unit"  yaml:"business_unit"`
-	ID            string `json:"id"             yaml:"id"`
-	Active        bool   `json:"active"         yaml:"active"`
+	Name         string `json:"name"           yaml:"name"`
+	Provider     string `json:"provider"       yaml:"provider"`
+	BusinessUnit string `json:"business_unit"  yaml:"business_unit"`
+	ID           string `json:"id"             yaml:"id"`
+	Active       bool   `json:"active"         yaml:"active"`
 }
 
 var accountColumns = []output.Column{
@@ -65,15 +65,11 @@ func newAccountsListCmd() *cobra.Command {
 				return err
 			}
 
-			token, err := auth.EnsureFreshToken(instanceName, apiURL)
+			session, err := commandSession(cmd, instanceName, apiURL)
 			if err != nil {
 				return err
 			}
-			if token == "" {
-				return fmt.Errorf("not logged in to %s — run: jetscale auth login", instanceName)
-			}
-
-			client := api.NewClient(apiURL, token)
+			client := api.NewSessionClient(apiURL, session.HTTPClient)
 			tree, err := client.FetchAccountTree()
 			if err != nil {
 				return err
@@ -130,15 +126,11 @@ func newAccountsUseCmd() *cobra.Command {
 				return err
 			}
 
-			token, err := auth.EnsureFreshToken(instanceName, apiURL)
+			session, err := commandSession(cmd, instanceName, apiURL)
 			if err != nil {
 				return err
 			}
-			if token == "" {
-				return fmt.Errorf("not logged in to %s — run: jetscale auth login", instanceName)
-			}
-
-			client := api.NewClient(apiURL, token)
+			client := api.NewSessionClient(apiURL, session.HTTPClient)
 			tree, err := client.FetchAccountTree()
 			if err != nil {
 				return err
@@ -182,14 +174,17 @@ func newAccountsCurrentCmd() *cobra.Command {
 			out := cmd.OutOrStdout()
 
 			if accountName == "" {
-				token, err := auth.EnsureFreshToken(instanceName, apiURL)
-				if err != nil || token == "" {
-						_, _ = fmt.Fprintln(out, "No account selected and not logged in.")
+				session, err := commandSession(cmd, instanceName, apiURL)
+				if err != nil {
+					if flagCredentialsFile != "" {
+						return err
+					}
+					_, _ = fmt.Fprintln(out, "No account selected and not logged in.")
 					_, _ = fmt.Fprintf(out, "Run: jetscale auth login && jetscale accounts use <name>\n")
 					return nil
 				}
 
-				client := api.NewClient(apiURL, token)
+				client := api.NewSessionClient(apiURL, session.HTTPClient)
 				tree, err := client.FetchAccountTree()
 				if err != nil {
 					return err

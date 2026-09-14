@@ -1,0 +1,1 @@
+../../../../governance/.agents/codex/skills/core/pr-cursor-triage/skill.md

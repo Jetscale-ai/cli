@@ -2,277 +2,178 @@ package cmd
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"os"
 	"strings"
-	"time"
 
 	"github.com/Jetscale-ai/cli/internal/auth"
+	"github.com/Jetscale-ai/cli/internal/buildinfo"
 	"github.com/Jetscale-ai/cli/internal/output"
 	"github.com/spf13/cobra"
 	"golang.org/x/term"
 )
 
 func newAuthCmd() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "auth",
-		Short: "Authenticate with JetScale",
-	}
-
-	cmd.AddCommand(newAuthLoginCmd())
-	cmd.AddCommand(newAuthWhoamiCmd())
-	cmd.AddCommand(newAuthLogoutCmd())
-	cmd.AddCommand(newAuthStatusCmd())
-
+	cmd := &cobra.Command{Use: "auth", Short: "Authenticate with JetScale"}
+	cmd.AddCommand(newAuthLoginCmd(), newAuthWhoamiCmd(), newAuthLogoutCmd(), newAuthStatusCmd())
 	return cmd
 }
 
 func newAuthLoginCmd() *cobra.Command {
-	var flagToken string
-
-	cmd := &cobra.Command{
+	return &cobra.Command{
 		Use:   "login",
-		Short: "Sign in to a JetScale instance",
-		Long: `Authenticate with a JetScale instance.
+		Short: "Sign in to a JetScale instance using session cookies",
+		Long: `Sign in with an email and hidden password prompt. Verify the session before
+saving it in the existing protected credential store. Cookies are bound to the
+compiled channel and API origin. A new login may close existing browser sessions.
 
-You can sign in interactively (email + password prompt), or supply a token
-directly for CI/headless use.
+For local automation, --credentials-file reads JETSCALE_DEFAULT_ADMIN_EMAIL and
+JETSCALE_DEFAULT_ADMIN_PASSWORD without shell expansion. This mode verifies login
+then signs out without saving; use the same flag on accounts list to run it in a
+temporary session. No browser storage is imported.
 
 Examples:
-  jetscale auth login                          # interactive, targets production
-  jetscale --local auth login                  # interactive, targets local backend
-  jetscale auth login --token eyJ...           # pre-authenticated token
-  JETSCALE_TOKEN=eyJ... jetscale auth whoami   # env var (no login needed)`,
+  jetscale auth login
+  jetscale auth whoami
+  jetscale-local --credentials-file ../stack/.env auth login`,
 		RunE: func(cmd *cobra.Command, _ []string) error {
-			instanceName, apiURL, err := resolveAPI()
+			instance, apiURL, err := resolveAPI()
 			if err != nil {
 				return err
 			}
-
-			if flagToken != "" {
-				client := auth.NewClient(apiURL)
-				who, err := client.Whoami(flagToken)
-				if err != nil {
-					return fmt.Errorf("token verification failed: %w", err)
-				}
-				entry := auth.TokenEntry{
-					AccessToken: flagToken,
-					ExpiresAt:   time.Now().Add(24 * time.Hour),
-				}
-				if err := auth.SetToken(instanceName, entry); err != nil {
+			if flagCredentialsFile != "" {
+				if _, err := commandSession(cmd, instance, apiURL); err != nil {
 					return err
 				}
-				_, _ = fmt.Fprintf(cmd.OutOrStdout(), "Logged in as %s (%s)\n", who.Email, instanceName)
+				_, _ = fmt.Fprintln(cmd.OutOrStdout(), "Login verified (temporary session).")
 				return nil
 			}
-
-			reader := bufio.NewReader(os.Stdin)
-
-			_, _ = fmt.Fprint(cmd.OutOrStderr(), "Email: ")
-			email, err := reader.ReadString('\n')
-			if err != nil {
-				return fmt.Errorf("read email: %w", err)
+			if _, set := os.LookupEnv(buildinfo.EnvVar("TOKEN")); set {
+				return errors.New("unset the channel TOKEN variable before logging in with cookies")
 			}
-			email = strings.TrimSpace(email)
-
-			_, _ = fmt.Fprint(cmd.OutOrStderr(), "Password: ")
-			passwordBytes, err := term.ReadPassword(int(os.Stdin.Fd()))
-			_, _ = fmt.Fprintln(cmd.OutOrStderr())
-			if err != nil {
-				return fmt.Errorf("read password: %w", err)
+			if !term.IsTerminal(int(os.Stdin.Fd())) {
+				return errors.New("interactive login requires a terminal; local automation can use --credentials-file")
 			}
-			password := string(passwordBytes)
-
-			client := auth.NewClient(apiURL)
-			tokens, err := client.SignIn(email, password)
+			_, _ = fmt.Fprintln(cmd.ErrOrStderr(), "Signing in may close existing sessions for this user.")
+			_, _ = fmt.Fprint(cmd.ErrOrStderr(), "Email: ")
+			email, err := bufio.NewReader(os.Stdin).ReadString('\n')
+			if err != nil {
+				return errors.New("cannot read login email")
+			}
+			_, _ = fmt.Fprint(cmd.ErrOrStderr(), "Password: ")
+			password, err := term.ReadPassword(int(os.Stdin.Fd()))
+			_, _ = fmt.Fprintln(cmd.ErrOrStderr())
+			if err != nil {
+				return errors.New("cannot read login password")
+			}
+			session, err := auth.LoginSession(apiURL, strings.TrimSpace(email), string(password), flagCAFile)
+			clear(password)
 			if err != nil {
 				return err
 			}
-
-			entry := auth.TokenEntryFromPayload(tokens)
-			if err := auth.SetToken(instanceName, entry); err != nil {
-				return err
-			}
-
-			_, _ = fmt.Fprintf(cmd.OutOrStdout(), "Logged in to %s (%s)\n", instanceName, apiURL)
+			rememberSession(cmd, session, instance, false)
+			cmd.Context().Value(sessionContextKey{}).(*commandSessionState).fresh = true
+			_, _ = fmt.Fprintf(cmd.OutOrStdout(), "Login verified for %s.\n", instance)
 			return nil
 		},
 	}
-
-	cmd.Flags().StringVar(&flagToken, "token", "", "authenticate with a pre-existing bearer token")
-
-	return cmd
 }
 
 type whoamiRow struct {
-	Email       string `json:"email"        yaml:"email"`
-	Username    string `json:"username"     yaml:"username"`
-	Instance    string `json:"instance"     yaml:"instance"`
-	APIURL      string `json:"api_url"      yaml:"api_url"`
-	TokenExpiry string `json:"token_expiry" yaml:"token_expiry"`
-	Refreshable bool   `json:"refreshable"  yaml:"refreshable"`
-}
-
-var whoamiColumns = []output.Column{
-	{Header: "Email", Field: func(r interface{}) string { return r.(whoamiRow).Email }},
-	{Header: "Username", Field: func(r interface{}) string { return r.(whoamiRow).Username }},
-	{Header: "Instance", Field: func(r interface{}) string { return r.(whoamiRow).Instance }},
-	{Header: "API URL", Field: func(r interface{}) string { return r.(whoamiRow).APIURL }},
-	{Header: "Token Expiry", Field: func(r interface{}) string { return r.(whoamiRow).TokenExpiry }},
-	{Header: "Refreshable", Field: func(r interface{}) string {
-		if r.(whoamiRow).Refreshable {
-			return "yes"
-		}
-		return "no"
-	}},
+	Email    string `json:"email" yaml:"email"`
+	Username string `json:"username" yaml:"username"`
+	Instance string `json:"instance" yaml:"instance"`
+	APIURL   string `json:"api_url" yaml:"api_url"`
 }
 
 func newAuthWhoamiCmd() *cobra.Command {
 	return &cobra.Command{
-		Use:   "whoami",
-		Short: "Show the currently authenticated user",
+		Use: "whoami", Short: "Show the currently authenticated user",
 		RunE: func(cmd *cobra.Command, _ []string) error {
-			instanceName, apiURL, err := resolveAPI()
+			instance, apiURL, err := resolveAPI()
 			if err != nil {
 				return err
 			}
-
-			token, err := auth.EnsureFreshToken(instanceName, apiURL)
+			session, err := commandSession(cmd, instance, apiURL)
 			if err != nil {
 				return err
 			}
-			if token == "" {
-				return fmt.Errorf("not logged in to %s — run: jetscale auth login", instanceName)
-			}
-
-			client := auth.NewClient(apiURL)
-			who, err := client.Whoami(token)
+			who, err := session.Whoami()
 			if err != nil {
 				return err
 			}
-
-			expiry := "unknown"
-			refreshable := false
-			entry, ok, _ := auth.GetToken(instanceName)
-			if ok && !entry.ExpiresAt.IsZero() {
-				remaining := time.Until(entry.ExpiresAt).Round(time.Second)
-				if remaining > 0 {
-					expiry = fmt.Sprintf("in %s", remaining)
-				} else {
-					expiry = "expired"
-				}
-				refreshable = entry.RefreshToken != ""
-			}
-
-			row := whoamiRow{
-				Email:       who.Email,
-				Username:    who.Username,
-				Instance:    instanceName,
-				APIURL:      apiURL,
-				TokenExpiry: expiry,
-				Refreshable: refreshable,
-			}
-
 			p, err := printer(cmd)
 			if err != nil {
 				return err
 			}
-
+			row := whoamiRow{Email: who.Email, Username: who.Username, Instance: instance, APIURL: apiURL}
 			if p.Format == output.Table {
-				out := cmd.OutOrStdout()
-				_, _ = fmt.Fprintf(out, "Logged in as %s\n", row.Email)
-				if row.Username != "" && row.Username != row.Email {
-					_, _ = fmt.Fprintf(out, "Username:    %s\n", row.Username)
-				}
-				_, _ = fmt.Fprintf(out, "Instance:    %s (%s)\n", row.Instance, row.APIURL)
-				refreshStr := ""
-				if refreshable {
-					refreshStr = " (refreshable)"
-				}
-				_, _ = fmt.Fprintf(out, "Token:       expires %s%s\n", row.TokenExpiry, refreshStr)
+				_, _ = fmt.Fprintf(cmd.OutOrStdout(), "Logged in as %s\nInstance: %s (%s)\n", who.Email, instance, apiURL)
 				return nil
 			}
-
-			return p.Print(row, whoamiColumns)
+			return p.Print(row, nil)
 		},
 	}
 }
 
 type statusRow struct {
 	Authenticated bool   `json:"authenticated" yaml:"authenticated"`
-	Email         string `json:"email"         yaml:"email"`
-	Instance      string `json:"instance"      yaml:"instance"`
+	Email         string `json:"email" yaml:"email"`
+	Instance      string `json:"instance" yaml:"instance"`
 }
 
 func newAuthStatusCmd() *cobra.Command {
 	return &cobra.Command{
-		Use:   "status",
-		Short: "Check authentication status (non-interactive)",
-		Long: `Check if you're authenticated to the current instance.
-Exits 0 if authenticated, 1 if not. Useful in scripts.`,
+		Use: "status", Short: "Check authentication status (non-interactive)",
 		RunE: func(cmd *cobra.Command, _ []string) error {
-			instanceName, apiURL, err := resolveAPI()
+			instance, apiURL, err := resolveAPI()
 			if err != nil {
 				return err
 			}
-
-			token, err := auth.EnsureFreshToken(instanceName, apiURL)
-			if err != nil || token == "" {
-				p, pErr := printer(cmd)
-				if pErr == nil && p.Format != output.Table {
-					_ = p.Print(statusRow{Authenticated: false, Instance: instanceName}, nil)
-				} else {
-					_, _ = fmt.Fprintf(cmd.OutOrStdout(), "Not authenticated to %s\n", instanceName)
-				}
-				os.Exit(1)
+			session, authErr := commandSession(cmd, instance, apiURL)
+			var who auth.WhoamiResult
+			if authErr == nil {
+				who, authErr = session.Whoami()
 			}
-
-			client := auth.NewClient(apiURL)
-			who, err := client.Whoami(token)
+			p, err := printer(cmd)
 			if err != nil {
-				p, pErr := printer(cmd)
-				if pErr == nil && p.Format != output.Table {
-					_ = p.Print(statusRow{Authenticated: false, Instance: instanceName}, nil)
-				} else {
-					_, _ = fmt.Fprintf(cmd.OutOrStdout(), "Token invalid for %s\n", instanceName)
+				return err
+			}
+			row := statusRow{Authenticated: authErr == nil, Email: who.Email, Instance: instance}
+			if p.Format != output.Table {
+				if err := p.Print(row, nil); err != nil {
+					return err
 				}
-				os.Exit(1)
+			} else if authErr == nil {
+				_, _ = fmt.Fprintf(cmd.OutOrStdout(), "Authenticated as %s on %s\n", who.Email, instance)
+			} else {
+				_, _ = fmt.Fprintf(cmd.OutOrStdout(), "Not authenticated to %s\n", instance)
 			}
-
-			row := statusRow{Authenticated: true, Email: who.Email, Instance: instanceName}
-
-			p, pErr := printer(cmd)
-			if pErr == nil && p.Format != output.Table {
-				return p.Print(row, nil)
-			}
-
-			_, _ = fmt.Fprintf(cmd.OutOrStdout(), "Authenticated as %s on %s\n", who.Email, instanceName)
-			return nil
+			return authErr
 		},
 	}
 }
 
 func newAuthLogoutCmd() *cobra.Command {
 	return &cobra.Command{
-		Use:   "logout",
-		Short: "Sign out and remove stored credentials",
+		Use: "logout", Short: "Sign out the current session and clear stored credentials",
 		RunE: func(cmd *cobra.Command, _ []string) error {
-			instanceName, apiURL, err := resolveAPI()
+			if flagCredentialsFile != "" {
+				return errors.New("--credentials-file already signs out automatically; do not use it with auth logout")
+			}
+			instance, apiURL, err := resolveAPI()
 			if err != nil {
 				return err
 			}
-
-			token, _ := auth.ResolveToken(instanceName)
-			if token != "" {
-				client := auth.NewClient(apiURL)
-				_ = client.SignOut(token)
-			}
-
-			if err := auth.DeleteToken(instanceName); err != nil {
+			session, err := commandSession(cmd, instance, apiURL)
+			if err != nil {
 				return err
 			}
-
-			_, _ = fmt.Fprintf(cmd.OutOrStdout(), "Logged out of %s\n", instanceName)
+			if err := session.SignOut(); err != nil {
+				return err
+			}
+			_, _ = fmt.Fprintf(cmd.OutOrStdout(), "Signed out of %s.\n", instance)
 			return nil
 		},
 	}

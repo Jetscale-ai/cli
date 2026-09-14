@@ -1,0 +1,294 @@
+name: Build CLI
+run-name: >-
+  Build CLI (${{ github.ref_name }}) <- Backend #${{ inputs.upstream_run_id }}.${{ inputs.backend_run_attempt }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      upstream_repo:
+        description: Backend repository (Jetscale-ai/Backend)
+        type: string
+        default: ""
+      upstream_workflow:
+        description: Producer workflow path (.github/workflows/pipeline.yml)
+        type: string
+        default: ""
+      upstream_run_id:
+        description: Successful Backend push run ID
+        type: string
+        default: ""
+      upstream_run_url:
+        description: Backend Actions run URL
+        type: string
+        default: ""
+      upstream_sha:
+        description: Exact Backend source SHA
+        type: string
+        default: ""
+      backend_run_attempt:
+        description: Successful Backend run attempt
+        required: true
+        type: string
+      backend_branch:
+        description: Must match the selected CLI branch
+        required: true
+        type: choice
+        options: [main, unstable]
+      spec_sha:
+        description: Raw OpenAPI SHA-256 from the producer manifest
+        required: true
+        type: string
+      spec_version:
+        description: OpenAPI info.version from the producer manifest
+        required: true
+        type: string
+      artifact_name:
+        description: Exact producer artifact name
+        required: true
+        type: string
+        default: openapi-spec
+
+permissions:
+  contents: read
+
+concurrency:
+  group: schema-cli-${{ github.ref }}-${{ inputs.upstream_run_id }}-${{ inputs.backend_run_attempt }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Verify schema and build CLI artifact
+    if: github.repository == 'Jetscale-ai/cli' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/unstable')
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+      GOTOOLCHAIN: local
+      GOFLAGS: -mod=readonly
+      GOWORK: "off"
+    steps:
+      - name: Check out exact trusted receiver source
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+
+      - name: Verify checkout and offline verifier tests
+        shell: python
+        run: |
+          import os
+          import subprocess
+          head = subprocess.check_output(["git", "--no-pager", "rev-parse", "HEAD"], timeout=10).decode().strip()
+          if head != os.environ["GITHUB_SHA"]:
+              raise SystemExit("CLI checkout does not match event SHA")
+          subprocess.run(["python3", "-m", "unittest", "discover", "-s", "scripts", "-p", "test_*.py"], check=True, timeout=120)
+
+      - name: Verify producer and download exact schema
+        env:
+          # Existing cross-repository credential must have Backend Actions read access.
+          # No fallback to a different identity; never expose this to code generation.
+          GH_TOKEN: ${{ secrets.JETSCALEBOT_GITHUB_TOKEN }}
+        run: python3 scripts/unstable_build.py fetch --output "${RUNNER_TEMP}/verified-schema"
+
+      - name: Summarize upstream trigger
+        id: schema
+        shell: python
+        run: |
+          import os
+          from pathlib import Path
+          import sys
+          sys.path.insert(0, str(Path.cwd() / "scripts"))
+          from unstable_build import build_identity, MANIFEST_LIMIT, parse_json, read_bounded
+          p = parse_json(read_bounded(Path(os.environ["RUNNER_TEMP"], "verified-schema/provenance.json"), MANIFEST_LIMIT))
+          channel, binary, version = build_identity(p["backend_branch"], p["cli_run_id"], p["cli_run_attempt"])
+          artifact = f"{binary}-linux-amd64-{p['cli_run_id']}-{p['cli_run_attempt']}"
+          with Path(os.environ["GITHUB_OUTPUT"]).open("a") as out:
+              out.write(f"artifact_name={artifact}\n")
+          with Path(os.environ["GITHUB_STEP_SUMMARY"]).open("a") as out:
+              out.write("## Verified upstream trigger\n\n- Mode: Downstream workflow dispatch\n")
+              out.write(f"- Repository: `{p['backend_repository']}`\n- Workflow: `{p['backend_workflow']}`\n")
+              out.write(f"- Run: [{p['backend_run_id']}.{p['backend_run_attempt']}]({p['backend_run_url']})\n")
+              out.write(f"- Backend SHA: `{p['backend_sha']}`\n- CLI SHA: `{p['cli_sha']}`\n")
+              out.write(f"- Branch: `{p['backend_branch']}`; channel: `{channel}`; build: `{version}`\n")
+
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: '1.25.8'
+          cache: false
+
+      - name: Fetch pinned tools, image, and locked dependencies
+        timeout-minutes: 8
+        run: |
+          # Private per-job caches: never restored from or saved to a shared cache.
+          export GOPATH="${RUNNER_TEMP}/unstable-go"
+          export GOMODCACHE="${GOPATH}/pkg/mod"
+          export GOCACHE="${RUNNER_TEMP}/unstable-prefetch-cache"
+          go mod download
+          go run github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen@v2.6.0 --version
+          docker build --pull --tag "unstable-cli-sandbox:${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" - <<'DOCKERFILE'
+          FROM golang:1.25.8-bookworm
+          RUN apt-get -o Acquire::Retries=0 update && \
+              apt-get -o Acquire::Retries=0 install -y --no-install-recommends python3 && \
+              rm -rf /var/lib/apt/lists/*
+          DOCKERFILE
+
+      - name: Generate, test, and package in isolated offline sandbox
+        timeout-minutes: 22
+        shell: python
+        run: |
+          import os
+          from pathlib import Path
+          import shutil
+          import subprocess
+
+          temp = Path(os.environ["RUNNER_TEMP"])
+          work = temp / "unstable-work"
+          # Keep .git for Mage tests and source hashing; never mount the original checkout.
+          shutil.copytree(Path.cwd(), work, symlinks=True)
+          output = temp / "unstable-output"
+          output.mkdir()
+          name = f"unstable-cli-{os.environ['GITHUB_RUN_ID']}-{os.environ['GITHUB_RUN_ATTEMPT']}"
+          command = [
+              "docker", "run", "--name", name, "--rm", "--pull=never", "--init",
+              "--network=none", "--cap-drop=ALL", "--security-opt=no-new-privileges",
+              "--read-only", "--user", f"{os.getuid()}:{os.getgid()}",
+              "--memory=6g", "--memory-swap=6g", "--cpus=2", "--pids-limit=512",
+              "--log-driver=none", "--workdir=/work",
+              "--tmpfs=/tmp:rw,exec,nosuid,nodev,size=2g,mode=1777",
+              "--tmpfs=/cache:rw,exec,nosuid,nodev,size=2g,mode=1777",
+              "--mount", f"type=bind,src={work},dst=/work",
+              "--mount", f"type=bind,src={output},dst=/output",
+              "--mount", f"type=bind,src={temp / 'verified-schema'},dst=/evidence,readonly",
+              "--mount", f"type=bind,src={temp / 'unstable-go/pkg/mod'},dst=/modules,readonly",
+          ]
+          # No env-file, event payload, runner command files, credentials, or Docker socket.
+          for key in ("GITHUB_REPOSITORY", "GITHUB_REF", "GITHUB_EVENT_NAME", "GITHUB_SHA",
+                      "GITHUB_RUN_ID", "GITHUB_RUN_ATTEMPT"):
+              command.extend(["--env", f"{key}={os.environ[key]}"])
+          for value in (
+              "HOME=/tmp/home", "TMPDIR=/tmp", "GOPATH=/cache/go", "GOMODCACHE=/modules",
+              "GOCACHE=/cache/build", "GOPROXY=off", "GOSUMDB=off", "GOTOOLCHAIN=local",
+              "GOENV=off", "GOWORK=off", "GOFLAGS=-mod=readonly", "CGO_ENABLED=1",
+              "GIT_CONFIG_NOSYSTEM=1", "GIT_CONFIG_GLOBAL=/dev/null", "GIT_TERMINAL_PROMPT=0",
+              "PYTHONDONTWRITEBYTECODE=1",
+          ):
+              command.extend(["--env", value])
+          command.extend([
+              f"unstable-cli-sandbox:{os.environ['GITHUB_RUN_ID']}-{os.environ['GITHUB_RUN_ATTEMPT']}",
+              "sh", "-eu", "-c", """
+          mkdir -p /tmp/home
+          cp /evidence/openapi.json openapi/spec.json
+          go run github.com/magefile/mage processSpec
+          # Pinned go run still queries deprecation metadata. Serve only the prefetched
+          # read-only file proxy for this command; GOPROXY=off blocks that lookup too.
+          GOPROXY=file:///modules/cache/download go run github.com/magefile/mage generateClient
+          git --no-pager diff --exit-code -- go.mod go.sum
+          go test -race -count=1 -timeout=120s ./...
+          go test -tags mage -count=1 -timeout=120s .
+          go vet ./...
+          python3 scripts/package_unstable.py --evidence /evidence --output /output/package
+          """,
+          ])
+          try:
+              # Untrusted stdout/stderr must not reach the Actions command interpreter.
+              subprocess.run(command, check=True, timeout=1200, stdin=subprocess.DEVNULL,
+                             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+          except (subprocess.SubprocessError, OSError):
+              raise SystemExit("Offline sandbox failed or exceeded 20 minutes; no artifact published") from None
+          finally:
+              subprocess.run(["docker", "rm", "--force", name], timeout=30,
+                             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+      - name: Validate sandbox package on trusted host
+        timeout-minutes: 2
+        shell: python
+        run: |
+          import hashlib
+          import os
+          from pathlib import Path
+          import stat
+          import sys
+
+          # Import only the untouched checkout, never scripts or binaries from the sandbox.
+          sys.path.insert(0, str(Path.cwd() / "scripts"))
+          from unstable_build import build_identity, MANIFEST_LIMIT, SCHEMA_LIMIT, object_value, parse_json, read_bounded, require, same_json
+
+          temp = Path(os.environ["RUNNER_TEMP"])
+          package = temp / "unstable-output/package"
+          evidence = temp / "verified-schema"
+          original = object_value(parse_json(read_bounded(evidence / "provenance.json", MANIFEST_LIMIT)))
+          channel, binary, version = build_identity(original.get("backend_branch"), original.get("cli_run_id"), original.get("cli_run_attempt"))
+          require(original.get("cli_ref") == os.environ["GITHUB_REF"]
+                  and original.get("cli_sha") == os.environ["GITHUB_SHA"], "Wrong CLI package context")
+          limits = {
+              binary: 128 * 1024 * 1024,
+              "raw-schema.json": SCHEMA_LIMIT, "processed-schema.json": SCHEMA_LIMIT,
+              "manifest.json": MANIFEST_LIMIT, "provenance.json": MANIFEST_LIMIT,
+              "SHA256SUMS": 4096,
+          }
+          require(stat.S_ISDIR(package.lstat().st_mode), "Package must be a real directory")
+          require({p.name for p in package.iterdir()} == set(limits), "Unexpected package members")
+          data = {}
+          for name, limit in limits.items():
+              path = package / name
+              require(path.lstat().st_nlink == 1, "Package hard links are not allowed")
+              data[name] = read_bounded(path, limit)
+          digest = lambda raw: hashlib.sha256(raw).hexdigest()
+          sums = "".join(f"{digest(data[name])}  {name}\n" for name in sorted(limits) if name != "SHA256SUMS")
+          require(data["SHA256SUMS"] == sums.encode("ascii"), "Package checksum mismatch")
+          require(data["raw-schema.json"] == read_bounded(evidence / "openapi.json", SCHEMA_LIMIT), "Raw schema changed")
+          require(data["manifest.json"] == read_bounded(evidence / "manifest.json", MANIFEST_LIMIT), "Producer manifest changed")
+          provenance = object_value(parse_json(data["provenance.json"]))
+          same_json({key: provenance.get(key) for key in original}, original, "Verified provenance changed")
+          expected = {
+              "raw_schema_sha256": digest(data["raw-schema.json"]),
+              "processed_schema_sha256": digest(data["processed-schema.json"]),
+              "binary_sha256": digest(data[binary]),
+              "go_mod_sha256": digest(Path("go.mod").read_bytes()),
+              "go_sum_sha256": digest(Path("go.sum").read_bytes()),
+              "generator_version": "v2.6.0", "go_version": "go version go1.25.8 linux/amd64",
+              "platform": "linux/amd64", "channel": channel, "source_dirty": True,
+              "binary_version": version,
+          }
+          same_json({key: provenance.get(key) for key in expected}, expected, "Packaged metadata mismatch")
+          # Publish a new host-owned directory, not the writable sandbox output mount.
+          destination = temp / "unstable-package"
+          destination.mkdir()
+          for name, raw in data.items():
+              (destination / name).write_bytes(raw)
+
+      - name: Reject producer reruns or artifact replacement before publication
+        env:
+          GH_TOKEN: ${{ secrets.JETSCALEBOT_GITHUB_TOKEN }}
+        run: python3 scripts/unstable_build.py recheck --input "${RUNNER_TEMP}/verified-schema"
+
+      - name: Publish immutable CLI build artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: ${{ steps.schema.outputs.artifact_name }}
+          path: ${{ runner.temp }}/unstable-package/
+          if-no-files-found: error
+          retention-days: 14
+          overwrite: false
+          include-hidden-files: false
+
+      - name: Summarize build provenance
+        shell: python
+        run: |
+          import json
+          import os
+          from pathlib import Path
+          p = json.loads(Path(os.environ["RUNNER_TEMP"], "unstable-package/provenance.json").read_text())
+          with Path(os.environ["GITHUB_STEP_SUMMARY"]).open("a") as out:
+              out.write("## CLI build artifact\n\n")
+              out.write(f"- Backend: [{p['backend_run_id']}.{p['backend_run_attempt']}]({p['backend_run_url']})\n")
+              for key in ("backend_sha", "cli_sha", "raw_schema_sha256", "processed_schema_sha256", "binary_sha256", "generator_version"):
+                  out.write(f"- {key}: `{p[key]}`\n")
+              out.write("\nLinux amd64 only; 14-day retention. No release, branch write, deployment, or application API calls.\n")
+              out.write("Match Backend SHA to the deployed target before use; successful build is not runtime compatibility proof.\n")
+
+      - name: Remove sandbox on cancellation or failure
+        if: always()
+        timeout-minutes: 1
+        run: docker rm --force "unstable-cli-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" >/dev/null 2>&1 || true

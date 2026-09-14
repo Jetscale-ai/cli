@@ -1,0 +1,1 @@
+../../../../governance/.agents/codex/skills/core/fs-read/skill.md

@@ -1,0 +1,1 @@
+../../governance/.agents/codex/system-prompt.md

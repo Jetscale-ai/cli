@@ -1,6 +1,11 @@
 package cmd
 
 import (
+	"os"
+	"path/filepath"
+	"strings"
+
+	"github.com/Jetscale-ai/cli/internal/buildinfo"
 	"github.com/Jetscale-ai/cli/internal/config"
 	"github.com/Jetscale-ai/cli/internal/output"
 	"github.com/spf13/cobra"
@@ -14,23 +19,25 @@ var (
 
 // Global flags — available on every command.
 var (
-	flagInstance string
-	flagLocal    bool
-	flagAPIURL   string
-	flagAccount  string
-	flagOutput   string
+	flagInstance        string
+	flagLocal           bool
+	flagAPIURL          string
+	flagAccount         string
+	flagOutput          string
+	flagCAFile          string
+	flagCredentialsFile string
 )
 
 func newRootCmd() *cobra.Command {
 	root := &cobra.Command{
-		Use:   "jetscale",
+		Use:   executableName(),
 		Short: "JetScale CLI — cloud cost optimization from the terminal",
 		Long: `jetscale is the operator CLI for the JetScale cloud cost optimization platform.
 
 It provides authenticated access to recommendations, analysis, and remediation
 plans through a scriptable terminal interface.
 
-By default, commands target the JetScale SaaS (` + config.ProductionURL + `).
+This ` + buildinfo.Channel + ` build defaults to ` + buildinfo.DefaultURL() + `.
 Use -i to switch instances or --local for local development.
 
 Get started:
@@ -43,12 +50,18 @@ Developer shortcuts:
   jetscale --local auth login                 # authenticate to local backend
   jetscale --local accounts list              # discover local accounts
   jetscale --account staging recommendations list  # one-off account override`,
-		SilenceUsage: true,
+		SilenceUsage:  true,
+		SilenceErrors: true,
+		PersistentPreRunE: func(_ *cobra.Command, _ []string) error {
+			return buildinfo.Validate()
+		},
 	}
 
 	root.PersistentFlags().StringVarP(&flagInstance, "instance", "i", "", "named instance to target (e.g. local, staging)")
 	root.PersistentFlags().BoolVar(&flagLocal, "local", false, "target local backend (shorthand for -i local)")
 	root.PersistentFlags().StringVar(&flagAPIURL, "api-url", "", "override API URL directly")
+	root.PersistentFlags().StringVar(&flagCAFile, "ca-file", "", "additional trusted CA PEM for authenticated API requests")
+	root.PersistentFlags().StringVar(&flagCredentialsFile, "credentials-file", "", "local build only: read admin credentials from dotenv, sign in for one command, then sign out without saving")
 	root.PersistentFlags().StringVar(&flagAccount, "account", "", "cloud account name or ID override")
 	root.PersistentFlags().StringVarP(&flagOutput, "output", "o", "table", "output format: table, json, yaml")
 
@@ -57,8 +70,28 @@ Developer shortcuts:
 	root.AddCommand(newAuthCmd())
 	root.AddCommand(newAccountsCmd())
 	root.AddCommand(newSystemCmd())
+	root.AddCommand(newRecommendationsCmd())
 
+	wrapSessionLifecycle(root)
+	adaptHelp(root, root.Name())
 	return root
+}
+
+func executableName() string {
+	name := filepath.Base(os.Args[0])
+	if strings.HasSuffix(name, ".test") {
+		return buildinfo.BinaryName()
+	}
+	return name
+}
+
+// Only rewrite command examples, not hostnames or other occurrences of jetscale.
+func adaptHelp(cmd *cobra.Command, name string) {
+	cmd.Long = strings.ReplaceAll(cmd.Long, "jetscale ", name+" ")
+	cmd.Example = strings.ReplaceAll(cmd.Example, "jetscale ", name+" ")
+	for _, child := range cmd.Commands() {
+		adaptHelp(child, name)
+	}
 }
 
 // resolveAPI loads config and resolves the API URL using the global flags.

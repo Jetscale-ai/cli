@@ -1,0 +1,1 @@
+../../../../governance/.agents/skills/gha-workflow-naming/skill.md

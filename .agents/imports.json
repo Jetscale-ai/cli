@@ -1,0 +1,26 @@
+{
+  "version": 2,
+  "sourcePackage": "./codex",
+  "imports": [
+    { "bundle": "baseline" },
+    { "bundle": "go-service" },
+    { "bundle": "terminal" }
+  ],
+  "localOverrides": {
+    "skills": [
+      { "name": "gha-workflow-naming", "source": "repo" }
+    ],
+    "disabledSkills": []
+  },
+  "components": ["skills", "agents"],
+  "include": [],
+  "exclude": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/build/**",
+    "**/coverage/**",
+    "**/vendor/**",
+    "**/bin/**",
+    "internal/api/generated/**"
+  ]
+}

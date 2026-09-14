@@ -1,98 +1,20 @@
-name: Sync OpenAPI Spec
+name: Retired OpenAPI Sync
 
+# Keep the old workflow ID as an explicit, non-mutating manual failure.
+# Backend must dispatch build-cli.yml at the matching main/unstable ref instead.
 on:
-  repository_dispatch:
-    types: [openapi-spec-updated]
   workflow_dispatch:
-    inputs:
-      backend_branch:
-        description: "Backend branch to fetch the OpenAPI spec from (downloads artifact from latest GHA run on that branch)"
-        required: true
-        type: string
 
-permissions:
-  contents: write
+permissions: {}
 
 jobs:
-  sync:
-    runs-on: namespace-profile-jetscale-validate
+  retired:
+    name: Reject legacy schema sync
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
     steps:
-      - uses: actions/checkout@v5
-
-      - uses: actions/setup-go@v6
-        with:
-          go-version-file: go.mod
-
-      - name: Install oapi-codegen
-        run: go install github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen@latest
-
-      - name: Fetch OpenAPI spec from Backend
-        env:
-          GH_TOKEN: ${{ secrets.JETSCALEBOT_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
+      - name: Explain replacement
         run: |
-          SPEC_SHA="${{ github.event.client_payload.spec_sha }}"
-          SPEC_VERSION="${{ github.event.client_payload.spec_version }}"
-          BACKEND_BRANCH="${{ inputs.backend_branch }}"
-
-          if [ -n "$BACKEND_BRANCH" ]; then
-            echo "Fetching spec from Backend branch: ${BACKEND_BRANCH}"
-
-            RUN_ID=$(gh run list \
-              --repo Jetscale-ai/Backend \
-              -b "$BACKEND_BRANCH" \
-              -L1 --json databaseId -q '.[0].databaseId')
-
-            if [ -z "$RUN_ID" ]; then
-              echo "::error::No GHA runs found for branch '${BACKEND_BRANCH}'"
-              exit 1
-            fi
-
-            echo "Downloading openapi-spec artifact from run ${RUN_ID}..."
-            gh run download "$RUN_ID" \
-              -n openapi-spec \
-              --repo Jetscale-ai/Backend \
-              -D /tmp/openapi-artifact
-
-            cp /tmp/openapi-artifact/openapi.json openapi/spec.json
-            SPEC_VERSION="branch-${BACKEND_BRANCH}"
-          else
-            echo "Fetching spec (version: ${SPEC_VERSION:-unknown}, sha: ${SPEC_SHA:-unknown})"
-
-            gh api repos/Jetscale-ai/Backend/actions/artifacts \
-              --jq '.artifacts[] | select(.name == "openapi-spec") | .archive_download_url' \
-              | head -1 \
-              | xargs -I{} gh api {} > /tmp/spec.zip
-
-            unzip -o /tmp/spec.zip -d openapi/
-          fi
-
-          echo "SPEC_VERSION=${SPEC_VERSION}" >> "$GITHUB_ENV"
-
-      - name: Regenerate client
-        run: |
-          go install github.com/magefile/mage@latest
-          mage processSpec
-          mage generate
-
-      - name: Run tests
-        run: mage test
-
-      - name: Check for changes
-        id: diff
-        run: |
-          if git diff --quiet internal/api/generated/; then
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "changed=true" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Push to main
-        if: steps.diff.outputs.changed == 'true'
-        env:
-          GH_TOKEN: ${{ secrets.JETSCALEBOT_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
-        run: |
-          git config user.name "jetscalebot"
-          git config user.email "devops@jetscale.ai"
-          git add openapi/ internal/api/generated/
-          git commit -m "chore: sync OpenAPI spec from Backend ${SPEC_VERSION}"
-          git push origin main
+          echo 'OpenAPI sync is retired. Dispatch build-cli.yml with verified producer evidence at the matching CLI branch.'
+          echo 'See docs/backend-cli-builds.md. No generated-code commit or branch push was performed.'
+          exit 1

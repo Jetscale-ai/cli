@@ -1,0 +1,1 @@
+../../../../governance/.agents/skills/mermaid-diagrams/skill.md
