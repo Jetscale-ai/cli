@@ -79,7 +79,7 @@ Developer shortcuts:
 
 func executableName() string {
 	name := filepath.Base(os.Args[0])
-	if strings.HasSuffix(name, ".test") {
+	if strings.HasSuffix(name, ".test") || strings.HasSuffix(name, ".test.exe") {
 		return buildinfo.BinaryName()
 	}
 	return name

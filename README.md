@@ -226,11 +226,10 @@ Known gaps:
   Account listing no longer skips company-less superusers. Local file-mode
   account listing passed; real unstable/production tests, OS keychain storage,
   and independent server sessions remain pending. The local pass does not prove
-  other authenticated workflows. Windows ACL storage and the native CI gate are
-  implemented, but native Windows runtime tests have not run; the gate runs
-  after human landing. The parent-observed final local checks passed; see the
-  [validation record](docs/local-dev.md#credential-free-validation) for the
-  completed checks, including the final all-hooks pass.
+  other authenticated workflows. Native Windows CI found held-reader replacement
+  and test-executable naming failures; the repairs await native CI confirmation.
+  See the [validation record](docs/local-dev.md#credential-free-validation) for
+  local checks and the failing CI run.
 - The refreshed schema and generated bindings include custom recommendation
   regeneration, `excluded_source_keys`, and operation inspection. Their Cobra
   commands remain pending, as do `analyze` and `plan`.
@@ -427,10 +426,10 @@ this matrix is not Windows auth-runtime validation. The new `test-windows-auth`
 job uses `windows-2025` to run
 `go test -count=1 -timeout=5m ./internal/auth ./internal/cmd` within a 10-minute
 job limit, with a read-only contents token, no persisted checkout credentials,
-and Go setup caching disabled. Both build and release depend on it. Native
-Windows execution has not run yet; the gate runs after human landing on an
-eligible CI event. `build-cli.yml` remains the separate workflow-dispatched,
-schema-bound Linux amd64 artifact receiver.
+and Go setup caching disabled. Both build and release depend on it. The first
+native run failed; repair confirmation requires a passing run after human
+landing. `build-cli.yml` remains the separate workflow-dispatched, schema-bound
+Linux amd64 artifact receiver.
 
 **Stable integration gap:** Only eligible main pushes enter `ci.yml`'s separate
 tag/Release/Homebrew path. Release checkout pins `github.sha` and fails on a

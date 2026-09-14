@@ -247,11 +247,12 @@ account-listing proof; it does not establish every authenticated workflow or
 unstable/production compatibility. Schema descriptions mentioning Bearer auth do
 not override cookie-only endpoint behavior. The
 [validation record](docs/local-dev.md#credential-free-validation) records the
-parent-observed final local checks and all hooks passing. The Windows fix and
-native CI gate are implemented, but native Windows runtime has not run. None of
-these local checks prove remote new two-lane CI, a new two-lane Docker
-rehearsal, or unstable/production runtime auth. The previous Docker rehearsal
-covered only the old unstable-only receiver with synthetic GitHub provenance.
+parent-observed local checks and hook results. Native Windows CI found
+held-reader replacement and test-executable naming failures; repairs are
+implemented but await native CI confirmation. None of these local checks prove
+remote new two-lane CI, a new two-lane Docker rehearsal, or unstable/production
+runtime auth. The previous Docker rehearsal covered only the old unstable-only
+receiver with synthetic GitHub provenance.
 
 The planned FOCUS API harness belongs to Stack, with a separate authorized
 execution contract: at most six serial regenerations, no retries, and
@@ -269,9 +270,9 @@ that matrix is not runtime or Windows auth validation. The new
 `test-windows-auth` job on `windows-2025` runs
 `go test -count=1 -timeout=5m ./internal/auth ./internal/cmd` with a 10-minute
 job limit, `contents: read`, checkout credential persistence disabled, and Go
-setup caching disabled. Both `build` and `release` depend on it. Native Windows
-execution has not run; the gate runs after human landing on an eligible CI
-event. The separate `build-cli.yml` receiver is workflow-dispatched and builds
+setup caching disabled. Both `build` and `release` depend on it. The first
+native run failed; repair confirmation requires a passing run after human
+landing. The separate `build-cli.yml` receiver is workflow-dispatched and builds
 the schema-bound Linux amd64 package described below.
 
 1. An eligible CLI `main` push enters `ci.yml`'s stable release job after lint

@@ -122,9 +122,9 @@ last-writer-wins. Never remove the sidecar as a stale-lock fix; handle close or
 process exit releases the lock. Permission/platform errors fail closed; see
 [storage security and recovery](../docs/local-dev.md#session-store-security-and-concurrent-commands).
 
-OS keychain storage and independent server sessions remain outstanding. Windows
-ACL/locking support and a native CI gate are implemented, but native Windows
-runtime tests have not run. Documentation or offline tests grant no
+OS keychain storage and independent server sessions remain outstanding. Native
+Windows CI found held-reader replacement and test-executable naming failures;
+repairs await native CI confirmation. Documentation or offline tests grant no
 application-call authority.
 
 ## Branch Strategy
@@ -156,9 +156,9 @@ Releases are automated on merge to `main`:
    The new `test-windows-auth` job on `windows-2025` runs
    `go test -count=1 -timeout=5m ./internal/auth ./internal/cmd` with a
    10-minute job limit, `contents: read`, no persisted checkout credentials, and
-   Go setup caching disabled. Both `build` and `release` depend on it. Native
-   Windows execution has not run; the gate runs after human landing on an
-   eligible CI event.
+   Go setup caching disabled. Both `build` and `release` depend on it. The first
+   native run failed; repair confirmation requires a passing run after human
+   landing.
 2. Only eligible main pushes enter the release job. Checkout pins `github.sha`
    and fails if HEAD differs from the tested event SHA, not moving `main`.
    `go-semantic-release` calculates a version, then a separate step creates the
@@ -215,8 +215,9 @@ Workspace-only artifact builds do not refresh those inputs or prove stable
 release parity. Durable schema integration needs a separate reviewed change.
 
 The [local validation record](../docs/local-dev.md#credential-free-validation)
-records the parent-observed final local checks and all hooks passing. Native
-Windows runtime tests have not run. No remote new two-lane CI, new two-lane
-Docker rehearsal, or unstable/production runtime auth is proved. The
+records local checks, hook results, and the failing native Windows CI run.
+Native confirmation of the repairs remains pending. No remote new two-lane CI,
+new two-lane Docker rehearsal, or unstable/production runtime auth is proved.
+The
 [previous Docker rehearsal](../docs/local-dev.md#unstable-receiver-implementation-and-validation-limits)
 is historical old-receiver evidence only, not validation of the new path.

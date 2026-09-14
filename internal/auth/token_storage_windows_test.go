@@ -8,6 +8,7 @@ import (
 	"net/http/httptest"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 
 	"github.com/Jetscale-ai/cli/internal/buildinfo"
@@ -151,6 +152,7 @@ func TestWindowsStoreRoundTripAndReplacement(t *testing.T) {
 
 func TestWindowsHeldReaderAllowsReplacement(t *testing.T) {
 	isolateSessionStore(t)
+	t.Setenv(buildinfo.EnvVar("CONFIG_DIR"), filepath.Join(privateTempDir(t), "配置-🔒"))
 	if err := SetToken("fixture", TokenEntry{AccessToken: "synthetic-old"}); err != nil {
 		t.Fatal(err)
 	}
@@ -167,21 +169,75 @@ func TestWindowsHeldReaderAllowsReplacement(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if err := SetToken("fixture", TokenEntry{AccessToken: "synthetic-new"}); err != nil {
+	// Replacements must retain the temporary file's protected DACL rather than
+	// inherit a directory's otherwise permissible inherit-only read grant.
+	setTestStoreDACL(t, filepath.Dir(p), testStoreSDDL(t)+"(A;OIIO;FR;;;WD)")
+	for _, value := range []string{"synthetic-new", "synthetic-newer"} {
+		if err := SetToken("fixture", TokenEntry{AccessToken: value}); err != nil {
+			t.Fatal(err)
+		}
+		if _, err := reader.Seek(0, io.SeekStart); err != nil {
+			t.Fatal(err)
+		}
+		after, err := io.ReadAll(reader)
+		if err != nil || string(before) != string(after) {
+			t.Fatal("held reader did not retain its original snapshot")
+		}
+		got, ok, err := GetToken("fixture")
+		if err != nil || !ok || got.AccessToken != value {
+			t.Fatal("replacement not visible to new readers")
+		}
+		assertPrivateTokenFile(t, p)
+		if err := privateStoreFile(reader); err != nil {
+			t.Fatal("held reader lost its private ACL")
+		}
+	}
+	entries, err := os.ReadDir(filepath.Dir(p))
+	if err != nil || len(entries) != 2 || entries[0].Name() != tokensLockName || entries[1].Name() != tokensFileName {
+		t.Fatal("replacement left temporary files behind")
+	}
+}
+
+func TestWindowsReplacementFailurePreservesStore(t *testing.T) {
+	isolateSessionStore(t)
+	if err := SetToken("fixture", TokenEntry{AccessToken: "synthetic-old"}); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := reader.Seek(0, io.SeekStart); err != nil {
+	p, _ := tokensPath()
+	name, err := windows.UTF16PtrFromString(p)
+	if err != nil {
 		t.Fatal(err)
 	}
-	after, err := io.ReadAll(reader)
-	if err != nil || string(before) != string(after) {
-		t.Fatal("held reader did not retain its original snapshot")
+	attrs, err := windows.GetFileAttributes(name)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := windows.SetFileAttributes(name, attrs|windows.FILE_ATTRIBUTE_READONLY); err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() {
+		if err := windows.SetFileAttributes(name, attrs); err != nil {
+			t.Error(err)
+		}
+	})
+	// POSIX replacement must not silently ignore the read-only attribute or
+	// delete the old file as a fallback. No retry can repair this condition.
+	err = SetToken("fixture", TokenEntry{AccessToken: "synthetic-new"})
+	if err == nil || !strings.HasPrefix(err.Error(), "replace token store failed (OS error ") {
+		t.Fatal("replacement failure did not report a sanitized OS error code")
+	}
+	if strings.Contains(err.Error(), filepath.Dir(p)) || strings.Contains(err.Error(), "synthetic-") {
+		t.Fatal("replacement error exposed a path or credential")
 	}
 	got, ok, err := GetToken("fixture")
-	if err != nil || !ok || got.AccessToken != "synthetic-new" {
-		t.Fatal("replacement not visible to new readers")
+	if err != nil || !ok || got.AccessToken != "synthetic-old" {
+		t.Fatal("failed replacement damaged the existing store")
 	}
 	assertPrivateTokenFile(t, p)
+	entries, err := os.ReadDir(filepath.Dir(p))
+	if err != nil || len(entries) != 2 || entries[0].Name() != tokensLockName || entries[1].Name() != tokensFileName {
+		t.Fatal("failed replacement left temporary files behind")
+	}
 }
 
 func TestWindowsStoreRejectsUnsafeLockACL(t *testing.T) {

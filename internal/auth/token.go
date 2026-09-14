@@ -2,9 +2,11 @@ package auth
 
 import (
 	"errors"
+	"fmt"
 	"io"
 	"os"
 	"path/filepath"
+	"syscall"
 	"time"
 
 	"github.com/Jetscale-ai/cli/internal/buildinfo"
@@ -212,7 +214,12 @@ func saveTokens(p string, store TokenStore) error {
 	if err := f.Close(); err != nil {
 		return errors.New("close token store failed")
 	}
-	if err := os.Rename(f.Name(), p); err != nil {
+	if err := replaceStoreFile(f.Name(), p); err != nil {
+		// Preserve a diagnostic code, never OS error text containing file paths.
+		var errno syscall.Errno
+		if errors.As(err, &errno) {
+			return fmt.Errorf("replace token store failed (OS error %d)", uint64(errno))
+		}
 		return errors.New("replace token store failed")
 	}
 	return nil

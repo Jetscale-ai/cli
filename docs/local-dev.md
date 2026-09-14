@@ -250,6 +250,14 @@ process exits. The sidecar remains in place: do not delete or replace it as a
 stale-lock fix. The existing `golang.org/x/sys` dependency is now direct at the
 same version, `v0.41.0`, for platform ACL/locking support.
 
+Windows replacement uses `SetFileInformationByHandle(FileRenameInfoEx)` with
+replace-existing and POSIX semantics, preserving held readers' old snapshots
+while new readers see the private replacement. It revalidates the temporary
+file's ACL/type through its publishing handle; Unix retains `os.Rename`.
+Unsupported Windows/filesystem implementations fail closed without retries or a
+delete-then-rename fallback. Replacement errors include only an OS error code,
+never credential contents or file paths.
+
 **Platform errors:** Unsafe owner/ACL, unsupported ACE, reparse-path, file-type,
 or Unix permission errors stop storage access; there is no insecure fallback.
 Have the owner review permissions or select a compliant, non-reparse config
@@ -261,11 +269,11 @@ command finish and inspect its outcome before retrying, especially if the failed
 command may already have made a server request. Save/cleanup errors remain
 nonzero failures.
 
-**Evidence limit:** The Windows implementation and native CI gate exist in
-source; native Windows runtime tests have not run. See
-[credential-free validation](#credential-free-validation) for the
-parent-observed final checks and all-hooks pass. Cross-builds and vet do not
-prove Windows ACL or locking behavior at runtime.
+**Evidence limit:** The first native Windows CI run failed; the replacement and
+test-executable naming repairs await native confirmation. See
+[credential-free validation](#credential-free-validation) for the CI evidence
+and local repair checks. Cross-builds and vet do not prove Windows ACL or
+locking behavior at runtime.
 
 ## Local cookie authentication
 
@@ -541,11 +549,12 @@ checks compilation, not Windows auth-runtime behavior. The new
 `test-windows-auth` job runs natively on `windows-2025` with
 `go test -count=1 -timeout=5m ./internal/auth ./internal/cmd`, a 10-minute job
 limit, `contents: read`, checkout credential persistence disabled, and Go setup
-caching disabled. Both `build` and `release` depend on it. It has not run yet;
-the gate runs after human landing on an eligible CI event. This credential-free
-job does not prove deployed Backend authentication. `build-cli.yml` remains a
-separate workflow-dispatch receiver with Linux amd64 packaging and provenance
-checks; a green ordinary CI run does not establish receiver success.
+caching disabled. Both `build` and `release` depend on it. The first native run
+failed; repair confirmation requires a passing run after human landing. This
+credential-free job does not prove deployed Backend authentication.
+`build-cli.yml` remains a separate workflow-dispatch receiver with Linux amd64
+packaging and provenance checks; a green ordinary CI run does not establish
+receiver success.
 
 **Stable integration gap:** Only eligible main pushes enter `ci.yml`'s stable
 release job. Its checkout now pins `github.sha` and fails if HEAD differs from
@@ -589,14 +598,34 @@ tests and every hook passed, including codespell. The Unicode test filename
 correction retained non-ASCII coverage. This records local validation, not a
 staged-file check or native Windows/remote execution.
 
-These are supplied parent-observed results, not checks rerun by this
-documentation update. Native Windows runtime tests have **not** run; the new
-`test-windows-auth` gate in `ci.yml` runs after human landing. Remote new
-two-lane CI, a new two-lane Docker rehearsal, and unstable/production runtime
-authentication remain unproved. Cross-compilation and vet do not establish
-Windows ACL or locking behavior at runtime. The earlier operator-reported local
-account-listing result remains separate runtime evidence, limited to the exact
-invocation recorded above.
+The preceding results record the pre-repair local checkpoint, not native Windows
+success. Remote new two-lane CI, a new two-lane Docker rehearsal, and
+unstable/production runtime authentication remain unproved. Cross-compilation
+and vet do not establish Windows ACL or locking behavior at runtime. The earlier
+operator-reported local account-listing result remains separate runtime
+evidence, limited to the exact invocation recorded above.
+
+### Windows CI failure and repair
+
+[CI run 34904472724](https://github.com/Jetscale-ai/cli/actions/runs/34904472724)
+ran on `windows-2025` with Go 1.25.0. Linux lint/tests passed, but
+`TestWindowsHeldReaderAllowsReplacement` failed with
+`replace token store failed` and `TestVersionCommand` printed `cmd.test.exe`
+instead of `jetscale`. Build and release were skipped. Delete-sharing alone did
+not make `os.Rename` safe for an open destination on Windows.
+
+The repair uses handle-based POSIX replacement, retains ACL validation and the
+writer lock, and recognizes both `.test` and `.test.exe` as test binaries while
+preserving actual executable names. Regression tests cover repeated replacement
+with a held reader, Unicode paths, ACL preservation, cleanup, read-only failure
+without damaging the old store, and executable names in all three channels.
+
+Local repair checks passed with Go 1.25.8: `mage test`, race-enabled Go tests,
+Mage tests, vet, lint (0 issues), and all six cross-build targets. Windows
+amd64/arm64 auth and cmd test cross-compilation and vet also passed. Native
+Windows execution of this repair remains pending; the existing release gate is
+unchanged and must pass after human landing. No Backend or application calls
+were made during this repair.
 
 ```sh
 python3 -B -m unittest discover -s scripts -p 'test_*.py'

@@ -103,6 +103,55 @@ func openStoreFile(path string) (*os.File, error) {
 	return os.NewFile(uintptr(h), path), nil
 }
 
+// replaceStoreFile publishes a closed, synced private temporary file. MoveFileEx
+// (used by os.Rename) cannot replace an open destination merely because readers
+// share DELETE. FileRenameInfoEx with POSIX semantics keeps those readers on the
+// old file while subsequent opens see the new one, without a delete/rename gap.
+// Unsupported filesystems fail closed; do not fall back or retry the replacement.
+// https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/ns-ntifs-_file_rename_information
+func replaceStoreFile(oldpath, newpath string) error {
+	if filepath.Dir(oldpath) != filepath.Dir(newpath) {
+		return errUnsafeStore
+	}
+	abs, err := filepath.Abs(newpath)
+	if err != nil {
+		return errUnsafeStore
+	}
+	name, err := windows.UTF16FromString(abs)
+	if err != nil || len(name) > 32767 {
+		return errUnsafeStore
+	}
+	source, err := windows.UTF16PtrFromString(oldpath)
+	if err != nil {
+		return errUnsafeStore
+	}
+	// No data-write access remains when the file becomes visible. Sharing READ
+	// and DELETE permits new readers even before this publishing handle closes.
+	h, err := windows.CreateFile(source, windows.DELETE|windows.READ_CONTROL|windows.FILE_READ_ATTRIBUTES, windows.FILE_SHARE_READ|windows.FILE_SHARE_DELETE, nil, windows.OPEN_EXISTING, windows.FILE_FLAG_OPEN_REPARSE_POINT, 0)
+	if err != nil {
+		return err
+	}
+	defer func() { _ = windows.CloseHandle(h) }()
+	if err := validateStoreHandle(h, false); err != nil {
+		return err
+	}
+	// FILE_RENAME_INFO has a variable-length UTF-16 tail. Handle-sized alignment
+	// keeps this layout correct on both 32- and 64-bit Windows.
+	type fileRenameInfo struct {
+		Flags          uint32
+		RootDirectory  windows.Handle
+		FileNameLength uint32
+		FileName       [1]uint16
+	}
+	var layout fileRenameInfo
+	buffer := make([]byte, int(unsafe.Sizeof(layout))+len(name)*2)
+	info := (*fileRenameInfo)(unsafe.Pointer(&buffer[0]))
+	info.Flags = windows.FILE_RENAME_REPLACE_IF_EXISTS | windows.FILE_RENAME_POSIX_SEMANTICS
+	info.FileNameLength = uint32((len(name) - 1) * 2)
+	copy(unsafe.Slice(&info.FileName[0], len(name)), name)
+	return windows.SetFileInformationByHandle(h, windows.FileRenameInfoEx, &buffer[0], uint32(len(buffer)))
+}
+
 func openStoreLockFile(path string) (*os.File, error) {
 	sd, err := privateStoreDescriptor()
 	if err != nil {

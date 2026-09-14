@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"strings"
 	"testing"
@@ -58,6 +59,26 @@ func TestChannelVersionAndHelpOffline(t *testing.T) {
 				}
 				if channel != "live" && strings.Contains(text, "  jetscale ") {
 					t.Fatal("live binary in command example")
+				}
+			})
+		}
+	}
+}
+
+func TestExecutableName(t *testing.T) {
+	channel, args := buildinfo.Channel, os.Args
+	t.Cleanup(func() { buildinfo.Channel, os.Args = channel, args })
+	for _, channel := range []string{"live", "local", "unstable"} {
+		for _, name := range []string{"cmd.test", "cmd.test.exe", "jetscale.exe", "my-local-cli"} {
+			t.Run(channel+"/"+name, func(t *testing.T) {
+				buildinfo.Channel = channel
+				os.Args = []string{filepath.Join("sandbox", name)}
+				want := name
+				if name == "cmd.test" || name == "cmd.test.exe" {
+					want = buildinfo.BinaryName()
+				}
+				if got := newRootCmd().Name(); got != want {
+					t.Fatalf("command name = %q, want %q", got, want)
 				}
 			})
 		}

@@ -13,6 +13,8 @@ func createStoreDir(dir string) error { return os.MkdirAll(dir, 0o700) }
 
 func openStoreFile(path string) (*os.File, error) { return os.Open(path) }
 
+func replaceStoreFile(oldpath, newpath string) error { return os.Rename(oldpath, newpath) }
+
 func openStoreLockFile(path string) (*os.File, error) {
 	// O_NONBLOCK avoids hanging on an existing FIFO before type validation.
 	fd, err := unix.Open(path, unix.O_RDWR|unix.O_CREAT|unix.O_CLOEXEC|unix.O_NOFOLLOW|unix.O_NONBLOCK, 0o600)

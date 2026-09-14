@@ -121,8 +121,9 @@ semantic E2E evidence.
 
 **Status:** CLI-only cookie auth and local credentials-file mode
 source-implemented; local file-mode account listing passed. Windows ACL storage,
-interprocess locking, and a native Windows CI gate are now implemented. Native
-Windows runtime has not run; OS keychain storage, independent server sessions,
+interprocess locking, and a native Windows CI gate are implemented. The first
+native run failed on held-reader replacement and test-executable naming; repairs
+await native CI confirmation. OS keychain storage, independent server sessions,
 and real unstable/production tests remain pending.
 
 - `auth.Session` binds cookies to the exact API origin and compiled channel.
@@ -184,10 +185,11 @@ resolved it without dependency changes.
 
 **Final local checks (2026-09-14, parent-observed): PASSED.** The
 [canonical validation record](docs/local-dev.md#credential-free-validation)
-lists the completed checks, including the final all-hooks pass. Native Windows
-runtime has not run; the new `test-windows-auth` CI gate runs after human
-landing. These results do not establish remote new two-lane builds or
-unstable/production runtime auth.
+lists local checks and the subsequent native CI failures. Held-reader
+replacement and `.test.exe` naming repairs are implemented with regression
+coverage; a passing native `test-windows-auth` run remains required. These
+results do not establish remote new two-lane builds or unstable/production
+runtime auth.
 
 **Exit criteria:** Credential-free checks cover verified login, cookie rotation,
 read calls, logout, origin/channel isolation, token precedence, and file-mode
@@ -300,8 +302,8 @@ publishing CLI binaries. The new `test-windows-auth` job runs
 `go test -count=1 -timeout=5m ./internal/auth ./internal/cmd` on `windows-2025`
 with a 10-minute job limit, `contents: read`, checkout credential persistence
 disabled, and Go setup caching disabled. Both build and release depend on it;
-native execution remains pending human landing. Cross-builds do not prove
-Windows auth behavior, and ordinary CI does not prove the separate
+native repair confirmation remains pending human landing. Cross-builds do not
+prove Windows auth behavior, and ordinary CI does not prove the separate
 `build-cli.yml` artifact receiver.
 
 **Stable integration gap:** Only eligible main pushes enter `ci.yml`'s semantic
