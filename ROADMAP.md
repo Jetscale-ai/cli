@@ -1,6 +1,6 @@
 # JetScale CLI — Roadmap
 
-**Last updated:** 2026-09-14 **Status:** Active; CI activation pending
+**Last updated:** 2026-09-15 **Status:** Active; artifact delivery unverified
 
 Last reviewed: 2026-09-14 against the working-tree workflows, `scripts/`,
 `magefile.go`, `openapi/spec.json`, and `internal/`.
@@ -121,10 +121,12 @@ semantic E2E evidence.
 
 **Status:** CLI-only cookie auth and local credentials-file mode
 source-implemented; local file-mode account listing passed. Windows ACL storage,
-interprocess locking, and a native Windows CI gate are implemented. The first
-native run failed on held-reader replacement and test-executable naming; repairs
-await native CI confirmation. OS keychain storage, independent server sessions,
-and real unstable/production tests remain pending.
+interprocess locking, and a native Windows CI gate are implemented. The initial
+held-reader replacement and test-executable naming failures were repaired in
+`db131da`; native Windows auth/cmd tests passed in
+[CI run 34906212042](https://github.com/Jetscale-ai/cli/actions/runs/34906212042).
+OS keychain storage, independent server sessions, and real unstable/production
+tests remain pending.
 
 - `auth.Session` binds cookies to the exact API origin and compiled channel.
   Login verifies `/api/v2/auth/me`; normal interactive login uses a hidden TTY
@@ -161,8 +163,8 @@ and real unstable/production tests remain pending.
   still require HTTPS. Migration requires a new login for unbound legacy
   credentials; bound alias migration is limited to the same origin/channel. See
   [migration and transport compatibility](docs/local-dev.md#auth-migration-and-transport-compatibility).
-  Native Windows auth-runtime validation remains outstanding; implementation,
-  cross-compilation, and vet do not establish Windows runtime support.
+  Native credential-free Windows auth/cmd tests passed on `db131da`; deployed
+  Backend authentication on Windows remains outside that evidence.
 
 **Server limitation:** Backend login closes prior sessions for the same user,
 including browser sessions. No Backend change or independent-session guarantee
@@ -187,29 +189,36 @@ resolved it without dependency changes.
 [canonical validation record](docs/local-dev.md#credential-free-validation)
 lists local checks and the subsequent native CI failures. Held-reader
 replacement and `.test.exe` naming repairs are implemented with regression
-coverage; a passing native `test-windows-auth` run remains required. These
-results do not establish remote new two-lane builds or unstable/production
-runtime auth.
+coverage and subsequently passed native Windows CI on `db131da`. These results
+do not establish remote new two-lane builds or unstable/production runtime auth.
+
+**Windows deferral resolved:** The 2026-09-14 deferral due to unavailable local
+Windows test access is closed by native CI run 34906212042 for `db131da`. Retain
+the native build/release gate, both cross-build targets, and regression
+coverage. Passing credential-free CI does not establish deployed Backend auth
+compatibility; no gate was waived.
 
 **Exit criteria:** Credential-free checks cover verified login, cookie rotation,
 read calls, logout, origin/channel isolation, token precedence, and file-mode
-cleanup on success/error. Retain the bounded local file-mode pass; native
-Windows storage/locking/auth tests, persistent interactive runtime validation,
-and separately authorized real unstable/production tests remain outstanding,
-with no secrets in logs or evidence. Keychain storage and independent server
-sessions require follow-up work. The local pass alone does not close this
-package.
+cleanup on success/error. Retain the bounded local file-mode pass and native
+Windows CI evidence. Persistent interactive runtime validation and separately
+authorized real unstable/production tests remain outstanding, with no secrets in
+logs or evidence. Keychain storage and independent server sessions require
+follow-up work. The local pass alone does not close this package.
 
 ---
 
 ## WP4 — Verified Branch-Matched Artifact Delivery
 
-**Status:** Two-lane receiver/verifier/packager source has reported local
-validation. The Backend two-lane completion dispatcher is required work, not
-implemented. Human ratification/activation, real producer/receiver CI, and a new
-two-lane Docker rehearsal remain outstanding. The previous Docker rehearsal
-covered only the old unstable-only receiver, not this path. **Owners:** Backend
-producer/dispatcher; CLI receiver/build. **Dependency:** WP2.
+**Status:** Two-lane receiver/verifier/packager source is present on both remote
+CLI branches at `db131da`. The run-name compatibility fix and regression tests
+must still land on both. Backend's working tree now implements the two-lane
+completion dispatcher and manifest export, with main dispatch gated by
+`CLI_MAIN_BUILDS_ENABLED`; remote landing and activation remain unverified.
+Publication authority, real producer/receiver CI, and a new two-lane Docker
+rehearsal still require verification. The previous Docker rehearsal covered only
+the old unstable-only receiver. **Owners:** Backend producer/dispatcher; CLI
+receiver/build. **Dependency:** WP2.
 
 The single receiver is `.github/workflows/build-cli.yml` (renamed from
 `build-unstable.yml`). `scripts/unstable_build.py` and
@@ -225,9 +234,9 @@ The single receiver is `.github/workflows/build-cli.yml` (renamed from
 1. The required Backend completion dispatcher must live on `main` and handle
    `workflow_run` for `main` and `unstable`; only successful completed **push**
    producers may dispatch CLI `workflow_dispatch` to the exact matching branch.
-   This dispatcher remains unimplemented. CLI receiver source no longer accepts
-   legacy `repository_dispatch` events; Backend's legacy dispatch paths still
-   need replacement.
+   This dispatcher exists in Backend's working tree. CLI receiver source no
+   longer accepts legacy `repository_dispatch` events; verify the replacement
+   paths and legacy inline-dispatch removal on the deployed remote sources.
 2. The ten inputs are `upstream_repo`, `upstream_workflow`, `upstream_run_id`,
    `upstream_run_url`, `upstream_sha`, `backend_run_attempt`, `backend_branch`,
    `spec_sha`, `spec_version`, and `artifact_name`. CLI verifies the producer
@@ -254,14 +263,15 @@ The single receiver is `.github/workflows/build-cli.yml` (renamed from
 
 **Landing and activation gates (human-owned):**
 
-1. Land CLI `main` first: register `build-cli.yml` and retire `sync-openapi.yml`
-   as a fail-closed manual tombstone with no writes or legacy dispatch trigger.
-2. Land the same complete sources, tools, and workflow on CLI `unstable`; review
-   both branches as trusted host code.
+1. CLI `main` already contains `build-cli.yml` and the fail-closed manual
+   `sync-openapi.yml` tombstone. Validate and land the pending receiver fix.
+2. CLI `unstable` currently matches `main`; carry the validated fix and complete
+   tooling to it. Review both branches as trusted host code.
 3. Verify Backend `pipeline.yml` / `build-release.yml` producers on `main` and
-   `unstable` export the same manifest contract with the actual branch.
-   Generalize the dispatcher on Backend `main` to completed runs on both
-   branches and remove the inline main legacy sync dispatch.
+   `unstable` export the same manifest contract with the actual branch. Land and
+   verify the working-tree dispatcher on Backend `main`, keeping main dispatch
+   disabled until unstable delivery passes. Verify legacy inline sync dispatch
+   is removed.
 4. Ratify the proposed authority through human review/commit, verify scoped
    token permissions and consumers, and obtain real CI evidence for both lanes.
 
@@ -302,9 +312,9 @@ publishing CLI binaries. The new `test-windows-auth` job runs
 `go test -count=1 -timeout=5m ./internal/auth ./internal/cmd` on `windows-2025`
 with a 10-minute job limit, `contents: read`, checkout credential persistence
 disabled, and Go setup caching disabled. Both build and release depend on it;
-native repair confirmation remains pending human landing. Cross-builds do not
-prove Windows auth behavior, and ordinary CI does not prove the separate
-`build-cli.yml` artifact receiver.
+native repair confirmation passed on `db131da` in CI run 34906212042.
+Cross-builds do not prove Windows auth behavior, and ordinary CI does not prove
+the separate `build-cli.yml` artifact receiver.
 
 **Stable integration gap:** Only eligible main pushes enter `ci.yml`'s semantic
 versioning, GoReleaser, GitHub Release, and Homebrew path. Release checkout is

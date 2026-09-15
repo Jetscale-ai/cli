@@ -49,7 +49,8 @@ class FixtureAPI:
             "id": 3001, "run_attempt": 2, "head_sha": "a" * 40,
             "status": "completed", "conclusion": "success", "event": "push",
             "head_branch": branch, "path": ".github/workflows/pipeline.yml",
-            "name": "Build & Release", "workflow_id": 2001,
+            "name": f"Build & Release ({branch})", "display_title": f"Build & Release ({branch})",
+            "workflow_id": 2001,
             "repository": copy.deepcopy(self.repo), "head_repository": copy.deepcopy(self.repo),
         }
         self.schema = {
@@ -375,6 +376,49 @@ class ReceiverTests(unittest.TestCase):
         with self.assertRaises(verifier.VerificationError):
             verifier.verify(self.api, {**self.payload, "backend_branch": "feature"}, self.consumer)
         self.assertEqual(self.api.calls, [])
+
+    def test_unqualified_run_name_remains_accepted_for_both_branches(self):
+        for branch in ("main", "unstable"):
+            with self.subTest(branch=branch):
+                self.configure_branch(branch)
+                self.api.run["name"] = "Build & Release"
+                self.assert_fetch_and_recheck()
+
+    def test_display_title_is_not_workflow_identity(self):
+        for branch in ("main", "unstable"):
+            for title in ("A commit message", "Build & Release (other)", None):
+                with self.subTest(branch=branch, title=title):
+                    self.configure_branch(branch)
+                    self.api.run["display_title"] = title
+                    self.verify()
+
+    def test_run_name_must_match_verified_branch(self):
+        for branch, other in (("main", "unstable"), ("unstable", "main")):
+            for name in (f"Build & Release ({other})", "Build & Release (feature)",
+                         f"Build & Release (refs/heads/{branch})", f"Build & Release ({branch}) extra",
+                         f"Build & Release ({branch})\n", f"build & release ({branch})",
+                         "Other", "", None, [], True):
+                with self.subTest(branch=branch, name=name):
+                    self.configure_branch(branch)
+                    self.api.run["name"] = name
+                    with self.assertRaisesRegex(verifier.VerificationError, "Unexpected Backend workflow"):
+                        self.verify()
+
+    def test_branch_qualified_name_does_not_replace_workflow_identity(self):
+        for branch in ("main", "unstable"):
+            for target, field, value in (
+                ("workflow", "name", f"Build & Release ({branch})"),
+                ("workflow", "name", "Other"),
+                ("workflow", "path", ".github/workflows/other.yml"),
+                ("workflow", "id", 2002),
+                ("run", "path", ".github/workflows/other.yml"),
+                ("run", "workflow_id", 2002),
+            ):
+                with self.subTest(branch=branch, target=target, field=field, value=value):
+                    self.configure_branch(branch)
+                    getattr(self.api, target)[field] = value
+                    with self.assertRaises(verifier.VerificationError):
+                        self.verify()
 
     def test_run_rejections(self):
         for field, value in (
@@ -776,6 +820,27 @@ class ReceiverTests(unittest.TestCase):
         with self.assertRaisesRegex(verifier.VerificationError, "Saved provenance"):
             verifier.recheck(output, self.api, self.payload, self.consumer)
         self.assertTrue(any("/artifacts/4002/zip" in path for path in self.api.calls))
+
+    def test_recheck_rejects_changed_workflow_identity(self):
+        for branch, other in (("main", "unstable"), ("unstable", "main")):
+            with self.subTest(branch=branch):
+                self.configure_branch(branch)
+                output = self.root / branch
+                verifier.fetch(output, self.api, self.payload, self.consumer)
+                before = {p.name: p.read_bytes() for p in output.iterdir()}
+                for target, field, value in (
+                    ("run", "name", f"Build & Release ({other})"),
+                    ("run", "path", ".github/workflows/other.yml"),
+                    ("run", "workflow_id", 2002),
+                    ("workflow", "name", f"Build & Release ({branch})"),
+                    ("workflow", "id", 2002),
+                ):
+                    with self.subTest(target=target, field=field):
+                        self.api = FixtureAPI(branch)
+                        getattr(self.api, target)[field] = value
+                        with self.assertRaises(verifier.VerificationError):
+                            verifier.recheck(output, self.api, self.payload, self.consumer)
+                        self.assertEqual(before, {p.name: p.read_bytes() for p in output.iterdir()})
 
     def test_recheck_rejects_extra_files_and_provenance_extensions(self):
         output = self.root / "verified"

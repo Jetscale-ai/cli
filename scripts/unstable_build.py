@@ -269,7 +269,10 @@ def verify_run(run, payload, repo, workflow_id):
             "Backend pipeline must be completed and successful")
     require(run.get("event") == "push" and run.get("head_branch") == payload["backend_branch"],
             "Only matching Backend branch pushes qualify")
-    require(run.get("path") == WORKFLOW and run.get("name") == WORKFLOW_NAME
+    # GitHub run names can reflect the branch-qualified display name, unlike the
+    # registered workflow name checked by verify(). Never use display_title as identity.
+    expected_names = (WORKFLOW_NAME, f"{WORKFLOW_NAME} ({payload['backend_branch']})")
+    require(run.get("path") == WORKFLOW and run.get("name") in expected_names
             and positive_id(run.get("workflow_id")) == workflow_id, "Unexpected Backend workflow")
     repository(run.get("repository"), BACKEND, repo["id"])
     repository(run.get("head_repository"), BACKEND, repo["id"])

@@ -1,11 +1,14 @@
 # Backend-triggered CLI builds
 
-Status: CLI receiver source implemented with reported local validation. The
-Backend two-lane completion dispatcher is **required work, not implemented**.
-Human review, branch placement, token access, a new two-lane Docker rehearsal,
-and real upstream CI verification remain outstanding. This document is a Backend
-handoff, not a claim that the intended dispatcher exists. No Backend files are
-changed by this CLI documentation update.
+Status (2026-09-15): CLI receiver source is implemented. Remote CLI `main` and
+`unstable` both point to `db131da` and contain `build-cli.yml`; the run-name
+compatibility fix must still land on both. The Backend working tree now contains
+the two-lane completion dispatcher and schema manifest export, with main
+dispatch gated by `CLI_MAIN_BUILDS_ENABLED`. Backend remote landing, publication
+authority, token access, a new two-lane Docker rehearsal, and real
+producer/receiver runs remain unverified. No `build-cli.yml` runs were found at
+this checkpoint. This handoff does not authorize activation or change Backend
+files.
 
 ## Branch and artifact contract
 
@@ -45,8 +48,12 @@ integration needs a separately reviewed change.
 ## Required producer artifact
 
 The verifier admits only completed, successful **push** runs of Backend's
-`.github/workflows/pipeline.yml`, whose display name is `Build & Release`, in
-`Jetscale-ai/Backend`. PRs, manual Backend runs and forks are rejected.
+`.github/workflows/pipeline.yml` in `Jetscale-ai/Backend`. The registered
+workflow must be named `Build & Release`. A run may use that name or exactly
+`Build & Release (main)` / `Build & Release (unstable)`, matching its verified
+branch. `display_title` is not workflow identity; workflow ID, path, repository,
+branch, SHA and attempt checks remain mandatory at fetch and pre-publication
+recheck. PRs, manual Backend runs and forks are rejected.
 
 Exactly one non-expired `openapi-spec` artifact must belong to the verified run,
 SHA and branch. Its ZIP must contain exactly:
@@ -85,8 +92,8 @@ assuming an existing artifact can be overwritten or relaxing the verifier.
 
 ## Dispatch request
 
-The following is the required dispatch contract, not current Backend behavior.
-The not-yet-implemented two-lane completion workflow must call:
+The Backend working-tree dispatcher implements the following dispatch contract;
+remote activation and successful delivery remain to be verified:
 
 ```text
 POST /repos/Jetscale-ai/cli/actions/workflows/build-cli.yml/dispatches
@@ -136,30 +143,31 @@ the downstream run and artifact separately.
 
 ## Landing order and Backend handoff
 
-1. **CLI `main` first:** human-review and land the receiver, verifier, packager,
-   tests, documentation and proposed authority. This registers `build-cli.yml`
-   and turns `sync-openapi.yml` into a non-mutating manual tombstone. The legacy
+1. **CLI `main` first:** the receiver and manual sync tombstone are present at
+   `db131da`. Validate and land the run-name compatibility fix and regression
+   tests; verify publication authority separately. The legacy
    `openapi-spec-updated` and `unstable-openapi-spec-updated` events are no
    longer consumed; do not rely on them during transition. Existing main-push CI
    still has its stable release effects, so review the landing accordingly.
-2. **CLI `unstable`:** land the same complete receiver/tooling and required CLI
-   implementation, not just the workflow. Branch creation and pushes are human
-   operations. Verify trusted-source admission and the Backend-read credential
-   on both branches. No Backend dispatch should be enabled before this step.
+2. **CLI `unstable`:** it currently matches `main` at `db131da`. Carry the
+   validated receiver fix and complete tooling to this branch, not just the
+   workflow. Branch updates are human operations. Verify trusted-source
+   admission and the Backend-read credential on both branches before enabling
+   dispatch.
 3. **Backend producers on both `main` and `unstable`:** review/land matching
    `pipeline.yml` and reusable `build-release.yml` schema export and manifest
    handling. Remove `Dispatch OpenAPI Sync Workflow` (the legacy inline
    `repository_dispatch`) from `build-release.yml`, particularly on `main`. Keep
    the parent workflow identity and tested SHA intact. Schema availability alone
    must not trigger the CLI before the whole producer pipeline succeeds.
-4. **Backend dispatcher on `main`:** generalize
-   `.github/workflows/unstable-cli-dispatch.yml` to watch completed
-   `Build & Release` runs on `[main, unstable]`. Retain exact successful-push,
-   repository, workflow, attempt, SHA and artifact verification. Replace
-   `POST /dispatches` with the workflow-dispatch contract above. This
-   `workflow_run` dispatcher must live on Backend's default branch; a copy only
-   on `unstable` will not activate it. Mirroring it to `unstable` is optional
-   for source consistency, not required for receiving completion events.
+4. **Backend dispatcher on `main`:** review and land the working-tree
+   `.github/workflows/unstable-cli-dispatch.yml`, which watches completed
+   `Build & Release` runs on `[main, unstable]` and uses the workflow-dispatch
+   contract above. Verify exact successful-push, repository, workflow, attempt,
+   SHA and artifact checks, with main initially disabled. This `workflow_run`
+   dispatcher must live on Backend's default branch; a copy only on `unstable`
+   will not activate it. Mirroring it to `unstable` is optional for source
+   consistency, not required for receiving completion events.
 5. **Verify unstable first:** enable only the unstable dispatch path initially,
    observe one real successful Backend push and matching CLI unstable build, and
    verify checksums, both SHAs, branch, attempts, pre-upload recheck and
@@ -168,10 +176,25 @@ the downstream run and artifact separately.
    successful main pushes and verify the main artifact separately. Failed
    Backend runs and cross-branch fixtures must produce no runnable artifact.
 
-The [local validation record](local-dev.md#credential-free-validation) records
-parent-reported passes for 125 Python tests, Go/Mage checks, vet, and
-actionlint. These checks and the historical old-receiver synthetic-provenance
-rehearsal do not prove a new two-lane Docker rehearsal or any remote activation
-step. A source/API evolution that breaks hand-written Cobra adapters must fail
-the build and receive an ordinary reviewed CLI fix; autogeneration does not
-guarantee semantic compatibility.
+## Receiver compatibility validation
+
+On 2026-09-15, the working-tree run-name fix passed:
+
+- `python3 -B -m unittest discover -s scripts -p 'test_*.py'`: 130 tests.
+- With `GOTOOLCHAIN=go1.25.8`: `GOFLAGS=-count=1 mage test`, `mage lint` (0
+  issues), `go test -race -count=1 -timeout=180s ./...`,
+  `go test -count=1 -timeout=180s -tags mage .`, and `go vet ./...`.
+- Targeted Markdown lint/format and spelling hooks.
+
+Both branches cover qualified and unqualified run names through fetch/recheck,
+reject wrong-branch or malformed names, and preserve registered workflow
+identity checks. Pre-publication recheck rejects changed names, paths, or IDs
+without modifying saved evidence. These are offline contract tests, not real
+GitHub artifact delivery.
+
+The [earlier local validation record](local-dev.md#credential-free-validation)
+and old-receiver synthetic-provenance rehearsal remain historical evidence.
+Neither those results nor the current checks prove a new two-lane Docker
+rehearsal or remote activation. A source/API evolution that breaks hand-written
+Cobra adapters must fail the build and receive an ordinary reviewed CLI fix;
+autogeneration does not guarantee semantic compatibility.
