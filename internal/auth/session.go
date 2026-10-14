@@ -39,31 +39,63 @@ type Session struct {
 // The response's encrypted cookie values are opaque; bearer tokens in a login
 // response are intentionally ignored. Nothing is persisted until Save is called.
 func LoginSession(baseURL, login, password, caFile string) (*Session, error) {
+	return LoginSessionContext(context.Background(), baseURL, login, password, caFile)
+}
+
+// LoginSessionContext honors ctx for sign-in and verification. Failed acquisition
+// cleanup has a separate five-second grace period and never retries sign-in.
+func LoginSessionContext(ctx context.Context, baseURL, login, password, caFile string) (*Session, error) {
+	if err := ctx.Err(); err != nil {
+		return nil, fmt.Errorf("sign-in not attempted: %w", err)
+	}
 	s, err := newSession(baseURL, caFile, "")
 	if err != nil {
 		return nil, err
 	}
-	resp, err := s.gen.SignInApiV2AuthSignInPost(context.Background(), generated.SignInApiV2AuthSignInPostJSONRequestBody{Login: login, Password: password})
+	succeeded := false
+	defer func() {
+		if !succeeded {
+			s.HTTPClient.CloseIdleConnections()
+		}
+	}()
+	resp, err := s.gen.SignInApiV2AuthSignInPost(ctx, generated.SignInApiV2AuthSignInPostJSONRequestBody{Login: login, Password: password})
 	if err != nil {
-		return nil, errors.New("sign-in outcome uncertain (network, TLS, or redirect policy): a server session may exist; cleanup unverified; no automatic retry")
+		reason := errors.Join(errors.New("sign-in outcome uncertain (network, TLS, cancellation, or redirect policy): a server session may exist; no automatic retry"), ctx.Err())
+		if len(s.jar.snapshot()) != 0 {
+			return nil, s.cleanupLoginFailure(reason)
+		}
+		return nil, fmt.Errorf("%w; cleanup unverified", reason)
 	}
 	_ = resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		if len(s.jar.snapshot()) != 0 {
+			return nil, s.cleanupLoginFailure(fmt.Errorf("sign-in outcome uncertain (HTTP %d): a server session may exist; no automatic retry", resp.StatusCode))
+		}
 		return nil, fmt.Errorf("sign-in failed (HTTP %d)", resp.StatusCode)
 	}
 	meRequest, _ := generated.NewMeApiV2AuthMeGetRequest(s.origin + "/")
 	hasVerificationCookie := len(s.jar.Cookies(meRequest.URL)) != 0
-	_, verifyErr := s.Whoami()
+	_, verifyErr := s.WhoamiContext(ctx)
 	if verifyErr == nil && (!hasVerificationCookie || len(s.jar.Cookies(meRequest.URL)) == 0) {
 		verifyErr = errors.New("sign-in did not establish a cookie session")
 	}
 	if verifyErr != nil {
-		if cleanupErr := s.SignOut(); cleanupErr != nil {
-			return nil, fmt.Errorf("session verification failed: %w; cleanup sign-out failed: %v", verifyErr, cleanupErr)
-		}
-		return nil, fmt.Errorf("session verification failed: %w; cleanup sign-out completed", verifyErr)
+		return nil, s.cleanupLoginFailure(fmt.Errorf("session verification failed: %w", verifyErr))
 	}
+	succeeded = true
 	return s, nil
+}
+
+const loginCleanupTimeout = 5 * time.Second
+
+func (s *Session) cleanupLoginFailure(reason error) error {
+	// Cleanup needs its own grace period after the acquisition context expires.
+	ctx, cancel := context.WithTimeout(context.Background(), loginCleanupTimeout)
+	defer cancel()
+	if cleanupErr := s.SignOutContext(ctx); cleanupErr != nil {
+		return fmt.Errorf("%w; cleanup sign-out failed: %w", reason, cleanupErr)
+	}
+	return fmt.Errorf("%w; cleanup sign-out completed", reason)
 }
 
 // OpenSession loads by exact origin and channel without making network calls.
@@ -129,9 +161,13 @@ func OpenSession(instanceName, baseURL, caFile string) (*Session, error) {
 }
 
 func (s *Session) Whoami() (WhoamiResult, error) {
-	resp, err := s.gen.MeApiV2AuthMeGet(context.Background())
+	return s.WhoamiContext(context.Background())
+}
+
+func (s *Session) WhoamiContext(ctx context.Context) (WhoamiResult, error) {
+	resp, err := s.gen.MeApiV2AuthMeGet(ctx)
 	if err != nil {
-		return WhoamiResult{}, errors.New("whoami request failed (network, TLS, or redirect policy)")
+		return WhoamiResult{}, errors.Join(errors.New("whoami request failed (network, TLS, cancellation, or redirect policy)"), ctx.Err())
 	}
 	defer func() { _ = resp.Body.Close() }()
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
@@ -140,7 +176,7 @@ func (s *Session) Whoami() (WhoamiResult, error) {
 	const maxBody = 1 << 20
 	body, err := io.ReadAll(io.LimitReader(resp.Body, maxBody+1))
 	if err != nil || len(body) > maxBody {
-		return WhoamiResult{}, errors.New("read whoami response failed")
+		return WhoamiResult{}, errors.Join(errors.New("read whoami response failed"), ctx.Err())
 	}
 	var envelope struct {
 		Data struct {
@@ -161,9 +197,13 @@ func (s *Session) Whoami() (WhoamiResult, error) {
 // prove invalidation. Failed sign-out retains credentials unless the server
 // explicitly deleted cookies; Save must still persist those deletions.
 func (s *Session) SignOut() error {
-	resp, err := s.gen.SignOutApiV2AuthSignOutPost(context.Background())
+	return s.SignOutContext(context.Background())
+}
+
+func (s *Session) SignOutContext(ctx context.Context) error {
+	resp, err := s.gen.SignOutApiV2AuthSignOutPost(ctx)
 	if err != nil {
-		return errors.New("sign-out cleanup unverified (network, TLS, or redirect policy): server session may still be active")
+		return errors.Join(errors.New("sign-out cleanup unverified (network, TLS, cancellation, or redirect policy): server session may still be active"), ctx.Err())
 	}
 	_ = resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
@@ -206,6 +246,17 @@ func (s *Session) Save(_ string) error {
 		return fmt.Errorf("save session store: %w", err)
 	}
 	return nil
+}
+
+// MatchesOrigin checks the same normalized binding used for authentication and
+// storage, without accepting URL paths or query parameters as origin aliases.
+func (s *Session) MatchesOrigin(baseURL string) bool {
+	u, err := url.Parse(baseURL)
+	if err != nil || u.RawQuery != "" || u.ForceQuery || u.Fragment != "" || (u.Path != "" && u.Path != "/") {
+		return false
+	}
+	origin, err := exactOrigin(u)
+	return err == nil && origin == s.origin && s.channel == buildinfo.Channel
 }
 
 func (s *Session) storeKey() string { return s.channel + "|" + s.origin }
@@ -364,7 +415,7 @@ func (t *originTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 	}
 	resp, err := t.base.RoundTrip(r)
 	if err != nil {
-		return nil, errors.New("request failed (network or TLS verification)")
+		return nil, errors.Join(errors.New("request failed (network or TLS verification)"), req.Context().Err())
 	}
 	if resp.StatusCode >= 300 && resp.StatusCode < 400 {
 		// The client won't process cookies when RoundTrip returns an error.

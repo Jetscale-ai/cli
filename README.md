@@ -247,8 +247,27 @@ jetscale accounts list|use|current           # cloud account selection
 jetscale config show|set|get|instances       # CLI configuration
 jetscale system info|diagnostics             # backend health
 jetscale recommendations list|show <id>      # AWS-sourced read commands
+jetscale prepare basics --manifest FILE     # bounded assessment; --apply opt-in
+jetscale flags show|plan|apply --profile FILE # enable-only feature flags
 jetscale version [-o json|yaml]               # offline build metadata
 ```
+
+For the bounded basics API subset, implemented Stack wrapper with optional
+non-secret manifest, and pending unstable API/auth registration, see
+[Prepare Basics](docs/prepare-basics.md). Implementation support is not live
+execution authority or full readiness.
+
+For enable-only `flags show|plan|apply --profile FILE`, offline validation,
+company cascades and application-wide root effects, see
+[Feature Flags](docs/feature-flags.md).
+
+Temporary stdin authentication is source-implemented, not an active unstable
+automation grant. The proposed Stack wrapper path requires human-reviewed
+publication and actual-capture synthetic qualification before real secrets;
+basics and flags require separate authorization. A dirty unstable-channel build
+is only input, not provenance or authority. Login/signout may invalidate all
+operator sessions. See the
+[proposal and unchanged exclusions](AGENTS.md#proposed-stack-mediated-temporary-cli-authentication).
 
 ## Global Flags
 
@@ -258,6 +277,8 @@ jetscale version [-o json|yaml]               # offline build metadata
     --api-url <url>      override API URL directly
     --ca-file <path>     additional trusted CA PEM for authenticated requests
     --credentials-file <path> local-channel per-command auth from a dotenv file
+    --login <email>      temporary per-command login; requires --password-stdin
+    --password-stdin     bounded password line; temporary memory-only session
     --account <name>     cloud account override
 -o, --output <format>   table, json, yaml (default: table)
 ```

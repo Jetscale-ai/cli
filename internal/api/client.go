@@ -164,7 +164,7 @@ func (c *Client) ListBusinessUnits(companyID string) ([]BusinessUnit, error) {
 // unused parameter and does not restrict discovery.
 func (c *Client) ListCloudAccounts(unitIDs []string) ([]CloudAccount, error) {
 
-	resp, err := c.gen.ListCloudAccountsApiV2CloudCloudAccountsGetWithResponse(context.Background())
+	resp, err := c.gen.ListCloudAccountsApiV2CloudCloudAccountsGetWithResponse(context.Background(), nil)
 	if err != nil {
 		return nil, fmt.Errorf("API request failed")
 	}

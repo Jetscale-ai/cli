@@ -11,7 +11,7 @@
             "type": "string"
           },
           "end_date": {
-            "description": "End date in YYYY-MM-DD format. If not provided, defaults to today",
+            "description": "End date in YYYY-MM-DD format, EXCLUSIVE (AWS Cost Explorer TimePeriod.End): the last day fetched and, with force_replace, the last day cleared is end_date - 1. Defaults to today.",
             "nullable": true,
             "title": "End Date",
             "type": "string"
@@ -91,6 +91,29 @@
           "password"
         ],
         "title": "AabhraConnectRequest",
+        "type": "object"
+      },
+      "AccountRecovery": {
+        "additionalProperties": false,
+        "properties": {
+          "cloud_account_id": {
+            "format": "uuid",
+            "title": "Cloud Account Id",
+            "type": "string"
+          },
+          "import": {
+            "$ref": "#/components/schemas/RecoveryControl"
+          },
+          "matching": {
+            "$ref": "#/components/schemas/RecoveryControl"
+          }
+        },
+        "required": [
+          "cloud_account_id",
+          "import",
+          "matching"
+        ],
+        "title": "AccountRecovery",
         "type": "object"
       },
       "AddActivityToSessionRequest": {
@@ -177,6 +200,22 @@
         "title": "AddCustomRecommendationCommentRequest",
         "type": "object"
       },
+      "AddRecommendationCommentRequest": {
+        "description": "Request body for POST /{recommendation_id}/action/add-comment.",
+        "properties": {
+          "content": {
+            "description": "Comment text stored in activity metadata.",
+            "minLength": 1,
+            "title": "Content",
+            "type": "string"
+          }
+        },
+        "required": [
+          "content"
+        ],
+        "title": "AddRecommendationCommentRequest",
+        "type": "object"
+      },
       "AwsDiscoveryRequestBody": {
         "description": "Request body for POST /action/discover endpoint.",
         "properties": {
@@ -200,6 +239,47 @@
           "cloud_account_id"
         ],
         "title": "AwsDiscoveryRequestBody",
+        "type": "object"
+      },
+      "AwsS3CostDataSourceConfig": {
+        "additionalProperties": false,
+        "properties": {
+          "bucket": {
+            "title": "Bucket",
+            "type": "string"
+          },
+          "external_id_configured": {
+            "default": false,
+            "title": "External Id Configured",
+            "type": "boolean"
+          },
+          "prefix": {
+            "title": "Prefix",
+            "type": "string"
+          },
+          "region": {
+            "nullable": true,
+            "title": "Region",
+            "type": "string"
+          },
+          "role_arn": {
+            "nullable": true,
+            "title": "Role Arn",
+            "type": "string"
+          },
+          "source_kind": {
+            "const": "focus_s3",
+            "default": "focus_s3",
+            "title": "Source Kind",
+            "type": "string",
+            "x-go-type-skip-optional-pointer": true
+          }
+        },
+        "required": [
+          "bucket",
+          "prefix"
+        ],
+        "title": "AwsS3CostDataSourceConfig",
         "type": "object"
       },
       "AwsS3CostDataSourceWriteConfig": {
@@ -256,6 +336,48 @@
           "prefix"
         ],
         "title": "AwsS3CostDataSourceWriteConfig",
+        "type": "object"
+      },
+      "AzureBlobCostDataSourceConfig": {
+        "additionalProperties": false,
+        "properties": {
+          "container": {
+            "title": "Container",
+            "type": "string"
+          },
+          "credential_cloud_account_id": {
+            "format": "uuid",
+            "nullable": true,
+            "title": "Credential Cloud Account Id",
+            "type": "string"
+          },
+          "credential_configured": {
+            "title": "Credential Configured",
+            "type": "boolean"
+          },
+          "prefix": {
+            "title": "Prefix",
+            "type": "string"
+          },
+          "source_kind": {
+            "const": "focus_azure_blob",
+            "default": "focus_azure_blob",
+            "title": "Source Kind",
+            "type": "string",
+            "x-go-type-skip-optional-pointer": true
+          },
+          "storage_account": {
+            "title": "Storage Account",
+            "type": "string"
+          }
+        },
+        "required": [
+          "storage_account",
+          "container",
+          "prefix",
+          "credential_configured"
+        ],
+        "title": "AzureBlobCostDataSourceConfig",
         "type": "object"
       },
       "AzureBlobCostDataSourceWriteConfig": {
@@ -498,7 +620,7 @@
             "title": "Data"
           },
           "meta": {
-            "$ref": "#/components/schemas/api_v2__Modules__Base__Models__BaseApiMeta__MetaInfo"
+            "$ref": "#/components/schemas/MetaInfo"
           }
         },
         "required": [
@@ -713,7 +835,7 @@
             "description": "Resolved business-unit-scope flag state"
           },
           "meta": {
-            "$ref": "#/components/schemas/api_v2__Modules__Base__Models__BaseApiMeta__MetaInfo"
+            "$ref": "#/components/schemas/MetaInfo"
           }
         },
         "required": [
@@ -770,6 +892,103 @@
         "title": "BusinessUnitScope",
         "type": "object"
       },
+      "CandidateLiveCheck": {
+        "properties": {
+          "diagnostics": {
+            "$ref": "#/components/schemas/S3AccessProbeDiagnostics",
+            "nullable": true
+          },
+          "error": {
+            "nullable": true,
+            "title": "Error",
+            "type": "string"
+          },
+          "ok": {
+            "title": "Ok",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "ok"
+        ],
+        "title": "CandidateLiveCheck",
+        "type": "object"
+      },
+      "CandidateValidationResult": {
+        "additionalProperties": false,
+        "properties": {
+          "errors": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Errors",
+            "type": "array"
+          },
+          "live_check": {
+            "$ref": "#/components/schemas/CandidateLiveCheck",
+            "nullable": true
+          },
+          "ok": {
+            "title": "Ok",
+            "type": "boolean"
+          },
+          "overlapping_source_ids": {
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "title": "Overlapping Source Ids",
+            "type": "array"
+          },
+          "precedence_ambiguous": {
+            "title": "Precedence Ambiguous",
+            "type": "boolean"
+          },
+          "reason_code": {
+            "enum": [
+              "deployment_binding_missing",
+              "deployment_binding_mismatch"
+            ],
+            "nullable": true,
+            "title": "Reason Code",
+            "type": "string"
+          },
+          "source_id": {
+            "format": "uuid",
+            "nullable": true,
+            "title": "Source Id",
+            "type": "string"
+          },
+          "stage": {
+            "enum": [
+              "configuration",
+              "coverage",
+              "credentials",
+              "access",
+              "save",
+              "complete"
+            ],
+            "title": "Stage",
+            "type": "string"
+          },
+          "validated_at": {
+            "title": "Validated At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "ok",
+          "stage",
+          "source_id",
+          "errors",
+          "live_check",
+          "overlapping_source_ids",
+          "precedence_ambiguous",
+          "validated_at"
+        ],
+        "title": "CandidateValidationResult",
+        "type": "object"
+      },
       "ChangeCustomRecommendationStatusRequest": {
         "description": "Request body for POST /{custom_recommendation_id}/action/change-status.",
         "properties": {
@@ -790,6 +1009,26 @@
         "title": "ChangeCustomRecommendationStatusRequest",
         "type": "object"
       },
+      "ChangeRecommendationStatusRequest": {
+        "description": "Request body for POST /{recommendation_id}/action/change-status.",
+        "properties": {
+          "comment": {
+            "description": "Optional comment recorded in the RECOMMENDATION_STATUS_CHANGE activity metadata.",
+            "nullable": true,
+            "title": "Comment",
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/CustomRecommendationStatus",
+            "description": "Recommendation status: DISCOVERED, IN_PROGRESS, COMPLETED, DISCARDED, POSTPONED."
+          }
+        },
+        "required": [
+          "status"
+        ],
+        "title": "ChangeRecommendationStatusRequest",
+        "type": "object"
+      },
       "CloudAccountFeatureFlagEnabledApiResponse": {
         "properties": {
           "data": {
@@ -797,7 +1036,7 @@
             "description": "Resolved cloud-account-scope flag state"
           },
           "meta": {
-            "$ref": "#/components/schemas/api_v2__Modules__Base__Models__BaseApiMeta__MetaInfo"
+            "$ref": "#/components/schemas/MetaInfo"
           }
         },
         "required": [
@@ -855,6 +1094,512 @@
         "title": "CloudAccountScope",
         "type": "object"
       },
+      "CloudCostCoverageException": {
+        "additionalProperties": false,
+        "properties": {
+          "cloud_account_id": {
+            "format": "uuid",
+            "title": "Cloud Account Id",
+            "type": "string"
+          },
+          "owner": {
+            "enum": [
+              "customer",
+              "jetscale",
+              "provider",
+              "none"
+            ],
+            "title": "Owner",
+            "type": "string"
+          },
+          "provider_account_id": {
+            "title": "Provider Account Id",
+            "type": "string"
+          },
+          "remediation_code": {
+            "$ref": "#/components/schemas/CloudCostCoverageRemediationCode"
+          },
+          "summary": {
+            "title": "Summary",
+            "type": "string"
+          }
+        },
+        "required": [
+          "cloud_account_id",
+          "provider_account_id",
+          "remediation_code",
+          "owner",
+          "summary"
+        ],
+        "title": "CloudCostCoverageException",
+        "type": "object"
+      },
+      "CloudCostCoverageRemediationCode": {
+        "enum": [
+          "not_present_in_export",
+          "source_disabled",
+          "source_unreachable",
+          "ambiguous_source_coverage",
+          "awaiting_first_import",
+          "coverage_not_configured"
+        ],
+        "title": "CloudCostCoverageRemediationCode",
+        "type": "string"
+      },
+      "CloudCostDataSource": {
+        "properties": {
+          "business_unit": {
+            "format": "uuid",
+            "nullable": true,
+            "title": "Business Unit",
+            "type": "string"
+          },
+          "capabilities": {
+            "$ref": "#/components/schemas/CloudCostDataSourceCapabilities"
+          },
+          "cloud_provider_type": {
+            "$ref": "#/components/schemas/CloudProviderType"
+          },
+          "company": {
+            "format": "uuid",
+            "title": "Company",
+            "type": "string"
+          },
+          "contract_version": {
+            "title": "Contract Version",
+            "type": "string"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "health": {
+            "$ref": "#/components/schemas/CloudCostDataSourceHealth"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "is_enabled": {
+            "title": "Is Enabled",
+            "type": "boolean"
+          },
+          "last_error_at": {
+            "format": "date-time",
+            "nullable": true,
+            "title": "Last Error At",
+            "type": "string"
+          },
+          "last_ingested_at": {
+            "format": "date-time",
+            "nullable": true,
+            "title": "Last Ingested At",
+            "type": "string"
+          },
+          "last_successful_ingested_at": {
+            "format": "date-time",
+            "nullable": true,
+            "title": "Last Successful Ingested At",
+            "type": "string"
+          },
+          "last_validated_at": {
+            "format": "date-time",
+            "nullable": true,
+            "title": "Last Validated At",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "provider_config": {
+            "discriminator": {
+              "mapping": {
+                "focus_azure_blob": "#/components/schemas/AzureBlobCostDataSourceConfig",
+                "focus_bigquery": "#/components/schemas/GcpBigQueryCostDataSourceConfig",
+                "focus_s3": "#/components/schemas/AwsS3CostDataSourceConfig"
+              },
+              "propertyName": "source_kind"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/AwsS3CostDataSourceConfig"
+              },
+              {
+                "$ref": "#/components/schemas/GcpBigQueryCostDataSourceConfig"
+              },
+              {
+                "$ref": "#/components/schemas/AzureBlobCostDataSourceConfig"
+              }
+            ],
+            "title": "Provider Config"
+          },
+          "provider_scope_id": {
+            "nullable": true,
+            "title": "Provider Scope Id",
+            "type": "string"
+          },
+          "source_accounts": {
+            "items": {
+              "$ref": "#/components/schemas/CloudCostDataSourceAccount"
+            },
+            "title": "Source Accounts",
+            "type": "array"
+          },
+          "source_kind": {
+            "title": "Source Kind",
+            "type": "string"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "title": "Updated At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "company",
+          "name",
+          "cloud_provider_type",
+          "source_kind",
+          "contract_version",
+          "provider_config",
+          "capabilities",
+          "health",
+          "is_enabled",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "CloudCostDataSource",
+        "type": "object"
+      },
+      "CloudCostDataSourceAccount": {
+        "properties": {
+          "cloud_account": {
+            "format": "uuid",
+            "title": "Cloud Account",
+            "type": "string"
+          },
+          "cloud_cost_data_source": {
+            "format": "uuid",
+            "title": "Cloud Cost Data Source",
+            "type": "string"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "provider_account_id": {
+            "title": "Provider Account Id",
+            "type": "string"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "title": "Updated At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "cloud_cost_data_source",
+          "cloud_account",
+          "provider_account_id",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "CloudCostDataSourceAccount",
+        "type": "object"
+      },
+      "CloudCostDataSourceApplyCandidateRequest": {
+        "additionalProperties": false,
+        "description": "Validate and atomically save this candidate with the explicit desired state.",
+        "properties": {
+          "business_unit_id": {
+            "format": "uuid",
+            "nullable": true,
+            "title": "Business Unit Id",
+            "type": "string"
+          },
+          "cloud_provider_type": {
+            "$ref": "#/components/schemas/CloudProviderType",
+            "default": "AWS"
+          },
+          "company_id": {
+            "format": "uuid",
+            "title": "Company Id",
+            "type": "string"
+          },
+          "contract_version": {
+            "default": "1.2",
+            "maxLength": 50,
+            "minLength": 1,
+            "title": "Contract Version",
+            "type": "string"
+          },
+          "coverage": {
+            "items": {
+              "$ref": "#/components/schemas/CloudCostDataSourceCoverageItem"
+            },
+            "title": "Coverage",
+            "type": "array"
+          },
+          "is_enabled": {
+            "title": "Is Enabled",
+            "type": "boolean"
+          },
+          "name": {
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Name",
+            "type": "string"
+          },
+          "provider_config": {
+            "discriminator": {
+              "mapping": {
+                "focus_azure_blob": "#/components/schemas/AzureBlobCostDataSourceWriteConfig",
+                "focus_bigquery": "#/components/schemas/GcpBigQueryCostDataSourceWriteConfig",
+                "focus_s3": "#/components/schemas/AwsS3CostDataSourceWriteConfig"
+              },
+              "propertyName": "source_kind"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/AwsS3CostDataSourceWriteConfig"
+              },
+              {
+                "$ref": "#/components/schemas/GcpBigQueryCostDataSourceWriteConfig"
+              },
+              {
+                "$ref": "#/components/schemas/AzureBlobCostDataSourceWriteConfig"
+              }
+            ],
+            "title": "Provider Config"
+          },
+          "provider_scope_id": {
+            "maxLength": 255,
+            "nullable": true,
+            "title": "Provider Scope Id",
+            "type": "string"
+          },
+          "source_id": {
+            "format": "uuid",
+            "nullable": true,
+            "title": "Source Id",
+            "type": "string"
+          },
+          "source_kind": {
+            "default": "focus_s3",
+            "enum": [
+              "focus_s3",
+              "focus_bigquery",
+              "focus_azure_blob"
+            ],
+            "title": "Source Kind",
+            "type": "string"
+          }
+        },
+        "required": [
+          "company_id",
+          "name",
+          "provider_config",
+          "is_enabled"
+        ],
+        "title": "CloudCostDataSourceApplyCandidateRequest",
+        "type": "object"
+      },
+      "CloudCostDataSourceApplyResponse": {
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/CloudCostDataSourceApplyResult"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/MetaInfo"
+          }
+        },
+        "required": [
+          "meta",
+          "data"
+        ],
+        "title": "CloudCostDataSourceApplyResponse",
+        "type": "object"
+      },
+      "CloudCostDataSourceApplyResult": {
+        "additionalProperties": false,
+        "properties": {
+          "ok": {
+            "title": "Ok",
+            "type": "boolean"
+          },
+          "source": {
+            "$ref": "#/components/schemas/CloudCostDataSource",
+            "nullable": true
+          },
+          "source_id": {
+            "format": "uuid",
+            "nullable": true,
+            "title": "Source Id",
+            "type": "string"
+          },
+          "stage": {
+            "enum": [
+              "configuration",
+              "coverage",
+              "credentials",
+              "access",
+              "save",
+              "complete"
+            ],
+            "title": "Stage",
+            "type": "string"
+          },
+          "validation": {
+            "$ref": "#/components/schemas/CandidateValidationResult"
+          }
+        },
+        "required": [
+          "ok",
+          "stage",
+          "source_id",
+          "validation",
+          "source"
+        ],
+        "title": "CloudCostDataSourceApplyResult",
+        "type": "object"
+      },
+      "CloudCostDataSourceCandidateValidateRequest": {
+        "additionalProperties": false,
+        "description": "Check proposed configuration without saving it or authorizing activation.\n\n``source_id`` scopes an edit and allows reuse of its retained AWS External ID.\n``is_enabled`` is accepted for parity with upsert, but has no effect here.",
+        "properties": {
+          "business_unit_id": {
+            "format": "uuid",
+            "nullable": true,
+            "title": "Business Unit Id",
+            "type": "string"
+          },
+          "cloud_provider_type": {
+            "$ref": "#/components/schemas/CloudProviderType",
+            "default": "AWS"
+          },
+          "company_id": {
+            "format": "uuid",
+            "title": "Company Id",
+            "type": "string"
+          },
+          "contract_version": {
+            "default": "1.2",
+            "maxLength": 50,
+            "minLength": 1,
+            "title": "Contract Version",
+            "type": "string"
+          },
+          "coverage": {
+            "items": {
+              "$ref": "#/components/schemas/CloudCostDataSourceCoverageItem"
+            },
+            "title": "Coverage",
+            "type": "array"
+          },
+          "is_enabled": {
+            "default": false,
+            "title": "Is Enabled",
+            "type": "boolean"
+          },
+          "name": {
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Name",
+            "type": "string"
+          },
+          "provider_config": {
+            "discriminator": {
+              "mapping": {
+                "focus_azure_blob": "#/components/schemas/AzureBlobCostDataSourceWriteConfig",
+                "focus_bigquery": "#/components/schemas/GcpBigQueryCostDataSourceWriteConfig",
+                "focus_s3": "#/components/schemas/AwsS3CostDataSourceWriteConfig"
+              },
+              "propertyName": "source_kind"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/AwsS3CostDataSourceWriteConfig"
+              },
+              {
+                "$ref": "#/components/schemas/GcpBigQueryCostDataSourceWriteConfig"
+              },
+              {
+                "$ref": "#/components/schemas/AzureBlobCostDataSourceWriteConfig"
+              }
+            ],
+            "title": "Provider Config"
+          },
+          "provider_scope_id": {
+            "maxLength": 255,
+            "nullable": true,
+            "title": "Provider Scope Id",
+            "type": "string"
+          },
+          "source_id": {
+            "format": "uuid",
+            "nullable": true,
+            "title": "Source Id",
+            "type": "string"
+          },
+          "source_kind": {
+            "default": "focus_s3",
+            "enum": [
+              "focus_s3",
+              "focus_bigquery",
+              "focus_azure_blob"
+            ],
+            "title": "Source Kind",
+            "type": "string"
+          }
+        },
+        "required": [
+          "company_id",
+          "name",
+          "provider_config"
+        ],
+        "title": "CloudCostDataSourceCandidateValidateRequest",
+        "type": "object"
+      },
+      "CloudCostDataSourceCapabilities": {
+        "additionalProperties": false,
+        "properties": {
+          "ingestion_supported": {
+            "title": "Ingestion Supported",
+            "type": "boolean"
+          },
+          "live_validation_supported": {
+            "title": "Live Validation Supported",
+            "type": "boolean"
+          },
+          "structural_validation_supported": {
+            "default": true,
+            "title": "Structural Validation Supported",
+            "type": "boolean"
+          },
+          "warm_enqueue_supported": {
+            "title": "Warm Enqueue Supported",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "live_validation_supported",
+          "ingestion_supported",
+          "warm_enqueue_supported"
+        ],
+        "title": "CloudCostDataSourceCapabilities",
+        "type": "object"
+      },
       "CloudCostDataSourceCoverageItem": {
         "additionalProperties": false,
         "properties": {
@@ -904,6 +1649,335 @@
           }
         },
         "title": "CloudCostDataSourceEnableRequest",
+        "type": "object"
+      },
+      "CloudCostDataSourceHealth": {
+        "additionalProperties": false,
+        "properties": {
+          "coverage_exceptions": {
+            "items": {
+              "$ref": "#/components/schemas/CloudCostCoverageException"
+            },
+            "title": "Coverage Exceptions",
+            "type": "array"
+          },
+          "covered_account_count": {
+            "title": "Covered Account Count",
+            "type": "integer"
+          },
+          "eligible_linked_account_count": {
+            "nullable": true,
+            "title": "Eligible Linked Account Count",
+            "type": "integer"
+          },
+          "latest_ingestion_runs": {
+            "items": {
+              "$ref": "#/components/schemas/CloudCostDataSourceLatestIngestionRun"
+            },
+            "title": "Latest Ingestion Runs",
+            "type": "array"
+          },
+          "lifecycle_state": {
+            "$ref": "#/components/schemas/CostDataSourceLifecycleState"
+          },
+          "null_provider_scope_record_count": {
+            "nullable": true,
+            "title": "Null Provider Scope Record Count",
+            "type": "integer"
+          },
+          "overlapping_source_ids": {
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "title": "Overlapping Source Ids",
+            "type": "array"
+          },
+          "precedence_ambiguous": {
+            "default": false,
+            "title": "Precedence Ambiguous",
+            "type": "boolean"
+          },
+          "reachability_state": {
+            "$ref": "#/components/schemas/CostDataSourceReachabilityState"
+          },
+          "recovery": {
+            "$ref": "#/components/schemas/SourceRecovery",
+            "nullable": true
+          },
+          "resource_attribution": {
+            "items": {
+              "$ref": "#/components/schemas/CloudCostDataSourceResourceAttribution"
+            },
+            "title": "Resource Attribution",
+            "type": "array"
+          },
+          "row_statistics": {
+            "$ref": "#/components/schemas/CloudCostDataSourceRowStatistics",
+            "nullable": true
+          },
+          "safe_error_summary": {
+            "nullable": true,
+            "title": "Safe Error Summary",
+            "type": "string"
+          },
+          "structural_state": {
+            "$ref": "#/components/schemas/CostDataSourceStructuralState"
+          },
+          "unmatched_provider_scope_ids": {
+            "items": {
+              "type": "string"
+            },
+            "nullable": true,
+            "title": "Unmatched Provider Scope Ids",
+            "type": "array"
+          }
+        },
+        "required": [
+          "structural_state",
+          "reachability_state",
+          "lifecycle_state",
+          "covered_account_count"
+        ],
+        "title": "CloudCostDataSourceHealth",
+        "type": "object"
+      },
+      "CloudCostDataSourceLatestIngestionRun": {
+        "additionalProperties": false,
+        "properties": {
+          "activation_outcome": {
+            "enum": [
+              "pending",
+              "activated",
+              "observed",
+              "replayed",
+              "superseded",
+              "quarantined",
+              "failed"
+            ],
+            "title": "Activation Outcome",
+            "type": "string"
+          },
+          "activation_reason": {
+            "enum": [
+              "complete generation omits existing in-scope identities",
+              "duplicate economic identity within generation",
+              "at least one changed identity is ambiguous; activate none",
+              "overwrite snapshot requires valid timezone-aware chronology",
+              "overwrite snapshot does not cover the charge period",
+              "overwrite snapshot requires a source scope reference",
+              "overwrite snapshot requested coverage is invalid",
+              "overwrite snapshot requires bounded manifest evidence",
+              "overwrite snapshot manifest evidence is malformed",
+              "overwrite snapshot manifest digest must be SHA-256",
+              "overwrite snapshot manifest content_checksum must be SHA-256",
+              "overwrite snapshot manifest coverage is invalid",
+              "overwrite snapshot manifest ranges overlap",
+              "overwrite snapshot manifests do not continuously cover requested range",
+              "accepted overwrite snapshot coordinates are malformed",
+              "accepted overwrite snapshot source scope changed",
+              "overwrite snapshot population continuity is unproven",
+              "accepted overwrite snapshot is missing manifest evidence",
+              "legacy overwrite acceptance completion chronology is unavailable",
+              "overwrite snapshot does not postdate legacy acceptance boundary",
+              "overwrite snapshot predates accepted coverage",
+              "overwrite snapshot has conflicting equal-time manifest evidence",
+              "overwrite generation requires the authoritative snapshot profile",
+              "overwrite observation order does not match its covering manifest",
+              "overwrite accepted-history limit exceeded; precedence unproven",
+              "unavailable"
+            ],
+            "nullable": true,
+            "title": "Activation Reason",
+            "type": "string"
+          },
+          "cloud_account": {
+            "format": "uuid",
+            "title": "Cloud Account",
+            "type": "string"
+          },
+          "collision_classification_counts": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "title": "Collision Classification Counts",
+            "type": "object"
+          },
+          "completed_at": {
+            "format": "date-time",
+            "nullable": true,
+            "title": "Completed At",
+            "type": "string"
+          },
+          "outcome": {
+            "enum": [
+              "pending",
+              "running",
+              "succeeded",
+              "partial",
+              "failed",
+              "quarantined"
+            ],
+            "title": "Outcome",
+            "type": "string"
+          },
+          "processed_row_count": {
+            "title": "Processed Row Count",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "cloud_account",
+          "outcome",
+          "activation_outcome",
+          "processed_row_count"
+        ],
+        "title": "CloudCostDataSourceLatestIngestionRun",
+        "type": "object"
+      },
+      "CloudCostDataSourceResourceAttribution": {
+        "additionalProperties": false,
+        "properties": {
+          "cloud_account": {
+            "format": "uuid",
+            "title": "Cloud Account",
+            "type": "string"
+          },
+          "cloud_cost_source_run_id": {
+            "format": "uuid",
+            "nullable": true,
+            "title": "Cloud Cost Source Run Id",
+            "type": "string"
+          },
+          "cloud_cost_source_run_ids": {
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "title": "Cloud Cost Source Run Ids",
+            "type": "array"
+          },
+          "completed_at": {
+            "format": "date-time",
+            "nullable": true,
+            "title": "Completed At",
+            "type": "string"
+          },
+          "examined_row_count": {
+            "minimum": 0,
+            "nullable": true,
+            "title": "Examined Row Count",
+            "type": "integer"
+          },
+          "matched_row_count": {
+            "minimum": 0,
+            "nullable": true,
+            "title": "Matched Row Count",
+            "type": "integer"
+          },
+          "operation_id": {
+            "format": "uuid",
+            "nullable": true,
+            "title": "Operation Id",
+            "type": "string"
+          },
+          "reason": {
+            "enum": [
+              "no_current_cost_rows",
+              "no_exact_matches"
+            ],
+            "nullable": true,
+            "title": "Reason",
+            "type": "string"
+          },
+          "safe_error_summary": {
+            "enum": [
+              "Bounded attribution failed.",
+              "Bounded attribution timed out.",
+              "Bounded attribution cancelled.",
+              "Bounded attribution cleanup failed."
+            ],
+            "nullable": true,
+            "title": "Safe Error Summary",
+            "type": "string"
+          },
+          "started_at": {
+            "format": "date-time",
+            "nullable": true,
+            "title": "Started At",
+            "type": "string"
+          },
+          "state": {
+            "default": "unknown",
+            "enum": [
+              "unknown",
+              "running",
+              "completed",
+              "failed",
+              "cancelled"
+            ],
+            "title": "State",
+            "type": "string"
+          },
+          "unmatched_row_count": {
+            "minimum": 0,
+            "nullable": true,
+            "title": "Unmatched Row Count",
+            "type": "integer"
+          },
+          "window_end": {
+            "format": "date-time",
+            "nullable": true,
+            "title": "Window End",
+            "type": "string"
+          },
+          "window_start": {
+            "format": "date-time",
+            "nullable": true,
+            "title": "Window Start",
+            "type": "string"
+          }
+        },
+        "required": [
+          "cloud_account"
+        ],
+        "title": "CloudCostDataSourceResourceAttribution",
+        "type": "object"
+      },
+      "CloudCostDataSourceRowStatistics": {
+        "additionalProperties": false,
+        "properties": {
+          "available_row_count": {
+            "default": 0,
+            "minimum": 0,
+            "title": "Available Row Count",
+            "type": "integer"
+          },
+          "charge_period_end": {
+            "format": "date-time",
+            "nullable": true,
+            "title": "Charge Period End",
+            "type": "string"
+          },
+          "charge_period_start": {
+            "format": "date-time",
+            "nullable": true,
+            "title": "Charge Period Start",
+            "type": "string"
+          },
+          "latest_processed_row_count": {
+            "nullable": true,
+            "title": "Latest Processed Row Count",
+            "type": "integer"
+          },
+          "resource_matched_row_count": {
+            "default": 0,
+            "minimum": 0,
+            "title": "Resource Matched Row Count",
+            "type": "integer"
+          }
+        },
+        "title": "CloudCostDataSourceRowStatistics",
         "type": "object"
       },
       "CloudCostDataSourceUpsertRequest": {
@@ -1296,7 +2370,7 @@
             "description": "Resolved company-scope flag state"
           },
           "meta": {
-            "$ref": "#/components/schemas/api_v2__Modules__Base__Models__BaseApiMeta__MetaInfo"
+            "$ref": "#/components/schemas/MetaInfo"
           }
         },
         "required": [
@@ -1360,6 +2434,36 @@
           "INACTIVE"
         ],
         "title": "CompanyStatus",
+        "type": "string"
+      },
+      "CostDataSourceLifecycleState": {
+        "enum": [
+          "awaiting_data",
+          "ingesting",
+          "ready",
+          "stale",
+          "failed",
+          "disabled"
+        ],
+        "title": "CostDataSourceLifecycleState",
+        "type": "string"
+      },
+      "CostDataSourceReachabilityState": {
+        "enum": [
+          "not_checked",
+          "reachable",
+          "unreachable",
+          "unsupported"
+        ],
+        "title": "CostDataSourceReachabilityState",
+        "type": "string"
+      },
+      "CostDataSourceStructuralState": {
+        "enum": [
+          "valid",
+          "invalid"
+        ],
+        "title": "CostDataSourceStructuralState",
         "type": "string"
       },
       "CreateBusinessUnitFeatureFlagRequest": {
@@ -2269,13 +3373,14 @@
         "type": "object"
       },
       "CustomRecommendationStatus": {
-        "description": "Lifecycle status of a custom recommendation.\n\nSTARTED and CANCELED were removed as duplicates of IN_PROGRESS and\nDISCARDED (db_v1.0.100 rewrites existing rows).",
+        "description": "Lifecycle status of a custom recommendation.\n\nSTARTED and CANCELED were removed as duplicates of IN_PROGRESS and\nDISCARDED (db_v1.0.100 rewrites existing rows).\n\nSTALE means a later resource snapshot no longer matches this advice.\nDISCARDED means the advice was retired, or the resource was removed\nwithout the deletion this recommendation asked for.",
         "enum": [
           "DISCOVERED",
           "IN_PROGRESS",
           "COMPLETED",
           "DISCARDED",
-          "POSTPONED"
+          "POSTPONED",
+          "STALE"
         ],
         "title": "CustomRecommendationStatus",
         "type": "string"
@@ -2489,6 +3594,58 @@
           "reason"
         ],
         "title": "FreshnessRefreshActionRequest",
+        "type": "object"
+      },
+      "GcpBigQueryCostDataSourceConfig": {
+        "additionalProperties": false,
+        "properties": {
+          "credential_cloud_account_id": {
+            "format": "uuid",
+            "nullable": true,
+            "title": "Credential Cloud Account Id",
+            "type": "string"
+          },
+          "credential_configured": {
+            "title": "Credential Configured",
+            "type": "boolean"
+          },
+          "dataset": {
+            "title": "Dataset",
+            "type": "string"
+          },
+          "export_project_id": {
+            "title": "Export Project Id",
+            "type": "string"
+          },
+          "location": {
+            "nullable": true,
+            "title": "Location",
+            "type": "string"
+          },
+          "query_project_id": {
+            "nullable": true,
+            "title": "Query Project Id",
+            "type": "string"
+          },
+          "source_kind": {
+            "const": "focus_bigquery",
+            "default": "focus_bigquery",
+            "title": "Source Kind",
+            "type": "string",
+            "x-go-type-skip-optional-pointer": true
+          },
+          "table": {
+            "title": "Table",
+            "type": "string"
+          }
+        },
+        "required": [
+          "export_project_id",
+          "dataset",
+          "table",
+          "credential_configured"
+        ],
+        "title": "GcpBigQueryCostDataSourceConfig",
         "type": "object"
       },
       "GcpBigQueryCostDataSourceWriteConfig": {
@@ -3417,6 +4574,46 @@
         "title": "MessageFeedbackRequest",
         "type": "object"
       },
+      "MetaInfo": {
+        "properties": {
+          "count": {
+            "default": 0,
+            "title": "Count",
+            "type": "integer"
+          },
+          "environment": {
+            "default": "DEBUG",
+            "title": "Environment",
+            "type": "string"
+          },
+          "limit": {
+            "default": 10,
+            "title": "Limit",
+            "type": "integer"
+          },
+          "offset": {
+            "default": 0,
+            "title": "Offset",
+            "type": "integer"
+          },
+          "resource": {
+            "default": "UNKNOWN",
+            "title": "Resource",
+            "type": "string"
+          },
+          "security": {
+            "$ref": "#/components/schemas/SecurityInfo",
+            "nullable": true
+          },
+          "total_count": {
+            "default": 0,
+            "title": "Total Count",
+            "type": "integer"
+          }
+        },
+        "title": "MetaInfo",
+        "type": "object"
+      },
       "OnboardRequest": {
         "description": "Self-serve one-click onboarding: email required; other fields optional with email-derived defaults.",
         "properties": {
@@ -3438,6 +4635,20 @@
             "description": "User email (also used to derive company domain when omitted)",
             "format": "email",
             "title": "Email",
+            "type": "string"
+          },
+          "first_name": {
+            "description": "Optional first name. Trimmed; omitted, null, or whitespace-only is left unset.",
+            "maxLength": 255,
+            "nullable": true,
+            "title": "First Name",
+            "type": "string"
+          },
+          "last_name": {
+            "description": "Optional last name. Trimmed; omitted, null, or whitespace-only is left unset.",
+            "maxLength": 255,
+            "nullable": true,
+            "title": "Last Name",
             "type": "string"
           },
           "password": {
@@ -3493,6 +4704,267 @@
           "components"
         ],
         "title": "ReadinessData",
+        "type": "object"
+      },
+      "RecoveryAccepted": {
+        "additionalProperties": false,
+        "properties": {
+          "accepted": {
+            "const": true,
+            "title": "Accepted",
+            "type": "boolean"
+          },
+          "action": {
+            "enum": [
+              "retry_import",
+              "retry_matching"
+            ],
+            "title": "Action",
+            "type": "string"
+          },
+          "cloud_account_id": {
+            "format": "uuid",
+            "title": "Cloud Account Id",
+            "type": "string"
+          },
+          "operation": {
+            "$ref": "#/components/schemas/RecoveryOperation"
+          },
+          "source_id": {
+            "format": "uuid",
+            "title": "Source Id",
+            "type": "string"
+          },
+          "status_url": {
+            "title": "Status Url",
+            "type": "string"
+          }
+        },
+        "required": [
+          "accepted",
+          "action",
+          "source_id",
+          "cloud_account_id",
+          "operation",
+          "status_url"
+        ],
+        "title": "RecoveryAccepted",
+        "type": "object"
+      },
+      "RecoveryControl": {
+        "additionalProperties": false,
+        "properties": {
+          "allowed": {
+            "title": "Allowed",
+            "type": "boolean"
+          },
+          "operation_id": {
+            "format": "uuid",
+            "nullable": true,
+            "title": "Operation Id",
+            "type": "string"
+          },
+          "reason": {
+            "nullable": true,
+            "title": "Reason",
+            "type": "string"
+          },
+          "state": {
+            "nullable": true,
+            "title": "State",
+            "type": "string"
+          }
+        },
+        "required": [
+          "allowed",
+          "reason"
+        ],
+        "title": "RecoveryControl",
+        "type": "object"
+      },
+      "RecoveryOperation": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "job_id": {
+            "title": "Job Id",
+            "type": "integer"
+          },
+          "state": {
+            "const": "queued",
+            "title": "State",
+            "type": "string"
+          },
+          "warm_cursor_id": {
+            "format": "uuid",
+            "title": "Warm Cursor Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "state",
+          "job_id",
+          "warm_cursor_id"
+        ],
+        "title": "RecoveryOperation",
+        "type": "object"
+      },
+      "RecoveryReadiness": {
+        "additionalProperties": false,
+        "properties": {
+          "processing": {
+            "$ref": "#/components/schemas/RecoveryReadinessState"
+          },
+          "source_binding": {
+            "$ref": "#/components/schemas/SourceBindingReadiness"
+          }
+        },
+        "required": [
+          "source_binding",
+          "processing"
+        ],
+        "title": "RecoveryReadiness",
+        "type": "object"
+      },
+      "RecoveryReadinessState": {
+        "additionalProperties": false,
+        "properties": {
+          "reason": {
+            "nullable": true,
+            "title": "Reason",
+            "type": "string"
+          },
+          "state": {
+            "enum": [
+              "ready",
+              "blocked",
+              "unknown"
+            ],
+            "title": "State",
+            "type": "string"
+          }
+        },
+        "required": [
+          "state",
+          "reason"
+        ],
+        "title": "RecoveryReadinessState",
+        "type": "object"
+      },
+      "RecoveryRejectedData": {
+        "additionalProperties": false,
+        "properties": {
+          "accepted": {
+            "const": false,
+            "title": "Accepted",
+            "type": "boolean"
+          },
+          "action": {
+            "enum": [
+              "retry_import",
+              "retry_matching"
+            ],
+            "title": "Action",
+            "type": "string"
+          },
+          "allowed": {
+            "title": "Allowed",
+            "type": "boolean"
+          },
+          "cloud_account_id": {
+            "format": "uuid",
+            "title": "Cloud Account Id",
+            "type": "string"
+          },
+          "operation_id": {
+            "format": "uuid",
+            "nullable": true,
+            "title": "Operation Id",
+            "type": "string"
+          },
+          "reason": {
+            "nullable": true,
+            "title": "Reason",
+            "type": "string"
+          },
+          "source_id": {
+            "format": "uuid",
+            "title": "Source Id",
+            "type": "string"
+          },
+          "state": {
+            "nullable": true,
+            "title": "State",
+            "type": "string"
+          }
+        },
+        "required": [
+          "allowed",
+          "reason",
+          "accepted",
+          "action",
+          "source_id",
+          "cloud_account_id"
+        ],
+        "title": "RecoveryRejectedData",
+        "type": "object"
+      },
+      "RecoveryRejectedResponse": {
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/RecoveryRejectedData"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/MetaInfo"
+          }
+        },
+        "required": [
+          "meta",
+          "data"
+        ],
+        "title": "RecoveryRejectedResponse",
+        "type": "object"
+      },
+      "RecoveryRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "cloud_account_id": {
+            "format": "uuid",
+            "title": "Cloud Account Id",
+            "type": "string"
+          },
+          "company_id": {
+            "format": "uuid",
+            "title": "Company Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "company_id",
+          "cloud_account_id"
+        ],
+        "title": "RecoveryRequest",
+        "type": "object"
+      },
+      "RecoveryResponse": {
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/RecoveryAccepted"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/MetaInfo"
+          }
+        },
+        "required": [
+          "meta",
+          "data"
+        ],
+        "title": "RecoveryResponse",
         "type": "object"
       },
       "RefreshGcpAwsWifRequest": {
@@ -3627,6 +5099,22 @@
         "title": "RenameRemediationSessionRequest",
         "type": "object"
       },
+      "RequestPasswordResetRequest": {
+        "description": "Public self-serve password reset. Email is trimmed and lowercased before validation.",
+        "properties": {
+          "email": {
+            "description": "Email address of the account requesting a reset link",
+            "format": "email",
+            "title": "Email",
+            "type": "string"
+          }
+        },
+        "required": [
+          "email"
+        ],
+        "title": "RequestPasswordResetRequest",
+        "type": "object"
+      },
       "ResetPasswordFromInvitationRequest": {
         "description": "Request body for resetting password using the token from the reset-password invitation email.",
         "properties": {
@@ -3673,6 +5161,31 @@
         "title": "ResetPasswordRequest",
         "type": "object"
       },
+      "ResolveOrchestratorThreadRequest": {
+        "properties": {
+          "cloud_account_id": {
+            "format": "uuid",
+            "title": "Cloud Account Id",
+            "type": "string"
+          },
+          "cloud_provider": {
+            "$ref": "#/components/schemas/CloudProviderType"
+          },
+          "resource_identifier": {
+            "maxLength": 2048,
+            "minLength": 1,
+            "title": "Resource Identifier",
+            "type": "string"
+          }
+        },
+        "required": [
+          "resource_identifier",
+          "cloud_provider",
+          "cloud_account_id"
+        ],
+        "title": "ResolveOrchestratorThreadRequest",
+        "type": "object"
+      },
       "RolePermissionEntry": {
         "description": "One permission row in role.permissions JSON array.",
         "properties": {
@@ -3715,10 +5228,10 @@
           "user:cloud-account:root:access",
           "user:cloud-account:overview:overview:view",
           "user:cloud-account:overview:governance:view",
-          "user:cloud-account:overview:resources-health:view",
           "user:cloud-account:cost-breakdown:resources-health:view",
           "user:cloud-account:recommendation:view",
           "user:cloud-account:settings:root:view",
+          "user:cloud-account:settings:action:edit-credentials:execute",
           "user:cloud-account:remediation-session:action:start-session:execute",
           "user:cloud-account:remediation-session:action:send-chat-message:execute"
         ],
@@ -3732,7 +5245,7 @@
             "description": "Resolved root-scope flag state"
           },
           "meta": {
-            "$ref": "#/components/schemas/api_v2__Modules__Base__Models__BaseApiMeta__MetaInfo"
+            "$ref": "#/components/schemas/MetaInfo"
           }
         },
         "required": [
@@ -3788,6 +5301,141 @@
         "title": "RuntimeInfo",
         "type": "object"
       },
+      "S3AccessProbeDiagnostics": {
+        "description": "Response-only probe evidence; never includes provider messages or metadata.",
+        "properties": {
+          "bucket": {
+            "title": "Bucket",
+            "type": "string"
+          },
+          "checked_at": {
+            "title": "Checked At",
+            "type": "string"
+          },
+          "connect_timeout_seconds": {
+            "const": 5,
+            "title": "Connect Timeout Seconds",
+            "type": "integer"
+          },
+          "credential_route": {
+            "enum": [
+              "backend",
+              "assume_role"
+            ],
+            "title": "Credential Route",
+            "type": "string"
+          },
+          "error_code": {
+            "enum": [
+              "AccessDenied",
+              "AccessDeniedException",
+              "InvalidAccessKeyId",
+              "InvalidClientTokenId",
+              "ExpiredToken",
+              "ExpiredTokenException",
+              "InvalidToken",
+              "UnrecognizedClientException",
+              "SignatureDoesNotMatch",
+              "RequestExpired",
+              "NoSuchBucket"
+            ],
+            "nullable": true,
+            "title": "Error Code",
+            "type": "string"
+          },
+          "max_attempts": {
+            "const": 1,
+            "title": "Max Attempts",
+            "type": "integer"
+          },
+          "max_keys": {
+            "const": 1,
+            "title": "Max Keys",
+            "type": "integer"
+          },
+          "operation": {
+            "enum": [
+              "ListObjectsV2",
+              "AssumeRole"
+            ],
+            "nullable": true,
+            "title": "Operation",
+            "type": "string"
+          },
+          "outcome": {
+            "enum": [
+              "succeeded",
+              "failed"
+            ],
+            "title": "Outcome",
+            "type": "string"
+          },
+          "phase": {
+            "enum": [
+              "client_setup",
+              "assume_role",
+              "list_objects"
+            ],
+            "title": "Phase",
+            "type": "string"
+          },
+          "prefix": {
+            "title": "Prefix",
+            "type": "string"
+          },
+          "read_timeout_seconds": {
+            "const": 20,
+            "title": "Read Timeout Seconds",
+            "type": "integer"
+          },
+          "region": {
+            "nullable": true,
+            "title": "Region",
+            "type": "string"
+          },
+          "role_arn": {
+            "nullable": true,
+            "title": "Role Arn",
+            "type": "string"
+          }
+        },
+        "required": [
+          "checked_at",
+          "bucket",
+          "prefix",
+          "region",
+          "credential_route",
+          "role_arn",
+          "phase",
+          "operation",
+          "outcome",
+          "error_code",
+          "max_keys",
+          "connect_timeout_seconds",
+          "read_timeout_seconds",
+          "max_attempts"
+        ],
+        "title": "S3AccessProbeDiagnostics",
+        "type": "object"
+      },
+      "SecurityInfo": {
+        "properties": {
+          "granted": {
+            "title": "Granted",
+            "type": "boolean"
+          },
+          "required_permission": {
+            "title": "Required Permission",
+            "type": "string"
+          }
+        },
+        "required": [
+          "required_permission",
+          "granted"
+        ],
+        "title": "SecurityInfo",
+        "type": "object"
+      },
       "SendContactEmailRequest": {
         "description": "Authenticated OCO free-trial user contact message to Jetscale support.",
         "properties": {
@@ -3831,6 +5479,20 @@
           "message_content"
         ],
         "title": "SendMessageRequest",
+        "type": "object"
+      },
+      "SendOrchestratorMessageRequest": {
+        "properties": {
+          "message_content": {
+            "minLength": 1,
+            "title": "Message Content",
+            "type": "string"
+          }
+        },
+        "required": [
+          "message_content"
+        ],
+        "title": "SendOrchestratorMessageRequest",
         "type": "object"
       },
       "SendOwnerSignupInvitationRequest": {
@@ -4332,6 +5994,129 @@
         "title": "SignUpRoleAssignmentRequest",
         "type": "object"
       },
+      "SlackCompanyRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "company_id": {
+            "format": "uuid",
+            "title": "Company Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "company_id"
+        ],
+        "title": "SlackCompanyRequest",
+        "type": "object"
+      },
+      "SlackConnectRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "company_id": {
+            "format": "uuid",
+            "title": "Company Id",
+            "type": "string"
+          },
+          "invite_email": {
+            "format": "email",
+            "title": "Invite Email",
+            "type": "string"
+          }
+        },
+        "required": [
+          "company_id",
+          "invite_email"
+        ],
+        "title": "SlackConnectRequest",
+        "type": "object"
+      },
+      "SourceBindingReadiness": {
+        "additionalProperties": false,
+        "properties": {
+          "credential_route": {
+            "enum": [
+              "backend",
+              "assume_role"
+            ],
+            "nullable": true,
+            "title": "Credential Route",
+            "type": "string"
+          },
+          "reason": {
+            "nullable": true,
+            "title": "Reason",
+            "type": "string"
+          },
+          "state": {
+            "enum": [
+              "ready",
+              "blocked",
+              "unknown"
+            ],
+            "title": "State",
+            "type": "string"
+          }
+        },
+        "required": [
+          "state",
+          "reason",
+          "credential_route"
+        ],
+        "title": "SourceBindingReadiness",
+        "type": "object"
+      },
+      "SourceRecovery": {
+        "additionalProperties": false,
+        "description": "Recovery controls with optional readiness; missing metadata grants no permission.",
+        "properties": {
+          "accounts": {
+            "items": {
+              "$ref": "#/components/schemas/AccountRecovery"
+            },
+            "title": "Accounts",
+            "type": "array"
+          },
+          "readiness": {
+            "$ref": "#/components/schemas/RecoveryReadiness",
+            "nullable": true
+          }
+        },
+        "required": [
+          "accounts"
+        ],
+        "title": "SourceRecovery",
+        "type": "object"
+      },
+      "StartOrchestratorThreadRequest": {
+        "properties": {
+          "cloud_account_id": {
+            "format": "uuid",
+            "title": "Cloud Account Id",
+            "type": "string"
+          },
+          "cloud_provider": {
+            "$ref": "#/components/schemas/CloudProviderType"
+          },
+          "message": {
+            "nullable": true,
+            "title": "Message",
+            "type": "string"
+          },
+          "resource_identifier": {
+            "maxLength": 2048,
+            "minLength": 1,
+            "title": "Resource Identifier",
+            "type": "string"
+          }
+        },
+        "required": [
+          "resource_identifier",
+          "cloud_provider",
+          "cloud_account_id"
+        ],
+        "title": "StartOrchestratorThreadRequest",
+        "type": "object"
+      },
       "StartSessionRequest": {
         "description": "Request body for starting a remediation session (action/start). started_by and participants are set from the current user.",
         "properties": {
@@ -4449,6 +6234,19 @@
           "status"
         ],
         "title": "UiToolResultSidecar",
+        "type": "object"
+      },
+      "UpdateAgentArchitectureRequest": {
+        "properties": {
+          "orchestrator_enabled": {
+            "title": "Orchestrator Enabled",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "orchestrator_enabled"
+        ],
+        "title": "UpdateAgentArchitectureRequest",
         "type": "object"
       },
       "UpdateArtifactInSessionRequest": {
@@ -4710,6 +6508,21 @@
           "value"
         ],
         "title": "UpdateCompanySystemSettingRequest",
+        "type": "object"
+      },
+      "UpdateGcpResourceConstraintsRequest": {
+        "description": "Replace the standing constraints for one GCP resource.",
+        "properties": {
+          "constraints": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 50,
+            "title": "Constraints",
+            "type": "array"
+          }
+        },
+        "title": "UpdateGcpResourceConstraintsRequest",
         "type": "object"
       },
       "UpdateLicenseRequest": {
@@ -5330,64 +7143,6 @@
         ],
         "title": "WorkosSsoSignInRequest",
         "type": "object"
-      },
-      "api_v2__Modules__Base__Models__BaseApiMeta__MetaInfo": {
-        "properties": {
-          "count": {
-            "default": 0,
-            "title": "Count",
-            "type": "integer"
-          },
-          "environment": {
-            "default": "DEBUG",
-            "title": "Environment",
-            "type": "string"
-          },
-          "limit": {
-            "default": 10,
-            "title": "Limit",
-            "type": "integer"
-          },
-          "offset": {
-            "default": 0,
-            "title": "Offset",
-            "type": "integer"
-          },
-          "resource": {
-            "default": "UNKNOWN",
-            "title": "Resource",
-            "type": "string"
-          },
-          "security": {
-            "$ref": "#/components/schemas/api_v2__Modules__Base__Models__BaseApiMeta__SecurityInfo",
-            "nullable": true
-          },
-          "total_count": {
-            "default": 0,
-            "title": "Total Count",
-            "type": "integer"
-          }
-        },
-        "title": "MetaInfo",
-        "type": "object"
-      },
-      "api_v2__Modules__Base__Models__BaseApiMeta__SecurityInfo": {
-        "properties": {
-          "granted": {
-            "title": "Granted",
-            "type": "boolean"
-          },
-          "required_permission": {
-            "title": "Required Permission",
-            "type": "string"
-          }
-        },
-        "required": [
-          "required_permission",
-          "granted"
-        ],
-        "title": "SecurityInfo",
-        "type": "object"
       }
     }
   },
@@ -5398,9 +7153,51 @@
   },
   "openapi": "3.0.3",
   "paths": {
+    "/api/v2/auth/action/request-password-reset": {
+      "post": {
+        "description": "Public self-serve password reset. No session.\n\nAlways returns the same 202 body for every valid email. Lookup, invitation\nreplacement, and email delivery run after the response is scheduled, the\nsame way the admin reset email is sent off the request path. A malformed\nbody is the standard 422 validation envelope.",
+        "operationId": "request_password_reset_api_v2_auth_action_request_password_reset_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestPasswordResetRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Request Password Reset",
+        "tags": [
+          "authentication"
+        ]
+      }
+    },
     "/api/v2/auth/action/send-owner-signup-invitation": {
       "post": {
-        "description": "Send owner invitation email for an existing root company.\nGenerates signup_token (1 day, single-use) and sends invitation.\nRequires permission auth:send_owner_signup_invitation (e.g. superuser).",
+        "description": "Send owner invitation email for an existing root company.\nGenerates signup_token (1 day, single-use) and sends invitation.\nCaller must be a superuser.",
         "operationId": "send_owner_signup_invitation_api_v2_auth_action_send_owner_signup_invitation_post",
         "requestBody": {
           "content": {
@@ -5484,7 +7281,7 @@
     },
     "/api/v2/auth/action/send-signup-invitation": {
       "post": {
-        "description": "Send signup invitation email for a company. Requires invitation_type.\nInvitee email must use the company domain (domain_email is the domain only, e.g. jetscale.ai). Uses company-only template.\nRequires permission auth:send_signup_invitation.",
+        "description": "Send signup invitation email for a company. Requires invitation_type.\nInvitee email must use the company domain (domain_email is the domain only, e.g. jetscale.ai). Uses company-only template.\nSIGNUP_OWNER and SIGNUP_SUPERUSER require a superuser. Other invitation types from a\nnon-superuser are limited to that caller's company.",
         "operationId": "send_signup_invitation_api_v2_auth_action_send_signup_invitation_post",
         "requestBody": {
           "content": {
@@ -5612,7 +7409,7 @@
     },
     "/api/v2/auth/reset-password": {
       "post": {
-        "description": "Reset password by email and new password. Updates the user's password.\nRequires permission auth:reset_password.",
+        "description": "Reset password by email and new password. Updates the user's password.\nThe caller must be resetting their own account, or be a superuser.",
         "operationId": "reset_password_api_v2_auth_reset_password_post",
         "requestBody": {
           "content": {
@@ -5717,7 +7514,7 @@
         ]
       },
       "post": {
-        "description": "Create a role assignment. Returns 409 if (user, business_unit) already assigned.",
+        "description": "Create a role assignment.\n\nCatalog permission checks are still a stub. The service gate allows only an active\nsuperuser or the company owner of the target business unit.",
         "operationId": "create_role_assignment_api_v2_auth_role_assignments_post",
         "requestBody": {
           "content": {
@@ -5803,7 +7600,7 @@
         ]
       },
       "patch": {
-        "description": "Update a role assignment by UUID (partial). 404 if not found, 409 if (user, business_unit) conflict.",
+        "description": "Update a role assignment by UUID (partial).\n\n404 if not found, 409 if (user, business_unit) conflict. The same write gate as create\napplies to the assignment's current business unit and any business unit it is moved to.",
         "operationId": "update_role_assignment_api_v2_auth_role_assignments__assignment_id__patch",
         "parameters": [
           {
@@ -5879,7 +7676,7 @@
         ]
       },
       "post": {
-        "description": "Create a new role.\n\n**Body:** name (required), description, image_url, is_superrole, permissions (optional).\nReturns 409 Conflict if a role with the same name already exists.",
+        "description": "Create a new role.\n\n**Body:** name (required), description, image_url, is_superrole, permissions (optional).\nReturns 409 Conflict if a role with the same name already exists.\nCaller must be an owner or a superuser.",
         "operationId": "create_role_api_v2_auth_roles_post",
         "requestBody": {
           "content": {
@@ -5965,7 +7762,7 @@
         ]
       },
       "patch": {
-        "description": "Update a role by UUID (partial). Only provided body fields are updated.\n\n**Body:** name, description, image_url, is_superrole, permissions (all optional).\nReturns 404 if role not found, 409 Conflict if name is changed to an existing role name.",
+        "description": "Update a role by UUID (partial). Only provided body fields are updated.\n\n**Body:** name, description, image_url, is_superrole, permissions (all optional).\nReturns 404 if role not found, 409 Conflict if name is changed to an existing role name.\nCaller must be an owner or a superuser.",
         "operationId": "update_role_api_v2_auth_roles__role_id__patch",
         "parameters": [
           {
@@ -6020,7 +7817,7 @@
     },
     "/api/v2/auth/roles/{role_id}/action/delete": {
       "post": {
-        "description": "Delete a role by UUID. Returns 409 if the role has any assignments linked to it.\nReturns 404 if role not found.",
+        "description": "Delete a role by UUID. Returns 409 if the role has any assignments linked to it.\nReturns 404 if role not found. Caller must be an owner or a superuser.",
         "operationId": "delete_role_api_v2_auth_roles__role_id__action_delete_post",
         "parameters": [
           {
@@ -6882,7 +8679,7 @@
         ]
       },
       "patch": {
-        "description": "Update a user by UUID (partial). Only provided body fields are updated.\n\n**Body:** username, password, first_name, last_name, is_owner, is_superuser, company (all optional).\nReturns 404 if user not found.",
+        "description": "Update a user by UUID (partial). Only provided body fields are updated.\n\nA superuser may update any user. The user may update their own first name, last name,\nand phone number. An active owner of the user's company, or a same-company business-unit\nadmin on a business unit the user belongs to, may update those same fields for a non-superuser.\nReturns 404 if user not found.",
         "operationId": "update_user_api_v2_auth_users__user_id__patch",
         "parameters": [
           {
@@ -6937,7 +8734,7 @@
     },
     "/api/v2/auth/users/{user_id}/action/delete": {
       "post": {
-        "description": "Delete a user and all their role assignments. Returns 404 if user not found.",
+        "description": "Delete a user and all their role assignments. Caller must be a superuser, an active owner\nof the user's company, or a same-company business-unit admin on a business unit the user belongs to.\nOwners and business-unit admins cannot delete an owner or themselves.\nReturns 404 if user not found.",
         "operationId": "delete_user_api_v2_auth_users__user_id__action_delete_post",
         "parameters": [
           {
@@ -6982,7 +8779,7 @@
     },
     "/api/v2/auth/users/{user_id}/action/set-status": {
       "post": {
-        "description": "Set the user's status. Body: status (UserStatus).\nIf status is DEACTIVATED or TERMINATED, all open sessions for that user are closed first, then the user is updated.\nReturns 404 if user not found. Returns the updated user data.",
+        "description": "Set the user's status. Body: status (UserStatus). Caller must be a superuser, an active\nowner of the user's company, or a same-company business-unit admin on a business unit the user belongs to.\nOwners and business-unit admins cannot change an owner's status or their own status.\nIf status is DEACTIVATED or TERMINATED, all open sessions for that user are closed first, then the user is updated.\nReturns 404 if user not found. Returns the updated user data.",
         "operationId": "set_user_status_api_v2_auth_users__user_id__action_set_status_post",
         "parameters": [
           {
@@ -7267,7 +9064,7 @@
     },
     "/api/v2/cloud/aws/credentials/action/initiate-cloudformation-link": {
       "post": {
-        "description": "Start CloudFormation Quick Create AWS account linking.\n\nReturns a per-attempt External ID and an AWS Console Quick Create URL. The\nfrontend opens the URL in a new tab; after the customer creates the stack,\ncontinue with ``discover-regions`` and ``link-cloud-account``.",
+        "description": "Start CloudFormation Quick Create AWS account linking.\n\nReturns a pending External ID (stable per business unit until a matching\nAWS link succeeds) and an AWS Console Quick Create URL. The frontend opens\nthe URL in a new tab; after the customer creates the stack, continue with\n``discover-regions`` and ``link-cloud-account``.",
         "operationId": "initiate_aws_cloudformation_link_api_v2_cloud_aws_credentials_action_initiate_cloudformation_link_post",
         "requestBody": {
           "content": {
@@ -8104,6 +9901,102 @@
         ]
       }
     },
+    "/api/v2/cloud/azure/reservations": {
+      "get": {
+        "description": "Retrieve the account's Azure reservation inventory, expiring soonest first.\n\nOne row per reservation, exactly as Azure's Capacity API reported it. The\nread is scoped to a single cloud account; the page itself is gated on the\ncompany's CLOUD_AZURE_CAPACITY_PLANNING flag.\n\nArgs:\n    cloud_account_id: The cloud account whose reservations to list.\n    current_user_session: The current active user session.\n    user_manager: User manager dependency.\n\nReturns:\n    A BaseApiResponse carrying the reservation rows, or None on error.",
+        "operationId": "list_reservations_api_v2_cloud_azure_reservations_get",
+        "parameters": [
+          {
+            "description": "Cloud account to list reservations for",
+            "in": "query",
+            "name": "cloud_account_id",
+            "required": true,
+            "schema": {
+              "description": "Cloud account to list reservations for",
+              "format": "uuid",
+              "title": "Cloud Account Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Reservations",
+        "tags": [
+          "cloud",
+          "azure",
+          "azure-reservations"
+        ]
+      }
+    },
+    "/api/v2/cloud/azure/reservations/coverage": {
+      "get": {
+        "description": "Retrieve which resources each of the account's reservations covered.\n\nOne row per (reservation, consuming resource) pair Azure attributed\nreservation hours to, over all stored usage history. Gated like the\nreservation list.\n\nArgs:\n    cloud_account_id: The cloud account whose reservation coverage to list.\n    current_user_session: The current active user session.\n    user_manager: User manager dependency.\n\nReturns:\n    A BaseApiResponse carrying the coverage rows, or None on error.",
+        "operationId": "list_reservation_coverage_api_v2_cloud_azure_reservations_coverage_get",
+        "parameters": [
+          {
+            "description": "Cloud account whose reservation coverage to list",
+            "in": "query",
+            "name": "cloud_account_id",
+            "required": true,
+            "schema": {
+              "description": "Cloud account whose reservation coverage to list",
+              "format": "uuid",
+              "title": "Cloud Account Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Reservation Coverage",
+        "tags": [
+          "cloud",
+          "azure",
+          "azure-reservations"
+        ]
+      }
+    },
     "/api/v2/cloud/azure/sourced-recommendations": {
       "get": {
         "description": "List Azure sourced recommendations with pagination, sort, field filters, and response field selection.",
@@ -8340,6 +10233,19 @@
       "get": {
         "description": "List cloud accounts with pagination, sort, field filters, and response field selection.",
         "operationId": "list_cloud_accounts_api_v2_cloud_cloud_accounts_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "company_id",
+            "required": false,
+            "schema": {
+              "format": "uuid",
+              "nullable": true,
+              "title": "Company Id",
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "content": {
@@ -8350,6 +10256,16 @@
               }
             },
             "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
           }
         },
         "summary": "List Cloud Accounts",
@@ -8394,6 +10310,106 @@
           }
         },
         "summary": "Create Cloud Account",
+        "tags": [
+          "cloud",
+          "cloud-accounts"
+        ]
+      }
+    },
+    "/api/v2/cloud/cloud-accounts/by-company/{company_id}": {
+      "get": {
+        "description": "Company-owner/superuser list supporting api_fields.\n\nOnly business_unit and business_unit.company includes are allowed; others return 422.",
+        "operationId": "list_cloud_accounts_for_company_api_v2_cloud_cloud_accounts_by_company__company_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "company_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Company Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Cloud Accounts For Company",
+        "tags": [
+          "cloud",
+          "cloud-accounts"
+        ]
+      }
+    },
+    "/api/v2/cloud/cloud-accounts/by-company/{company_id}/{cloud_account_id}": {
+      "get": {
+        "description": "Company-owner/superuser detail supporting api_fields.\n\nOnly business_unit and business_unit.company includes are allowed; others return 422.",
+        "operationId": "get_cloud_account_for_company_api_v2_cloud_cloud_accounts_by_company__company_id___cloud_account_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "company_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Company Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "cloud_account_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Cloud Account Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Cloud Account For Company",
         "tags": [
           "cloud",
           "cloud-accounts"
@@ -8634,7 +10650,7 @@
     },
     "/api/v2/cloud/cloud-accounts/{cloud_account_id}/action/freshness/refresh": {
       "post": {
-        "description": "Queue a cloud-account freshness warm request.\n\nOrdinary users may request inventory rediscovery when eligible. Super-admin\ndebug/operator requests may use ``force`` and other supported actions. The\nendpoint only records intent/status and enqueues Procrastinate work; provider\ndiscovery runs in the warm inventory worker (API-pod or dedicated).",
+        "description": "Queue a cloud-account freshness warm request.\n\nOrdinary users may request inventory rediscovery when eligible. Super-admin\ndebug/operator requests may use ``force`` and other supported actions. The\nendpoint only records intent/status and enqueues Procrastinate work; provider\ndiscovery runs in the warm inventory worker (API-pod or dedicated).\n\nNon-force resources rediscover stays on cost-explorer view. That path is the\nviewer Refresh action, and ``RolePermissions`` has no refresh execute key.\nForce and other actions stay on business-unit root access plus the superuser\ncheck.",
         "operationId": "request_cloud_account_freshness_refresh_api_v2_cloud_cloud_accounts__cloud_account_id__action_freshness_refresh_post",
         "parameters": [
           {
@@ -8840,6 +10856,94 @@
         ]
       }
     },
+    "/api/v2/cloud/cloud-accounts/{cloud_account_id}/credentials": {
+      "get": {
+        "description": "Return non-secret credential prefill for one cloud account.\n\nSuccess and errors use the standard ``{meta, data}`` envelope. ``data`` on\nerror is ``{error_code, message, field?, details?, provider?}``.",
+        "operationId": "get_cloud_account_credentials_api_v2_cloud_cloud_accounts__cloud_account_id__credentials_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "cloud_account_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Cloud Account Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Cloud Account Credentials",
+        "tags": [
+          "cloud",
+          "cloud-accounts"
+        ]
+      },
+      "put": {
+        "description": "Replace linked credentials after the same provider validation used at link time.\n\nThe body is ``{provider, ...fields}``. Success returns the same prefill as\nGET inside ``data``. Errors keep ``error_code``, ``message``, and ``field``\ninside that envelope.",
+        "operationId": "update_cloud_account_credentials_api_v2_cloud_cloud_accounts__cloud_account_id__credentials_put",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "cloud_account_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Cloud Account Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Update Cloud Account Credentials",
+        "tags": [
+          "cloud",
+          "cloud-accounts"
+        ]
+      }
+    },
     "/api/v2/cloud/cloud-accounts/{cloud_account_id}/custom-recommendations/latest": {
       "get": {
         "description": "List latest-version custom recommendations scoped to a cloud account.",
@@ -8975,6 +11079,106 @@
         ]
       }
     },
+    "/api/v2/cloud/cloud-accounts/{cloud_account_id}/settings": {
+      "get": {
+        "description": "Return sanitized post-link account, cost-export, and agent settings.",
+        "operationId": "get_cloud_account_settings_api_v2_cloud_cloud_accounts__cloud_account_id__settings_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "cloud_account_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Cloud Account Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Cloud Account Settings",
+        "tags": [
+          "cloud",
+          "cloud-accounts"
+        ]
+      }
+    },
+    "/api/v2/cloud/cloud-accounts/{cloud_account_id}/settings/agent-architecture": {
+      "patch": {
+        "description": "Change the recommendation architecture.\n\nRequires ``user:business-unit:cloud-account:edit``. No cloud-account settings\nedit key exists, and the credentials execute key covers a different action.\nThe service still allows only superusers.",
+        "operationId": "update_cloud_account_agent_architecture_api_v2_cloud_cloud_accounts__cloud_account_id__settings_agent_architecture_patch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "cloud_account_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Cloud Account Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAgentArchitectureRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Update Cloud Account Agent Architecture",
+        "tags": [
+          "cloud",
+          "cloud-accounts"
+        ]
+      }
+    },
     "/api/v2/cloud/cloud-accounts/{cloud_account_id}/warm-attempts/initial-setup": {
       "get": {
         "description": "Return latest OCO-setup warm attempts for cost / resources / recommendations.",
@@ -9020,9 +11224,9 @@
         ]
       }
     },
-    "/api/v2/cloud/cost-data-sources/": {
+    "/api/v2/cloud/cost-data-sources": {
       "get": {
-        "operationId": "list_cost_data_sources_api_v2_cloud_cost_data_sources__get",
+        "operationId": "list_cost_data_sources_api_v2_cloud_cost_data_sources_get",
         "parameters": [
           {
             "description": "Company that owns the CDS rows",
@@ -9066,7 +11270,7 @@
         ]
       },
       "post": {
-        "operationId": "create_cost_data_source_api_v2_cloud_cost_data_sources__post",
+        "operationId": "create_cost_data_source_api_v2_cloud_cost_data_sources_post",
         "requestBody": {
           "content": {
             "application/json": {
@@ -9100,6 +11304,100 @@
           }
         },
         "summary": "Create Cost Data Source",
+        "tags": [
+          "cloud",
+          "cost-data-sources"
+        ]
+      }
+    },
+    "/api/v2/cloud/cost-data-sources/action/apply-candidate": {
+      "post": {
+        "operationId": "apply_cost_data_source_candidate_api_v2_cloud_cost_data_sources_action_apply_candidate_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CloudCostDataSourceApplyCandidateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CloudCostDataSourceApplyResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CloudCostDataSourceApplyResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Apply Cost Data Source Candidate",
+        "tags": [
+          "cloud",
+          "cost-data-sources"
+        ]
+      }
+    },
+    "/api/v2/cloud/cost-data-sources/action/validate-candidate": {
+      "post": {
+        "operationId": "validate_cost_data_source_candidate_api_v2_cloud_cost_data_sources_action_validate_candidate_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CloudCostDataSourceCandidateValidateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Validate Cost Data Source Candidate",
         "tags": [
           "cloud",
           "cost-data-sources"
@@ -9262,6 +11560,154 @@
           }
         },
         "summary": "Update Cost Data Source",
+        "tags": [
+          "cloud",
+          "cost-data-sources"
+        ]
+      }
+    },
+    "/api/v2/cloud/cost-data-sources/{source_id}/action/retry-import": {
+      "post": {
+        "operationId": "retry_cost_source_import_api_v2_cloud_cost_data_sources__source_id__action_retry_import_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "source_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Source Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecoveryRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecoveryResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecoveryRejectedResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecoveryRejectedResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        },
+        "summary": "Retry Cost Source Import",
+        "tags": [
+          "cloud",
+          "cost-data-sources"
+        ]
+      }
+    },
+    "/api/v2/cloud/cost-data-sources/{source_id}/action/retry-matching": {
+      "post": {
+        "operationId": "retry_cost_source_matching_api_v2_cloud_cost_data_sources__source_id__action_retry_matching_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "source_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Source Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecoveryRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecoveryResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecoveryRejectedResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecoveryRejectedResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        },
+        "summary": "Retry Cost Source Matching",
         "tags": [
           "cloud",
           "cost-data-sources"
@@ -10127,7 +12573,7 @@
     },
     "/api/v2/cloud/custom-recommendations/{custom_recommendation_id}/sources/{source_key}/refresh": {
       "post": {
-        "description": "Request refresh for one recommendation source/dependency node.\n\nDR-034 source refresh is a bounded freshness request, so ordinary Cost\nExplorer viewers may request non-force refreshes and recommendation\nregeneration when eligible. Forced refreshes and account-wide cost\nattribution remain superuser-only diagnostic operations.",
+        "description": "Request refresh for one recommendation source/dependency node.\n\nDR-034 source refresh is a bounded freshness request, so ordinary Cost\nExplorer viewers may request non-force refreshes and recommendation\nregeneration when eligible. That view gate stays: ``RolePermissions`` has\nno refresh execute key, and this POST is the viewer Refresh action. Forced\nrefreshes and account-wide cost attribution remain superuser-only\ndiagnostic operations.",
         "operationId": "refresh_custom_recommendation_source_api_v2_cloud_custom_recommendations__custom_recommendation_id__sources__source_key__refresh_post",
         "parameters": [
           {
@@ -10296,6 +12742,51 @@
           }
         },
         "summary": "List Custom Recommendation Source Rows",
+        "tags": [
+          "cloud",
+          "custom-recommendation"
+        ]
+      }
+    },
+    "/api/v2/cloud/custom-recommendations/{custom_recommendation_id}/versions": {
+      "get": {
+        "description": "Return every version in the exact recommendation's stable chain, newest first.",
+        "operationId": "get_custom_recommendation_versions_api_v2_cloud_custom_recommendations__custom_recommendation_id__versions_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "custom_recommendation_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Custom Recommendation Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Custom Recommendation Versions",
         "tags": [
           "cloud",
           "custom-recommendation"
@@ -10765,6 +13256,74 @@
         ]
       }
     },
+    "/api/v2/cloud/gcp/discovery-audit-logs": {
+      "get": {
+        "operationId": "list_gcp_resource_discovery_audit_logs_api_v2_cloud_gcp_discovery_audit_logs_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "List Gcp Resource Discovery Audit Logs",
+        "tags": [
+          "cloud",
+          "gcp",
+          "gcp-resource-discovery-audit-logs"
+        ]
+      }
+    },
+    "/api/v2/cloud/gcp/discovery-audit-logs/{audit_log_id}": {
+      "get": {
+        "operationId": "get_gcp_resource_discovery_audit_log_api_v2_cloud_gcp_discovery_audit_logs__audit_log_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "audit_log_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Audit Log Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Gcp Resource Discovery Audit Log",
+        "tags": [
+          "cloud",
+          "gcp",
+          "gcp-resource-discovery-audit-logs"
+        ]
+      }
+    },
     "/api/v2/cloud/gcp/discovery/resources/": {
       "get": {
         "description": "List GCP resource discoveries with pagination, sort, field filters, and response field selection\n(same query conventions as AWS ``GET …/aws/discovery/resources/``).",
@@ -10780,6 +13339,30 @@
               "nullable": true,
               "title": "Is Active",
               "type": "string"
+            }
+          },
+          {
+            "description": "Recommendation-link meta-filter. `eq true` (or `true`) returns resources linked from any discovery version; `eq false` returns resources with no link; omit for all.",
+            "in": "query",
+            "name": "has_recommendation",
+            "required": false,
+            "schema": {
+              "description": "Recommendation-link meta-filter. `eq true` (or `true`) returns resources linked from any discovery version; `eq false` returns resources with no link; omit for all.",
+              "nullable": true,
+              "title": "Has Recommendation",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Deprecated compatibility flag. GCP resource listings now always embed the authoritative recommendation, matching AWS/Azure.",
+            "in": "query",
+            "name": "include_latest_recommendation",
+            "required": false,
+            "schema": {
+              "default": false,
+              "description": "Deprecated compatibility flag. GCP resource listings now always embed the authoritative recommendation, matching AWS/Azure.",
+              "title": "Include Latest Recommendation",
+              "type": "boolean"
             }
           }
         ],
@@ -11019,6 +13602,18 @@
               "title": "Is Active",
               "type": "string"
             }
+          },
+          {
+            "description": "`eq true` for resources with a recommendation, `eq false` without one.",
+            "in": "query",
+            "name": "has_recommendation",
+            "required": false,
+            "schema": {
+              "description": "`eq true` for resources with a recommendation, `eq false` without one.",
+              "nullable": true,
+              "title": "Has Recommendation",
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -11044,6 +13639,62 @@
           }
         },
         "summary": "Get Gcp Resource Type Counts",
+        "tags": [
+          "cloud",
+          "gcp",
+          "gcp-resource-discovery"
+        ]
+      }
+    },
+    "/api/v2/cloud/gcp/discovery/resources/{resource_id}/constraints": {
+      "patch": {
+        "description": "Replace standing constraints for one active GCP resource.",
+        "operationId": "update_gcp_resource_constraints_api_v2_cloud_gcp_discovery_resources__resource_id__constraints_patch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "resource_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Resource Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateGcpResourceConstraintsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Update Gcp Resource Constraints",
         "tags": [
           "cloud",
           "gcp",
@@ -11823,6 +14474,53 @@
         ]
       }
     },
+    "/api/v2/cloud/recommendation-activities": {
+      "get": {
+        "description": "List recommendation activities for the given recommendation_id (all versions).",
+        "operationId": "list_recommendation_activities_api_v2_cloud_recommendation_activities_get",
+        "parameters": [
+          {
+            "description": "Recommendation to list activities for.",
+            "in": "query",
+            "name": "recommendation_id",
+            "required": true,
+            "schema": {
+              "description": "Recommendation to list activities for.",
+              "format": "uuid",
+              "title": "Recommendation Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Recommendation Activities",
+        "tags": [
+          "cloud",
+          "recommendation-activity"
+        ]
+      }
+    },
     "/api/v2/cloud/recommendation-agent-operations": {
       "get": {
         "description": "List recommendation agent operations with pagination, sort, field filters, and response field selection.",
@@ -12096,6 +14794,116 @@
         "tags": [
           "cloud",
           "recommendation-agent-operations"
+        ]
+      }
+    },
+    "/api/v2/cloud/recommendations/{recommendation_id}/action/add-comment": {
+      "post": {
+        "description": "Add a comment activity for an orchestrator recommendation.",
+        "operationId": "add_recommendation_comment_api_v2_cloud_recommendations__recommendation_id__action_add_comment_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "recommendation_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Recommendation Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddRecommendationCommentRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Add Recommendation Comment",
+        "tags": [
+          "cloud",
+          "recommendation"
+        ]
+      }
+    },
+    "/api/v2/cloud/recommendations/{recommendation_id}/action/change-status": {
+      "post": {
+        "description": "Change orchestrator recommendation lifecycle status and audit the actor.",
+        "operationId": "change_recommendation_status_api_v2_cloud_recommendations__recommendation_id__action_change_status_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "recommendation_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Recommendation Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeRecommendationStatusRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Change Recommendation Status",
+        "tags": [
+          "cloud",
+          "recommendation"
         ]
       }
     },
@@ -13617,6 +16425,27 @@
         ]
       }
     },
+    "/api/v2/integrations/github/events": {
+      "post": {
+        "description": "Accept a Nango/GitHub webhook callback and delegate to the service.",
+        "operationId": "nango_webhook_api_v2_integrations_github_events_post",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Nango Webhook",
+        "tags": [
+          "github",
+          "webhooks"
+        ]
+      }
+    },
     "/api/v2/integrations/github/me": {
       "get": {
         "operationId": "get_current_user_github_connection_api_v2_integrations_github_me_get",
@@ -13698,6 +16527,61 @@
           }
         },
         "summary": "Get Github Integration List",
+        "tags": [
+          "github"
+        ]
+      }
+    },
+    "/api/v2/integrations/github/me/pull-request": {
+      "get": {
+        "description": "Return PR status and title for a remediation pull-request artifact.\n\nCaching is handled by the frontend.",
+        "operationId": "get_github_pull_request_status_api_v2_integrations_github_me_pull_request_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "business_unit_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Business Unit Id",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Absolute GitHub or Azure DevOps pull-request URL",
+            "in": "query",
+            "name": "url",
+            "required": true,
+            "schema": {
+              "description": "Absolute GitHub or Azure DevOps pull-request URL",
+              "title": "Url",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Github Pull Request Status",
         "tags": [
           "github"
         ]
@@ -13909,6 +16793,191 @@
         "summary": "Fetchjiraprojects",
         "tags": [
           "jira"
+        ]
+      }
+    },
+    "/api/v2/integrations/slack/action/cancel": {
+      "post": {
+        "operationId": "cancel_slack_api_v2_integrations_slack_action_cancel_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SlackCompanyRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Cancel Slack",
+        "tags": [
+          "slack"
+        ]
+      }
+    },
+    "/api/v2/integrations/slack/action/connect": {
+      "post": {
+        "operationId": "connect_slack_api_v2_integrations_slack_action_connect_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SlackConnectRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Connect Slack",
+        "tags": [
+          "slack"
+        ]
+      }
+    },
+    "/api/v2/integrations/slack/action/disconnect": {
+      "post": {
+        "operationId": "disconnect_slack_api_v2_integrations_slack_action_disconnect_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SlackCompanyRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Disconnect Slack",
+        "tags": [
+          "slack"
+        ]
+      }
+    },
+    "/api/v2/integrations/slack/events": {
+      "post": {
+        "operationId": "receive_slack_events_api_v2_integrations_slack_events_post",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Receive Slack Events",
+        "tags": [
+          "slack"
+        ]
+      }
+    },
+    "/api/v2/integrations/slack/me/integration": {
+      "get": {
+        "operationId": "get_slack_integration_api_v2_integrations_slack_me_integration_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "company_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Company Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Slack Integration",
+        "tags": [
+          "slack"
         ]
       }
     },
@@ -14543,7 +17612,7 @@
         ]
       },
       "post": {
-        "description": "Create a pricing plan. Returns 409 Conflict if internal_name already exists.",
+        "description": "Create a pricing plan. Returns 409 Conflict if internal_name already exists.\nCaller must be a superuser.",
         "operationId": "create_pricing_plan_api_v2_license_and_billing_pricing_plans_post",
         "requestBody": {
           "content": {
@@ -14629,7 +17698,7 @@
         ]
       },
       "patch": {
-        "description": "Update a pricing plan by UUID (partial). 404 if not found, 409 if internal_name conflict.",
+        "description": "Update a pricing plan by UUID (partial). 404 if not found, 409 if internal_name conflict.\nCaller must be a superuser.",
         "operationId": "update_pricing_plan_api_v2_license_and_billing_pricing_plans__pricing_plan_id__patch",
         "parameters": [
           {
@@ -14956,6 +18025,106 @@
         ]
       }
     },
+    "/api/v2/organization/business-units/by-company/{company_id}": {
+      "get": {
+        "description": "Company-owner/superuser list with api_fields and api_include=company; other includes return 422.",
+        "operationId": "list_business_units_for_company_api_v2_organization_business_units_by_company__company_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "company_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Company Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Business Units For Company",
+        "tags": [
+          "organization",
+          "organization-business-unit"
+        ]
+      }
+    },
+    "/api/v2/organization/business-units/by-company/{company_id}/{business_unit_id}": {
+      "get": {
+        "description": "Company-owner/superuser detail with api_fields and api_include=company; other includes return 422.",
+        "operationId": "get_business_unit_for_company_api_v2_organization_business_units_by_company__company_id___business_unit_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "company_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Company Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "business_unit_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Business Unit Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Business Unit For Company",
+        "tags": [
+          "organization",
+          "organization-business-unit"
+        ]
+      }
+    },
     "/api/v2/organization/business-units/{business_unit_id}": {
       "delete": {
         "description": "Delete a business unit and linked dependent records.",
@@ -15144,7 +18313,7 @@
     },
     "/api/v2/organization/companies": {
       "get": {
-        "description": "List companies with pagination, sort, field filters, and response field selection.",
+        "description": "List companies with pagination, sort, field filters, and response field selection.\n\nA superuser receives every company. Any other caller receives only the\ncompany they belong to, or an empty page when they have none.",
         "operationId": "list_companies_api_v2_organization_companies_get",
         "responses": {
           "200": {
@@ -15165,7 +18334,7 @@
         ]
       },
       "post": {
-        "description": "Create a new company. Returns 409 Conflict if slug or any domain_emails entry already exists.",
+        "description": "Create a new company. Returns 409 Conflict if slug or any domain_emails entry already exists.\nCaller must be a superuser.",
         "operationId": "create_company_api_v2_organization_companies_post",
         "requestBody": {
           "content": {
@@ -15208,7 +18377,7 @@
     },
     "/api/v2/organization/companies/{company_id}": {
       "delete": {
-        "description": "Delete a company and linked dependent records.",
+        "description": "Delete a company and linked dependent records. Caller must be a superuser.",
         "operationId": "delete_company_api_v2_organization_companies__company_id__delete",
         "parameters": [
           {
@@ -15251,7 +18420,7 @@
         ]
       },
       "get": {
-        "description": "Get a company by UUID.\n\n**Query params:**\n- BaseApiResponseQueryParams: api_fields, api_include (e.g. ?api_fields=id,name,slug).",
+        "description": "Get a company by UUID.\n\nAllowed for a superuser, or for a caller whose company is this id.\n\n**Query params:**\n- BaseApiResponseQueryParams: api_fields, api_include (e.g. ?api_fields=id,name,slug).",
         "operationId": "get_company_by_id_api_v2_organization_companies__company_id__get",
         "parameters": [
           {
@@ -15294,7 +18463,7 @@
         ]
       },
       "patch": {
-        "description": "Update a company by UUID (partial). Only provided body fields are updated. 404 if not found, 409 if slug/domain_emails conflict.",
+        "description": "Update a company by UUID (partial). Only provided body fields are updated.\n\nCaller must be an active owner of this company, or an active superuser.\n``is_root``, ``status``, and ``domain_emails`` are superuser-only.\nAn owner may change ``slug``. 404 if not found, 409 if slug/domain_emails conflict.",
         "operationId": "update_company_api_v2_organization_companies__company_id__patch",
         "parameters": [
           {
@@ -15453,6 +18622,465 @@
         "tags": [
           "remediation",
           "remediation-artifact"
+        ]
+      }
+    },
+    "/api/v2/remediation/orchestrator-threads/action/resolve": {
+      "post": {
+        "description": "Get or create the resource conversation without executing an agent turn.",
+        "operationId": "resolve_thread_api_v2_remediation_orchestrator_threads_action_resolve_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResolveOrchestratorThreadRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Resolve Thread",
+        "tags": [
+          "remediation",
+          "orchestrator-thread"
+        ]
+      }
+    },
+    "/api/v2/remediation/orchestrator-threads/action/start": {
+      "post": {
+        "operationId": "start_thread_api_v2_remediation_orchestrator_threads_action_start_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StartOrchestratorThreadRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Start Thread",
+        "tags": [
+          "remediation",
+          "orchestrator-thread"
+        ]
+      }
+    },
+    "/api/v2/remediation/orchestrator-threads/action/stream-start": {
+      "post": {
+        "operationId": "stream_start_api_v2_remediation_orchestrator_threads_action_stream_start_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StartOrchestratorThreadRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Stream Start",
+        "tags": [
+          "remediation",
+          "orchestrator-thread"
+        ]
+      }
+    },
+    "/api/v2/remediation/orchestrator-threads/{thread_id}/action/retry-background-remediation": {
+      "post": {
+        "operationId": "retry_background_remediation_api_v2_remediation_orchestrator_threads__thread_id__action_retry_background_remediation_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "thread_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Thread Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Retry Background Remediation",
+        "tags": [
+          "remediation",
+          "orchestrator-thread"
+        ]
+      }
+    },
+    "/api/v2/remediation/orchestrator-threads/{thread_id}/action/send-message": {
+      "post": {
+        "operationId": "send_message_api_v2_remediation_orchestrator_threads__thread_id__action_send_message_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "thread_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Thread Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendOrchestratorMessageRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Send Message",
+        "tags": [
+          "remediation",
+          "orchestrator-thread"
+        ]
+      }
+    },
+    "/api/v2/remediation/orchestrator-threads/{thread_id}/action/stream-generate-artifacts": {
+      "post": {
+        "description": "Generate the plan artifacts the user just confirmed on the recommendation.",
+        "operationId": "stream_generate_artifacts_api_v2_remediation_orchestrator_threads__thread_id__action_stream_generate_artifacts_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "thread_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Thread Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Stream Generate Artifacts",
+        "tags": [
+          "remediation",
+          "orchestrator-thread"
+        ]
+      }
+    },
+    "/api/v2/remediation/orchestrator-threads/{thread_id}/action/stream-send-message": {
+      "post": {
+        "operationId": "stream_send_message_api_v2_remediation_orchestrator_threads__thread_id__action_stream_send_message_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "thread_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Thread Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendOrchestratorMessageRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Stream Send Message",
+        "tags": [
+          "remediation",
+          "orchestrator-thread"
+        ]
+      }
+    },
+    "/api/v2/remediation/orchestrator-threads/{thread_id}/artifacts": {
+      "get": {
+        "operationId": "get_artifacts_api_v2_remediation_orchestrator_threads__thread_id__artifacts_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "thread_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Thread Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Artifacts",
+        "tags": [
+          "remediation",
+          "orchestrator-thread"
+        ]
+      }
+    },
+    "/api/v2/remediation/orchestrator-threads/{thread_id}/events": {
+      "get": {
+        "description": "Replay and stream durable out-of-band updates for one conversation.",
+        "operationId": "stream_thread_events_api_v2_remediation_orchestrator_threads__thread_id__events_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "thread_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Thread Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "after",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "title": "After",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Stream Thread Events",
+        "tags": [
+          "remediation",
+          "orchestrator-thread"
+        ]
+      }
+    },
+    "/api/v2/remediation/orchestrator-threads/{thread_id}/messages": {
+      "get": {
+        "operationId": "get_messages_api_v2_remediation_orchestrator_threads__thread_id__messages_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "thread_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Thread Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Messages",
+        "tags": [
+          "remediation",
+          "orchestrator-thread"
         ]
       }
     },
@@ -17524,6 +21152,60 @@
       }
     },
     "/api/v2/system/feature-flags/business-unit/by-key/{flag_key}": {
+      "delete": {
+        "operationId": "delete_flag_by_key_api_v2_system_feature_flags_business_unit_by_key__flag_key__delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "flag_key",
+            "required": true,
+            "schema": {
+              "title": "Flag Key",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Business unit scope",
+            "in": "query",
+            "name": "business_unit_id",
+            "required": true,
+            "schema": {
+              "description": "Business unit scope",
+              "format": "uuid",
+              "title": "Business Unit Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Delete Flag By Key",
+        "tags": [
+          "system",
+          "feature-flags",
+          "business-unit-feature-flag"
+        ]
+      },
       "get": {
         "operationId": "get_flag_by_key_api_v2_system_feature_flags_business_unit_by_key__flag_key__get",
         "parameters": [
@@ -18062,6 +21744,60 @@
       }
     },
     "/api/v2/system/feature-flags/company/by-key/{flag_key}": {
+      "delete": {
+        "operationId": "delete_flag_by_key_api_v2_system_feature_flags_company_by_key__flag_key__delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "flag_key",
+            "required": true,
+            "schema": {
+              "title": "Flag Key",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Company scope",
+            "in": "query",
+            "name": "company_id",
+            "required": true,
+            "schema": {
+              "description": "Company scope",
+              "format": "uuid",
+              "title": "Company Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Delete Flag By Key",
+        "tags": [
+          "system",
+          "feature-flags",
+          "company-feature-flag"
+        ]
+      },
       "get": {
         "operationId": "get_flag_by_key_api_v2_system_feature_flags_company_by_key__flag_key__get",
         "parameters": [
@@ -18444,6 +22180,65 @@
         ]
       }
     },
+    "/api/v2/system/feature-flags/root-admin": {
+      "get": {
+        "operationId": "list_root_flags_api_v2_system_feature_flags_root_admin_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "api_limit",
+            "required": false,
+            "schema": {
+              "default": 100,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Api Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "api_offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "maximum": 1000000,
+              "minimum": 0,
+              "title": "Api Offset",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Root Flags",
+        "tags": [
+          "system",
+          "feature-flags",
+          "root-feature-flag-admin"
+        ]
+      }
+    },
     "/api/v2/system/feature-flags/root/action/set/{flag_key}": {
       "patch": {
         "operationId": "action_set_flag_api_v2_system_feature_flags_root_action_set__flag_key__patch",
@@ -18499,6 +22294,48 @@
       }
     },
     "/api/v2/system/feature-flags/root/by-key/{flag_key}": {
+      "delete": {
+        "operationId": "delete_flag_by_key_api_v2_system_feature_flags_root_by_key__flag_key__delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "flag_key",
+            "required": true,
+            "schema": {
+              "title": "Flag Key",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Delete Flag By Key",
+        "tags": [
+          "system",
+          "feature-flags",
+          "root-feature-flag"
+        ]
+      },
       "get": {
         "operationId": "get_flag_by_key_api_v2_system_feature_flags_root_by_key__flag_key__get",
         "parameters": [
@@ -18652,6 +22489,7 @@
     },
     "/api/v2/system/root-settings": {
       "get": {
+        "description": "List root system settings. Caller must be a superuser.",
         "operationId": "list_settings_api_v2_system_root_settings_get",
         "responses": {
           "200": {
@@ -18672,6 +22510,7 @@
         ]
       },
       "post": {
+        "description": "Create a root system setting. Caller must be a superuser.",
         "operationId": "create_setting_api_v2_system_root_settings_post",
         "requestBody": {
           "content": {
@@ -18714,6 +22553,7 @@
     },
     "/api/v2/system/root-settings/by-key/{setting_key}": {
       "get": {
+        "description": "Get one root system setting by key. Caller must be a superuser.",
         "operationId": "get_setting_by_key_api_v2_system_root_settings_by_key__setting_key__get",
         "parameters": [
           {
@@ -18757,6 +22597,7 @@
     },
     "/api/v2/system/root-settings/{setting_id}": {
       "delete": {
+        "description": "Delete a root system setting. Caller must be a superuser.",
         "operationId": "delete_setting_api_v2_system_root_settings__setting_id__delete",
         "parameters": [
           {
@@ -18799,6 +22640,7 @@
         ]
       },
       "get": {
+        "description": "Get one root system setting by id. Caller must be a superuser.",
         "operationId": "get_setting_by_id_api_v2_system_root_settings__setting_id__get",
         "parameters": [
           {
@@ -18841,6 +22683,7 @@
         ]
       },
       "patch": {
+        "description": "Update a root system setting. Caller must be a superuser.",
         "operationId": "edit_setting_api_v2_system_root_settings__setting_id__patch",
         "parameters": [
           {
@@ -19349,172 +23192,6 @@
         ]
       }
     },
-    "/api/v2/temp-dashboard/resources/health/details": {
-      "get": {
-        "description": "Resource health details by category.",
-        "operationId": "get_resource_health_details_api_v2_temp_dashboard_resources_health_details_get",
-        "parameters": [
-          {
-            "description": "Filter by cloud account ID. Blank returns all accounts",
-            "in": "query",
-            "name": "cloud_account",
-            "required": false,
-            "schema": {
-              "description": "Filter by cloud account ID. Blank returns all accounts",
-              "format": "uuid",
-              "nullable": true,
-              "title": "Cloud Account",
-              "type": "string"
-            }
-          },
-          {
-            "description": "Start date in YYYY-MM-DD format. Defaults to 30 days ago",
-            "in": "query",
-            "name": "start_date",
-            "required": false,
-            "schema": {
-              "description": "Start date in YYYY-MM-DD format. Defaults to 30 days ago",
-              "nullable": true,
-              "title": "Start Date",
-              "type": "string"
-            }
-          },
-          {
-            "description": "End date in YYYY-MM-DD format. Defaults to today",
-            "in": "query",
-            "name": "end_date",
-            "required": false,
-            "schema": {
-              "description": "End date in YYYY-MM-DD format. Defaults to today",
-              "nullable": true,
-              "title": "End Date",
-              "type": "string"
-            }
-          },
-          {
-            "description": "Filter by categories. Comma-separated list. Blank returns all",
-            "in": "query",
-            "name": "categories_filter",
-            "required": false,
-            "schema": {
-              "description": "Filter by categories. Comma-separated list. Blank returns all",
-              "nullable": true,
-              "title": "Categories Filter",
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BaseApiResponse"
-                }
-              }
-            },
-            "description": "Successful Response"
-          },
-          "422": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            },
-            "description": "Validation Error"
-          }
-        },
-        "summary": "Get Resource Health Details",
-        "tags": [
-          "temp-dashboard"
-        ]
-      }
-    },
-    "/api/v2/temp-dashboard/resources/health/summary": {
-      "get": {
-        "description": "Resource health summary by category.",
-        "operationId": "get_resource_health_summary_api_v2_temp_dashboard_resources_health_summary_get",
-        "parameters": [
-          {
-            "description": "Filter by cloud account ID. Blank returns all accounts",
-            "in": "query",
-            "name": "cloud_account",
-            "required": false,
-            "schema": {
-              "description": "Filter by cloud account ID. Blank returns all accounts",
-              "format": "uuid",
-              "nullable": true,
-              "title": "Cloud Account",
-              "type": "string"
-            }
-          },
-          {
-            "description": "Start date in YYYY-MM-DD format. Defaults to 30 days ago",
-            "in": "query",
-            "name": "start_date",
-            "required": false,
-            "schema": {
-              "description": "Start date in YYYY-MM-DD format. Defaults to 30 days ago",
-              "nullable": true,
-              "title": "Start Date",
-              "type": "string"
-            }
-          },
-          {
-            "description": "End date in YYYY-MM-DD format. Defaults to today",
-            "in": "query",
-            "name": "end_date",
-            "required": false,
-            "schema": {
-              "description": "End date in YYYY-MM-DD format. Defaults to today",
-              "nullable": true,
-              "title": "End Date",
-              "type": "string"
-            }
-          },
-          {
-            "description": "Filter by categories. Comma-separated list. Blank returns all",
-            "in": "query",
-            "name": "categories_filter",
-            "required": false,
-            "schema": {
-              "description": "Filter by categories. Comma-separated list. Blank returns all",
-              "nullable": true,
-              "title": "Categories Filter",
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BaseApiResponse"
-                }
-              }
-            },
-            "description": "Successful Response"
-          },
-          "422": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            },
-            "description": "Validation Error"
-          }
-        },
-        "summary": "Get Resource Health Summary",
-        "tags": [
-          "temp-dashboard"
-        ]
-      }
-    },
     "/api/v2/temp-dashboard/savings": {
       "get": {
         "description": "Savings by category - CustomRecommendations aggregated by category.",
@@ -19657,26 +23334,6 @@
         "summary": "Get Savings Progress",
         "tags": [
           "temp-dashboard"
-        ]
-      }
-    },
-    "/api/v2/webhooks/nango": {
-      "post": {
-        "description": "Nango webhook receiver — not implemented.",
-        "operationId": "nango_webhook_api_v2_webhooks_nango_post",
-        "responses": {
-          "501": {
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            },
-            "description": "Successful Response"
-          }
-        },
-        "summary": "Nango Webhook",
-        "tags": [
-          "webhooks"
         ]
       }
     },

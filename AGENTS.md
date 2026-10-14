@@ -151,6 +151,42 @@ release, grant production access, or prove runtime compatibility.
 (Business Goal; SOC 2 CC6.1 and CC8.1). These source facts do not establish live
 functionality or authorize publication.
 
+### Proposed Stack-mediated temporary CLI authentication
+
+**Status:** Proposed, not active. **Owner:** CLI Engineering and Jetscale
+Platform Governance. **Proposed:** 2026-10-13. **Rationale:** attributable,
+bounded non-secret setup without captured credentials (SOC 2 CC6.1 and CC8.1).
+
+Source implements `--login EMAIL --password-stdin`, `prepare basics` and
+`flags show|plan|apply`. This proposes only Stack-mediated execution against
+`https://unstable.jetscale.ai` as `devops+unstable@jetscale.ai`. Only a
+qualified Stack wrapper may resolve
+`op://Everyone's Agents/JETSCALE_DEFAULT_ADMIN_PASSWORD (unstable)/password`
+inside the helper and pass it through an internal anonymous pipe. Credentials
+and temporary sessions stay in process memory; no secrets in arguments,
+environment, files, logs, capture or the session store. Interactive persistent
+login and credential-file fallback are excluded from this proposal.
+
+Activation requires human-reviewed publication of the Governance Constitution
+and secret-management amendments and Stack runtime contract, plus human review
+and publication of applicable CLI law. Before any real secret, require synthetic
+helper qualification under the actual capture configuration and verified runtime
+provenance, identity, isolation, downstream effects, numeric bounds and
+recovery. A local uncommitted unstable-channel build is permitted input only,
+never provenance or authority. Login/signout may invalidate all operator
+sessions; that effect requires explicit authorization and coordination.
+
+Basics and feature flags each require their own bounded human authorization
+through existing APIs only. This grants no cloud onboarding, FOCUS setup or
+ingestion, BU creation, external-agent provisioning, production access,
+delivery, installation, staging, commit, push or tag rights. Supported flag keys
+do not expand those effects. Published browser-only credential authority and all
+narrower bans remain binding until the amendments are published; this proposal
+cannot authorize its own execution or ratification. See
+[Prepare Basics](docs/prepare-basics.md) and
+[Feature Flags](docs/feature-flags.md) for implemented behavior and proof
+limits.
+
 ### Why a Separate Repo
 
 | Concern                | Decision                                                                       |

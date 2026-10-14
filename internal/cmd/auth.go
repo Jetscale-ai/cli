@@ -33,6 +33,10 @@ JETSCALE_DEFAULT_ADMIN_PASSWORD without shell expansion. This mode verifies logi
 then signs out without saving; use the same flag on accounts list to run it in a
 temporary session. No browser storage is imported.
 
+For any channel, --login supplies an email or username and --password-stdin reads
+one password line from a pipe or file. This also verifies a temporary session
+and signs out without saving.
+
 Examples:
   jetscale auth login
   jetscale auth whoami
@@ -42,7 +46,7 @@ Examples:
 			if err != nil {
 				return err
 			}
-			if flagCredentialsFile != "" {
+			if flagCredentialsFile != "" || flagPasswordStdin {
 				if _, err := commandSession(cmd, instance, apiURL); err != nil {
 					return err
 				}
@@ -53,7 +57,7 @@ Examples:
 				return errors.New("unset the channel TOKEN variable before logging in with cookies")
 			}
 			if !term.IsTerminal(int(os.Stdin.Fd())) {
-				return errors.New("interactive login requires a terminal; local automation can use --credentials-file")
+				return errors.New("interactive login requires a terminal; automation can use --login with --password-stdin")
 			}
 			_, _ = fmt.Fprintln(cmd.ErrOrStderr(), "Signing in may close existing sessions for this user.")
 			_, _ = fmt.Fprint(cmd.ErrOrStderr(), "Email: ")
@@ -67,7 +71,7 @@ Examples:
 			if err != nil {
 				return errors.New("cannot read login password")
 			}
-			session, err := auth.LoginSession(apiURL, strings.TrimSpace(email), string(password), flagCAFile)
+			session, err := auth.LoginSessionContext(cmd.Context(), apiURL, strings.TrimSpace(email), string(password), flagCAFile)
 			clear(password)
 			if err != nil {
 				return err
@@ -81,8 +85,8 @@ Examples:
 }
 
 type whoamiRow struct {
-	Email    string `json:"email" yaml:"email"`
-	Username string `json:"username" yaml:"username"`
+	Email    string `json:"email,omitempty" yaml:"email,omitempty"`
+	Username string `json:"username,omitempty" yaml:"username,omitempty"`
 	Instance string `json:"instance" yaml:"instance"`
 	APIURL   string `json:"api_url" yaml:"api_url"`
 }
@@ -99,7 +103,7 @@ func newAuthWhoamiCmd() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			who, err := session.Whoami()
+			who, err := commandIdentity(cmd, session)
 			if err != nil {
 				return err
 			}
@@ -109,7 +113,11 @@ func newAuthWhoamiCmd() *cobra.Command {
 			}
 			row := whoamiRow{Email: who.Email, Username: who.Username, Instance: instance, APIURL: apiURL}
 			if p.Format == output.Table {
-				_, _ = fmt.Fprintf(cmd.OutOrStdout(), "Logged in as %s\nInstance: %s (%s)\n", who.Email, instance, apiURL)
+				identity := who.Email
+				if identity == "" {
+					identity = who.Username
+				}
+				_, _ = fmt.Fprintf(cmd.OutOrStdout(), "Logged in as %s\nInstance: %s (%s)\n", identity, instance, apiURL)
 				return nil
 			}
 			return p.Print(row, nil)
@@ -119,7 +127,8 @@ func newAuthWhoamiCmd() *cobra.Command {
 
 type statusRow struct {
 	Authenticated bool   `json:"authenticated" yaml:"authenticated"`
-	Email         string `json:"email" yaml:"email"`
+	Email         string `json:"email,omitempty" yaml:"email,omitempty"`
+	Username      string `json:"username,omitempty" yaml:"username,omitempty"`
 	Instance      string `json:"instance" yaml:"instance"`
 }
 
@@ -134,19 +143,26 @@ func newAuthStatusCmd() *cobra.Command {
 			session, authErr := commandSession(cmd, instance, apiURL)
 			var who auth.WhoamiResult
 			if authErr == nil {
-				who, authErr = session.Whoami()
+				who, authErr = commandIdentity(cmd, session)
 			}
 			p, err := printer(cmd)
 			if err != nil {
 				return err
 			}
 			row := statusRow{Authenticated: authErr == nil, Email: who.Email, Instance: instance}
+			if flagPasswordStdin {
+				row.Username = who.Username
+			}
 			if p.Format != output.Table {
 				if err := p.Print(row, nil); err != nil {
 					return err
 				}
 			} else if authErr == nil {
-				_, _ = fmt.Fprintf(cmd.OutOrStdout(), "Authenticated as %s on %s\n", who.Email, instance)
+				identity := who.Email
+				if identity == "" {
+					identity = who.Username
+				}
+				_, _ = fmt.Fprintf(cmd.OutOrStdout(), "Authenticated as %s on %s\n", identity, instance)
 			} else {
 				_, _ = fmt.Fprintf(cmd.OutOrStdout(), "Not authenticated to %s\n", instance)
 			}
@@ -170,7 +186,7 @@ func newAuthLogoutCmd() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			if err := session.SignOut(); err != nil {
+			if err := session.SignOutContext(cmd.Context()); err != nil {
 				return err
 			}
 			_, _ = fmt.Fprintf(cmd.OutOrStdout(), "Signed out of %s.\n", instance)

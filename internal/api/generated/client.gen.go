@@ -37,6 +37,402 @@ func (e BillingInterval) Valid() bool {
 	}
 }
 
+// Defines values for CandidateValidationResultReasonCode.
+const (
+	DeploymentBindingMismatch CandidateValidationResultReasonCode = "deployment_binding_mismatch"
+	DeploymentBindingMissing  CandidateValidationResultReasonCode = "deployment_binding_missing"
+)
+
+// Valid indicates whether the value is a known member of the CandidateValidationResultReasonCode enum.
+func (e CandidateValidationResultReasonCode) Valid() bool {
+	switch e {
+	case DeploymentBindingMismatch:
+		return true
+	case DeploymentBindingMissing:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CandidateValidationResultStage.
+const (
+	CandidateValidationResultStageAccess        CandidateValidationResultStage = "access"
+	CandidateValidationResultStageComplete      CandidateValidationResultStage = "complete"
+	CandidateValidationResultStageConfiguration CandidateValidationResultStage = "configuration"
+	CandidateValidationResultStageCoverage      CandidateValidationResultStage = "coverage"
+	CandidateValidationResultStageCredentials   CandidateValidationResultStage = "credentials"
+	CandidateValidationResultStageSave          CandidateValidationResultStage = "save"
+)
+
+// Valid indicates whether the value is a known member of the CandidateValidationResultStage enum.
+func (e CandidateValidationResultStage) Valid() bool {
+	switch e {
+	case CandidateValidationResultStageAccess:
+		return true
+	case CandidateValidationResultStageComplete:
+		return true
+	case CandidateValidationResultStageConfiguration:
+		return true
+	case CandidateValidationResultStageCoverage:
+		return true
+	case CandidateValidationResultStageCredentials:
+		return true
+	case CandidateValidationResultStageSave:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CloudCostCoverageExceptionOwner.
+const (
+	Customer CloudCostCoverageExceptionOwner = "customer"
+	Jetscale CloudCostCoverageExceptionOwner = "jetscale"
+	None     CloudCostCoverageExceptionOwner = "none"
+	Provider CloudCostCoverageExceptionOwner = "provider"
+)
+
+// Valid indicates whether the value is a known member of the CloudCostCoverageExceptionOwner enum.
+func (e CloudCostCoverageExceptionOwner) Valid() bool {
+	switch e {
+	case Customer:
+		return true
+	case Jetscale:
+		return true
+	case None:
+		return true
+	case Provider:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CloudCostCoverageRemediationCode.
+const (
+	AmbiguousSourceCoverage CloudCostCoverageRemediationCode = "ambiguous_source_coverage"
+	AwaitingFirstImport     CloudCostCoverageRemediationCode = "awaiting_first_import"
+	CoverageNotConfigured   CloudCostCoverageRemediationCode = "coverage_not_configured"
+	NotPresentInExport      CloudCostCoverageRemediationCode = "not_present_in_export"
+	SourceDisabled          CloudCostCoverageRemediationCode = "source_disabled"
+	SourceUnreachable       CloudCostCoverageRemediationCode = "source_unreachable"
+)
+
+// Valid indicates whether the value is a known member of the CloudCostCoverageRemediationCode enum.
+func (e CloudCostCoverageRemediationCode) Valid() bool {
+	switch e {
+	case AmbiguousSourceCoverage:
+		return true
+	case AwaitingFirstImport:
+		return true
+	case CoverageNotConfigured:
+		return true
+	case NotPresentInExport:
+		return true
+	case SourceDisabled:
+		return true
+	case SourceUnreachable:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CloudCostDataSourceApplyCandidateRequestSourceKind.
+const (
+	CloudCostDataSourceApplyCandidateRequestSourceKindFocusAzureBlob CloudCostDataSourceApplyCandidateRequestSourceKind = "focus_azure_blob"
+	CloudCostDataSourceApplyCandidateRequestSourceKindFocusBigquery  CloudCostDataSourceApplyCandidateRequestSourceKind = "focus_bigquery"
+	CloudCostDataSourceApplyCandidateRequestSourceKindFocusS3        CloudCostDataSourceApplyCandidateRequestSourceKind = "focus_s3"
+)
+
+// Valid indicates whether the value is a known member of the CloudCostDataSourceApplyCandidateRequestSourceKind enum.
+func (e CloudCostDataSourceApplyCandidateRequestSourceKind) Valid() bool {
+	switch e {
+	case CloudCostDataSourceApplyCandidateRequestSourceKindFocusAzureBlob:
+		return true
+	case CloudCostDataSourceApplyCandidateRequestSourceKindFocusBigquery:
+		return true
+	case CloudCostDataSourceApplyCandidateRequestSourceKindFocusS3:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CloudCostDataSourceApplyResultStage.
+const (
+	CloudCostDataSourceApplyResultStageAccess        CloudCostDataSourceApplyResultStage = "access"
+	CloudCostDataSourceApplyResultStageComplete      CloudCostDataSourceApplyResultStage = "complete"
+	CloudCostDataSourceApplyResultStageConfiguration CloudCostDataSourceApplyResultStage = "configuration"
+	CloudCostDataSourceApplyResultStageCoverage      CloudCostDataSourceApplyResultStage = "coverage"
+	CloudCostDataSourceApplyResultStageCredentials   CloudCostDataSourceApplyResultStage = "credentials"
+	CloudCostDataSourceApplyResultStageSave          CloudCostDataSourceApplyResultStage = "save"
+)
+
+// Valid indicates whether the value is a known member of the CloudCostDataSourceApplyResultStage enum.
+func (e CloudCostDataSourceApplyResultStage) Valid() bool {
+	switch e {
+	case CloudCostDataSourceApplyResultStageAccess:
+		return true
+	case CloudCostDataSourceApplyResultStageComplete:
+		return true
+	case CloudCostDataSourceApplyResultStageConfiguration:
+		return true
+	case CloudCostDataSourceApplyResultStageCoverage:
+		return true
+	case CloudCostDataSourceApplyResultStageCredentials:
+		return true
+	case CloudCostDataSourceApplyResultStageSave:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CloudCostDataSourceCandidateValidateRequestSourceKind.
+const (
+	CloudCostDataSourceCandidateValidateRequestSourceKindFocusAzureBlob CloudCostDataSourceCandidateValidateRequestSourceKind = "focus_azure_blob"
+	CloudCostDataSourceCandidateValidateRequestSourceKindFocusBigquery  CloudCostDataSourceCandidateValidateRequestSourceKind = "focus_bigquery"
+	CloudCostDataSourceCandidateValidateRequestSourceKindFocusS3        CloudCostDataSourceCandidateValidateRequestSourceKind = "focus_s3"
+)
+
+// Valid indicates whether the value is a known member of the CloudCostDataSourceCandidateValidateRequestSourceKind enum.
+func (e CloudCostDataSourceCandidateValidateRequestSourceKind) Valid() bool {
+	switch e {
+	case CloudCostDataSourceCandidateValidateRequestSourceKindFocusAzureBlob:
+		return true
+	case CloudCostDataSourceCandidateValidateRequestSourceKindFocusBigquery:
+		return true
+	case CloudCostDataSourceCandidateValidateRequestSourceKindFocusS3:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CloudCostDataSourceLatestIngestionRunActivationOutcome.
+const (
+	CloudCostDataSourceLatestIngestionRunActivationOutcomeActivated   CloudCostDataSourceLatestIngestionRunActivationOutcome = "activated"
+	CloudCostDataSourceLatestIngestionRunActivationOutcomeFailed      CloudCostDataSourceLatestIngestionRunActivationOutcome = "failed"
+	CloudCostDataSourceLatestIngestionRunActivationOutcomeObserved    CloudCostDataSourceLatestIngestionRunActivationOutcome = "observed"
+	CloudCostDataSourceLatestIngestionRunActivationOutcomePending     CloudCostDataSourceLatestIngestionRunActivationOutcome = "pending"
+	CloudCostDataSourceLatestIngestionRunActivationOutcomeQuarantined CloudCostDataSourceLatestIngestionRunActivationOutcome = "quarantined"
+	CloudCostDataSourceLatestIngestionRunActivationOutcomeReplayed    CloudCostDataSourceLatestIngestionRunActivationOutcome = "replayed"
+	CloudCostDataSourceLatestIngestionRunActivationOutcomeSuperseded  CloudCostDataSourceLatestIngestionRunActivationOutcome = "superseded"
+)
+
+// Valid indicates whether the value is a known member of the CloudCostDataSourceLatestIngestionRunActivationOutcome enum.
+func (e CloudCostDataSourceLatestIngestionRunActivationOutcome) Valid() bool {
+	switch e {
+	case CloudCostDataSourceLatestIngestionRunActivationOutcomeActivated:
+		return true
+	case CloudCostDataSourceLatestIngestionRunActivationOutcomeFailed:
+		return true
+	case CloudCostDataSourceLatestIngestionRunActivationOutcomeObserved:
+		return true
+	case CloudCostDataSourceLatestIngestionRunActivationOutcomePending:
+		return true
+	case CloudCostDataSourceLatestIngestionRunActivationOutcomeQuarantined:
+		return true
+	case CloudCostDataSourceLatestIngestionRunActivationOutcomeReplayed:
+		return true
+	case CloudCostDataSourceLatestIngestionRunActivationOutcomeSuperseded:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CloudCostDataSourceLatestIngestionRunActivationReason.
+const (
+	AcceptedOverwriteSnapshotCoordinatesAreMalformed               CloudCostDataSourceLatestIngestionRunActivationReason = "accepted overwrite snapshot coordinates are malformed"
+	AcceptedOverwriteSnapshotIsMissingManifestEvidence             CloudCostDataSourceLatestIngestionRunActivationReason = "accepted overwrite snapshot is missing manifest evidence"
+	AcceptedOverwriteSnapshotSourceScopeChanged                    CloudCostDataSourceLatestIngestionRunActivationReason = "accepted overwrite snapshot source scope changed"
+	AtLeastOneChangedIdentityIsAmbiguousActivateNone               CloudCostDataSourceLatestIngestionRunActivationReason = "at least one changed identity is ambiguous; activate none"
+	CompleteGenerationOmitsExistingInScopeIdentities               CloudCostDataSourceLatestIngestionRunActivationReason = "complete generation omits existing in-scope identities"
+	DuplicateEconomicIdentityWithinGeneration                      CloudCostDataSourceLatestIngestionRunActivationReason = "duplicate economic identity within generation"
+	LegacyOverwriteAcceptanceCompletionChronologyIsUnavailable     CloudCostDataSourceLatestIngestionRunActivationReason = "legacy overwrite acceptance completion chronology is unavailable"
+	OverwriteAcceptedHistoryLimitExceededPrecedenceUnproven        CloudCostDataSourceLatestIngestionRunActivationReason = "overwrite accepted-history limit exceeded; precedence unproven"
+	OverwriteGenerationRequiresTheAuthoritativeSnapshotProfile     CloudCostDataSourceLatestIngestionRunActivationReason = "overwrite generation requires the authoritative snapshot profile"
+	OverwriteObservationOrderDoesNotMatchItsCoveringManifest       CloudCostDataSourceLatestIngestionRunActivationReason = "overwrite observation order does not match its covering manifest"
+	OverwriteSnapshotDoesNotCoverTheChargePeriod                   CloudCostDataSourceLatestIngestionRunActivationReason = "overwrite snapshot does not cover the charge period"
+	OverwriteSnapshotDoesNotPostdateLegacyAcceptanceBoundary       CloudCostDataSourceLatestIngestionRunActivationReason = "overwrite snapshot does not postdate legacy acceptance boundary"
+	OverwriteSnapshotHasConflictingEqualTimeManifestEvidence       CloudCostDataSourceLatestIngestionRunActivationReason = "overwrite snapshot has conflicting equal-time manifest evidence"
+	OverwriteSnapshotManifestContentChecksumMustBeSHA256           CloudCostDataSourceLatestIngestionRunActivationReason = "overwrite snapshot manifest content_checksum must be SHA-256"
+	OverwriteSnapshotManifestCoverageIsInvalid                     CloudCostDataSourceLatestIngestionRunActivationReason = "overwrite snapshot manifest coverage is invalid"
+	OverwriteSnapshotManifestDigestMustBeSHA256                    CloudCostDataSourceLatestIngestionRunActivationReason = "overwrite snapshot manifest digest must be SHA-256"
+	OverwriteSnapshotManifestEvidenceIsMalformed                   CloudCostDataSourceLatestIngestionRunActivationReason = "overwrite snapshot manifest evidence is malformed"
+	OverwriteSnapshotManifestRangesOverlap                         CloudCostDataSourceLatestIngestionRunActivationReason = "overwrite snapshot manifest ranges overlap"
+	OverwriteSnapshotManifestsDoNotContinuouslyCoverRequestedRange CloudCostDataSourceLatestIngestionRunActivationReason = "overwrite snapshot manifests do not continuously cover requested range"
+	OverwriteSnapshotPopulationContinuityIsUnproven                CloudCostDataSourceLatestIngestionRunActivationReason = "overwrite snapshot population continuity is unproven"
+	OverwriteSnapshotPredatesAcceptedCoverage                      CloudCostDataSourceLatestIngestionRunActivationReason = "overwrite snapshot predates accepted coverage"
+	OverwriteSnapshotRequestedCoverageIsInvalid                    CloudCostDataSourceLatestIngestionRunActivationReason = "overwrite snapshot requested coverage is invalid"
+	OverwriteSnapshotRequiresASourceScopeReference                 CloudCostDataSourceLatestIngestionRunActivationReason = "overwrite snapshot requires a source scope reference"
+	OverwriteSnapshotRequiresBoundedManifestEvidence               CloudCostDataSourceLatestIngestionRunActivationReason = "overwrite snapshot requires bounded manifest evidence"
+	OverwriteSnapshotRequiresValidTimezoneAwareChronology          CloudCostDataSourceLatestIngestionRunActivationReason = "overwrite snapshot requires valid timezone-aware chronology"
+	Unavailable                                                    CloudCostDataSourceLatestIngestionRunActivationReason = "unavailable"
+)
+
+// Valid indicates whether the value is a known member of the CloudCostDataSourceLatestIngestionRunActivationReason enum.
+func (e CloudCostDataSourceLatestIngestionRunActivationReason) Valid() bool {
+	switch e {
+	case AcceptedOverwriteSnapshotCoordinatesAreMalformed:
+		return true
+	case AcceptedOverwriteSnapshotIsMissingManifestEvidence:
+		return true
+	case AcceptedOverwriteSnapshotSourceScopeChanged:
+		return true
+	case AtLeastOneChangedIdentityIsAmbiguousActivateNone:
+		return true
+	case CompleteGenerationOmitsExistingInScopeIdentities:
+		return true
+	case DuplicateEconomicIdentityWithinGeneration:
+		return true
+	case LegacyOverwriteAcceptanceCompletionChronologyIsUnavailable:
+		return true
+	case OverwriteAcceptedHistoryLimitExceededPrecedenceUnproven:
+		return true
+	case OverwriteGenerationRequiresTheAuthoritativeSnapshotProfile:
+		return true
+	case OverwriteObservationOrderDoesNotMatchItsCoveringManifest:
+		return true
+	case OverwriteSnapshotDoesNotCoverTheChargePeriod:
+		return true
+	case OverwriteSnapshotDoesNotPostdateLegacyAcceptanceBoundary:
+		return true
+	case OverwriteSnapshotHasConflictingEqualTimeManifestEvidence:
+		return true
+	case OverwriteSnapshotManifestContentChecksumMustBeSHA256:
+		return true
+	case OverwriteSnapshotManifestCoverageIsInvalid:
+		return true
+	case OverwriteSnapshotManifestDigestMustBeSHA256:
+		return true
+	case OverwriteSnapshotManifestEvidenceIsMalformed:
+		return true
+	case OverwriteSnapshotManifestRangesOverlap:
+		return true
+	case OverwriteSnapshotManifestsDoNotContinuouslyCoverRequestedRange:
+		return true
+	case OverwriteSnapshotPopulationContinuityIsUnproven:
+		return true
+	case OverwriteSnapshotPredatesAcceptedCoverage:
+		return true
+	case OverwriteSnapshotRequestedCoverageIsInvalid:
+		return true
+	case OverwriteSnapshotRequiresASourceScopeReference:
+		return true
+	case OverwriteSnapshotRequiresBoundedManifestEvidence:
+		return true
+	case OverwriteSnapshotRequiresValidTimezoneAwareChronology:
+		return true
+	case Unavailable:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CloudCostDataSourceLatestIngestionRunOutcome.
+const (
+	CloudCostDataSourceLatestIngestionRunOutcomeFailed      CloudCostDataSourceLatestIngestionRunOutcome = "failed"
+	CloudCostDataSourceLatestIngestionRunOutcomePartial     CloudCostDataSourceLatestIngestionRunOutcome = "partial"
+	CloudCostDataSourceLatestIngestionRunOutcomePending     CloudCostDataSourceLatestIngestionRunOutcome = "pending"
+	CloudCostDataSourceLatestIngestionRunOutcomeQuarantined CloudCostDataSourceLatestIngestionRunOutcome = "quarantined"
+	CloudCostDataSourceLatestIngestionRunOutcomeRunning     CloudCostDataSourceLatestIngestionRunOutcome = "running"
+	CloudCostDataSourceLatestIngestionRunOutcomeSucceeded   CloudCostDataSourceLatestIngestionRunOutcome = "succeeded"
+)
+
+// Valid indicates whether the value is a known member of the CloudCostDataSourceLatestIngestionRunOutcome enum.
+func (e CloudCostDataSourceLatestIngestionRunOutcome) Valid() bool {
+	switch e {
+	case CloudCostDataSourceLatestIngestionRunOutcomeFailed:
+		return true
+	case CloudCostDataSourceLatestIngestionRunOutcomePartial:
+		return true
+	case CloudCostDataSourceLatestIngestionRunOutcomePending:
+		return true
+	case CloudCostDataSourceLatestIngestionRunOutcomeQuarantined:
+		return true
+	case CloudCostDataSourceLatestIngestionRunOutcomeRunning:
+		return true
+	case CloudCostDataSourceLatestIngestionRunOutcomeSucceeded:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CloudCostDataSourceResourceAttributionReason.
+const (
+	NoCurrentCostRows CloudCostDataSourceResourceAttributionReason = "no_current_cost_rows"
+	NoExactMatches    CloudCostDataSourceResourceAttributionReason = "no_exact_matches"
+)
+
+// Valid indicates whether the value is a known member of the CloudCostDataSourceResourceAttributionReason enum.
+func (e CloudCostDataSourceResourceAttributionReason) Valid() bool {
+	switch e {
+	case NoCurrentCostRows:
+		return true
+	case NoExactMatches:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CloudCostDataSourceResourceAttributionSafeErrorSummary.
+const (
+	BoundedAttributionCancelled     CloudCostDataSourceResourceAttributionSafeErrorSummary = "Bounded attribution cancelled."
+	BoundedAttributionCleanupFailed CloudCostDataSourceResourceAttributionSafeErrorSummary = "Bounded attribution cleanup failed."
+	BoundedAttributionFailed        CloudCostDataSourceResourceAttributionSafeErrorSummary = "Bounded attribution failed."
+	BoundedAttributionTimedOut      CloudCostDataSourceResourceAttributionSafeErrorSummary = "Bounded attribution timed out."
+)
+
+// Valid indicates whether the value is a known member of the CloudCostDataSourceResourceAttributionSafeErrorSummary enum.
+func (e CloudCostDataSourceResourceAttributionSafeErrorSummary) Valid() bool {
+	switch e {
+	case BoundedAttributionCancelled:
+		return true
+	case BoundedAttributionCleanupFailed:
+		return true
+	case BoundedAttributionFailed:
+		return true
+	case BoundedAttributionTimedOut:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CloudCostDataSourceResourceAttributionState.
+const (
+	CloudCostDataSourceResourceAttributionStateCancelled CloudCostDataSourceResourceAttributionState = "cancelled"
+	CloudCostDataSourceResourceAttributionStateCompleted CloudCostDataSourceResourceAttributionState = "completed"
+	CloudCostDataSourceResourceAttributionStateFailed    CloudCostDataSourceResourceAttributionState = "failed"
+	CloudCostDataSourceResourceAttributionStateRunning   CloudCostDataSourceResourceAttributionState = "running"
+	CloudCostDataSourceResourceAttributionStateUnknown   CloudCostDataSourceResourceAttributionState = "unknown"
+)
+
+// Valid indicates whether the value is a known member of the CloudCostDataSourceResourceAttributionState enum.
+func (e CloudCostDataSourceResourceAttributionState) Valid() bool {
+	switch e {
+	case CloudCostDataSourceResourceAttributionStateCancelled:
+		return true
+	case CloudCostDataSourceResourceAttributionStateCompleted:
+		return true
+	case CloudCostDataSourceResourceAttributionStateFailed:
+		return true
+	case CloudCostDataSourceResourceAttributionStateRunning:
+		return true
+	case CloudCostDataSourceResourceAttributionStateUnknown:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for CloudCostDataSourceUpsertRequestSourceKind.
 const (
 	FocusAzureBlob CloudCostDataSourceUpsertRequestSourceKind = "focus_azure_blob"
@@ -862,6 +1258,78 @@ func (e CompanyStatus) Valid() bool {
 	}
 }
 
+// Defines values for CostDataSourceLifecycleState.
+const (
+	CostDataSourceLifecycleStateAwaitingData CostDataSourceLifecycleState = "awaiting_data"
+	CostDataSourceLifecycleStateDisabled     CostDataSourceLifecycleState = "disabled"
+	CostDataSourceLifecycleStateFailed       CostDataSourceLifecycleState = "failed"
+	CostDataSourceLifecycleStateIngesting    CostDataSourceLifecycleState = "ingesting"
+	CostDataSourceLifecycleStateReady        CostDataSourceLifecycleState = "ready"
+	CostDataSourceLifecycleStateStale        CostDataSourceLifecycleState = "stale"
+)
+
+// Valid indicates whether the value is a known member of the CostDataSourceLifecycleState enum.
+func (e CostDataSourceLifecycleState) Valid() bool {
+	switch e {
+	case CostDataSourceLifecycleStateAwaitingData:
+		return true
+	case CostDataSourceLifecycleStateDisabled:
+		return true
+	case CostDataSourceLifecycleStateFailed:
+		return true
+	case CostDataSourceLifecycleStateIngesting:
+		return true
+	case CostDataSourceLifecycleStateReady:
+		return true
+	case CostDataSourceLifecycleStateStale:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CostDataSourceReachabilityState.
+const (
+	NotChecked  CostDataSourceReachabilityState = "not_checked"
+	Reachable   CostDataSourceReachabilityState = "reachable"
+	Unreachable CostDataSourceReachabilityState = "unreachable"
+	Unsupported CostDataSourceReachabilityState = "unsupported"
+)
+
+// Valid indicates whether the value is a known member of the CostDataSourceReachabilityState enum.
+func (e CostDataSourceReachabilityState) Valid() bool {
+	switch e {
+	case NotChecked:
+		return true
+	case Reachable:
+		return true
+	case Unreachable:
+		return true
+	case Unsupported:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CostDataSourceStructuralState.
+const (
+	Invalid CostDataSourceStructuralState = "invalid"
+	Valid   CostDataSourceStructuralState = "valid"
+)
+
+// Valid indicates whether the value is a known member of the CostDataSourceStructuralState enum.
+func (e CostDataSourceStructuralState) Valid() bool {
+	switch e {
+	case Invalid:
+		return true
+	case Valid:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for CustomRecommendationStatus.
 const (
 	COMPLETED  CustomRecommendationStatus = "COMPLETED"
@@ -869,6 +1337,7 @@ const (
 	DISCOVERED CustomRecommendationStatus = "DISCOVERED"
 	INPROGRESS CustomRecommendationStatus = "IN_PROGRESS"
 	POSTPONED  CustomRecommendationStatus = "POSTPONED"
+	STALE      CustomRecommendationStatus = "STALE"
 )
 
 // Valid indicates whether the value is a known member of the CustomRecommendationStatus enum.
@@ -883,6 +1352,8 @@ func (e CustomRecommendationStatus) Valid() bool {
 	case INPROGRESS:
 		return true
 	case POSTPONED:
+		return true
+	case STALE:
 		return true
 	default:
 		return false
@@ -1099,6 +1570,63 @@ func (e MessageFeedbackRequestSourceAction) Valid() bool {
 	}
 }
 
+// Defines values for RecoveryAcceptedAction.
+const (
+	RecoveryAcceptedActionRetryImport   RecoveryAcceptedAction = "retry_import"
+	RecoveryAcceptedActionRetryMatching RecoveryAcceptedAction = "retry_matching"
+)
+
+// Valid indicates whether the value is a known member of the RecoveryAcceptedAction enum.
+func (e RecoveryAcceptedAction) Valid() bool {
+	switch e {
+	case RecoveryAcceptedActionRetryImport:
+		return true
+	case RecoveryAcceptedActionRetryMatching:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for RecoveryReadinessStateState.
+const (
+	RecoveryReadinessStateStateBlocked RecoveryReadinessStateState = "blocked"
+	RecoveryReadinessStateStateReady   RecoveryReadinessStateState = "ready"
+	RecoveryReadinessStateStateUnknown RecoveryReadinessStateState = "unknown"
+)
+
+// Valid indicates whether the value is a known member of the RecoveryReadinessStateState enum.
+func (e RecoveryReadinessStateState) Valid() bool {
+	switch e {
+	case RecoveryReadinessStateStateBlocked:
+		return true
+	case RecoveryReadinessStateStateReady:
+		return true
+	case RecoveryReadinessStateStateUnknown:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for RecoveryRejectedDataAction.
+const (
+	RecoveryRejectedDataActionRetryImport   RecoveryRejectedDataAction = "retry_import"
+	RecoveryRejectedDataActionRetryMatching RecoveryRejectedDataAction = "retry_matching"
+)
+
+// Valid indicates whether the value is a known member of the RecoveryRejectedDataAction enum.
+func (e RecoveryRejectedDataAction) Valid() bool {
+	switch e {
+	case RecoveryRejectedDataActionRetryImport:
+		return true
+	case RecoveryRejectedDataActionRetryMatching:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for RemediationSessionActivityActionType.
 const (
 	BITBUCKETPRCREATED              RemediationSessionActivityActionType = "BITBUCKET_PR_CREATED"
@@ -1165,11 +1693,11 @@ const (
 	UserCloudAccountCostBreakdownResourcesHealthView                RolePermissions = "user:cloud-account:cost-breakdown:resources-health:view"
 	UserCloudAccountOverviewGovernanceView                          RolePermissions = "user:cloud-account:overview:governance:view"
 	UserCloudAccountOverviewOverviewView                            RolePermissions = "user:cloud-account:overview:overview:view"
-	UserCloudAccountOverviewResourcesHealthView                     RolePermissions = "user:cloud-account:overview:resources-health:view"
 	UserCloudAccountRecommendationView                              RolePermissions = "user:cloud-account:recommendation:view"
 	UserCloudAccountRemediationSessionActionSendChatMessageExecute  RolePermissions = "user:cloud-account:remediation-session:action:send-chat-message:execute"
 	UserCloudAccountRemediationSessionActionStartSessionExecute     RolePermissions = "user:cloud-account:remediation-session:action:start-session:execute"
 	UserCloudAccountRootAccess                                      RolePermissions = "user:cloud-account:root:access"
+	UserCloudAccountSettingsActionEditCredentialsExecute            RolePermissions = "user:cloud-account:settings:action:edit-credentials:execute"
 	UserCloudAccountSettingsRootView                                RolePermissions = "user:cloud-account:settings:root:view"
 )
 
@@ -1208,8 +1736,6 @@ func (e RolePermissions) Valid() bool {
 		return true
 	case UserCloudAccountOverviewOverviewView:
 		return true
-	case UserCloudAccountOverviewResourcesHealthView:
-		return true
 	case UserCloudAccountRecommendationView:
 		return true
 	case UserCloudAccountRemediationSessionActionSendChatMessageExecute:
@@ -1218,7 +1744,168 @@ func (e RolePermissions) Valid() bool {
 		return true
 	case UserCloudAccountRootAccess:
 		return true
+	case UserCloudAccountSettingsActionEditCredentialsExecute:
+		return true
 	case UserCloudAccountSettingsRootView:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for S3AccessProbeDiagnosticsCredentialRoute.
+const (
+	S3AccessProbeDiagnosticsCredentialRouteAssumeRole S3AccessProbeDiagnosticsCredentialRoute = "assume_role"
+	S3AccessProbeDiagnosticsCredentialRouteBackend    S3AccessProbeDiagnosticsCredentialRoute = "backend"
+)
+
+// Valid indicates whether the value is a known member of the S3AccessProbeDiagnosticsCredentialRoute enum.
+func (e S3AccessProbeDiagnosticsCredentialRoute) Valid() bool {
+	switch e {
+	case S3AccessProbeDiagnosticsCredentialRouteAssumeRole:
+		return true
+	case S3AccessProbeDiagnosticsCredentialRouteBackend:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for S3AccessProbeDiagnosticsErrorCode.
+const (
+	AccessDenied                S3AccessProbeDiagnosticsErrorCode = "AccessDenied"
+	AccessDeniedException       S3AccessProbeDiagnosticsErrorCode = "AccessDeniedException"
+	ExpiredToken                S3AccessProbeDiagnosticsErrorCode = "ExpiredToken"
+	ExpiredTokenException       S3AccessProbeDiagnosticsErrorCode = "ExpiredTokenException"
+	InvalidAccessKeyId          S3AccessProbeDiagnosticsErrorCode = "InvalidAccessKeyId"
+	InvalidClientTokenId        S3AccessProbeDiagnosticsErrorCode = "InvalidClientTokenId"
+	InvalidToken                S3AccessProbeDiagnosticsErrorCode = "InvalidToken"
+	NoSuchBucket                S3AccessProbeDiagnosticsErrorCode = "NoSuchBucket"
+	RequestExpired              S3AccessProbeDiagnosticsErrorCode = "RequestExpired"
+	SignatureDoesNotMatch       S3AccessProbeDiagnosticsErrorCode = "SignatureDoesNotMatch"
+	UnrecognizedClientException S3AccessProbeDiagnosticsErrorCode = "UnrecognizedClientException"
+)
+
+// Valid indicates whether the value is a known member of the S3AccessProbeDiagnosticsErrorCode enum.
+func (e S3AccessProbeDiagnosticsErrorCode) Valid() bool {
+	switch e {
+	case AccessDenied:
+		return true
+	case AccessDeniedException:
+		return true
+	case ExpiredToken:
+		return true
+	case ExpiredTokenException:
+		return true
+	case InvalidAccessKeyId:
+		return true
+	case InvalidClientTokenId:
+		return true
+	case InvalidToken:
+		return true
+	case NoSuchBucket:
+		return true
+	case RequestExpired:
+		return true
+	case SignatureDoesNotMatch:
+		return true
+	case UnrecognizedClientException:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for S3AccessProbeDiagnosticsOperation.
+const (
+	S3AccessProbeDiagnosticsOperationAssumeRole    S3AccessProbeDiagnosticsOperation = "AssumeRole"
+	S3AccessProbeDiagnosticsOperationListObjectsV2 S3AccessProbeDiagnosticsOperation = "ListObjectsV2"
+)
+
+// Valid indicates whether the value is a known member of the S3AccessProbeDiagnosticsOperation enum.
+func (e S3AccessProbeDiagnosticsOperation) Valid() bool {
+	switch e {
+	case S3AccessProbeDiagnosticsOperationAssumeRole:
+		return true
+	case S3AccessProbeDiagnosticsOperationListObjectsV2:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for S3AccessProbeDiagnosticsOutcome.
+const (
+	Failed    S3AccessProbeDiagnosticsOutcome = "failed"
+	Succeeded S3AccessProbeDiagnosticsOutcome = "succeeded"
+)
+
+// Valid indicates whether the value is a known member of the S3AccessProbeDiagnosticsOutcome enum.
+func (e S3AccessProbeDiagnosticsOutcome) Valid() bool {
+	switch e {
+	case Failed:
+		return true
+	case Succeeded:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for S3AccessProbeDiagnosticsPhase.
+const (
+	S3AccessProbeDiagnosticsPhaseAssumeRole  S3AccessProbeDiagnosticsPhase = "assume_role"
+	S3AccessProbeDiagnosticsPhaseClientSetup S3AccessProbeDiagnosticsPhase = "client_setup"
+	S3AccessProbeDiagnosticsPhaseListObjects S3AccessProbeDiagnosticsPhase = "list_objects"
+)
+
+// Valid indicates whether the value is a known member of the S3AccessProbeDiagnosticsPhase enum.
+func (e S3AccessProbeDiagnosticsPhase) Valid() bool {
+	switch e {
+	case S3AccessProbeDiagnosticsPhaseAssumeRole:
+		return true
+	case S3AccessProbeDiagnosticsPhaseClientSetup:
+		return true
+	case S3AccessProbeDiagnosticsPhaseListObjects:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for SourceBindingReadinessCredentialRoute.
+const (
+	SourceBindingReadinessCredentialRouteAssumeRole SourceBindingReadinessCredentialRoute = "assume_role"
+	SourceBindingReadinessCredentialRouteBackend    SourceBindingReadinessCredentialRoute = "backend"
+)
+
+// Valid indicates whether the value is a known member of the SourceBindingReadinessCredentialRoute enum.
+func (e SourceBindingReadinessCredentialRoute) Valid() bool {
+	switch e {
+	case SourceBindingReadinessCredentialRouteAssumeRole:
+		return true
+	case SourceBindingReadinessCredentialRouteBackend:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for SourceBindingReadinessState.
+const (
+	SourceBindingReadinessStateBlocked SourceBindingReadinessState = "blocked"
+	SourceBindingReadinessStateReady   SourceBindingReadinessState = "ready"
+	SourceBindingReadinessStateUnknown SourceBindingReadinessState = "unknown"
+)
+
+// Valid indicates whether the value is a known member of the SourceBindingReadinessState enum.
+func (e SourceBindingReadinessState) Valid() bool {
+	switch e {
+	case SourceBindingReadinessStateBlocked:
+		return true
+	case SourceBindingReadinessStateReady:
+		return true
+	case SourceBindingReadinessStateUnknown:
 		return true
 	default:
 		return false
@@ -1419,7 +2106,7 @@ type AWSCostExplorerLoadRequestBody struct {
 	// CloudAccountId Cloud account ID to pull cost data for.
 	CloudAccountId openapi_types.UUID `json:"cloud_account_id"`
 
-	// EndDate End date in YYYY-MM-DD format. If not provided, defaults to today
+	// EndDate End date in YYYY-MM-DD format, EXCLUSIVE (AWS Cost Explorer TimePeriod.End): the last day fetched and, with force_replace, the last day cleared is end_date - 1. Defaults to today.
 	EndDate *string `json:"end_date,omitempty"`
 
 	// ForceReplace Force replace existing data for the specified period.
@@ -1443,6 +2130,13 @@ type AabhraConnectRequest struct {
 	CompanyId openapi_types.UUID `json:"company_id"`
 	Email     string             `json:"email"`
 	Password  *string            `json:"password,omitempty"`
+}
+
+// AccountRecovery defines model for AccountRecovery.
+type AccountRecovery struct {
+	CloudAccountId openapi_types.UUID `json:"cloud_account_id"`
+	Import         RecoveryControl    `json:"import"`
+	Matching       RecoveryControl    `json:"matching"`
 }
 
 // AddActivityToSessionRequest Request body for adding an activity to a remediation session.
@@ -1481,6 +2175,12 @@ type AddCustomRecommendationCommentRequest struct {
 	Content string `json:"content"`
 }
 
+// AddRecommendationCommentRequest Request body for POST /{recommendation_id}/action/add-comment.
+type AddRecommendationCommentRequest struct {
+	// Content Comment text stored in activity metadata.
+	Content string `json:"content"`
+}
+
 // AwsDiscoveryRequestBody Request body for POST /action/discover endpoint.
 type AwsDiscoveryRequestBody struct {
 	// CloudAccountId Cloud account UUID — scopes discovery
@@ -1488,6 +2188,16 @@ type AwsDiscoveryRequestBody struct {
 
 	// ResourceTypes Resource types to discover (e.g., ['AWS_EC2_INSTANCE', 'AWS_S3_BUCKET']). Defaults to all.
 	ResourceTypes *[]string `json:"resource_types,omitempty"`
+}
+
+// AwsS3CostDataSourceConfig defines model for AwsS3CostDataSourceConfig.
+type AwsS3CostDataSourceConfig struct {
+	Bucket               string  `json:"bucket"`
+	ExternalIdConfigured *bool   `json:"external_id_configured,omitempty"`
+	Prefix               string  `json:"prefix"`
+	Region               *string `json:"region,omitempty"`
+	RoleArn              *string `json:"role_arn,omitempty"`
+	SourceKind           string  `json:"source_kind,omitempty"`
 }
 
 // AwsS3CostDataSourceWriteConfig defines model for AwsS3CostDataSourceWriteConfig.
@@ -1499,6 +2209,16 @@ type AwsS3CostDataSourceWriteConfig struct {
 	Region          *string `json:"region,omitempty"`
 	RoleArn         *string `json:"role_arn,omitempty"`
 	SourceKind      string  `json:"source_kind,omitempty"`
+}
+
+// AzureBlobCostDataSourceConfig defines model for AzureBlobCostDataSourceConfig.
+type AzureBlobCostDataSourceConfig struct {
+	Container                string              `json:"container"`
+	CredentialCloudAccountId *openapi_types.UUID `json:"credential_cloud_account_id,omitempty"`
+	CredentialConfigured     bool                `json:"credential_configured"`
+	Prefix                   string              `json:"prefix"`
+	SourceKind               string              `json:"source_kind,omitempty"`
+	StorageAccount           string              `json:"storage_account"`
 }
 
 // AzureBlobCostDataSourceWriteConfig defines model for AzureBlobCostDataSourceWriteConfig.
@@ -1595,8 +2315,8 @@ type AzureListSubscriptionsRequest struct {
 
 // BaseApiResponse defines model for BaseApiResponse.
 type BaseApiResponse struct {
-	Data interface{}                               `json:"data"`
-	Meta ApiV2ModulesBaseModelsBaseApiMetaMetaInfo `json:"meta"`
+	Data interface{} `json:"data"`
+	Meta MetaInfo    `json:"meta"`
 }
 
 // BillingInterval Billing intervals. Values match DB/schema: MONTHLY, YEARLY.
@@ -1663,8 +2383,8 @@ type BuildInfo struct {
 
 // BusinessUnitFeatureFlagEnabledApiResponse defines model for BusinessUnitFeatureFlagEnabledApiResponse.
 type BusinessUnitFeatureFlagEnabledApiResponse struct {
-	Data BusinessUnitFeatureFlagEnabledData        `json:"data"`
-	Meta ApiV2ModulesBaseModelsBaseApiMetaMetaInfo `json:"meta"`
+	Data BusinessUnitFeatureFlagEnabledData `json:"data"`
+	Meta MetaInfo                           `json:"meta"`
 }
 
 // BusinessUnitFeatureFlagEnabledData defines model for BusinessUnitFeatureFlagEnabledData.
@@ -1681,6 +2401,33 @@ type BusinessUnitScope struct {
 	Kind           string `json:"kind,omitempty"`
 }
 
+// CandidateLiveCheck defines model for CandidateLiveCheck.
+type CandidateLiveCheck struct {
+	// Diagnostics Response-only probe evidence; never includes provider messages or metadata.
+	Diagnostics *S3AccessProbeDiagnostics `json:"diagnostics,omitempty"`
+	Error       *string                   `json:"error,omitempty"`
+	Ok          bool                      `json:"ok"`
+}
+
+// CandidateValidationResult defines model for CandidateValidationResult.
+type CandidateValidationResult struct {
+	Errors               []string                             `json:"errors"`
+	LiveCheck            CandidateLiveCheck                   `json:"live_check"`
+	Ok                   bool                                 `json:"ok"`
+	OverlappingSourceIds []openapi_types.UUID                 `json:"overlapping_source_ids"`
+	PrecedenceAmbiguous  bool                                 `json:"precedence_ambiguous"`
+	ReasonCode           *CandidateValidationResultReasonCode `json:"reason_code,omitempty"`
+	SourceId             *openapi_types.UUID                  `json:"source_id"`
+	Stage                CandidateValidationResultStage       `json:"stage"`
+	ValidatedAt          string                               `json:"validated_at"`
+}
+
+// CandidateValidationResultReasonCode defines model for CandidateValidationResult.ReasonCode.
+type CandidateValidationResultReasonCode string
+
+// CandidateValidationResultStage defines model for CandidateValidationResult.Stage.
+type CandidateValidationResultStage string
+
 // ChangeCustomRecommendationStatusRequest Request body for POST /{custom_recommendation_id}/action/change-status.
 type ChangeCustomRecommendationStatusRequest struct {
 	// Comment Optional comment recorded in the RECOMMENDATION_STATUS_CHANGE activity metadata.
@@ -1690,13 +2437,33 @@ type ChangeCustomRecommendationStatusRequest struct {
 	//
 	// STARTED and CANCELED were removed as duplicates of IN_PROGRESS and
 	// DISCARDED (db_v1.0.100 rewrites existing rows).
+	//
+	// STALE means a later resource snapshot no longer matches this advice.
+	// DISCARDED means the advice was retired, or the resource was removed
+	// without the deletion this recommendation asked for.
+	Status CustomRecommendationStatus `json:"status"`
+}
+
+// ChangeRecommendationStatusRequest Request body for POST /{recommendation_id}/action/change-status.
+type ChangeRecommendationStatusRequest struct {
+	// Comment Optional comment recorded in the RECOMMENDATION_STATUS_CHANGE activity metadata.
+	Comment *string `json:"comment,omitempty"`
+
+	// Status Lifecycle status of a custom recommendation.
+	//
+	// STARTED and CANCELED were removed as duplicates of IN_PROGRESS and
+	// DISCARDED (db_v1.0.100 rewrites existing rows).
+	//
+	// STALE means a later resource snapshot no longer matches this advice.
+	// DISCARDED means the advice was retired, or the resource was removed
+	// without the deletion this recommendation asked for.
 	Status CustomRecommendationStatus `json:"status"`
 }
 
 // CloudAccountFeatureFlagEnabledApiResponse defines model for CloudAccountFeatureFlagEnabledApiResponse.
 type CloudAccountFeatureFlagEnabledApiResponse struct {
-	Data CloudAccountFeatureFlagEnabledData        `json:"data"`
-	Meta ApiV2ModulesBaseModelsBaseApiMetaMetaInfo `json:"meta"`
+	Data CloudAccountFeatureFlagEnabledData `json:"data"`
+	Meta MetaInfo                           `json:"meta"`
 }
 
 // CloudAccountFeatureFlagEnabledData defines model for CloudAccountFeatureFlagEnabledData.
@@ -1717,6 +2484,140 @@ type CloudAccountScope struct {
 	Kind           string `json:"kind,omitempty"`
 }
 
+// CloudCostCoverageException defines model for CloudCostCoverageException.
+type CloudCostCoverageException struct {
+	CloudAccountId    openapi_types.UUID               `json:"cloud_account_id"`
+	Owner             CloudCostCoverageExceptionOwner  `json:"owner"`
+	ProviderAccountId string                           `json:"provider_account_id"`
+	RemediationCode   CloudCostCoverageRemediationCode `json:"remediation_code"`
+	Summary           string                           `json:"summary"`
+}
+
+// CloudCostCoverageExceptionOwner defines model for CloudCostCoverageException.Owner.
+type CloudCostCoverageExceptionOwner string
+
+// CloudCostCoverageRemediationCode defines model for CloudCostCoverageRemediationCode.
+type CloudCostCoverageRemediationCode string
+
+// CloudCostDataSource defines model for CloudCostDataSource.
+type CloudCostDataSource struct {
+	BusinessUnit *openapi_types.UUID             `json:"business_unit,omitempty"`
+	Capabilities CloudCostDataSourceCapabilities `json:"capabilities"`
+
+	// CloudProviderType Cloud provider identifier.
+	CloudProviderType        CloudProviderType                  `json:"cloud_provider_type"`
+	Company                  openapi_types.UUID                 `json:"company"`
+	ContractVersion          string                             `json:"contract_version"`
+	CreatedAt                time.Time                          `json:"created_at"`
+	Health                   CloudCostDataSourceHealth          `json:"health"`
+	Id                       openapi_types.UUID                 `json:"id"`
+	IsEnabled                bool                               `json:"is_enabled"`
+	LastErrorAt              *time.Time                         `json:"last_error_at,omitempty"`
+	LastIngestedAt           *time.Time                         `json:"last_ingested_at,omitempty"`
+	LastSuccessfulIngestedAt *time.Time                         `json:"last_successful_ingested_at,omitempty"`
+	LastValidatedAt          *time.Time                         `json:"last_validated_at,omitempty"`
+	Name                     string                             `json:"name"`
+	ProviderConfig           CloudCostDataSource_ProviderConfig `json:"provider_config"`
+	ProviderScopeId          *string                            `json:"provider_scope_id,omitempty"`
+	SourceAccounts           *[]CloudCostDataSourceAccount      `json:"source_accounts,omitempty"`
+	SourceKind               string                             `json:"source_kind"`
+	UpdatedAt                time.Time                          `json:"updated_at"`
+}
+
+// CloudCostDataSource_ProviderConfig defines model for CloudCostDataSource.ProviderConfig.
+type CloudCostDataSource_ProviderConfig struct {
+	union json.RawMessage
+}
+
+// CloudCostDataSourceAccount defines model for CloudCostDataSourceAccount.
+type CloudCostDataSourceAccount struct {
+	CloudAccount        openapi_types.UUID `json:"cloud_account"`
+	CloudCostDataSource openapi_types.UUID `json:"cloud_cost_data_source"`
+	CreatedAt           time.Time          `json:"created_at"`
+	Id                  openapi_types.UUID `json:"id"`
+	ProviderAccountId   string             `json:"provider_account_id"`
+	UpdatedAt           time.Time          `json:"updated_at"`
+}
+
+// CloudCostDataSourceApplyCandidateRequest Validate and atomically save this candidate with the explicit desired state.
+type CloudCostDataSourceApplyCandidateRequest struct {
+	BusinessUnitId *openapi_types.UUID `json:"business_unit_id,omitempty"`
+
+	// CloudProviderType Cloud provider identifier.
+	CloudProviderType *CloudProviderType                                      `json:"cloud_provider_type,omitempty"`
+	CompanyId         openapi_types.UUID                                      `json:"company_id"`
+	ContractVersion   *string                                                 `json:"contract_version,omitempty"`
+	Coverage          *[]CloudCostDataSourceCoverageItem                      `json:"coverage,omitempty"`
+	IsEnabled         bool                                                    `json:"is_enabled"`
+	Name              string                                                  `json:"name"`
+	ProviderConfig    CloudCostDataSourceApplyCandidateRequest_ProviderConfig `json:"provider_config"`
+	ProviderScopeId   *string                                                 `json:"provider_scope_id,omitempty"`
+	SourceId          *openapi_types.UUID                                     `json:"source_id,omitempty"`
+	SourceKind        *CloudCostDataSourceApplyCandidateRequestSourceKind     `json:"source_kind,omitempty"`
+}
+
+// CloudCostDataSourceApplyCandidateRequest_ProviderConfig defines model for CloudCostDataSourceApplyCandidateRequest.ProviderConfig.
+type CloudCostDataSourceApplyCandidateRequest_ProviderConfig struct {
+	union json.RawMessage
+}
+
+// CloudCostDataSourceApplyCandidateRequestSourceKind defines model for CloudCostDataSourceApplyCandidateRequest.SourceKind.
+type CloudCostDataSourceApplyCandidateRequestSourceKind string
+
+// CloudCostDataSourceApplyResponse defines model for CloudCostDataSourceApplyResponse.
+type CloudCostDataSourceApplyResponse struct {
+	Data CloudCostDataSourceApplyResult `json:"data"`
+	Meta MetaInfo                       `json:"meta"`
+}
+
+// CloudCostDataSourceApplyResult defines model for CloudCostDataSourceApplyResult.
+type CloudCostDataSourceApplyResult struct {
+	Ok         bool                                `json:"ok"`
+	Source     CloudCostDataSource                 `json:"source"`
+	SourceId   *openapi_types.UUID                 `json:"source_id"`
+	Stage      CloudCostDataSourceApplyResultStage `json:"stage"`
+	Validation CandidateValidationResult           `json:"validation"`
+}
+
+// CloudCostDataSourceApplyResultStage defines model for CloudCostDataSourceApplyResult.Stage.
+type CloudCostDataSourceApplyResultStage string
+
+// CloudCostDataSourceCandidateValidateRequest Check proposed configuration without saving it or authorizing activation.
+//
+// “source_id“ scopes an edit and allows reuse of its retained AWS External ID.
+// “is_enabled“ is accepted for parity with upsert, but has no effect here.
+type CloudCostDataSourceCandidateValidateRequest struct {
+	BusinessUnitId *openapi_types.UUID `json:"business_unit_id,omitempty"`
+
+	// CloudProviderType Cloud provider identifier.
+	CloudProviderType *CloudProviderType                                         `json:"cloud_provider_type,omitempty"`
+	CompanyId         openapi_types.UUID                                         `json:"company_id"`
+	ContractVersion   *string                                                    `json:"contract_version,omitempty"`
+	Coverage          *[]CloudCostDataSourceCoverageItem                         `json:"coverage,omitempty"`
+	IsEnabled         *bool                                                      `json:"is_enabled,omitempty"`
+	Name              string                                                     `json:"name"`
+	ProviderConfig    CloudCostDataSourceCandidateValidateRequest_ProviderConfig `json:"provider_config"`
+	ProviderScopeId   *string                                                    `json:"provider_scope_id,omitempty"`
+	SourceId          *openapi_types.UUID                                        `json:"source_id,omitempty"`
+	SourceKind        *CloudCostDataSourceCandidateValidateRequestSourceKind     `json:"source_kind,omitempty"`
+}
+
+// CloudCostDataSourceCandidateValidateRequest_ProviderConfig defines model for CloudCostDataSourceCandidateValidateRequest.ProviderConfig.
+type CloudCostDataSourceCandidateValidateRequest_ProviderConfig struct {
+	union json.RawMessage
+}
+
+// CloudCostDataSourceCandidateValidateRequestSourceKind defines model for CloudCostDataSourceCandidateValidateRequest.SourceKind.
+type CloudCostDataSourceCandidateValidateRequestSourceKind string
+
+// CloudCostDataSourceCapabilities defines model for CloudCostDataSourceCapabilities.
+type CloudCostDataSourceCapabilities struct {
+	IngestionSupported            bool  `json:"ingestion_supported"`
+	LiveValidationSupported       bool  `json:"live_validation_supported"`
+	StructuralValidationSupported *bool `json:"structural_validation_supported,omitempty"`
+	WarmEnqueueSupported          bool  `json:"warm_enqueue_supported"`
+}
+
 // CloudCostDataSourceCoverageItem defines model for CloudCostDataSourceCoverageItem.
 type CloudCostDataSourceCoverageItem struct {
 	CloudAccountId    openapi_types.UUID `json:"cloud_account_id"`
@@ -1729,6 +2630,83 @@ type CloudCostDataSourceEnableRequest struct {
 	IsEnabled          *bool               `json:"is_enabled,omitempty"`
 	OverrideReason     *string             `json:"override_reason,omitempty"`
 	OverrideValidation *bool               `json:"override_validation,omitempty"`
+}
+
+// CloudCostDataSourceHealth defines model for CloudCostDataSourceHealth.
+type CloudCostDataSourceHealth struct {
+	CoverageExceptions           *[]CloudCostCoverageException            `json:"coverage_exceptions,omitempty"`
+	CoveredAccountCount          int                                      `json:"covered_account_count"`
+	EligibleLinkedAccountCount   *int                                     `json:"eligible_linked_account_count,omitempty"`
+	LatestIngestionRuns          *[]CloudCostDataSourceLatestIngestionRun `json:"latest_ingestion_runs,omitempty"`
+	LifecycleState               CostDataSourceLifecycleState             `json:"lifecycle_state"`
+	NullProviderScopeRecordCount *int                                     `json:"null_provider_scope_record_count,omitempty"`
+	OverlappingSourceIds         *[]openapi_types.UUID                    `json:"overlapping_source_ids,omitempty"`
+	PrecedenceAmbiguous          *bool                                    `json:"precedence_ambiguous,omitempty"`
+	ReachabilityState            CostDataSourceReachabilityState          `json:"reachability_state"`
+
+	// Recovery Recovery controls with optional readiness; missing metadata grants no permission.
+	Recovery                  *SourceRecovery                           `json:"recovery,omitempty"`
+	ResourceAttribution       *[]CloudCostDataSourceResourceAttribution `json:"resource_attribution,omitempty"`
+	RowStatistics             *CloudCostDataSourceRowStatistics         `json:"row_statistics,omitempty"`
+	SafeErrorSummary          *string                                   `json:"safe_error_summary,omitempty"`
+	StructuralState           CostDataSourceStructuralState             `json:"structural_state"`
+	UnmatchedProviderScopeIds *[]string                                 `json:"unmatched_provider_scope_ids,omitempty"`
+}
+
+// CloudCostDataSourceLatestIngestionRun defines model for CloudCostDataSourceLatestIngestionRun.
+type CloudCostDataSourceLatestIngestionRun struct {
+	ActivationOutcome             CloudCostDataSourceLatestIngestionRunActivationOutcome `json:"activation_outcome"`
+	ActivationReason              *CloudCostDataSourceLatestIngestionRunActivationReason `json:"activation_reason,omitempty"`
+	CloudAccount                  openapi_types.UUID                                     `json:"cloud_account"`
+	CollisionClassificationCounts *map[string]int                                        `json:"collision_classification_counts,omitempty"`
+	CompletedAt                   *time.Time                                             `json:"completed_at,omitempty"`
+	Outcome                       CloudCostDataSourceLatestIngestionRunOutcome           `json:"outcome"`
+	ProcessedRowCount             int                                                    `json:"processed_row_count"`
+}
+
+// CloudCostDataSourceLatestIngestionRunActivationOutcome defines model for CloudCostDataSourceLatestIngestionRun.ActivationOutcome.
+type CloudCostDataSourceLatestIngestionRunActivationOutcome string
+
+// CloudCostDataSourceLatestIngestionRunActivationReason defines model for CloudCostDataSourceLatestIngestionRun.ActivationReason.
+type CloudCostDataSourceLatestIngestionRunActivationReason string
+
+// CloudCostDataSourceLatestIngestionRunOutcome defines model for CloudCostDataSourceLatestIngestionRun.Outcome.
+type CloudCostDataSourceLatestIngestionRunOutcome string
+
+// CloudCostDataSourceResourceAttribution defines model for CloudCostDataSourceResourceAttribution.
+type CloudCostDataSourceResourceAttribution struct {
+	CloudAccount          openapi_types.UUID                                      `json:"cloud_account"`
+	CloudCostSourceRunId  *openapi_types.UUID                                     `json:"cloud_cost_source_run_id,omitempty"`
+	CloudCostSourceRunIds *[]openapi_types.UUID                                   `json:"cloud_cost_source_run_ids,omitempty"`
+	CompletedAt           *time.Time                                              `json:"completed_at,omitempty"`
+	ExaminedRowCount      *int                                                    `json:"examined_row_count,omitempty"`
+	MatchedRowCount       *int                                                    `json:"matched_row_count,omitempty"`
+	OperationId           *openapi_types.UUID                                     `json:"operation_id,omitempty"`
+	Reason                *CloudCostDataSourceResourceAttributionReason           `json:"reason,omitempty"`
+	SafeErrorSummary      *CloudCostDataSourceResourceAttributionSafeErrorSummary `json:"safe_error_summary,omitempty"`
+	StartedAt             *time.Time                                              `json:"started_at,omitempty"`
+	State                 *CloudCostDataSourceResourceAttributionState            `json:"state,omitempty"`
+	UnmatchedRowCount     *int                                                    `json:"unmatched_row_count,omitempty"`
+	WindowEnd             *time.Time                                              `json:"window_end,omitempty"`
+	WindowStart           *time.Time                                              `json:"window_start,omitempty"`
+}
+
+// CloudCostDataSourceResourceAttributionReason defines model for CloudCostDataSourceResourceAttribution.Reason.
+type CloudCostDataSourceResourceAttributionReason string
+
+// CloudCostDataSourceResourceAttributionSafeErrorSummary defines model for CloudCostDataSourceResourceAttribution.SafeErrorSummary.
+type CloudCostDataSourceResourceAttributionSafeErrorSummary string
+
+// CloudCostDataSourceResourceAttributionState defines model for CloudCostDataSourceResourceAttribution.State.
+type CloudCostDataSourceResourceAttributionState string
+
+// CloudCostDataSourceRowStatistics defines model for CloudCostDataSourceRowStatistics.
+type CloudCostDataSourceRowStatistics struct {
+	AvailableRowCount       *int       `json:"available_row_count,omitempty"`
+	ChargePeriodEnd         *time.Time `json:"charge_period_end,omitempty"`
+	ChargePeriodStart       *time.Time `json:"charge_period_start,omitempty"`
+	LatestProcessedRowCount *int       `json:"latest_processed_row_count,omitempty"`
+	ResourceMatchedRowCount *int       `json:"resource_matched_row_count,omitempty"`
 }
 
 // CloudCostDataSourceUpsertRequest Company-scoped FOCUS billing export registry row.
@@ -1778,8 +2756,8 @@ type CloudResourceType string
 
 // CompanyFeatureFlagEnabledApiResponse defines model for CompanyFeatureFlagEnabledApiResponse.
 type CompanyFeatureFlagEnabledApiResponse struct {
-	Data CompanyFeatureFlagEnabledData             `json:"data"`
-	Meta ApiV2ModulesBaseModelsBaseApiMetaMetaInfo `json:"meta"`
+	Data CompanyFeatureFlagEnabledData `json:"data"`
+	Meta MetaInfo                      `json:"meta"`
 }
 
 // CompanyFeatureFlagEnabledData defines model for CompanyFeatureFlagEnabledData.
@@ -1798,6 +2776,15 @@ type CompanyScope struct {
 
 // CompanyStatus Status of a company.
 type CompanyStatus string
+
+// CostDataSourceLifecycleState defines model for CostDataSourceLifecycleState.
+type CostDataSourceLifecycleState string
+
+// CostDataSourceReachabilityState defines model for CostDataSourceReachabilityState.
+type CostDataSourceReachabilityState string
+
+// CostDataSourceStructuralState defines model for CostDataSourceStructuralState.
+type CostDataSourceStructuralState string
 
 // CreateBusinessUnitFeatureFlagRequest defines model for CreateBusinessUnitFeatureFlagRequest.
 type CreateBusinessUnitFeatureFlagRequest struct {
@@ -2118,6 +3105,10 @@ type CreateRootSystemSettingRequest struct {
 //
 // STARTED and CANCELED were removed as duplicates of IN_PROGRESS and
 // DISCARDED (db_v1.0.100 rewrites existing rows).
+//
+// STALE means a later resource snapshot no longer matches this advice.
+// DISCARDED means the advice was retired, or the resource was removed
+// without the deletion this recommendation asked for.
 type CustomRecommendationStatus string
 
 // DetectBillingExportRequest Credentials plus the projects to scan for a Cloud Billing FOCUS export.
@@ -2242,6 +3233,18 @@ type FreshnessRefreshActionRequest struct {
 
 	// Reason Reason recorded for audit
 	Reason string `json:"reason"`
+}
+
+// GcpBigQueryCostDataSourceConfig defines model for GcpBigQueryCostDataSourceConfig.
+type GcpBigQueryCostDataSourceConfig struct {
+	CredentialCloudAccountId *openapi_types.UUID `json:"credential_cloud_account_id,omitempty"`
+	CredentialConfigured     bool                `json:"credential_configured"`
+	Dataset                  string              `json:"dataset"`
+	ExportProjectId          string              `json:"export_project_id"`
+	Location                 *string             `json:"location,omitempty"`
+	QueryProjectId           *string             `json:"query_project_id,omitempty"`
+	SourceKind               string              `json:"source_kind,omitempty"`
+	Table                    string              `json:"table"`
 }
 
 // GcpBigQueryCostDataSourceWriteConfig defines model for GcpBigQueryCostDataSourceWriteConfig.
@@ -2577,6 +3580,17 @@ type MessageFeedbackRequestRating string
 // MessageFeedbackRequestSourceAction defines model for MessageFeedbackRequest.SourceAction.
 type MessageFeedbackRequestSourceAction string
 
+// MetaInfo defines model for MetaInfo.
+type MetaInfo struct {
+	Count       *int          `json:"count,omitempty"`
+	Environment *string       `json:"environment,omitempty"`
+	Limit       *int          `json:"limit,omitempty"`
+	Offset      *int          `json:"offset,omitempty"`
+	Resource    *string       `json:"resource,omitempty"`
+	Security    *SecurityInfo `json:"security,omitempty"`
+	TotalCount  *int          `json:"total_count,omitempty"`
+}
+
 // OnboardRequest Self-serve one-click onboarding: email required; other fields optional with email-derived defaults.
 type OnboardRequest struct {
 	// CompanyName Optional; defaults from email domain
@@ -2587,6 +3601,12 @@ type OnboardRequest struct {
 
 	// Email User email (also used to derive company domain when omitted)
 	Email openapi_types.Email `json:"email"`
+
+	// FirstName Optional first name. Trimmed; omitted, null, or whitespace-only is left unset.
+	FirstName *string `json:"first_name,omitempty"`
+
+	// LastName Optional last name. Trimmed; omitted, null, or whitespace-only is left unset.
+	LastName *string `json:"last_name,omitempty"`
 
 	// Password Password (plain; min 8 characters; backend hashes before persist)
 	Password *string `json:"password,omitempty"`
@@ -2601,6 +3621,83 @@ type ReadinessData struct {
 	Errors      *map[string]string `json:"errors,omitempty"`
 	HealthScore *int               `json:"health_score,omitempty"`
 	Status      string             `json:"status"`
+}
+
+// RecoveryAccepted defines model for RecoveryAccepted.
+type RecoveryAccepted struct {
+	Accepted       bool                   `json:"accepted"`
+	Action         RecoveryAcceptedAction `json:"action"`
+	CloudAccountId openapi_types.UUID     `json:"cloud_account_id"`
+	Operation      RecoveryOperation      `json:"operation"`
+	SourceId       openapi_types.UUID     `json:"source_id"`
+	StatusUrl      string                 `json:"status_url"`
+}
+
+// RecoveryAcceptedAction defines model for RecoveryAccepted.Action.
+type RecoveryAcceptedAction string
+
+// RecoveryControl defines model for RecoveryControl.
+type RecoveryControl struct {
+	Allowed     bool                `json:"allowed"`
+	OperationId *openapi_types.UUID `json:"operation_id,omitempty"`
+	Reason      *string             `json:"reason"`
+	State       *string             `json:"state,omitempty"`
+}
+
+// RecoveryOperation defines model for RecoveryOperation.
+type RecoveryOperation struct {
+	Id           openapi_types.UUID `json:"id"`
+	JobId        int                `json:"job_id"`
+	State        string             `json:"state"`
+	WarmCursorId openapi_types.UUID `json:"warm_cursor_id"`
+}
+
+// RecoveryReadiness defines model for RecoveryReadiness.
+type RecoveryReadiness struct {
+	Processing    RecoveryReadinessState `json:"processing"`
+	SourceBinding SourceBindingReadiness `json:"source_binding"`
+}
+
+// RecoveryReadinessState defines model for RecoveryReadinessState.
+type RecoveryReadinessState struct {
+	Reason *string                     `json:"reason"`
+	State  RecoveryReadinessStateState `json:"state"`
+}
+
+// RecoveryReadinessStateState defines model for RecoveryReadinessState.State.
+type RecoveryReadinessStateState string
+
+// RecoveryRejectedData defines model for RecoveryRejectedData.
+type RecoveryRejectedData struct {
+	Accepted       bool                       `json:"accepted"`
+	Action         RecoveryRejectedDataAction `json:"action"`
+	Allowed        bool                       `json:"allowed"`
+	CloudAccountId openapi_types.UUID         `json:"cloud_account_id"`
+	OperationId    *openapi_types.UUID        `json:"operation_id,omitempty"`
+	Reason         *string                    `json:"reason"`
+	SourceId       openapi_types.UUID         `json:"source_id"`
+	State          *string                    `json:"state,omitempty"`
+}
+
+// RecoveryRejectedDataAction defines model for RecoveryRejectedData.Action.
+type RecoveryRejectedDataAction string
+
+// RecoveryRejectedResponse defines model for RecoveryRejectedResponse.
+type RecoveryRejectedResponse struct {
+	Data RecoveryRejectedData `json:"data"`
+	Meta MetaInfo             `json:"meta"`
+}
+
+// RecoveryRequest defines model for RecoveryRequest.
+type RecoveryRequest struct {
+	CloudAccountId openapi_types.UUID `json:"cloud_account_id"`
+	CompanyId      openapi_types.UUID `json:"company_id"`
+}
+
+// RecoveryResponse defines model for RecoveryResponse.
+type RecoveryResponse struct {
+	Data RecoveryAccepted `json:"data"`
+	Meta MetaInfo         `json:"meta"`
 }
 
 // RefreshGcpAwsWifRequest AWS-backed WIF metadata for an already-linked GCP integration.
@@ -2645,6 +3742,12 @@ type RenameRemediationSessionRequest struct {
 	Title string `json:"title"`
 }
 
+// RequestPasswordResetRequest Public self-serve password reset. Email is trimmed and lowercased before validation.
+type RequestPasswordResetRequest struct {
+	// Email Email address of the account requesting a reset link
+	Email openapi_types.Email `json:"email"`
+}
+
 // ResetPasswordFromInvitationRequest Request body for resetting password using the token from the reset-password invitation email.
 type ResetPasswordFromInvitationRequest struct {
 	// Password New password (plain; backend hashes before persist)
@@ -2663,6 +3766,15 @@ type ResetPasswordRequest struct {
 	NewPassword string `json:"new_password"`
 }
 
+// ResolveOrchestratorThreadRequest defines model for ResolveOrchestratorThreadRequest.
+type ResolveOrchestratorThreadRequest struct {
+	CloudAccountId openapi_types.UUID `json:"cloud_account_id"`
+
+	// CloudProvider Cloud provider identifier.
+	CloudProvider      CloudProviderType `json:"cloud_provider"`
+	ResourceIdentifier string            `json:"resource_identifier"`
+}
+
 // RolePermissionEntry One permission row in role.permissions JSON array.
 type RolePermissionEntry struct {
 	DisplayName string `json:"display_name"`
@@ -2677,8 +3789,8 @@ type RolePermissions string
 
 // RootFeatureFlagEnabledApiResponse defines model for RootFeatureFlagEnabledApiResponse.
 type RootFeatureFlagEnabledApiResponse struct {
-	Data RootFeatureFlagEnabledData                `json:"data"`
-	Meta ApiV2ModulesBaseModelsBaseApiMetaMetaInfo `json:"meta"`
+	Data RootFeatureFlagEnabledData `json:"data"`
+	Meta MetaInfo                   `json:"meta"`
 }
 
 // RootFeatureFlagEnabledData defines model for RootFeatureFlagEnabledData.
@@ -2695,6 +3807,45 @@ type RuntimeInfo struct {
 	StartedAt   string `json:"started_at"`
 }
 
+// S3AccessProbeDiagnostics Response-only probe evidence; never includes provider messages or metadata.
+type S3AccessProbeDiagnostics struct {
+	Bucket                string                                  `json:"bucket"`
+	CheckedAt             string                                  `json:"checked_at"`
+	ConnectTimeoutSeconds int                                     `json:"connect_timeout_seconds"`
+	CredentialRoute       S3AccessProbeDiagnosticsCredentialRoute `json:"credential_route"`
+	ErrorCode             *S3AccessProbeDiagnosticsErrorCode      `json:"error_code"`
+	MaxAttempts           int                                     `json:"max_attempts"`
+	MaxKeys               int                                     `json:"max_keys"`
+	Operation             *S3AccessProbeDiagnosticsOperation      `json:"operation"`
+	Outcome               S3AccessProbeDiagnosticsOutcome         `json:"outcome"`
+	Phase                 S3AccessProbeDiagnosticsPhase           `json:"phase"`
+	Prefix                string                                  `json:"prefix"`
+	ReadTimeoutSeconds    int                                     `json:"read_timeout_seconds"`
+	Region                *string                                 `json:"region"`
+	RoleArn               *string                                 `json:"role_arn"`
+}
+
+// S3AccessProbeDiagnosticsCredentialRoute defines model for S3AccessProbeDiagnostics.CredentialRoute.
+type S3AccessProbeDiagnosticsCredentialRoute string
+
+// S3AccessProbeDiagnosticsErrorCode defines model for S3AccessProbeDiagnostics.ErrorCode.
+type S3AccessProbeDiagnosticsErrorCode string
+
+// S3AccessProbeDiagnosticsOperation defines model for S3AccessProbeDiagnostics.Operation.
+type S3AccessProbeDiagnosticsOperation string
+
+// S3AccessProbeDiagnosticsOutcome defines model for S3AccessProbeDiagnostics.Outcome.
+type S3AccessProbeDiagnosticsOutcome string
+
+// S3AccessProbeDiagnosticsPhase defines model for S3AccessProbeDiagnostics.Phase.
+type S3AccessProbeDiagnosticsPhase string
+
+// SecurityInfo defines model for SecurityInfo.
+type SecurityInfo struct {
+	Granted            bool   `json:"granted"`
+	RequiredPermission string `json:"required_permission"`
+}
+
 // SendContactEmailRequest Authenticated OCO free-trial user contact message to Jetscale support.
 type SendContactEmailRequest struct {
 	// CompanyId Company UUID the caller belongs to
@@ -2706,6 +3857,11 @@ type SendContactEmailRequest struct {
 // SendMessageRequest Request body for sending a message in a remediation session.
 type SendMessageRequest struct {
 	// MessageContent Content of the message to send.
+	MessageContent string `json:"message_content"`
+}
+
+// SendOrchestratorMessageRequest defines model for SendOrchestratorMessageRequest.
+type SendOrchestratorMessageRequest struct {
 	MessageContent string `json:"message_content"`
 }
 
@@ -2911,6 +4067,46 @@ type SignUpRoleAssignmentRequest struct {
 	RoleId openapi_types.UUID `json:"role_id"`
 }
 
+// SlackCompanyRequest defines model for SlackCompanyRequest.
+type SlackCompanyRequest struct {
+	CompanyId openapi_types.UUID `json:"company_id"`
+}
+
+// SlackConnectRequest defines model for SlackConnectRequest.
+type SlackConnectRequest struct {
+	CompanyId   openapi_types.UUID  `json:"company_id"`
+	InviteEmail openapi_types.Email `json:"invite_email"`
+}
+
+// SourceBindingReadiness defines model for SourceBindingReadiness.
+type SourceBindingReadiness struct {
+	CredentialRoute *SourceBindingReadinessCredentialRoute `json:"credential_route"`
+	Reason          *string                                `json:"reason"`
+	State           SourceBindingReadinessState            `json:"state"`
+}
+
+// SourceBindingReadinessCredentialRoute defines model for SourceBindingReadiness.CredentialRoute.
+type SourceBindingReadinessCredentialRoute string
+
+// SourceBindingReadinessState defines model for SourceBindingReadiness.State.
+type SourceBindingReadinessState string
+
+// SourceRecovery Recovery controls with optional readiness; missing metadata grants no permission.
+type SourceRecovery struct {
+	Accounts  []AccountRecovery  `json:"accounts"`
+	Readiness *RecoveryReadiness `json:"readiness,omitempty"`
+}
+
+// StartOrchestratorThreadRequest defines model for StartOrchestratorThreadRequest.
+type StartOrchestratorThreadRequest struct {
+	CloudAccountId openapi_types.UUID `json:"cloud_account_id"`
+
+	// CloudProvider Cloud provider identifier.
+	CloudProvider      CloudProviderType `json:"cloud_provider"`
+	Message            *string           `json:"message,omitempty"`
+	ResourceIdentifier string            `json:"resource_identifier"`
+}
+
 // StartSessionRequest Request body for starting a remediation session (action/start). started_by and participants are set from the current user.
 type StartSessionRequest struct {
 	// RecommendationId Optional custom recommendation ID to tie the session to (custom_recommendation_id).
@@ -2952,6 +4148,11 @@ type UiToolResultSidecar struct {
 
 // UiToolResultSidecarStatus defines model for UiToolResultSidecar.Status.
 type UiToolResultSidecarStatus string
+
+// UpdateAgentArchitectureRequest defines model for UpdateAgentArchitectureRequest.
+type UpdateAgentArchitectureRequest struct {
+	OrchestratorEnabled bool `json:"orchestrator_enabled"`
+}
 
 // UpdateArtifactInSessionRequest Request body for updating an artifact in a remediation session (partial).
 type UpdateArtifactInSessionRequest struct {
@@ -3036,6 +4237,11 @@ type UpdateCompanySystemSettingRequest struct {
 	// Value Structured value payload
 	Value     map[string]interface{} `json:"value"`
 	ValueType SystemSettingValueType `json:"value_type"`
+}
+
+// UpdateGcpResourceConstraintsRequest Replace the standing constraints for one GCP resource.
+type UpdateGcpResourceConstraintsRequest struct {
+	Constraints *[]string `json:"constraints,omitempty"`
 }
 
 // UpdateLicenseRequest Request body for PATCH license. All fields are optional.
@@ -3243,23 +4449,6 @@ type WorkosSsoSignInRequest struct {
 	Code string `json:"code"`
 }
 
-// ApiV2ModulesBaseModelsBaseApiMetaMetaInfo defines model for api_v2__Modules__Base__Models__BaseApiMeta__MetaInfo.
-type ApiV2ModulesBaseModelsBaseApiMetaMetaInfo struct {
-	Count       *int                                           `json:"count,omitempty"`
-	Environment *string                                        `json:"environment,omitempty"`
-	Limit       *int                                           `json:"limit,omitempty"`
-	Offset      *int                                           `json:"offset,omitempty"`
-	Resource    *string                                        `json:"resource,omitempty"`
-	Security    *ApiV2ModulesBaseModelsBaseApiMetaSecurityInfo `json:"security,omitempty"`
-	TotalCount  *int                                           `json:"total_count,omitempty"`
-}
-
-// ApiV2ModulesBaseModelsBaseApiMetaSecurityInfo defines model for api_v2__Modules__Base__Models__BaseApiMeta__SecurityInfo.
-type ApiV2ModulesBaseModelsBaseApiMetaSecurityInfo struct {
-	Granted            bool   `json:"granted"`
-	RequiredPermission string `json:"required_permission"`
-}
-
 // WorkosSsoOnboardProviderInitiateApiV2AuthSsoOnboardWorkosActionProviderInitiateGetParams defines parameters for WorkosSsoOnboardProviderInitiateApiV2AuthSsoOnboardWorkosActionProviderInitiateGet.
 type WorkosSsoOnboardProviderInitiateApiV2AuthSsoOnboardWorkosActionProviderInitiateGetParams struct {
 	// Provider WorkOS OAuth SSO provider identifier (e.g. GoogleOAuth, MicrosoftOAuth).
@@ -3342,6 +4531,23 @@ type GetDiscoveredAzureResourcesApiV2CloudAzureDiscoveryResourcesGetParams struc
 
 	// IncludeRecommendationDebug When true and the caller is a superuser, include recommendation_attempt_status / recommendation_attempt_started_at (latest agent operation across every version row of the ARM id) and cooldown_active on each row. Ignored for non-superusers.
 	IncludeRecommendationDebug *bool `form:"include_recommendation_debug,omitempty" json:"include_recommendation_debug,omitempty"`
+}
+
+// ListReservationsApiV2CloudAzureReservationsGetParams defines parameters for ListReservationsApiV2CloudAzureReservationsGet.
+type ListReservationsApiV2CloudAzureReservationsGetParams struct {
+	// CloudAccountId Cloud account to list reservations for
+	CloudAccountId openapi_types.UUID `form:"cloud_account_id" json:"cloud_account_id"`
+}
+
+// ListReservationCoverageApiV2CloudAzureReservationsCoverageGetParams defines parameters for ListReservationCoverageApiV2CloudAzureReservationsCoverageGet.
+type ListReservationCoverageApiV2CloudAzureReservationsCoverageGetParams struct {
+	// CloudAccountId Cloud account whose reservation coverage to list
+	CloudAccountId openapi_types.UUID `form:"cloud_account_id" json:"cloud_account_id"`
+}
+
+// ListCloudAccountsApiV2CloudCloudAccountsGetParams defines parameters for ListCloudAccountsApiV2CloudCloudAccountsGet.
+type ListCloudAccountsApiV2CloudCloudAccountsGetParams struct {
+	CompanyId *openapi_types.UUID `form:"company_id,omitempty" json:"company_id,omitempty"`
 }
 
 // GetGcpSetupGuideApiV2CloudCloudAccountsDocumentationGcpSetupGuideGetParams defines parameters for GetGcpSetupGuideApiV2CloudCloudAccountsDocumentationGcpSetupGuideGet.
@@ -3458,6 +4664,12 @@ type GetGcpCostsByCategoryApiV2CloudGcpCostExplorerCostsByCategoryGetParams stru
 type ListGcpResourceDiscoveriesApiV2CloudGcpDiscoveryResourcesGetParams struct {
 	// IsActive Active/inactive meta-filter. `eq true` (or `true`) → active resources only; `eq false` (or `false`) → inactive only; omit for all. GCP has no is_active column, so this maps to the deleted_at + INACTIVE_RESOURCE_STATUSES class, as on AWS.
 	IsActive *string `form:"is_active,omitempty" json:"is_active,omitempty"`
+
+	// HasRecommendation Recommendation-link meta-filter. `eq true` (or `true`) returns resources linked from any discovery version; `eq false` returns resources with no link; omit for all.
+	HasRecommendation *string `form:"has_recommendation,omitempty" json:"has_recommendation,omitempty"`
+
+	// IncludeLatestRecommendation Deprecated compatibility flag. GCP resource listings now always embed the authoritative recommendation, matching AWS/Azure.
+	IncludeLatestRecommendation *bool `form:"include_latest_recommendation,omitempty" json:"include_latest_recommendation,omitempty"`
 }
 
 // GetGcpRegionsApiV2CloudGcpDiscoveryResourcesRegionsGetParams defines parameters for GetGcpRegionsApiV2CloudGcpDiscoveryResourcesRegionsGet.
@@ -3482,6 +4694,9 @@ type GetGcpResourceTypeCountsApiV2CloudGcpDiscoveryResourcesTypeCountsGetParams 
 
 	// IsActive `eq true` for active (default when omitted), `eq false` for inactive. Active means not soft-deleted and not reporting a stopped / gone GCP status; inactive is the complement — same class as the list endpoint.
 	IsActive *string `form:"is_active,omitempty" json:"is_active,omitempty"`
+
+	// HasRecommendation `eq true` for resources with a recommendation, `eq false` without one.
+	HasRecommendation *string `form:"has_recommendation,omitempty" json:"has_recommendation,omitempty"`
 }
 
 // GetGovernanceGapsApiV2CloudGovernanceGapsGetParams defines parameters for GetGovernanceGapsApiV2CloudGovernanceGapsGet.
@@ -3540,6 +4755,12 @@ type QueryObservationsApiV2CloudObservationsGetParams struct {
 	ToStartTime         *time.Time `form:"to_start_time,omitempty" json:"to_start_time,omitempty"`
 	Version             *string    `form:"version,omitempty" json:"version,omitempty"`
 	Filter              *string    `form:"filter,omitempty" json:"filter,omitempty"`
+}
+
+// ListRecommendationActivitiesApiV2CloudRecommendationActivitiesGetParams defines parameters for ListRecommendationActivitiesApiV2CloudRecommendationActivitiesGet.
+type ListRecommendationActivitiesApiV2CloudRecommendationActivitiesGetParams struct {
+	// RecommendationId Recommendation to list activities for.
+	RecommendationId openapi_types.UUID `form:"recommendation_id" json:"recommendation_id"`
 }
 
 // InspectRecommendationAgentOperationSourceApiV2CloudRecommendationAgentOperationsRecommendationAgentOperationIdSourcesFocusCostAttributionInspectionGetParams defines parameters for InspectRecommendationAgentOperationSourceApiV2CloudRecommendationAgentOperationsRecommendationAgentOperationIdSourcesFocusCostAttributionInspectionGet.
@@ -3653,9 +4874,22 @@ type GetGithubIntegrationListApiV2IntegrationsGithubMeIntegrationGetParams struc
 	BusinessUnitId openapi_types.UUID `form:"business_unit_id" json:"business_unit_id"`
 }
 
+// GetGithubPullRequestStatusApiV2IntegrationsGithubMePullRequestGetParams defines parameters for GetGithubPullRequestStatusApiV2IntegrationsGithubMePullRequestGet.
+type GetGithubPullRequestStatusApiV2IntegrationsGithubMePullRequestGetParams struct {
+	BusinessUnitId openapi_types.UUID `form:"business_unit_id" json:"business_unit_id"`
+
+	// Url Absolute GitHub or Azure DevOps pull-request URL
+	Url string `form:"url" json:"url"`
+}
+
 // GetGithubScanStatusApiV2IntegrationsGithubMeScanStatusGetParams defines parameters for GetGithubScanStatusApiV2IntegrationsGithubMeScanStatusGet.
 type GetGithubScanStatusApiV2IntegrationsGithubMeScanStatusGetParams struct {
 	BusinessUnitId openapi_types.UUID `form:"business_unit_id" json:"business_unit_id"`
+}
+
+// GetSlackIntegrationApiV2IntegrationsSlackMeIntegrationGetParams defines parameters for GetSlackIntegrationApiV2IntegrationsSlackMeIntegrationGet.
+type GetSlackIntegrationApiV2IntegrationsSlackMeIntegrationGetParams struct {
+	CompanyId openapi_types.UUID `form:"company_id" json:"company_id"`
 }
 
 // GetBillingSubscriptionApiV2LicenseAndBillingBillingSubscriptionGetParams defines parameters for GetBillingSubscriptionApiV2LicenseAndBillingBillingSubscriptionGet.
@@ -3692,6 +4926,11 @@ type ListPerformanceFeeChargesApiV2LicenseAndBillingPerformanceFeesChargesGetPar
 type ListPerformanceFeeInstallmentsApiV2LicenseAndBillingPerformanceFeesInstallmentsGetParams struct {
 	// CompanyId Company UUID
 	CompanyId openapi_types.UUID `form:"company_id" json:"company_id"`
+}
+
+// StreamThreadEventsApiV2RemediationOrchestratorThreadsThreadIdEventsGetParams defines parameters for StreamThreadEventsApiV2RemediationOrchestratorThreadsThreadIdEventsGet.
+type StreamThreadEventsApiV2RemediationOrchestratorThreadsThreadIdEventsGetParams struct {
+	After *int `form:"after,omitempty" json:"after,omitempty"`
 }
 
 // GetEffectiveSettingApiV2SettingsEffectiveKeyGetParams defines parameters for GetEffectiveSettingApiV2SettingsEffectiveKeyGet.
@@ -3757,6 +4996,12 @@ type ActionSetFlagApiV2SystemFeatureFlagsBusinessUnitActionSetFlagKeyPatchParams
 	BusinessUnitId openapi_types.UUID `form:"business_unit_id" json:"business_unit_id"`
 }
 
+// DeleteFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyDeleteParams defines parameters for DeleteFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyDelete.
+type DeleteFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyDeleteParams struct {
+	// BusinessUnitId Business unit scope
+	BusinessUnitId openapi_types.UUID `form:"business_unit_id" json:"business_unit_id"`
+}
+
 // GetFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyGetParams defines parameters for GetFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyGet.
 type GetFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyGetParams struct {
 	// BusinessUnitId Business unit scope
@@ -3805,6 +5050,12 @@ type ActionSetFlagApiV2SystemFeatureFlagsCompanyActionSetFlagKeyPatchParams stru
 	CompanyId openapi_types.UUID `form:"company_id" json:"company_id"`
 }
 
+// DeleteFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyDeleteParams defines parameters for DeleteFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyDelete.
+type DeleteFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyDeleteParams struct {
+	// CompanyId Company scope
+	CompanyId openapi_types.UUID `form:"company_id" json:"company_id"`
+}
+
 // GetFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyGetParams defines parameters for GetFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyGet.
 type GetFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyGetParams struct {
 	// CompanyId Company scope
@@ -3836,6 +5087,12 @@ type IsCompanyFeatureFlagEnabledApiV2SystemFeatureFlagsIsFeatureFlagEnabledCompa
 
 	// CompanyId Company id
 	CompanyId openapi_types.UUID `form:"company_id" json:"company_id"`
+}
+
+// ListRootFlagsApiV2SystemFeatureFlagsRootAdminGetParams defines parameters for ListRootFlagsApiV2SystemFeatureFlagsRootAdminGet.
+type ListRootFlagsApiV2SystemFeatureFlagsRootAdminGetParams struct {
+	ApiLimit  *int `form:"api_limit,omitempty" json:"api_limit,omitempty"`
+	ApiOffset *int `form:"api_offset,omitempty" json:"api_offset,omitempty"`
 }
 
 // GetGovernanceGapsApiV2TempDashboardGovernanceGapsGetParams defines parameters for GetGovernanceGapsApiV2TempDashboardGovernanceGapsGet.
@@ -3901,36 +5158,6 @@ type GetResourcesCountApiV2TempDashboardResourcesCountGetParams struct {
 	CategoriesFilter *string `form:"categories_filter,omitempty" json:"categories_filter,omitempty"`
 }
 
-// GetResourceHealthDetailsApiV2TempDashboardResourcesHealthDetailsGetParams defines parameters for GetResourceHealthDetailsApiV2TempDashboardResourcesHealthDetailsGet.
-type GetResourceHealthDetailsApiV2TempDashboardResourcesHealthDetailsGetParams struct {
-	// CloudAccount Filter by cloud account ID. Blank returns all accounts
-	CloudAccount *openapi_types.UUID `form:"cloud_account,omitempty" json:"cloud_account,omitempty"`
-
-	// StartDate Start date in YYYY-MM-DD format. Defaults to 30 days ago
-	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
-
-	// EndDate End date in YYYY-MM-DD format. Defaults to today
-	EndDate *string `form:"end_date,omitempty" json:"end_date,omitempty"`
-
-	// CategoriesFilter Filter by categories. Comma-separated list. Blank returns all
-	CategoriesFilter *string `form:"categories_filter,omitempty" json:"categories_filter,omitempty"`
-}
-
-// GetResourceHealthSummaryApiV2TempDashboardResourcesHealthSummaryGetParams defines parameters for GetResourceHealthSummaryApiV2TempDashboardResourcesHealthSummaryGet.
-type GetResourceHealthSummaryApiV2TempDashboardResourcesHealthSummaryGetParams struct {
-	// CloudAccount Filter by cloud account ID. Blank returns all accounts
-	CloudAccount *openapi_types.UUID `form:"cloud_account,omitempty" json:"cloud_account,omitempty"`
-
-	// StartDate Start date in YYYY-MM-DD format. Defaults to 30 days ago
-	StartDate *string `form:"start_date,omitempty" json:"start_date,omitempty"`
-
-	// EndDate End date in YYYY-MM-DD format. Defaults to today
-	EndDate *string `form:"end_date,omitempty" json:"end_date,omitempty"`
-
-	// CategoriesFilter Filter by categories. Comma-separated list. Blank returns all
-	CategoriesFilter *string `form:"categories_filter,omitempty" json:"categories_filter,omitempty"`
-}
-
 // GetSavingsApiV2TempDashboardSavingsGetParams defines parameters for GetSavingsApiV2TempDashboardSavingsGet.
 type GetSavingsApiV2TempDashboardSavingsGetParams struct {
 	// CloudAccount Filter by cloud account ID. Blank returns all accounts
@@ -3954,6 +5181,9 @@ type GetSavingsProgressApiV2TempDashboardSavingsProgressGetParams struct {
 	// End End date (inclusive) for the weekly burn-up series. Defaults to the current week
 	End *openapi_types.Date `form:"end,omitempty" json:"end,omitempty"`
 }
+
+// RequestPasswordResetApiV2AuthActionRequestPasswordResetPostJSONRequestBody defines body for RequestPasswordResetApiV2AuthActionRequestPasswordResetPost for application/json ContentType.
+type RequestPasswordResetApiV2AuthActionRequestPasswordResetPostJSONRequestBody = RequestPasswordResetRequest
 
 // SendOwnerSignupInvitationApiV2AuthActionSendOwnerSignupInvitationPostJSONRequestBody defines body for SendOwnerSignupInvitationApiV2AuthActionSendOwnerSignupInvitationPost for application/json ContentType.
 type SendOwnerSignupInvitationApiV2AuthActionSendOwnerSignupInvitationPostJSONRequestBody = SendOwnerSignupInvitationRequest
@@ -4054,11 +5284,26 @@ type GenerateCustomRecommendationApiV2CloudCloudAccountsCloudAccountIdActionGene
 // StreamGenerateCustomRecommendationApiV2CloudCloudAccountsCloudAccountIdActionGenerateCustomRecommendationStreamPostJSONRequestBody defines body for StreamGenerateCustomRecommendationApiV2CloudCloudAccountsCloudAccountIdActionGenerateCustomRecommendationStreamPost for application/json ContentType.
 type StreamGenerateCustomRecommendationApiV2CloudCloudAccountsCloudAccountIdActionGenerateCustomRecommendationStreamPostJSONRequestBody = GenerateCustomRecommendationRequest
 
+// UpdateCloudAccountAgentArchitectureApiV2CloudCloudAccountsCloudAccountIdSettingsAgentArchitecturePatchJSONRequestBody defines body for UpdateCloudAccountAgentArchitectureApiV2CloudCloudAccountsCloudAccountIdSettingsAgentArchitecturePatch for application/json ContentType.
+type UpdateCloudAccountAgentArchitectureApiV2CloudCloudAccountsCloudAccountIdSettingsAgentArchitecturePatchJSONRequestBody = UpdateAgentArchitectureRequest
+
 // CreateCostDataSourceApiV2CloudCostDataSourcesPostJSONRequestBody defines body for CreateCostDataSourceApiV2CloudCostDataSourcesPost for application/json ContentType.
 type CreateCostDataSourceApiV2CloudCostDataSourcesPostJSONRequestBody = CloudCostDataSourceUpsertRequest
 
+// ApplyCostDataSourceCandidateApiV2CloudCostDataSourcesActionApplyCandidatePostJSONRequestBody defines body for ApplyCostDataSourceCandidateApiV2CloudCostDataSourcesActionApplyCandidatePost for application/json ContentType.
+type ApplyCostDataSourceCandidateApiV2CloudCostDataSourcesActionApplyCandidatePostJSONRequestBody = CloudCostDataSourceApplyCandidateRequest
+
+// ValidateCostDataSourceCandidateApiV2CloudCostDataSourcesActionValidateCandidatePostJSONRequestBody defines body for ValidateCostDataSourceCandidateApiV2CloudCostDataSourcesActionValidateCandidatePost for application/json ContentType.
+type ValidateCostDataSourceCandidateApiV2CloudCostDataSourcesActionValidateCandidatePostJSONRequestBody = CloudCostDataSourceCandidateValidateRequest
+
 // UpdateCostDataSourceApiV2CloudCostDataSourcesSourceIdPatchJSONRequestBody defines body for UpdateCostDataSourceApiV2CloudCostDataSourcesSourceIdPatch for application/json ContentType.
 type UpdateCostDataSourceApiV2CloudCostDataSourcesSourceIdPatchJSONRequestBody = CloudCostDataSourceUpsertRequest
+
+// RetryCostSourceImportApiV2CloudCostDataSourcesSourceIdActionRetryImportPostJSONRequestBody defines body for RetryCostSourceImportApiV2CloudCostDataSourcesSourceIdActionRetryImportPost for application/json ContentType.
+type RetryCostSourceImportApiV2CloudCostDataSourcesSourceIdActionRetryImportPostJSONRequestBody = RecoveryRequest
+
+// RetryCostSourceMatchingApiV2CloudCostDataSourcesSourceIdActionRetryMatchingPostJSONRequestBody defines body for RetryCostSourceMatchingApiV2CloudCostDataSourcesSourceIdActionRetryMatchingPost for application/json ContentType.
+type RetryCostSourceMatchingApiV2CloudCostDataSourcesSourceIdActionRetryMatchingPostJSONRequestBody = RecoveryRequest
 
 // SetCostDataSourceEnabledApiV2CloudCostDataSourcesSourceIdActionSetEnabledPostJSONRequestBody defines body for SetCostDataSourceEnabledApiV2CloudCostDataSourcesSourceIdActionSetEnabledPost for application/json ContentType.
 type SetCostDataSourceEnabledApiV2CloudCostDataSourcesSourceIdActionSetEnabledPostJSONRequestBody = CloudCostDataSourceEnableRequest
@@ -4108,6 +5353,9 @@ type DiscoverGcpResourcesApiV2CloudGcpDiscoveryResourcesActionDiscoverPostJSONRe
 // FetchGcpResourceMetricsApiV2CloudGcpDiscoveryResourcesActionMetricsPostJSONRequestBody defines body for FetchGcpResourceMetricsApiV2CloudGcpDiscoveryResourcesActionMetricsPost for application/json ContentType.
 type FetchGcpResourceMetricsApiV2CloudGcpDiscoveryResourcesActionMetricsPostJSONRequestBody = GcpMetricsRequestBody
 
+// UpdateGcpResourceConstraintsApiV2CloudGcpDiscoveryResourcesResourceIdConstraintsPatchJSONRequestBody defines body for UpdateGcpResourceConstraintsApiV2CloudGcpDiscoveryResourcesResourceIdConstraintsPatch for application/json ContentType.
+type UpdateGcpResourceConstraintsApiV2CloudGcpDiscoveryResourcesResourceIdConstraintsPatchJSONRequestBody = UpdateGcpResourceConstraintsRequest
+
 // CreateConnectorApiV2CloudInvocationDiagnosticsConnectorsPostJSONRequestBody defines body for CreateConnectorApiV2CloudInvocationDiagnosticsConnectorsPost for application/json ContentType.
 type CreateConnectorApiV2CloudInvocationDiagnosticsConnectorsPostJSONRequestBody = InvocationDiagnosticsConnectorUpsertRequest
 
@@ -4122,6 +5370,12 @@ type ValidateConnectorApiV2CloudInvocationDiagnosticsConnectorsConnectorIdAction
 
 // LinkCloudAccountApiV2CloudLinkCloudAccountPostJSONRequestBody defines body for LinkCloudAccountApiV2CloudLinkCloudAccountPost for application/json ContentType.
 type LinkCloudAccountApiV2CloudLinkCloudAccountPostJSONRequestBody = LinkCloudAccountRequest
+
+// AddRecommendationCommentApiV2CloudRecommendationsRecommendationIdActionAddCommentPostJSONRequestBody defines body for AddRecommendationCommentApiV2CloudRecommendationsRecommendationIdActionAddCommentPost for application/json ContentType.
+type AddRecommendationCommentApiV2CloudRecommendationsRecommendationIdActionAddCommentPostJSONRequestBody = AddRecommendationCommentRequest
+
+// ChangeRecommendationStatusApiV2CloudRecommendationsRecommendationIdActionChangeStatusPostJSONRequestBody defines body for ChangeRecommendationStatusApiV2CloudRecommendationsRecommendationIdActionChangeStatusPost for application/json ContentType.
+type ChangeRecommendationStatusApiV2CloudRecommendationsRecommendationIdActionChangeStatusPostJSONRequestBody = ChangeRecommendationStatusRequest
 
 // CreateSessionApiV2ExplorerSessionsPostJSONRequestBody defines body for CreateSessionApiV2ExplorerSessionsPost for application/json ContentType.
 type CreateSessionApiV2ExplorerSessionsPostJSONRequestBody = CreateExplorerSessionRequest
@@ -4174,6 +5428,15 @@ type CreateJiraIssueApiV2IntegrationsJiraIssuesActionCreatePostJSONRequestBody =
 // ConnectToJiraApiV2IntegrationsJiraMeActionConnectPostJSONRequestBody defines body for ConnectToJiraApiV2IntegrationsJiraMeActionConnectPost for application/json ContentType.
 type ConnectToJiraApiV2IntegrationsJiraMeActionConnectPostJSONRequestBody = JiraConnectRequestBody
 
+// CancelSlackApiV2IntegrationsSlackActionCancelPostJSONRequestBody defines body for CancelSlackApiV2IntegrationsSlackActionCancelPost for application/json ContentType.
+type CancelSlackApiV2IntegrationsSlackActionCancelPostJSONRequestBody = SlackCompanyRequest
+
+// ConnectSlackApiV2IntegrationsSlackActionConnectPostJSONRequestBody defines body for ConnectSlackApiV2IntegrationsSlackActionConnectPost for application/json ContentType.
+type ConnectSlackApiV2IntegrationsSlackActionConnectPostJSONRequestBody = SlackConnectRequest
+
+// DisconnectSlackApiV2IntegrationsSlackActionDisconnectPostJSONRequestBody defines body for DisconnectSlackApiV2IntegrationsSlackActionDisconnectPost for application/json ContentType.
+type DisconnectSlackApiV2IntegrationsSlackActionDisconnectPostJSONRequestBody = SlackCompanyRequest
+
 // CreateCheckoutSessionApiV2LicenseAndBillingBillingActionCreateCheckoutSessionPostJSONRequestBody defines body for CreateCheckoutSessionApiV2LicenseAndBillingBillingActionCreateCheckoutSessionPost for application/json ContentType.
 type CreateCheckoutSessionApiV2LicenseAndBillingBillingActionCreateCheckoutSessionPostJSONRequestBody = CreateCheckoutSessionRequest
 
@@ -4224,6 +5487,21 @@ type UpdateCompanyApiV2OrganizationCompaniesCompanyIdPatchJSONRequestBody = Upda
 
 // CreateRemediationArtifactApiV2RemediationArtifactsPostJSONRequestBody defines body for CreateRemediationArtifactApiV2RemediationArtifactsPost for application/json ContentType.
 type CreateRemediationArtifactApiV2RemediationArtifactsPostJSONRequestBody = CreateRemediationArtifactRequest
+
+// ResolveThreadApiV2RemediationOrchestratorThreadsActionResolvePostJSONRequestBody defines body for ResolveThreadApiV2RemediationOrchestratorThreadsActionResolvePost for application/json ContentType.
+type ResolveThreadApiV2RemediationOrchestratorThreadsActionResolvePostJSONRequestBody = ResolveOrchestratorThreadRequest
+
+// StartThreadApiV2RemediationOrchestratorThreadsActionStartPostJSONRequestBody defines body for StartThreadApiV2RemediationOrchestratorThreadsActionStartPost for application/json ContentType.
+type StartThreadApiV2RemediationOrchestratorThreadsActionStartPostJSONRequestBody = StartOrchestratorThreadRequest
+
+// StreamStartApiV2RemediationOrchestratorThreadsActionStreamStartPostJSONRequestBody defines body for StreamStartApiV2RemediationOrchestratorThreadsActionStreamStartPost for application/json ContentType.
+type StreamStartApiV2RemediationOrchestratorThreadsActionStreamStartPostJSONRequestBody = StartOrchestratorThreadRequest
+
+// SendMessageApiV2RemediationOrchestratorThreadsThreadIdActionSendMessagePostJSONRequestBody defines body for SendMessageApiV2RemediationOrchestratorThreadsThreadIdActionSendMessagePost for application/json ContentType.
+type SendMessageApiV2RemediationOrchestratorThreadsThreadIdActionSendMessagePostJSONRequestBody = SendOrchestratorMessageRequest
+
+// StreamSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionStreamSendMessagePostJSONRequestBody defines body for StreamSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionStreamSendMessagePost for application/json ContentType.
+type StreamSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionStreamSendMessagePostJSONRequestBody = SendOrchestratorMessageRequest
 
 // CreateRemediationSessionActivityApiV2RemediationSessionActivitiesPostJSONRequestBody defines body for CreateRemediationSessionActivityApiV2RemediationSessionActivitiesPost for application/json ContentType.
 type CreateRemediationSessionActivityApiV2RemediationSessionActivitiesPostJSONRequestBody = CreateRemediationSessionActivityRequest
@@ -4314,6 +5592,363 @@ type CreateSettingApiV2SystemRootSettingsPostJSONRequestBody = CreateRootSystemS
 
 // EditSettingApiV2SystemRootSettingsSettingIdPatchJSONRequestBody defines body for EditSettingApiV2SystemRootSettingsSettingIdPatch for application/json ContentType.
 type EditSettingApiV2SystemRootSettingsSettingIdPatchJSONRequestBody = UpdateRootSystemSettingRequest
+
+// AsAwsS3CostDataSourceConfig returns the union data inside the CloudCostDataSource_ProviderConfig as a AwsS3CostDataSourceConfig
+func (t CloudCostDataSource_ProviderConfig) AsAwsS3CostDataSourceConfig() (AwsS3CostDataSourceConfig, error) {
+	var body AwsS3CostDataSourceConfig
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromAwsS3CostDataSourceConfig overwrites any union data inside the CloudCostDataSource_ProviderConfig as the provided AwsS3CostDataSourceConfig
+func (t *CloudCostDataSource_ProviderConfig) FromAwsS3CostDataSourceConfig(v AwsS3CostDataSourceConfig) error {
+	v.SourceKind = "focus_s3"
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeAwsS3CostDataSourceConfig performs a merge with any union data inside the CloudCostDataSource_ProviderConfig, using the provided AwsS3CostDataSourceConfig
+func (t *CloudCostDataSource_ProviderConfig) MergeAwsS3CostDataSourceConfig(v AwsS3CostDataSourceConfig) error {
+	v.SourceKind = "focus_s3"
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsGcpBigQueryCostDataSourceConfig returns the union data inside the CloudCostDataSource_ProviderConfig as a GcpBigQueryCostDataSourceConfig
+func (t CloudCostDataSource_ProviderConfig) AsGcpBigQueryCostDataSourceConfig() (GcpBigQueryCostDataSourceConfig, error) {
+	var body GcpBigQueryCostDataSourceConfig
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromGcpBigQueryCostDataSourceConfig overwrites any union data inside the CloudCostDataSource_ProviderConfig as the provided GcpBigQueryCostDataSourceConfig
+func (t *CloudCostDataSource_ProviderConfig) FromGcpBigQueryCostDataSourceConfig(v GcpBigQueryCostDataSourceConfig) error {
+	v.SourceKind = "focus_bigquery"
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeGcpBigQueryCostDataSourceConfig performs a merge with any union data inside the CloudCostDataSource_ProviderConfig, using the provided GcpBigQueryCostDataSourceConfig
+func (t *CloudCostDataSource_ProviderConfig) MergeGcpBigQueryCostDataSourceConfig(v GcpBigQueryCostDataSourceConfig) error {
+	v.SourceKind = "focus_bigquery"
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsAzureBlobCostDataSourceConfig returns the union data inside the CloudCostDataSource_ProviderConfig as a AzureBlobCostDataSourceConfig
+func (t CloudCostDataSource_ProviderConfig) AsAzureBlobCostDataSourceConfig() (AzureBlobCostDataSourceConfig, error) {
+	var body AzureBlobCostDataSourceConfig
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromAzureBlobCostDataSourceConfig overwrites any union data inside the CloudCostDataSource_ProviderConfig as the provided AzureBlobCostDataSourceConfig
+func (t *CloudCostDataSource_ProviderConfig) FromAzureBlobCostDataSourceConfig(v AzureBlobCostDataSourceConfig) error {
+	v.SourceKind = "focus_azure_blob"
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeAzureBlobCostDataSourceConfig performs a merge with any union data inside the CloudCostDataSource_ProviderConfig, using the provided AzureBlobCostDataSourceConfig
+func (t *CloudCostDataSource_ProviderConfig) MergeAzureBlobCostDataSourceConfig(v AzureBlobCostDataSourceConfig) error {
+	v.SourceKind = "focus_azure_blob"
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t CloudCostDataSource_ProviderConfig) Discriminator() (string, error) {
+	var discriminator struct {
+		Discriminator string `json:"source_kind"`
+	}
+	err := json.Unmarshal(t.union, &discriminator)
+	return discriminator.Discriminator, err
+}
+
+func (t CloudCostDataSource_ProviderConfig) ValueByDiscriminator() (interface{}, error) {
+	discriminator, err := t.Discriminator()
+	if err != nil {
+		return nil, err
+	}
+	switch discriminator {
+	case "focus_azure_blob":
+		return t.AsAzureBlobCostDataSourceConfig()
+	case "focus_bigquery":
+		return t.AsGcpBigQueryCostDataSourceConfig()
+	case "focus_s3":
+		return t.AsAwsS3CostDataSourceConfig()
+	default:
+		return nil, errors.New("unknown discriminator value: " + discriminator)
+	}
+}
+
+func (t CloudCostDataSource_ProviderConfig) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *CloudCostDataSource_ProviderConfig) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsAwsS3CostDataSourceWriteConfig returns the union data inside the CloudCostDataSourceApplyCandidateRequest_ProviderConfig as a AwsS3CostDataSourceWriteConfig
+func (t CloudCostDataSourceApplyCandidateRequest_ProviderConfig) AsAwsS3CostDataSourceWriteConfig() (AwsS3CostDataSourceWriteConfig, error) {
+	var body AwsS3CostDataSourceWriteConfig
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromAwsS3CostDataSourceWriteConfig overwrites any union data inside the CloudCostDataSourceApplyCandidateRequest_ProviderConfig as the provided AwsS3CostDataSourceWriteConfig
+func (t *CloudCostDataSourceApplyCandidateRequest_ProviderConfig) FromAwsS3CostDataSourceWriteConfig(v AwsS3CostDataSourceWriteConfig) error {
+	v.SourceKind = "focus_s3"
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeAwsS3CostDataSourceWriteConfig performs a merge with any union data inside the CloudCostDataSourceApplyCandidateRequest_ProviderConfig, using the provided AwsS3CostDataSourceWriteConfig
+func (t *CloudCostDataSourceApplyCandidateRequest_ProviderConfig) MergeAwsS3CostDataSourceWriteConfig(v AwsS3CostDataSourceWriteConfig) error {
+	v.SourceKind = "focus_s3"
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsGcpBigQueryCostDataSourceWriteConfig returns the union data inside the CloudCostDataSourceApplyCandidateRequest_ProviderConfig as a GcpBigQueryCostDataSourceWriteConfig
+func (t CloudCostDataSourceApplyCandidateRequest_ProviderConfig) AsGcpBigQueryCostDataSourceWriteConfig() (GcpBigQueryCostDataSourceWriteConfig, error) {
+	var body GcpBigQueryCostDataSourceWriteConfig
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromGcpBigQueryCostDataSourceWriteConfig overwrites any union data inside the CloudCostDataSourceApplyCandidateRequest_ProviderConfig as the provided GcpBigQueryCostDataSourceWriteConfig
+func (t *CloudCostDataSourceApplyCandidateRequest_ProviderConfig) FromGcpBigQueryCostDataSourceWriteConfig(v GcpBigQueryCostDataSourceWriteConfig) error {
+	v.SourceKind = "focus_bigquery"
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeGcpBigQueryCostDataSourceWriteConfig performs a merge with any union data inside the CloudCostDataSourceApplyCandidateRequest_ProviderConfig, using the provided GcpBigQueryCostDataSourceWriteConfig
+func (t *CloudCostDataSourceApplyCandidateRequest_ProviderConfig) MergeGcpBigQueryCostDataSourceWriteConfig(v GcpBigQueryCostDataSourceWriteConfig) error {
+	v.SourceKind = "focus_bigquery"
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsAzureBlobCostDataSourceWriteConfig returns the union data inside the CloudCostDataSourceApplyCandidateRequest_ProviderConfig as a AzureBlobCostDataSourceWriteConfig
+func (t CloudCostDataSourceApplyCandidateRequest_ProviderConfig) AsAzureBlobCostDataSourceWriteConfig() (AzureBlobCostDataSourceWriteConfig, error) {
+	var body AzureBlobCostDataSourceWriteConfig
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromAzureBlobCostDataSourceWriteConfig overwrites any union data inside the CloudCostDataSourceApplyCandidateRequest_ProviderConfig as the provided AzureBlobCostDataSourceWriteConfig
+func (t *CloudCostDataSourceApplyCandidateRequest_ProviderConfig) FromAzureBlobCostDataSourceWriteConfig(v AzureBlobCostDataSourceWriteConfig) error {
+	v.SourceKind = "focus_azure_blob"
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeAzureBlobCostDataSourceWriteConfig performs a merge with any union data inside the CloudCostDataSourceApplyCandidateRequest_ProviderConfig, using the provided AzureBlobCostDataSourceWriteConfig
+func (t *CloudCostDataSourceApplyCandidateRequest_ProviderConfig) MergeAzureBlobCostDataSourceWriteConfig(v AzureBlobCostDataSourceWriteConfig) error {
+	v.SourceKind = "focus_azure_blob"
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t CloudCostDataSourceApplyCandidateRequest_ProviderConfig) Discriminator() (string, error) {
+	var discriminator struct {
+		Discriminator string `json:"source_kind"`
+	}
+	err := json.Unmarshal(t.union, &discriminator)
+	return discriminator.Discriminator, err
+}
+
+func (t CloudCostDataSourceApplyCandidateRequest_ProviderConfig) ValueByDiscriminator() (interface{}, error) {
+	discriminator, err := t.Discriminator()
+	if err != nil {
+		return nil, err
+	}
+	switch discriminator {
+	case "focus_azure_blob":
+		return t.AsAzureBlobCostDataSourceWriteConfig()
+	case "focus_bigquery":
+		return t.AsGcpBigQueryCostDataSourceWriteConfig()
+	case "focus_s3":
+		return t.AsAwsS3CostDataSourceWriteConfig()
+	default:
+		return nil, errors.New("unknown discriminator value: " + discriminator)
+	}
+}
+
+func (t CloudCostDataSourceApplyCandidateRequest_ProviderConfig) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *CloudCostDataSourceApplyCandidateRequest_ProviderConfig) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsAwsS3CostDataSourceWriteConfig returns the union data inside the CloudCostDataSourceCandidateValidateRequest_ProviderConfig as a AwsS3CostDataSourceWriteConfig
+func (t CloudCostDataSourceCandidateValidateRequest_ProviderConfig) AsAwsS3CostDataSourceWriteConfig() (AwsS3CostDataSourceWriteConfig, error) {
+	var body AwsS3CostDataSourceWriteConfig
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromAwsS3CostDataSourceWriteConfig overwrites any union data inside the CloudCostDataSourceCandidateValidateRequest_ProviderConfig as the provided AwsS3CostDataSourceWriteConfig
+func (t *CloudCostDataSourceCandidateValidateRequest_ProviderConfig) FromAwsS3CostDataSourceWriteConfig(v AwsS3CostDataSourceWriteConfig) error {
+	v.SourceKind = "focus_s3"
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeAwsS3CostDataSourceWriteConfig performs a merge with any union data inside the CloudCostDataSourceCandidateValidateRequest_ProviderConfig, using the provided AwsS3CostDataSourceWriteConfig
+func (t *CloudCostDataSourceCandidateValidateRequest_ProviderConfig) MergeAwsS3CostDataSourceWriteConfig(v AwsS3CostDataSourceWriteConfig) error {
+	v.SourceKind = "focus_s3"
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsGcpBigQueryCostDataSourceWriteConfig returns the union data inside the CloudCostDataSourceCandidateValidateRequest_ProviderConfig as a GcpBigQueryCostDataSourceWriteConfig
+func (t CloudCostDataSourceCandidateValidateRequest_ProviderConfig) AsGcpBigQueryCostDataSourceWriteConfig() (GcpBigQueryCostDataSourceWriteConfig, error) {
+	var body GcpBigQueryCostDataSourceWriteConfig
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromGcpBigQueryCostDataSourceWriteConfig overwrites any union data inside the CloudCostDataSourceCandidateValidateRequest_ProviderConfig as the provided GcpBigQueryCostDataSourceWriteConfig
+func (t *CloudCostDataSourceCandidateValidateRequest_ProviderConfig) FromGcpBigQueryCostDataSourceWriteConfig(v GcpBigQueryCostDataSourceWriteConfig) error {
+	v.SourceKind = "focus_bigquery"
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeGcpBigQueryCostDataSourceWriteConfig performs a merge with any union data inside the CloudCostDataSourceCandidateValidateRequest_ProviderConfig, using the provided GcpBigQueryCostDataSourceWriteConfig
+func (t *CloudCostDataSourceCandidateValidateRequest_ProviderConfig) MergeGcpBigQueryCostDataSourceWriteConfig(v GcpBigQueryCostDataSourceWriteConfig) error {
+	v.SourceKind = "focus_bigquery"
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsAzureBlobCostDataSourceWriteConfig returns the union data inside the CloudCostDataSourceCandidateValidateRequest_ProviderConfig as a AzureBlobCostDataSourceWriteConfig
+func (t CloudCostDataSourceCandidateValidateRequest_ProviderConfig) AsAzureBlobCostDataSourceWriteConfig() (AzureBlobCostDataSourceWriteConfig, error) {
+	var body AzureBlobCostDataSourceWriteConfig
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromAzureBlobCostDataSourceWriteConfig overwrites any union data inside the CloudCostDataSourceCandidateValidateRequest_ProviderConfig as the provided AzureBlobCostDataSourceWriteConfig
+func (t *CloudCostDataSourceCandidateValidateRequest_ProviderConfig) FromAzureBlobCostDataSourceWriteConfig(v AzureBlobCostDataSourceWriteConfig) error {
+	v.SourceKind = "focus_azure_blob"
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeAzureBlobCostDataSourceWriteConfig performs a merge with any union data inside the CloudCostDataSourceCandidateValidateRequest_ProviderConfig, using the provided AzureBlobCostDataSourceWriteConfig
+func (t *CloudCostDataSourceCandidateValidateRequest_ProviderConfig) MergeAzureBlobCostDataSourceWriteConfig(v AzureBlobCostDataSourceWriteConfig) error {
+	v.SourceKind = "focus_azure_blob"
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t CloudCostDataSourceCandidateValidateRequest_ProviderConfig) Discriminator() (string, error) {
+	var discriminator struct {
+		Discriminator string `json:"source_kind"`
+	}
+	err := json.Unmarshal(t.union, &discriminator)
+	return discriminator.Discriminator, err
+}
+
+func (t CloudCostDataSourceCandidateValidateRequest_ProviderConfig) ValueByDiscriminator() (interface{}, error) {
+	discriminator, err := t.Discriminator()
+	if err != nil {
+		return nil, err
+	}
+	switch discriminator {
+	case "focus_azure_blob":
+		return t.AsAzureBlobCostDataSourceWriteConfig()
+	case "focus_bigquery":
+		return t.AsGcpBigQueryCostDataSourceWriteConfig()
+	case "focus_s3":
+		return t.AsAwsS3CostDataSourceWriteConfig()
+	default:
+		return nil, errors.New("unknown discriminator value: " + discriminator)
+	}
+}
+
+func (t CloudCostDataSourceCandidateValidateRequest_ProviderConfig) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *CloudCostDataSourceCandidateValidateRequest_ProviderConfig) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
 
 // AsAwsS3CostDataSourceWriteConfig returns the union data inside the CloudCostDataSourceUpsertRequest_ProviderConfig as a AwsS3CostDataSourceWriteConfig
 func (t CloudCostDataSourceUpsertRequest_ProviderConfig) AsAwsS3CostDataSourceWriteConfig() (AwsS3CostDataSourceWriteConfig, error) {
@@ -4688,6 +6323,11 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
+	// RequestPasswordResetApiV2AuthActionRequestPasswordResetPostWithBody request with any body
+	RequestPasswordResetApiV2AuthActionRequestPasswordResetPostWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	RequestPasswordResetApiV2AuthActionRequestPasswordResetPost(ctx context.Context, body RequestPasswordResetApiV2AuthActionRequestPasswordResetPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// SendOwnerSignupInvitationApiV2AuthActionSendOwnerSignupInvitationPostWithBody request with any body
 	SendOwnerSignupInvitationApiV2AuthActionSendOwnerSignupInvitationPostWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -4941,6 +6581,12 @@ type ClientInterface interface {
 	// GetAzureResourcesCountApiV2CloudAzureDiscoveryResourcesCountByCategoryGet request
 	GetAzureResourcesCountApiV2CloudAzureDiscoveryResourcesCountByCategoryGet(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// ListReservationsApiV2CloudAzureReservationsGet request
+	ListReservationsApiV2CloudAzureReservationsGet(ctx context.Context, params *ListReservationsApiV2CloudAzureReservationsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListReservationCoverageApiV2CloudAzureReservationsCoverageGet request
+	ListReservationCoverageApiV2CloudAzureReservationsCoverageGet(ctx context.Context, params *ListReservationCoverageApiV2CloudAzureReservationsCoverageGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ListAzureSourcedRecommendationsApiV2CloudAzureSourcedRecommendationsGet request
 	ListAzureSourcedRecommendationsApiV2CloudAzureSourcedRecommendationsGet(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -4964,12 +6610,18 @@ type ClientInterface interface {
 	UpdateCloudAccountIntegrationApiV2CloudCloudAccountIntegrationsCloudAccountIntegrationIdPatch(ctx context.Context, cloudAccountIntegrationId openapi_types.UUID, body UpdateCloudAccountIntegrationApiV2CloudCloudAccountIntegrationsCloudAccountIntegrationIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ListCloudAccountsApiV2CloudCloudAccountsGet request
-	ListCloudAccountsApiV2CloudCloudAccountsGet(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	ListCloudAccountsApiV2CloudCloudAccountsGet(ctx context.Context, params *ListCloudAccountsApiV2CloudCloudAccountsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// CreateCloudAccountApiV2CloudCloudAccountsPostWithBody request with any body
 	CreateCloudAccountApiV2CloudCloudAccountsPostWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	CreateCloudAccountApiV2CloudCloudAccountsPost(ctx context.Context, body CreateCloudAccountApiV2CloudCloudAccountsPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListCloudAccountsForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdGet request
+	ListCloudAccountsForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdGet(ctx context.Context, companyId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetCloudAccountForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdCloudAccountIdGet request
+	GetCloudAccountForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdCloudAccountIdGet(ctx context.Context, companyId openapi_types.UUID, cloudAccountId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetAwsSetupGuideApiV2CloudCloudAccountsDocumentationAwsSetupGuideGet request
 	GetAwsSetupGuideApiV2CloudCloudAccountsDocumentationAwsSetupGuideGet(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -5009,6 +6661,12 @@ type ClientInterface interface {
 	// StartCloudAccountSetupApiV2CloudCloudAccountsCloudAccountIdActionSetupPost request
 	StartCloudAccountSetupApiV2CloudCloudAccountsCloudAccountIdActionSetupPost(ctx context.Context, cloudAccountId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsGet request
+	GetCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsGet(ctx context.Context, cloudAccountId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsPut request
+	UpdateCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsPut(ctx context.Context, cloudAccountId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ListLatestCustomRecommendationsForAccountApiV2CloudCloudAccountsCloudAccountIdCustomRecommendationsLatestGet request
 	ListLatestCustomRecommendationsForAccountApiV2CloudCloudAccountsCloudAccountIdCustomRecommendationsLatestGet(ctx context.Context, cloudAccountId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -5017,6 +6675,14 @@ type ClientInterface interface {
 
 	// ListRemediationSessionsForAccountApiV2CloudCloudAccountsCloudAccountIdRemediationSessionGet request
 	ListRemediationSessionsForAccountApiV2CloudCloudAccountsCloudAccountIdRemediationSessionGet(ctx context.Context, cloudAccountId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetCloudAccountSettingsApiV2CloudCloudAccountsCloudAccountIdSettingsGet request
+	GetCloudAccountSettingsApiV2CloudCloudAccountsCloudAccountIdSettingsGet(ctx context.Context, cloudAccountId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateCloudAccountAgentArchitectureApiV2CloudCloudAccountsCloudAccountIdSettingsAgentArchitecturePatchWithBody request with any body
+	UpdateCloudAccountAgentArchitectureApiV2CloudCloudAccountsCloudAccountIdSettingsAgentArchitecturePatchWithBody(ctx context.Context, cloudAccountId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateCloudAccountAgentArchitectureApiV2CloudCloudAccountsCloudAccountIdSettingsAgentArchitecturePatch(ctx context.Context, cloudAccountId openapi_types.UUID, body UpdateCloudAccountAgentArchitectureApiV2CloudCloudAccountsCloudAccountIdSettingsAgentArchitecturePatchJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetCloudAccountInitialSetupWarmAttemptsApiV2CloudCloudAccountsCloudAccountIdWarmAttemptsInitialSetupGet request
 	GetCloudAccountInitialSetupWarmAttemptsApiV2CloudCloudAccountsCloudAccountIdWarmAttemptsInitialSetupGet(ctx context.Context, cloudAccountId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -5029,6 +6695,16 @@ type ClientInterface interface {
 
 	CreateCostDataSourceApiV2CloudCostDataSourcesPost(ctx context.Context, body CreateCostDataSourceApiV2CloudCostDataSourcesPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// ApplyCostDataSourceCandidateApiV2CloudCostDataSourcesActionApplyCandidatePostWithBody request with any body
+	ApplyCostDataSourceCandidateApiV2CloudCostDataSourcesActionApplyCandidatePostWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	ApplyCostDataSourceCandidateApiV2CloudCostDataSourcesActionApplyCandidatePost(ctx context.Context, body ApplyCostDataSourceCandidateApiV2CloudCostDataSourcesActionApplyCandidatePostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ValidateCostDataSourceCandidateApiV2CloudCostDataSourcesActionValidateCandidatePostWithBody request with any body
+	ValidateCostDataSourceCandidateApiV2CloudCostDataSourcesActionValidateCandidatePostWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	ValidateCostDataSourceCandidateApiV2CloudCostDataSourcesActionValidateCandidatePost(ctx context.Context, body ValidateCostDataSourceCandidateApiV2CloudCostDataSourcesActionValidateCandidatePostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// DeleteCostDataSourceApiV2CloudCostDataSourcesSourceIdDelete request
 	DeleteCostDataSourceApiV2CloudCostDataSourcesSourceIdDelete(ctx context.Context, sourceId openapi_types.UUID, params *DeleteCostDataSourceApiV2CloudCostDataSourcesSourceIdDeleteParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -5039,6 +6715,16 @@ type ClientInterface interface {
 	UpdateCostDataSourceApiV2CloudCostDataSourcesSourceIdPatchWithBody(ctx context.Context, sourceId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	UpdateCostDataSourceApiV2CloudCostDataSourcesSourceIdPatch(ctx context.Context, sourceId openapi_types.UUID, body UpdateCostDataSourceApiV2CloudCostDataSourcesSourceIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RetryCostSourceImportApiV2CloudCostDataSourcesSourceIdActionRetryImportPostWithBody request with any body
+	RetryCostSourceImportApiV2CloudCostDataSourcesSourceIdActionRetryImportPostWithBody(ctx context.Context, sourceId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	RetryCostSourceImportApiV2CloudCostDataSourcesSourceIdActionRetryImportPost(ctx context.Context, sourceId openapi_types.UUID, body RetryCostSourceImportApiV2CloudCostDataSourcesSourceIdActionRetryImportPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RetryCostSourceMatchingApiV2CloudCostDataSourcesSourceIdActionRetryMatchingPostWithBody request with any body
+	RetryCostSourceMatchingApiV2CloudCostDataSourcesSourceIdActionRetryMatchingPostWithBody(ctx context.Context, sourceId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	RetryCostSourceMatchingApiV2CloudCostDataSourcesSourceIdActionRetryMatchingPost(ctx context.Context, sourceId openapi_types.UUID, body RetryCostSourceMatchingApiV2CloudCostDataSourcesSourceIdActionRetryMatchingPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// SetCostDataSourceEnabledApiV2CloudCostDataSourcesSourceIdActionSetEnabledPostWithBody request with any body
 	SetCostDataSourceEnabledApiV2CloudCostDataSourcesSourceIdActionSetEnabledPostWithBody(ctx context.Context, sourceId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -5108,6 +6794,9 @@ type ClientInterface interface {
 	// ListCustomRecommendationSourceRowsApiV2CloudCustomRecommendationsCustomRecommendationIdSourcesSourceKeyRowsGet request
 	ListCustomRecommendationSourceRowsApiV2CloudCustomRecommendationsCustomRecommendationIdSourcesSourceKeyRowsGet(ctx context.Context, customRecommendationId openapi_types.UUID, sourceKey string, params *ListCustomRecommendationSourceRowsApiV2CloudCustomRecommendationsCustomRecommendationIdSourcesSourceKeyRowsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetCustomRecommendationVersionsApiV2CloudCustomRecommendationsCustomRecommendationIdVersionsGet request
+	GetCustomRecommendationVersionsApiV2CloudCustomRecommendationsCustomRecommendationIdVersionsGet(ctx context.Context, customRecommendationId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// SubmitEvaluationApiV2CloudEvaluationsPostWithBody request with any body
 	SubmitEvaluationApiV2CloudEvaluationsPostWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -5149,6 +6838,12 @@ type ClientInterface interface {
 
 	RefreshGcpIntegrationToAwsWifApiV2CloudGcpCredentialsCloudAccountIdActionRefreshWifPost(ctx context.Context, cloudAccountId openapi_types.UUID, body RefreshGcpIntegrationToAwsWifApiV2CloudGcpCredentialsCloudAccountIdActionRefreshWifPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// ListGcpResourceDiscoveryAuditLogsApiV2CloudGcpDiscoveryAuditLogsGet request
+	ListGcpResourceDiscoveryAuditLogsApiV2CloudGcpDiscoveryAuditLogsGet(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetGcpResourceDiscoveryAuditLogApiV2CloudGcpDiscoveryAuditLogsAuditLogIdGet request
+	GetGcpResourceDiscoveryAuditLogApiV2CloudGcpDiscoveryAuditLogsAuditLogIdGet(ctx context.Context, auditLogId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ListGcpResourceDiscoveriesApiV2CloudGcpDiscoveryResourcesGet request
 	ListGcpResourceDiscoveriesApiV2CloudGcpDiscoveryResourcesGet(ctx context.Context, params *ListGcpResourceDiscoveriesApiV2CloudGcpDiscoveryResourcesGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -5167,6 +6862,11 @@ type ClientInterface interface {
 
 	// GetGcpResourceTypeCountsApiV2CloudGcpDiscoveryResourcesTypeCountsGet request
 	GetGcpResourceTypeCountsApiV2CloudGcpDiscoveryResourcesTypeCountsGet(ctx context.Context, params *GetGcpResourceTypeCountsApiV2CloudGcpDiscoveryResourcesTypeCountsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateGcpResourceConstraintsApiV2CloudGcpDiscoveryResourcesResourceIdConstraintsPatchWithBody request with any body
+	UpdateGcpResourceConstraintsApiV2CloudGcpDiscoveryResourcesResourceIdConstraintsPatchWithBody(ctx context.Context, resourceId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateGcpResourceConstraintsApiV2CloudGcpDiscoveryResourcesResourceIdConstraintsPatch(ctx context.Context, resourceId openapi_types.UUID, body UpdateGcpResourceConstraintsApiV2CloudGcpDiscoveryResourcesResourceIdConstraintsPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetGovernanceGapsApiV2CloudGovernanceGapsGet request
 	GetGovernanceGapsApiV2CloudGovernanceGapsGet(ctx context.Context, params *GetGovernanceGapsApiV2CloudGovernanceGapsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -5214,6 +6914,9 @@ type ClientInterface interface {
 	// QueryObservationsApiV2CloudObservationsGet request
 	QueryObservationsApiV2CloudObservationsGet(ctx context.Context, params *QueryObservationsApiV2CloudObservationsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// ListRecommendationActivitiesApiV2CloudRecommendationActivitiesGet request
+	ListRecommendationActivitiesApiV2CloudRecommendationActivitiesGet(ctx context.Context, params *ListRecommendationActivitiesApiV2CloudRecommendationActivitiesGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ListRecommendationAgentOperationsApiV2CloudRecommendationAgentOperationsGet request
 	ListRecommendationAgentOperationsApiV2CloudRecommendationAgentOperationsGet(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -5225,6 +6928,16 @@ type ClientInterface interface {
 
 	// InspectRecommendationAgentOperationSourceApiV2CloudRecommendationAgentOperationsRecommendationAgentOperationIdSourcesFocusCostAttributionRowsGet request
 	InspectRecommendationAgentOperationSourceApiV2CloudRecommendationAgentOperationsRecommendationAgentOperationIdSourcesFocusCostAttributionRowsGet(ctx context.Context, recommendationAgentOperationId openapi_types.UUID, params *InspectRecommendationAgentOperationSourceApiV2CloudRecommendationAgentOperationsRecommendationAgentOperationIdSourcesFocusCostAttributionRowsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AddRecommendationCommentApiV2CloudRecommendationsRecommendationIdActionAddCommentPostWithBody request with any body
+	AddRecommendationCommentApiV2CloudRecommendationsRecommendationIdActionAddCommentPostWithBody(ctx context.Context, recommendationId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	AddRecommendationCommentApiV2CloudRecommendationsRecommendationIdActionAddCommentPost(ctx context.Context, recommendationId openapi_types.UUID, body AddRecommendationCommentApiV2CloudRecommendationsRecommendationIdActionAddCommentPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ChangeRecommendationStatusApiV2CloudRecommendationsRecommendationIdActionChangeStatusPostWithBody request with any body
+	ChangeRecommendationStatusApiV2CloudRecommendationsRecommendationIdActionChangeStatusPostWithBody(ctx context.Context, recommendationId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	ChangeRecommendationStatusApiV2CloudRecommendationsRecommendationIdActionChangeStatusPost(ctx context.Context, recommendationId openapi_types.UUID, body ChangeRecommendationStatusApiV2CloudRecommendationsRecommendationIdActionChangeStatusPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetResourceTypeCategoriesApiV2CloudResourceTypesCategoriesGet request
 	GetResourceTypeCategoriesApiV2CloudResourceTypesCategoriesGet(ctx context.Context, params *GetResourceTypeCategoriesApiV2CloudResourceTypesCategoriesGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -5355,11 +7068,17 @@ type ClientInterface interface {
 
 	DisconnectGithubApiV2IntegrationsGithubActionDisconnectPost(ctx context.Context, body DisconnectGithubApiV2IntegrationsGithubActionDisconnectPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// NangoWebhookApiV2IntegrationsGithubEventsPost request
+	NangoWebhookApiV2IntegrationsGithubEventsPost(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetCurrentUserGithubConnectionApiV2IntegrationsGithubMeGet request
 	GetCurrentUserGithubConnectionApiV2IntegrationsGithubMeGet(ctx context.Context, params *GetCurrentUserGithubConnectionApiV2IntegrationsGithubMeGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetGithubIntegrationListApiV2IntegrationsGithubMeIntegrationGet request
 	GetGithubIntegrationListApiV2IntegrationsGithubMeIntegrationGet(ctx context.Context, params *GetGithubIntegrationListApiV2IntegrationsGithubMeIntegrationGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetGithubPullRequestStatusApiV2IntegrationsGithubMePullRequestGet request
+	GetGithubPullRequestStatusApiV2IntegrationsGithubMePullRequestGet(ctx context.Context, params *GetGithubPullRequestStatusApiV2IntegrationsGithubMePullRequestGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetGithubScanStatusApiV2IntegrationsGithubMeScanStatusGet request
 	GetGithubScanStatusApiV2IntegrationsGithubMeScanStatusGet(ctx context.Context, params *GetGithubScanStatusApiV2IntegrationsGithubMeScanStatusGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -5385,6 +7104,27 @@ type ClientInterface interface {
 
 	// FetchJiraProjectsApiV2IntegrationsJiraProjectsGet request
 	FetchJiraProjectsApiV2IntegrationsJiraProjectsGet(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CancelSlackApiV2IntegrationsSlackActionCancelPostWithBody request with any body
+	CancelSlackApiV2IntegrationsSlackActionCancelPostWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CancelSlackApiV2IntegrationsSlackActionCancelPost(ctx context.Context, body CancelSlackApiV2IntegrationsSlackActionCancelPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ConnectSlackApiV2IntegrationsSlackActionConnectPostWithBody request with any body
+	ConnectSlackApiV2IntegrationsSlackActionConnectPostWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	ConnectSlackApiV2IntegrationsSlackActionConnectPost(ctx context.Context, body ConnectSlackApiV2IntegrationsSlackActionConnectPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DisconnectSlackApiV2IntegrationsSlackActionDisconnectPostWithBody request with any body
+	DisconnectSlackApiV2IntegrationsSlackActionDisconnectPostWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	DisconnectSlackApiV2IntegrationsSlackActionDisconnectPost(ctx context.Context, body DisconnectSlackApiV2IntegrationsSlackActionDisconnectPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ReceiveSlackEventsApiV2IntegrationsSlackEventsPost request
+	ReceiveSlackEventsApiV2IntegrationsSlackEventsPost(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetSlackIntegrationApiV2IntegrationsSlackMeIntegrationGet request
+	GetSlackIntegrationApiV2IntegrationsSlackMeIntegrationGet(ctx context.Context, params *GetSlackIntegrationApiV2IntegrationsSlackMeIntegrationGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// CreateCheckoutSessionApiV2LicenseAndBillingBillingActionCreateCheckoutSessionPostWithBody request with any body
 	CreateCheckoutSessionApiV2LicenseAndBillingBillingActionCreateCheckoutSessionPostWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -5487,6 +7227,12 @@ type ClientInterface interface {
 
 	CreateBusinessUnitApiV2OrganizationBusinessUnitsPost(ctx context.Context, body CreateBusinessUnitApiV2OrganizationBusinessUnitsPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// ListBusinessUnitsForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdGet request
+	ListBusinessUnitsForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdGet(ctx context.Context, companyId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetBusinessUnitForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdBusinessUnitIdGet request
+	GetBusinessUnitForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdBusinessUnitIdGet(ctx context.Context, companyId openapi_types.UUID, businessUnitId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// DeleteBusinessUnitApiV2OrganizationBusinessUnitsBusinessUnitIdDelete request
 	DeleteBusinessUnitApiV2OrganizationBusinessUnitsBusinessUnitIdDelete(ctx context.Context, businessUnitId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -5530,6 +7276,46 @@ type ClientInterface interface {
 
 	// GetRemediationArtifactByIdApiV2RemediationArtifactsArtifactIdGet request
 	GetRemediationArtifactByIdApiV2RemediationArtifactsArtifactIdGet(ctx context.Context, artifactId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ResolveThreadApiV2RemediationOrchestratorThreadsActionResolvePostWithBody request with any body
+	ResolveThreadApiV2RemediationOrchestratorThreadsActionResolvePostWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	ResolveThreadApiV2RemediationOrchestratorThreadsActionResolvePost(ctx context.Context, body ResolveThreadApiV2RemediationOrchestratorThreadsActionResolvePostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// StartThreadApiV2RemediationOrchestratorThreadsActionStartPostWithBody request with any body
+	StartThreadApiV2RemediationOrchestratorThreadsActionStartPostWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	StartThreadApiV2RemediationOrchestratorThreadsActionStartPost(ctx context.Context, body StartThreadApiV2RemediationOrchestratorThreadsActionStartPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// StreamStartApiV2RemediationOrchestratorThreadsActionStreamStartPostWithBody request with any body
+	StreamStartApiV2RemediationOrchestratorThreadsActionStreamStartPostWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	StreamStartApiV2RemediationOrchestratorThreadsActionStreamStartPost(ctx context.Context, body StreamStartApiV2RemediationOrchestratorThreadsActionStreamStartPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RetryBackgroundRemediationApiV2RemediationOrchestratorThreadsThreadIdActionRetryBackgroundRemediationPost request
+	RetryBackgroundRemediationApiV2RemediationOrchestratorThreadsThreadIdActionRetryBackgroundRemediationPost(ctx context.Context, threadId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// SendMessageApiV2RemediationOrchestratorThreadsThreadIdActionSendMessagePostWithBody request with any body
+	SendMessageApiV2RemediationOrchestratorThreadsThreadIdActionSendMessagePostWithBody(ctx context.Context, threadId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	SendMessageApiV2RemediationOrchestratorThreadsThreadIdActionSendMessagePost(ctx context.Context, threadId openapi_types.UUID, body SendMessageApiV2RemediationOrchestratorThreadsThreadIdActionSendMessagePostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// StreamGenerateArtifactsApiV2RemediationOrchestratorThreadsThreadIdActionStreamGenerateArtifactsPost request
+	StreamGenerateArtifactsApiV2RemediationOrchestratorThreadsThreadIdActionStreamGenerateArtifactsPost(ctx context.Context, threadId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// StreamSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionStreamSendMessagePostWithBody request with any body
+	StreamSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionStreamSendMessagePostWithBody(ctx context.Context, threadId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	StreamSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionStreamSendMessagePost(ctx context.Context, threadId openapi_types.UUID, body StreamSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionStreamSendMessagePostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetArtifactsApiV2RemediationOrchestratorThreadsThreadIdArtifactsGet request
+	GetArtifactsApiV2RemediationOrchestratorThreadsThreadIdArtifactsGet(ctx context.Context, threadId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// StreamThreadEventsApiV2RemediationOrchestratorThreadsThreadIdEventsGet request
+	StreamThreadEventsApiV2RemediationOrchestratorThreadsThreadIdEventsGet(ctx context.Context, threadId openapi_types.UUID, params *StreamThreadEventsApiV2RemediationOrchestratorThreadsThreadIdEventsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetMessagesApiV2RemediationOrchestratorThreadsThreadIdMessagesGet request
+	GetMessagesApiV2RemediationOrchestratorThreadsThreadIdMessagesGet(ctx context.Context, threadId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ListRemediationSessionActivitiesApiV2RemediationSessionActivitiesGet request
 	ListRemediationSessionActivitiesApiV2RemediationSessionActivitiesGet(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -5710,6 +7496,9 @@ type ClientInterface interface {
 
 	ActionSetFlagApiV2SystemFeatureFlagsBusinessUnitActionSetFlagKeyPatch(ctx context.Context, flagKey string, params *ActionSetFlagApiV2SystemFeatureFlagsBusinessUnitActionSetFlagKeyPatchParams, body ActionSetFlagApiV2SystemFeatureFlagsBusinessUnitActionSetFlagKeyPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// DeleteFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyDelete request
+	DeleteFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyDelete(ctx context.Context, flagKey string, params *DeleteFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyDeleteParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyGet request
 	GetFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyGet(ctx context.Context, flagKey string, params *GetFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -5748,6 +7537,9 @@ type ClientInterface interface {
 
 	ActionSetFlagApiV2SystemFeatureFlagsCompanyActionSetFlagKeyPatch(ctx context.Context, flagKey string, params *ActionSetFlagApiV2SystemFeatureFlagsCompanyActionSetFlagKeyPatchParams, body ActionSetFlagApiV2SystemFeatureFlagsCompanyActionSetFlagKeyPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// DeleteFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyDelete request
+	DeleteFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyDelete(ctx context.Context, flagKey string, params *DeleteFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyDeleteParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyGet request
 	GetFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyGet(ctx context.Context, flagKey string, params *GetFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -5774,10 +7566,16 @@ type ClientInterface interface {
 
 	CreateFlagApiV2SystemFeatureFlagsRootPost(ctx context.Context, body CreateFlagApiV2SystemFeatureFlagsRootPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// ListRootFlagsApiV2SystemFeatureFlagsRootAdminGet request
+	ListRootFlagsApiV2SystemFeatureFlagsRootAdminGet(ctx context.Context, params *ListRootFlagsApiV2SystemFeatureFlagsRootAdminGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ActionSetFlagApiV2SystemFeatureFlagsRootActionSetFlagKeyPatchWithBody request with any body
 	ActionSetFlagApiV2SystemFeatureFlagsRootActionSetFlagKeyPatchWithBody(ctx context.Context, flagKey string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	ActionSetFlagApiV2SystemFeatureFlagsRootActionSetFlagKeyPatch(ctx context.Context, flagKey string, body ActionSetFlagApiV2SystemFeatureFlagsRootActionSetFlagKeyPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteFlagByKeyApiV2SystemFeatureFlagsRootByKeyFlagKeyDelete request
+	DeleteFlagByKeyApiV2SystemFeatureFlagsRootByKeyFlagKeyDelete(ctx context.Context, flagKey string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetFlagByKeyApiV2SystemFeatureFlagsRootByKeyFlagKeyGet request
 	GetFlagByKeyApiV2SystemFeatureFlagsRootByKeyFlagKeyGet(ctx context.Context, flagKey string, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -5843,23 +7641,38 @@ type ClientInterface interface {
 	// GetResourcesCountApiV2TempDashboardResourcesCountGet request
 	GetResourcesCountApiV2TempDashboardResourcesCountGet(ctx context.Context, params *GetResourcesCountApiV2TempDashboardResourcesCountGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetResourceHealthDetailsApiV2TempDashboardResourcesHealthDetailsGet request
-	GetResourceHealthDetailsApiV2TempDashboardResourcesHealthDetailsGet(ctx context.Context, params *GetResourceHealthDetailsApiV2TempDashboardResourcesHealthDetailsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// GetResourceHealthSummaryApiV2TempDashboardResourcesHealthSummaryGet request
-	GetResourceHealthSummaryApiV2TempDashboardResourcesHealthSummaryGet(ctx context.Context, params *GetResourceHealthSummaryApiV2TempDashboardResourcesHealthSummaryGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
-
 	// GetSavingsApiV2TempDashboardSavingsGet request
 	GetSavingsApiV2TempDashboardSavingsGet(ctx context.Context, params *GetSavingsApiV2TempDashboardSavingsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetSavingsProgressApiV2TempDashboardSavingsProgressGet request
 	GetSavingsProgressApiV2TempDashboardSavingsProgressGet(ctx context.Context, params *GetSavingsProgressApiV2TempDashboardSavingsProgressGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// NangoWebhookApiV2WebhooksNangoPost request
-	NangoWebhookApiV2WebhooksNangoPost(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
-
 	// StripeWebhookApiV2WebhooksStripePost request
 	StripeWebhookApiV2WebhooksStripePost(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+}
+
+func (c *Client) RequestPasswordResetApiV2AuthActionRequestPasswordResetPostWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRequestPasswordResetApiV2AuthActionRequestPasswordResetPostRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) RequestPasswordResetApiV2AuthActionRequestPasswordResetPost(ctx context.Context, body RequestPasswordResetApiV2AuthActionRequestPasswordResetPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRequestPasswordResetApiV2AuthActionRequestPasswordResetPostRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
 }
 
 func (c *Client) SendOwnerSignupInvitationApiV2AuthActionSendOwnerSignupInvitationPostWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -6978,6 +8791,30 @@ func (c *Client) GetAzureResourcesCountApiV2CloudAzureDiscoveryResourcesCountByC
 	return c.Client.Do(req)
 }
 
+func (c *Client) ListReservationsApiV2CloudAzureReservationsGet(ctx context.Context, params *ListReservationsApiV2CloudAzureReservationsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListReservationsApiV2CloudAzureReservationsGetRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ListReservationCoverageApiV2CloudAzureReservationsCoverageGet(ctx context.Context, params *ListReservationCoverageApiV2CloudAzureReservationsCoverageGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListReservationCoverageApiV2CloudAzureReservationsCoverageGetRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) ListAzureSourcedRecommendationsApiV2CloudAzureSourcedRecommendationsGet(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewListAzureSourcedRecommendationsApiV2CloudAzureSourcedRecommendationsGetRequest(c.Server)
 	if err != nil {
@@ -7074,8 +8911,8 @@ func (c *Client) UpdateCloudAccountIntegrationApiV2CloudCloudAccountIntegrations
 	return c.Client.Do(req)
 }
 
-func (c *Client) ListCloudAccountsApiV2CloudCloudAccountsGet(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewListCloudAccountsApiV2CloudCloudAccountsGetRequest(c.Server)
+func (c *Client) ListCloudAccountsApiV2CloudCloudAccountsGet(ctx context.Context, params *ListCloudAccountsApiV2CloudCloudAccountsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListCloudAccountsApiV2CloudCloudAccountsGetRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -7100,6 +8937,30 @@ func (c *Client) CreateCloudAccountApiV2CloudCloudAccountsPostWithBody(ctx conte
 
 func (c *Client) CreateCloudAccountApiV2CloudCloudAccountsPost(ctx context.Context, body CreateCloudAccountApiV2CloudCloudAccountsPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewCreateCloudAccountApiV2CloudCloudAccountsPostRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ListCloudAccountsForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdGet(ctx context.Context, companyId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListCloudAccountsForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdGetRequest(c.Server, companyId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetCloudAccountForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdCloudAccountIdGet(ctx context.Context, companyId openapi_types.UUID, cloudAccountId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetCloudAccountForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdCloudAccountIdGetRequest(c.Server, companyId, cloudAccountId)
 	if err != nil {
 		return nil, err
 	}
@@ -7278,6 +9139,30 @@ func (c *Client) StartCloudAccountSetupApiV2CloudCloudAccountsCloudAccountIdActi
 	return c.Client.Do(req)
 }
 
+func (c *Client) GetCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsGet(ctx context.Context, cloudAccountId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsGetRequest(c.Server, cloudAccountId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsPut(ctx context.Context, cloudAccountId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsPutRequest(c.Server, cloudAccountId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) ListLatestCustomRecommendationsForAccountApiV2CloudCloudAccountsCloudAccountIdCustomRecommendationsLatestGet(ctx context.Context, cloudAccountId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewListLatestCustomRecommendationsForAccountApiV2CloudCloudAccountsCloudAccountIdCustomRecommendationsLatestGetRequest(c.Server, cloudAccountId)
 	if err != nil {
@@ -7304,6 +9189,42 @@ func (c *Client) GetCloudAccountFreshnessStatusApiV2CloudCloudAccountsCloudAccou
 
 func (c *Client) ListRemediationSessionsForAccountApiV2CloudCloudAccountsCloudAccountIdRemediationSessionGet(ctx context.Context, cloudAccountId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewListRemediationSessionsForAccountApiV2CloudCloudAccountsCloudAccountIdRemediationSessionGetRequest(c.Server, cloudAccountId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetCloudAccountSettingsApiV2CloudCloudAccountsCloudAccountIdSettingsGet(ctx context.Context, cloudAccountId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetCloudAccountSettingsApiV2CloudCloudAccountsCloudAccountIdSettingsGetRequest(c.Server, cloudAccountId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateCloudAccountAgentArchitectureApiV2CloudCloudAccountsCloudAccountIdSettingsAgentArchitecturePatchWithBody(ctx context.Context, cloudAccountId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateCloudAccountAgentArchitectureApiV2CloudCloudAccountsCloudAccountIdSettingsAgentArchitecturePatchRequestWithBody(c.Server, cloudAccountId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateCloudAccountAgentArchitectureApiV2CloudCloudAccountsCloudAccountIdSettingsAgentArchitecturePatch(ctx context.Context, cloudAccountId openapi_types.UUID, body UpdateCloudAccountAgentArchitectureApiV2CloudCloudAccountsCloudAccountIdSettingsAgentArchitecturePatchJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateCloudAccountAgentArchitectureApiV2CloudCloudAccountsCloudAccountIdSettingsAgentArchitecturePatchRequest(c.Server, cloudAccountId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -7362,6 +9283,54 @@ func (c *Client) CreateCostDataSourceApiV2CloudCostDataSourcesPost(ctx context.C
 	return c.Client.Do(req)
 }
 
+func (c *Client) ApplyCostDataSourceCandidateApiV2CloudCostDataSourcesActionApplyCandidatePostWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewApplyCostDataSourceCandidateApiV2CloudCostDataSourcesActionApplyCandidatePostRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ApplyCostDataSourceCandidateApiV2CloudCostDataSourcesActionApplyCandidatePost(ctx context.Context, body ApplyCostDataSourceCandidateApiV2CloudCostDataSourcesActionApplyCandidatePostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewApplyCostDataSourceCandidateApiV2CloudCostDataSourcesActionApplyCandidatePostRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ValidateCostDataSourceCandidateApiV2CloudCostDataSourcesActionValidateCandidatePostWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewValidateCostDataSourceCandidateApiV2CloudCostDataSourcesActionValidateCandidatePostRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ValidateCostDataSourceCandidateApiV2CloudCostDataSourcesActionValidateCandidatePost(ctx context.Context, body ValidateCostDataSourceCandidateApiV2CloudCostDataSourcesActionValidateCandidatePostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewValidateCostDataSourceCandidateApiV2CloudCostDataSourcesActionValidateCandidatePostRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) DeleteCostDataSourceApiV2CloudCostDataSourcesSourceIdDelete(ctx context.Context, sourceId openapi_types.UUID, params *DeleteCostDataSourceApiV2CloudCostDataSourcesSourceIdDeleteParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewDeleteCostDataSourceApiV2CloudCostDataSourcesSourceIdDeleteRequest(c.Server, sourceId, params)
 	if err != nil {
@@ -7400,6 +9369,54 @@ func (c *Client) UpdateCostDataSourceApiV2CloudCostDataSourcesSourceIdPatchWithB
 
 func (c *Client) UpdateCostDataSourceApiV2CloudCostDataSourcesSourceIdPatch(ctx context.Context, sourceId openapi_types.UUID, body UpdateCostDataSourceApiV2CloudCostDataSourcesSourceIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateCostDataSourceApiV2CloudCostDataSourcesSourceIdPatchRequest(c.Server, sourceId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) RetryCostSourceImportApiV2CloudCostDataSourcesSourceIdActionRetryImportPostWithBody(ctx context.Context, sourceId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRetryCostSourceImportApiV2CloudCostDataSourcesSourceIdActionRetryImportPostRequestWithBody(c.Server, sourceId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) RetryCostSourceImportApiV2CloudCostDataSourcesSourceIdActionRetryImportPost(ctx context.Context, sourceId openapi_types.UUID, body RetryCostSourceImportApiV2CloudCostDataSourcesSourceIdActionRetryImportPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRetryCostSourceImportApiV2CloudCostDataSourcesSourceIdActionRetryImportPostRequest(c.Server, sourceId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) RetryCostSourceMatchingApiV2CloudCostDataSourcesSourceIdActionRetryMatchingPostWithBody(ctx context.Context, sourceId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRetryCostSourceMatchingApiV2CloudCostDataSourcesSourceIdActionRetryMatchingPostRequestWithBody(c.Server, sourceId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) RetryCostSourceMatchingApiV2CloudCostDataSourcesSourceIdActionRetryMatchingPost(ctx context.Context, sourceId openapi_types.UUID, body RetryCostSourceMatchingApiV2CloudCostDataSourcesSourceIdActionRetryMatchingPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRetryCostSourceMatchingApiV2CloudCostDataSourcesSourceIdActionRetryMatchingPostRequest(c.Server, sourceId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -7710,6 +9727,18 @@ func (c *Client) ListCustomRecommendationSourceRowsApiV2CloudCustomRecommendatio
 	return c.Client.Do(req)
 }
 
+func (c *Client) GetCustomRecommendationVersionsApiV2CloudCustomRecommendationsCustomRecommendationIdVersionsGet(ctx context.Context, customRecommendationId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetCustomRecommendationVersionsApiV2CloudCustomRecommendationsCustomRecommendationIdVersionsGetRequest(c.Server, customRecommendationId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) SubmitEvaluationApiV2CloudEvaluationsPostWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewSubmitEvaluationApiV2CloudEvaluationsPostRequestWithBody(c.Server, contentType, body)
 	if err != nil {
@@ -7902,6 +9931,30 @@ func (c *Client) RefreshGcpIntegrationToAwsWifApiV2CloudGcpCredentialsCloudAccou
 	return c.Client.Do(req)
 }
 
+func (c *Client) ListGcpResourceDiscoveryAuditLogsApiV2CloudGcpDiscoveryAuditLogsGet(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListGcpResourceDiscoveryAuditLogsApiV2CloudGcpDiscoveryAuditLogsGetRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetGcpResourceDiscoveryAuditLogApiV2CloudGcpDiscoveryAuditLogsAuditLogIdGet(ctx context.Context, auditLogId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetGcpResourceDiscoveryAuditLogApiV2CloudGcpDiscoveryAuditLogsAuditLogIdGetRequest(c.Server, auditLogId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) ListGcpResourceDiscoveriesApiV2CloudGcpDiscoveryResourcesGet(ctx context.Context, params *ListGcpResourceDiscoveriesApiV2CloudGcpDiscoveryResourcesGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewListGcpResourceDiscoveriesApiV2CloudGcpDiscoveryResourcesGetRequest(c.Server, params)
 	if err != nil {
@@ -7976,6 +10029,30 @@ func (c *Client) GetGcpRegionsApiV2CloudGcpDiscoveryResourcesRegionsGet(ctx cont
 
 func (c *Client) GetGcpResourceTypeCountsApiV2CloudGcpDiscoveryResourcesTypeCountsGet(ctx context.Context, params *GetGcpResourceTypeCountsApiV2CloudGcpDiscoveryResourcesTypeCountsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetGcpResourceTypeCountsApiV2CloudGcpDiscoveryResourcesTypeCountsGetRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateGcpResourceConstraintsApiV2CloudGcpDiscoveryResourcesResourceIdConstraintsPatchWithBody(ctx context.Context, resourceId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateGcpResourceConstraintsApiV2CloudGcpDiscoveryResourcesResourceIdConstraintsPatchRequestWithBody(c.Server, resourceId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateGcpResourceConstraintsApiV2CloudGcpDiscoveryResourcesResourceIdConstraintsPatch(ctx context.Context, resourceId openapi_types.UUID, body UpdateGcpResourceConstraintsApiV2CloudGcpDiscoveryResourcesResourceIdConstraintsPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateGcpResourceConstraintsApiV2CloudGcpDiscoveryResourcesResourceIdConstraintsPatchRequest(c.Server, resourceId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -8190,6 +10267,18 @@ func (c *Client) QueryObservationsApiV2CloudObservationsGet(ctx context.Context,
 	return c.Client.Do(req)
 }
 
+func (c *Client) ListRecommendationActivitiesApiV2CloudRecommendationActivitiesGet(ctx context.Context, params *ListRecommendationActivitiesApiV2CloudRecommendationActivitiesGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListRecommendationActivitiesApiV2CloudRecommendationActivitiesGetRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) ListRecommendationAgentOperationsApiV2CloudRecommendationAgentOperationsGet(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewListRecommendationAgentOperationsApiV2CloudRecommendationAgentOperationsGetRequest(c.Server)
 	if err != nil {
@@ -8228,6 +10317,54 @@ func (c *Client) InspectRecommendationAgentOperationSourceApiV2CloudRecommendati
 
 func (c *Client) InspectRecommendationAgentOperationSourceApiV2CloudRecommendationAgentOperationsRecommendationAgentOperationIdSourcesFocusCostAttributionRowsGet(ctx context.Context, recommendationAgentOperationId openapi_types.UUID, params *InspectRecommendationAgentOperationSourceApiV2CloudRecommendationAgentOperationsRecommendationAgentOperationIdSourcesFocusCostAttributionRowsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewInspectRecommendationAgentOperationSourceApiV2CloudRecommendationAgentOperationsRecommendationAgentOperationIdSourcesFocusCostAttributionRowsGetRequest(c.Server, recommendationAgentOperationId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) AddRecommendationCommentApiV2CloudRecommendationsRecommendationIdActionAddCommentPostWithBody(ctx context.Context, recommendationId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAddRecommendationCommentApiV2CloudRecommendationsRecommendationIdActionAddCommentPostRequestWithBody(c.Server, recommendationId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) AddRecommendationCommentApiV2CloudRecommendationsRecommendationIdActionAddCommentPost(ctx context.Context, recommendationId openapi_types.UUID, body AddRecommendationCommentApiV2CloudRecommendationsRecommendationIdActionAddCommentPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAddRecommendationCommentApiV2CloudRecommendationsRecommendationIdActionAddCommentPostRequest(c.Server, recommendationId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ChangeRecommendationStatusApiV2CloudRecommendationsRecommendationIdActionChangeStatusPostWithBody(ctx context.Context, recommendationId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewChangeRecommendationStatusApiV2CloudRecommendationsRecommendationIdActionChangeStatusPostRequestWithBody(c.Server, recommendationId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ChangeRecommendationStatusApiV2CloudRecommendationsRecommendationIdActionChangeStatusPost(ctx context.Context, recommendationId openapi_types.UUID, body ChangeRecommendationStatusApiV2CloudRecommendationsRecommendationIdActionChangeStatusPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewChangeRecommendationStatusApiV2CloudRecommendationsRecommendationIdActionChangeStatusPostRequest(c.Server, recommendationId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -8814,6 +10951,18 @@ func (c *Client) DisconnectGithubApiV2IntegrationsGithubActionDisconnectPost(ctx
 	return c.Client.Do(req)
 }
 
+func (c *Client) NangoWebhookApiV2IntegrationsGithubEventsPost(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewNangoWebhookApiV2IntegrationsGithubEventsPostRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) GetCurrentUserGithubConnectionApiV2IntegrationsGithubMeGet(ctx context.Context, params *GetCurrentUserGithubConnectionApiV2IntegrationsGithubMeGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetCurrentUserGithubConnectionApiV2IntegrationsGithubMeGetRequest(c.Server, params)
 	if err != nil {
@@ -8828,6 +10977,18 @@ func (c *Client) GetCurrentUserGithubConnectionApiV2IntegrationsGithubMeGet(ctx 
 
 func (c *Client) GetGithubIntegrationListApiV2IntegrationsGithubMeIntegrationGet(ctx context.Context, params *GetGithubIntegrationListApiV2IntegrationsGithubMeIntegrationGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetGithubIntegrationListApiV2IntegrationsGithubMeIntegrationGetRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetGithubPullRequestStatusApiV2IntegrationsGithubMePullRequestGet(ctx context.Context, params *GetGithubPullRequestStatusApiV2IntegrationsGithubMePullRequestGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetGithubPullRequestStatusApiV2IntegrationsGithubMePullRequestGetRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -8936,6 +11097,102 @@ func (c *Client) ConnectToJiraApiV2IntegrationsJiraMeActionConnectPost(ctx conte
 
 func (c *Client) FetchJiraProjectsApiV2IntegrationsJiraProjectsGet(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewFetchJiraProjectsApiV2IntegrationsJiraProjectsGetRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CancelSlackApiV2IntegrationsSlackActionCancelPostWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCancelSlackApiV2IntegrationsSlackActionCancelPostRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CancelSlackApiV2IntegrationsSlackActionCancelPost(ctx context.Context, body CancelSlackApiV2IntegrationsSlackActionCancelPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCancelSlackApiV2IntegrationsSlackActionCancelPostRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ConnectSlackApiV2IntegrationsSlackActionConnectPostWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewConnectSlackApiV2IntegrationsSlackActionConnectPostRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ConnectSlackApiV2IntegrationsSlackActionConnectPost(ctx context.Context, body ConnectSlackApiV2IntegrationsSlackActionConnectPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewConnectSlackApiV2IntegrationsSlackActionConnectPostRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DisconnectSlackApiV2IntegrationsSlackActionDisconnectPostWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDisconnectSlackApiV2IntegrationsSlackActionDisconnectPostRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DisconnectSlackApiV2IntegrationsSlackActionDisconnectPost(ctx context.Context, body DisconnectSlackApiV2IntegrationsSlackActionDisconnectPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDisconnectSlackApiV2IntegrationsSlackActionDisconnectPostRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ReceiveSlackEventsApiV2IntegrationsSlackEventsPost(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewReceiveSlackEventsApiV2IntegrationsSlackEventsPostRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetSlackIntegrationApiV2IntegrationsSlackMeIntegrationGet(ctx context.Context, params *GetSlackIntegrationApiV2IntegrationsSlackMeIntegrationGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetSlackIntegrationApiV2IntegrationsSlackMeIntegrationGetRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -9402,6 +11659,30 @@ func (c *Client) CreateBusinessUnitApiV2OrganizationBusinessUnitsPost(ctx contex
 	return c.Client.Do(req)
 }
 
+func (c *Client) ListBusinessUnitsForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdGet(ctx context.Context, companyId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListBusinessUnitsForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdGetRequest(c.Server, companyId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetBusinessUnitForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdBusinessUnitIdGet(ctx context.Context, companyId openapi_types.UUID, businessUnitId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetBusinessUnitForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdBusinessUnitIdGetRequest(c.Server, companyId, businessUnitId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) DeleteBusinessUnitApiV2OrganizationBusinessUnitsBusinessUnitIdDelete(ctx context.Context, businessUnitId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewDeleteBusinessUnitApiV2OrganizationBusinessUnitsBusinessUnitIdDeleteRequest(c.Server, businessUnitId)
 	if err != nil {
@@ -9584,6 +11865,186 @@ func (c *Client) CreateRemediationArtifactApiV2RemediationArtifactsPost(ctx cont
 
 func (c *Client) GetRemediationArtifactByIdApiV2RemediationArtifactsArtifactIdGet(ctx context.Context, artifactId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetRemediationArtifactByIdApiV2RemediationArtifactsArtifactIdGetRequest(c.Server, artifactId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ResolveThreadApiV2RemediationOrchestratorThreadsActionResolvePostWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewResolveThreadApiV2RemediationOrchestratorThreadsActionResolvePostRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ResolveThreadApiV2RemediationOrchestratorThreadsActionResolvePost(ctx context.Context, body ResolveThreadApiV2RemediationOrchestratorThreadsActionResolvePostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewResolveThreadApiV2RemediationOrchestratorThreadsActionResolvePostRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) StartThreadApiV2RemediationOrchestratorThreadsActionStartPostWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewStartThreadApiV2RemediationOrchestratorThreadsActionStartPostRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) StartThreadApiV2RemediationOrchestratorThreadsActionStartPost(ctx context.Context, body StartThreadApiV2RemediationOrchestratorThreadsActionStartPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewStartThreadApiV2RemediationOrchestratorThreadsActionStartPostRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) StreamStartApiV2RemediationOrchestratorThreadsActionStreamStartPostWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewStreamStartApiV2RemediationOrchestratorThreadsActionStreamStartPostRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) StreamStartApiV2RemediationOrchestratorThreadsActionStreamStartPost(ctx context.Context, body StreamStartApiV2RemediationOrchestratorThreadsActionStreamStartPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewStreamStartApiV2RemediationOrchestratorThreadsActionStreamStartPostRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) RetryBackgroundRemediationApiV2RemediationOrchestratorThreadsThreadIdActionRetryBackgroundRemediationPost(ctx context.Context, threadId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRetryBackgroundRemediationApiV2RemediationOrchestratorThreadsThreadIdActionRetryBackgroundRemediationPostRequest(c.Server, threadId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) SendMessageApiV2RemediationOrchestratorThreadsThreadIdActionSendMessagePostWithBody(ctx context.Context, threadId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionSendMessagePostRequestWithBody(c.Server, threadId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) SendMessageApiV2RemediationOrchestratorThreadsThreadIdActionSendMessagePost(ctx context.Context, threadId openapi_types.UUID, body SendMessageApiV2RemediationOrchestratorThreadsThreadIdActionSendMessagePostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionSendMessagePostRequest(c.Server, threadId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) StreamGenerateArtifactsApiV2RemediationOrchestratorThreadsThreadIdActionStreamGenerateArtifactsPost(ctx context.Context, threadId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewStreamGenerateArtifactsApiV2RemediationOrchestratorThreadsThreadIdActionStreamGenerateArtifactsPostRequest(c.Server, threadId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) StreamSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionStreamSendMessagePostWithBody(ctx context.Context, threadId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewStreamSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionStreamSendMessagePostRequestWithBody(c.Server, threadId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) StreamSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionStreamSendMessagePost(ctx context.Context, threadId openapi_types.UUID, body StreamSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionStreamSendMessagePostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewStreamSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionStreamSendMessagePostRequest(c.Server, threadId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetArtifactsApiV2RemediationOrchestratorThreadsThreadIdArtifactsGet(ctx context.Context, threadId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetArtifactsApiV2RemediationOrchestratorThreadsThreadIdArtifactsGetRequest(c.Server, threadId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) StreamThreadEventsApiV2RemediationOrchestratorThreadsThreadIdEventsGet(ctx context.Context, threadId openapi_types.UUID, params *StreamThreadEventsApiV2RemediationOrchestratorThreadsThreadIdEventsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewStreamThreadEventsApiV2RemediationOrchestratorThreadsThreadIdEventsGetRequest(c.Server, threadId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetMessagesApiV2RemediationOrchestratorThreadsThreadIdMessagesGet(ctx context.Context, threadId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetMessagesApiV2RemediationOrchestratorThreadsThreadIdMessagesGetRequest(c.Server, threadId)
 	if err != nil {
 		return nil, err
 	}
@@ -10398,6 +12859,18 @@ func (c *Client) ActionSetFlagApiV2SystemFeatureFlagsBusinessUnitActionSetFlagKe
 	return c.Client.Do(req)
 }
 
+func (c *Client) DeleteFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyDelete(ctx context.Context, flagKey string, params *DeleteFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyDeleteParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyDeleteRequest(c.Server, flagKey, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) GetFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyGet(ctx context.Context, flagKey string, params *GetFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyGetRequest(c.Server, flagKey, params)
 	if err != nil {
@@ -10566,6 +13039,18 @@ func (c *Client) ActionSetFlagApiV2SystemFeatureFlagsCompanyActionSetFlagKeyPatc
 	return c.Client.Do(req)
 }
 
+func (c *Client) DeleteFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyDelete(ctx context.Context, flagKey string, params *DeleteFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyDeleteParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyDeleteRequest(c.Server, flagKey, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) GetFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyGet(ctx context.Context, flagKey string, params *GetFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyGetRequest(c.Server, flagKey, params)
 	if err != nil {
@@ -10674,6 +13159,18 @@ func (c *Client) CreateFlagApiV2SystemFeatureFlagsRootPost(ctx context.Context, 
 	return c.Client.Do(req)
 }
 
+func (c *Client) ListRootFlagsApiV2SystemFeatureFlagsRootAdminGet(ctx context.Context, params *ListRootFlagsApiV2SystemFeatureFlagsRootAdminGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListRootFlagsApiV2SystemFeatureFlagsRootAdminGetRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) ActionSetFlagApiV2SystemFeatureFlagsRootActionSetFlagKeyPatchWithBody(ctx context.Context, flagKey string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewActionSetFlagApiV2SystemFeatureFlagsRootActionSetFlagKeyPatchRequestWithBody(c.Server, flagKey, contentType, body)
 	if err != nil {
@@ -10688,6 +13185,18 @@ func (c *Client) ActionSetFlagApiV2SystemFeatureFlagsRootActionSetFlagKeyPatchWi
 
 func (c *Client) ActionSetFlagApiV2SystemFeatureFlagsRootActionSetFlagKeyPatch(ctx context.Context, flagKey string, body ActionSetFlagApiV2SystemFeatureFlagsRootActionSetFlagKeyPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewActionSetFlagApiV2SystemFeatureFlagsRootActionSetFlagKeyPatchRequest(c.Server, flagKey, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteFlagByKeyApiV2SystemFeatureFlagsRootByKeyFlagKeyDelete(ctx context.Context, flagKey string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteFlagByKeyApiV2SystemFeatureFlagsRootByKeyFlagKeyDeleteRequest(c.Server, flagKey)
 	if err != nil {
 		return nil, err
 	}
@@ -10962,30 +13471,6 @@ func (c *Client) GetResourcesCountApiV2TempDashboardResourcesCountGet(ctx contex
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetResourceHealthDetailsApiV2TempDashboardResourcesHealthDetailsGet(ctx context.Context, params *GetResourceHealthDetailsApiV2TempDashboardResourcesHealthDetailsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetResourceHealthDetailsApiV2TempDashboardResourcesHealthDetailsGetRequest(c.Server, params)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) GetResourceHealthSummaryApiV2TempDashboardResourcesHealthSummaryGet(ctx context.Context, params *GetResourceHealthSummaryApiV2TempDashboardResourcesHealthSummaryGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetResourceHealthSummaryApiV2TempDashboardResourcesHealthSummaryGetRequest(c.Server, params)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
 func (c *Client) GetSavingsApiV2TempDashboardSavingsGet(ctx context.Context, params *GetSavingsApiV2TempDashboardSavingsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetSavingsApiV2TempDashboardSavingsGetRequest(c.Server, params)
 	if err != nil {
@@ -11010,18 +13495,6 @@ func (c *Client) GetSavingsProgressApiV2TempDashboardSavingsProgressGet(ctx cont
 	return c.Client.Do(req)
 }
 
-func (c *Client) NangoWebhookApiV2WebhooksNangoPost(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewNangoWebhookApiV2WebhooksNangoPostRequest(c.Server)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
 func (c *Client) StripeWebhookApiV2WebhooksStripePost(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewStripeWebhookApiV2WebhooksStripePostRequest(c.Server)
 	if err != nil {
@@ -11032,6 +13505,46 @@ func (c *Client) StripeWebhookApiV2WebhooksStripePost(ctx context.Context, reqEd
 		return nil, err
 	}
 	return c.Client.Do(req)
+}
+
+// NewRequestPasswordResetApiV2AuthActionRequestPasswordResetPostRequest calls the generic RequestPasswordResetApiV2AuthActionRequestPasswordResetPost builder with application/json body
+func NewRequestPasswordResetApiV2AuthActionRequestPasswordResetPostRequest(server string, body RequestPasswordResetApiV2AuthActionRequestPasswordResetPostJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewRequestPasswordResetApiV2AuthActionRequestPasswordResetPostRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewRequestPasswordResetApiV2AuthActionRequestPasswordResetPostRequestWithBody generates requests for RequestPasswordResetApiV2AuthActionRequestPasswordResetPost with any type of body
+func NewRequestPasswordResetApiV2AuthActionRequestPasswordResetPostRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v2/auth/action/request-password-reset")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
 }
 
 // NewSendOwnerSignupInvitationApiV2AuthActionSendOwnerSignupInvitationPostRequest calls the generic SendOwnerSignupInvitationApiV2AuthActionSendOwnerSignupInvitationPost builder with application/json body
@@ -13667,6 +16180,96 @@ func NewGetAzureResourcesCountApiV2CloudAzureDiscoveryResourcesCountByCategoryGe
 	return req, nil
 }
 
+// NewListReservationsApiV2CloudAzureReservationsGetRequest generates requests for ListReservationsApiV2CloudAzureReservationsGet
+func NewListReservationsApiV2CloudAzureReservationsGetRequest(server string, params *ListReservationsApiV2CloudAzureReservationsGetParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v2/cloud/azure/reservations")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cloud_account_id", params.CloudAccountId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: "uuid"}); err != nil {
+			return nil, err
+		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+			return nil, err
+		} else {
+			for k, v := range parsed {
+				for _, v2 := range v {
+					queryValues.Add(k, v2)
+				}
+			}
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewListReservationCoverageApiV2CloudAzureReservationsCoverageGetRequest generates requests for ListReservationCoverageApiV2CloudAzureReservationsCoverageGet
+func NewListReservationCoverageApiV2CloudAzureReservationsCoverageGetRequest(server string, params *ListReservationCoverageApiV2CloudAzureReservationsCoverageGetParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v2/cloud/azure/reservations/coverage")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cloud_account_id", params.CloudAccountId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: "uuid"}); err != nil {
+			return nil, err
+		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+			return nil, err
+		} else {
+			for k, v := range parsed {
+				for _, v2 := range v {
+					queryValues.Add(k, v2)
+				}
+			}
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewListAzureSourcedRecommendationsApiV2CloudAzureSourcedRecommendationsGetRequest generates requests for ListAzureSourcedRecommendationsApiV2CloudAzureSourcedRecommendationsGet
 func NewListAzureSourcedRecommendationsApiV2CloudAzureSourcedRecommendationsGetRequest(server string) (*http.Request, error) {
 	var err error
@@ -13877,7 +16480,7 @@ func NewUpdateCloudAccountIntegrationApiV2CloudCloudAccountIntegrationsCloudAcco
 }
 
 // NewListCloudAccountsApiV2CloudCloudAccountsGetRequest generates requests for ListCloudAccountsApiV2CloudCloudAccountsGet
-func NewListCloudAccountsApiV2CloudCloudAccountsGetRequest(server string) (*http.Request, error) {
+func NewListCloudAccountsApiV2CloudCloudAccountsGetRequest(server string, params *ListCloudAccountsApiV2CloudCloudAccountsGetParams) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -13893,6 +16496,28 @@ func NewListCloudAccountsApiV2CloudCloudAccountsGetRequest(server string) (*http
 	queryURL, err := serverURL.Parse(operationPath)
 	if err != nil {
 		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.CompanyId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "company_id", *params.CompanyId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: "uuid"}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
 	}
 
 	req, err := http.NewRequest("GET", queryURL.String(), nil)
@@ -13939,6 +16564,81 @@ func NewCreateCloudAccountApiV2CloudCloudAccountsPostRequestWithBody(server stri
 	}
 
 	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewListCloudAccountsForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdGetRequest generates requests for ListCloudAccountsForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdGet
+func NewListCloudAccountsForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdGetRequest(server string, companyId openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "company_id", companyId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v2/cloud/cloud-accounts/by-company/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetCloudAccountForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdCloudAccountIdGetRequest generates requests for GetCloudAccountForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdCloudAccountIdGet
+func NewGetCloudAccountForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdCloudAccountIdGetRequest(server string, companyId openapi_types.UUID, cloudAccountId openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "company_id", companyId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "cloud_account_id", cloudAccountId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v2/cloud/cloud-accounts/by-company/%s/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
 
 	return req, nil
 }
@@ -14336,6 +17036,74 @@ func NewStartCloudAccountSetupApiV2CloudCloudAccountsCloudAccountIdActionSetupPo
 	return req, nil
 }
 
+// NewGetCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsGetRequest generates requests for GetCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsGet
+func NewGetCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsGetRequest(server string, cloudAccountId openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "cloud_account_id", cloudAccountId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v2/cloud/cloud-accounts/%s/credentials", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUpdateCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsPutRequest generates requests for UpdateCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsPut
+func NewUpdateCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsPutRequest(server string, cloudAccountId openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "cloud_account_id", cloudAccountId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v2/cloud/cloud-accounts/%s/credentials", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewListLatestCustomRecommendationsForAccountApiV2CloudCloudAccountsCloudAccountIdCustomRecommendationsLatestGetRequest generates requests for ListLatestCustomRecommendationsForAccountApiV2CloudCloudAccountsCloudAccountIdCustomRecommendationsLatestGet
 func NewListLatestCustomRecommendationsForAccountApiV2CloudCloudAccountsCloudAccountIdCustomRecommendationsLatestGetRequest(server string, cloudAccountId openapi_types.UUID) (*http.Request, error) {
 	var err error
@@ -14438,6 +17206,87 @@ func NewListRemediationSessionsForAccountApiV2CloudCloudAccountsCloudAccountIdRe
 	return req, nil
 }
 
+// NewGetCloudAccountSettingsApiV2CloudCloudAccountsCloudAccountIdSettingsGetRequest generates requests for GetCloudAccountSettingsApiV2CloudCloudAccountsCloudAccountIdSettingsGet
+func NewGetCloudAccountSettingsApiV2CloudCloudAccountsCloudAccountIdSettingsGetRequest(server string, cloudAccountId openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "cloud_account_id", cloudAccountId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v2/cloud/cloud-accounts/%s/settings", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUpdateCloudAccountAgentArchitectureApiV2CloudCloudAccountsCloudAccountIdSettingsAgentArchitecturePatchRequest calls the generic UpdateCloudAccountAgentArchitectureApiV2CloudCloudAccountsCloudAccountIdSettingsAgentArchitecturePatch builder with application/json body
+func NewUpdateCloudAccountAgentArchitectureApiV2CloudCloudAccountsCloudAccountIdSettingsAgentArchitecturePatchRequest(server string, cloudAccountId openapi_types.UUID, body UpdateCloudAccountAgentArchitectureApiV2CloudCloudAccountsCloudAccountIdSettingsAgentArchitecturePatchJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateCloudAccountAgentArchitectureApiV2CloudCloudAccountsCloudAccountIdSettingsAgentArchitecturePatchRequestWithBody(server, cloudAccountId, "application/json", bodyReader)
+}
+
+// NewUpdateCloudAccountAgentArchitectureApiV2CloudCloudAccountsCloudAccountIdSettingsAgentArchitecturePatchRequestWithBody generates requests for UpdateCloudAccountAgentArchitectureApiV2CloudCloudAccountsCloudAccountIdSettingsAgentArchitecturePatch with any type of body
+func NewUpdateCloudAccountAgentArchitectureApiV2CloudCloudAccountsCloudAccountIdSettingsAgentArchitecturePatchRequestWithBody(server string, cloudAccountId openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "cloud_account_id", cloudAccountId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v2/cloud/cloud-accounts/%s/settings/agent-architecture", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PATCH", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewGetCloudAccountInitialSetupWarmAttemptsApiV2CloudCloudAccountsCloudAccountIdWarmAttemptsInitialSetupGetRequest generates requests for GetCloudAccountInitialSetupWarmAttemptsApiV2CloudCloudAccountsCloudAccountIdWarmAttemptsInitialSetupGet
 func NewGetCloudAccountInitialSetupWarmAttemptsApiV2CloudCloudAccountsCloudAccountIdWarmAttemptsInitialSetupGetRequest(server string, cloudAccountId openapi_types.UUID) (*http.Request, error) {
 	var err error
@@ -14481,7 +17330,7 @@ func NewListCostDataSourcesApiV2CloudCostDataSourcesGetRequest(server string, pa
 		return nil, err
 	}
 
-	operationPath := fmt.Sprintf("/api/v2/cloud/cost-data-sources/")
+	operationPath := fmt.Sprintf("/api/v2/cloud/cost-data-sources")
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -14537,7 +17386,87 @@ func NewCreateCostDataSourceApiV2CloudCostDataSourcesPostRequestWithBody(server 
 		return nil, err
 	}
 
-	operationPath := fmt.Sprintf("/api/v2/cloud/cost-data-sources/")
+	operationPath := fmt.Sprintf("/api/v2/cloud/cost-data-sources")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewApplyCostDataSourceCandidateApiV2CloudCostDataSourcesActionApplyCandidatePostRequest calls the generic ApplyCostDataSourceCandidateApiV2CloudCostDataSourcesActionApplyCandidatePost builder with application/json body
+func NewApplyCostDataSourceCandidateApiV2CloudCostDataSourcesActionApplyCandidatePostRequest(server string, body ApplyCostDataSourceCandidateApiV2CloudCostDataSourcesActionApplyCandidatePostJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewApplyCostDataSourceCandidateApiV2CloudCostDataSourcesActionApplyCandidatePostRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewApplyCostDataSourceCandidateApiV2CloudCostDataSourcesActionApplyCandidatePostRequestWithBody generates requests for ApplyCostDataSourceCandidateApiV2CloudCostDataSourcesActionApplyCandidatePost with any type of body
+func NewApplyCostDataSourceCandidateApiV2CloudCostDataSourcesActionApplyCandidatePostRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v2/cloud/cost-data-sources/action/apply-candidate")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewValidateCostDataSourceCandidateApiV2CloudCostDataSourcesActionValidateCandidatePostRequest calls the generic ValidateCostDataSourceCandidateApiV2CloudCostDataSourcesActionValidateCandidatePost builder with application/json body
+func NewValidateCostDataSourceCandidateApiV2CloudCostDataSourcesActionValidateCandidatePostRequest(server string, body ValidateCostDataSourceCandidateApiV2CloudCostDataSourcesActionValidateCandidatePostJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewValidateCostDataSourceCandidateApiV2CloudCostDataSourcesActionValidateCandidatePostRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewValidateCostDataSourceCandidateApiV2CloudCostDataSourcesActionValidateCandidatePostRequestWithBody generates requests for ValidateCostDataSourceCandidateApiV2CloudCostDataSourcesActionValidateCandidatePost with any type of body
+func NewValidateCostDataSourceCandidateApiV2CloudCostDataSourcesActionValidateCandidatePostRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v2/cloud/cost-data-sources/action/validate-candidate")
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -14699,6 +17628,100 @@ func NewUpdateCostDataSourceApiV2CloudCostDataSourcesSourceIdPatchRequestWithBod
 	}
 
 	req, err := http.NewRequest("PATCH", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewRetryCostSourceImportApiV2CloudCostDataSourcesSourceIdActionRetryImportPostRequest calls the generic RetryCostSourceImportApiV2CloudCostDataSourcesSourceIdActionRetryImportPost builder with application/json body
+func NewRetryCostSourceImportApiV2CloudCostDataSourcesSourceIdActionRetryImportPostRequest(server string, sourceId openapi_types.UUID, body RetryCostSourceImportApiV2CloudCostDataSourcesSourceIdActionRetryImportPostJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewRetryCostSourceImportApiV2CloudCostDataSourcesSourceIdActionRetryImportPostRequestWithBody(server, sourceId, "application/json", bodyReader)
+}
+
+// NewRetryCostSourceImportApiV2CloudCostDataSourcesSourceIdActionRetryImportPostRequestWithBody generates requests for RetryCostSourceImportApiV2CloudCostDataSourcesSourceIdActionRetryImportPost with any type of body
+func NewRetryCostSourceImportApiV2CloudCostDataSourcesSourceIdActionRetryImportPostRequestWithBody(server string, sourceId openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "source_id", sourceId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v2/cloud/cost-data-sources/%s/action/retry-import", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewRetryCostSourceMatchingApiV2CloudCostDataSourcesSourceIdActionRetryMatchingPostRequest calls the generic RetryCostSourceMatchingApiV2CloudCostDataSourcesSourceIdActionRetryMatchingPost builder with application/json body
+func NewRetryCostSourceMatchingApiV2CloudCostDataSourcesSourceIdActionRetryMatchingPostRequest(server string, sourceId openapi_types.UUID, body RetryCostSourceMatchingApiV2CloudCostDataSourcesSourceIdActionRetryMatchingPostJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewRetryCostSourceMatchingApiV2CloudCostDataSourcesSourceIdActionRetryMatchingPostRequestWithBody(server, sourceId, "application/json", bodyReader)
+}
+
+// NewRetryCostSourceMatchingApiV2CloudCostDataSourcesSourceIdActionRetryMatchingPostRequestWithBody generates requests for RetryCostSourceMatchingApiV2CloudCostDataSourcesSourceIdActionRetryMatchingPost with any type of body
+func NewRetryCostSourceMatchingApiV2CloudCostDataSourcesSourceIdActionRetryMatchingPostRequestWithBody(server string, sourceId openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "source_id", sourceId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v2/cloud/cost-data-sources/%s/action/retry-matching", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
@@ -15702,6 +18725,40 @@ func NewListCustomRecommendationSourceRowsApiV2CloudCustomRecommendationsCustomR
 	return req, nil
 }
 
+// NewGetCustomRecommendationVersionsApiV2CloudCustomRecommendationsCustomRecommendationIdVersionsGetRequest generates requests for GetCustomRecommendationVersionsApiV2CloudCustomRecommendationsCustomRecommendationIdVersionsGet
+func NewGetCustomRecommendationVersionsApiV2CloudCustomRecommendationsCustomRecommendationIdVersionsGetRequest(server string, customRecommendationId openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "custom_recommendation_id", customRecommendationId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v2/cloud/custom-recommendations/%s/versions", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewSubmitEvaluationApiV2CloudEvaluationsPostRequest calls the generic SubmitEvaluationApiV2CloudEvaluationsPost builder with application/json body
 func NewSubmitEvaluationApiV2CloudEvaluationsPostRequest(server string, body SubmitEvaluationApiV2CloudEvaluationsPostJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
@@ -16127,6 +19184,67 @@ func NewRefreshGcpIntegrationToAwsWifApiV2CloudGcpCredentialsCloudAccountIdActio
 	return req, nil
 }
 
+// NewListGcpResourceDiscoveryAuditLogsApiV2CloudGcpDiscoveryAuditLogsGetRequest generates requests for ListGcpResourceDiscoveryAuditLogsApiV2CloudGcpDiscoveryAuditLogsGet
+func NewListGcpResourceDiscoveryAuditLogsApiV2CloudGcpDiscoveryAuditLogsGetRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v2/cloud/gcp/discovery-audit-logs")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetGcpResourceDiscoveryAuditLogApiV2CloudGcpDiscoveryAuditLogsAuditLogIdGetRequest generates requests for GetGcpResourceDiscoveryAuditLogApiV2CloudGcpDiscoveryAuditLogsAuditLogIdGet
+func NewGetGcpResourceDiscoveryAuditLogApiV2CloudGcpDiscoveryAuditLogsAuditLogIdGetRequest(server string, auditLogId openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "audit_log_id", auditLogId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v2/cloud/gcp/discovery-audit-logs/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewListGcpResourceDiscoveriesApiV2CloudGcpDiscoveryResourcesGetRequest generates requests for ListGcpResourceDiscoveriesApiV2CloudGcpDiscoveryResourcesGet
 func NewListGcpResourceDiscoveriesApiV2CloudGcpDiscoveryResourcesGetRequest(server string, params *ListGcpResourceDiscoveriesApiV2CloudGcpDiscoveryResourcesGetParams) (*http.Request, error) {
 	var err error
@@ -16152,6 +19270,38 @@ func NewListGcpResourceDiscoveriesApiV2CloudGcpDiscoveryResourcesGetRequest(serv
 		if params.IsActive != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "is_active", *params.IsActive, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.HasRecommendation != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "has_recommendation", *params.HasRecommendation, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.IncludeLatestRecommendation != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "include_latest_recommendation", *params.IncludeLatestRecommendation, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "boolean", Format: ""}); err != nil {
 				return nil, err
 			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
 				return nil, err
@@ -16399,6 +19549,22 @@ func NewGetGcpResourceTypeCountsApiV2CloudGcpDiscoveryResourcesTypeCountsGetRequ
 
 		}
 
+		if params.HasRecommendation != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "has_recommendation", *params.HasRecommendation, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
 		queryURL.RawQuery = queryValues.Encode()
 	}
 
@@ -16406,6 +19572,53 @@ func NewGetGcpResourceTypeCountsApiV2CloudGcpDiscoveryResourcesTypeCountsGetRequ
 	if err != nil {
 		return nil, err
 	}
+
+	return req, nil
+}
+
+// NewUpdateGcpResourceConstraintsApiV2CloudGcpDiscoveryResourcesResourceIdConstraintsPatchRequest calls the generic UpdateGcpResourceConstraintsApiV2CloudGcpDiscoveryResourcesResourceIdConstraintsPatch builder with application/json body
+func NewUpdateGcpResourceConstraintsApiV2CloudGcpDiscoveryResourcesResourceIdConstraintsPatchRequest(server string, resourceId openapi_types.UUID, body UpdateGcpResourceConstraintsApiV2CloudGcpDiscoveryResourcesResourceIdConstraintsPatchJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateGcpResourceConstraintsApiV2CloudGcpDiscoveryResourcesResourceIdConstraintsPatchRequestWithBody(server, resourceId, "application/json", bodyReader)
+}
+
+// NewUpdateGcpResourceConstraintsApiV2CloudGcpDiscoveryResourcesResourceIdConstraintsPatchRequestWithBody generates requests for UpdateGcpResourceConstraintsApiV2CloudGcpDiscoveryResourcesResourceIdConstraintsPatch with any type of body
+func NewUpdateGcpResourceConstraintsApiV2CloudGcpDiscoveryResourcesResourceIdConstraintsPatchRequestWithBody(server string, resourceId openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "resource_id", resourceId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v2/cloud/gcp/discovery/resources/%s/constraints", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PATCH", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -17247,6 +20460,51 @@ func NewQueryObservationsApiV2CloudObservationsGetRequest(server string, params 
 	return req, nil
 }
 
+// NewListRecommendationActivitiesApiV2CloudRecommendationActivitiesGetRequest generates requests for ListRecommendationActivitiesApiV2CloudRecommendationActivitiesGet
+func NewListRecommendationActivitiesApiV2CloudRecommendationActivitiesGetRequest(server string, params *ListRecommendationActivitiesApiV2CloudRecommendationActivitiesGetParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v2/cloud/recommendation-activities")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "recommendation_id", params.RecommendationId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: "uuid"}); err != nil {
+			return nil, err
+		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+			return nil, err
+		} else {
+			for k, v := range parsed {
+				for _, v2 := range v {
+					queryValues.Add(k, v2)
+				}
+			}
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewListRecommendationAgentOperationsApiV2CloudRecommendationAgentOperationsGetRequest generates requests for ListRecommendationAgentOperationsApiV2CloudRecommendationAgentOperationsGet
 func NewListRecommendationAgentOperationsApiV2CloudRecommendationAgentOperationsGetRequest(server string) (*http.Request, error) {
 	var err error
@@ -17544,6 +20802,100 @@ func NewInspectRecommendationAgentOperationSourceApiV2CloudRecommendationAgentOp
 	if err != nil {
 		return nil, err
 	}
+
+	return req, nil
+}
+
+// NewAddRecommendationCommentApiV2CloudRecommendationsRecommendationIdActionAddCommentPostRequest calls the generic AddRecommendationCommentApiV2CloudRecommendationsRecommendationIdActionAddCommentPost builder with application/json body
+func NewAddRecommendationCommentApiV2CloudRecommendationsRecommendationIdActionAddCommentPostRequest(server string, recommendationId openapi_types.UUID, body AddRecommendationCommentApiV2CloudRecommendationsRecommendationIdActionAddCommentPostJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewAddRecommendationCommentApiV2CloudRecommendationsRecommendationIdActionAddCommentPostRequestWithBody(server, recommendationId, "application/json", bodyReader)
+}
+
+// NewAddRecommendationCommentApiV2CloudRecommendationsRecommendationIdActionAddCommentPostRequestWithBody generates requests for AddRecommendationCommentApiV2CloudRecommendationsRecommendationIdActionAddCommentPost with any type of body
+func NewAddRecommendationCommentApiV2CloudRecommendationsRecommendationIdActionAddCommentPostRequestWithBody(server string, recommendationId openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "recommendation_id", recommendationId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v2/cloud/recommendations/%s/action/add-comment", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewChangeRecommendationStatusApiV2CloudRecommendationsRecommendationIdActionChangeStatusPostRequest calls the generic ChangeRecommendationStatusApiV2CloudRecommendationsRecommendationIdActionChangeStatusPost builder with application/json body
+func NewChangeRecommendationStatusApiV2CloudRecommendationsRecommendationIdActionChangeStatusPostRequest(server string, recommendationId openapi_types.UUID, body ChangeRecommendationStatusApiV2CloudRecommendationsRecommendationIdActionChangeStatusPostJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewChangeRecommendationStatusApiV2CloudRecommendationsRecommendationIdActionChangeStatusPostRequestWithBody(server, recommendationId, "application/json", bodyReader)
+}
+
+// NewChangeRecommendationStatusApiV2CloudRecommendationsRecommendationIdActionChangeStatusPostRequestWithBody generates requests for ChangeRecommendationStatusApiV2CloudRecommendationsRecommendationIdActionChangeStatusPost with any type of body
+func NewChangeRecommendationStatusApiV2CloudRecommendationsRecommendationIdActionChangeStatusPostRequestWithBody(server string, recommendationId openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "recommendation_id", recommendationId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v2/cloud/recommendations/%s/action/change-status", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -19087,6 +22439,33 @@ func NewDisconnectGithubApiV2IntegrationsGithubActionDisconnectPostRequestWithBo
 	return req, nil
 }
 
+// NewNangoWebhookApiV2IntegrationsGithubEventsPostRequest generates requests for NangoWebhookApiV2IntegrationsGithubEventsPost
+func NewNangoWebhookApiV2IntegrationsGithubEventsPostRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v2/integrations/github/events")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewGetCurrentUserGithubConnectionApiV2IntegrationsGithubMeGetRequest generates requests for GetCurrentUserGithubConnectionApiV2IntegrationsGithubMeGet
 func NewGetCurrentUserGithubConnectionApiV2IntegrationsGithubMeGetRequest(server string, params *GetCurrentUserGithubConnectionApiV2IntegrationsGithubMeGetParams) (*http.Request, error) {
 	var err error
@@ -19155,6 +22534,63 @@ func NewGetGithubIntegrationListApiV2IntegrationsGithubMeIntegrationGetRequest(s
 		queryValues := queryURL.Query()
 
 		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "business_unit_id", params.BusinessUnitId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: "uuid"}); err != nil {
+			return nil, err
+		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+			return nil, err
+		} else {
+			for k, v := range parsed {
+				for _, v2 := range v {
+					queryValues.Add(k, v2)
+				}
+			}
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetGithubPullRequestStatusApiV2IntegrationsGithubMePullRequestGetRequest generates requests for GetGithubPullRequestStatusApiV2IntegrationsGithubMePullRequestGet
+func NewGetGithubPullRequestStatusApiV2IntegrationsGithubMePullRequestGetRequest(server string, params *GetGithubPullRequestStatusApiV2IntegrationsGithubMePullRequestGetParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v2/integrations/github/me/pull-request")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "business_unit_id", params.BusinessUnitId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: "uuid"}); err != nil {
+			return nil, err
+		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+			return nil, err
+		} else {
+			for k, v := range parsed {
+				for _, v2 := range v {
+					queryValues.Add(k, v2)
+				}
+			}
+		}
+
+		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "url", params.Url, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
 			return nil, err
 		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
 			return nil, err
@@ -19400,6 +22836,198 @@ func NewFetchJiraProjectsApiV2IntegrationsJiraProjectsGetRequest(server string) 
 	queryURL, err := serverURL.Parse(operationPath)
 	if err != nil {
 		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCancelSlackApiV2IntegrationsSlackActionCancelPostRequest calls the generic CancelSlackApiV2IntegrationsSlackActionCancelPost builder with application/json body
+func NewCancelSlackApiV2IntegrationsSlackActionCancelPostRequest(server string, body CancelSlackApiV2IntegrationsSlackActionCancelPostJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCancelSlackApiV2IntegrationsSlackActionCancelPostRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCancelSlackApiV2IntegrationsSlackActionCancelPostRequestWithBody generates requests for CancelSlackApiV2IntegrationsSlackActionCancelPost with any type of body
+func NewCancelSlackApiV2IntegrationsSlackActionCancelPostRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v2/integrations/slack/action/cancel")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewConnectSlackApiV2IntegrationsSlackActionConnectPostRequest calls the generic ConnectSlackApiV2IntegrationsSlackActionConnectPost builder with application/json body
+func NewConnectSlackApiV2IntegrationsSlackActionConnectPostRequest(server string, body ConnectSlackApiV2IntegrationsSlackActionConnectPostJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewConnectSlackApiV2IntegrationsSlackActionConnectPostRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewConnectSlackApiV2IntegrationsSlackActionConnectPostRequestWithBody generates requests for ConnectSlackApiV2IntegrationsSlackActionConnectPost with any type of body
+func NewConnectSlackApiV2IntegrationsSlackActionConnectPostRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v2/integrations/slack/action/connect")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDisconnectSlackApiV2IntegrationsSlackActionDisconnectPostRequest calls the generic DisconnectSlackApiV2IntegrationsSlackActionDisconnectPost builder with application/json body
+func NewDisconnectSlackApiV2IntegrationsSlackActionDisconnectPostRequest(server string, body DisconnectSlackApiV2IntegrationsSlackActionDisconnectPostJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewDisconnectSlackApiV2IntegrationsSlackActionDisconnectPostRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewDisconnectSlackApiV2IntegrationsSlackActionDisconnectPostRequestWithBody generates requests for DisconnectSlackApiV2IntegrationsSlackActionDisconnectPost with any type of body
+func NewDisconnectSlackApiV2IntegrationsSlackActionDisconnectPostRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v2/integrations/slack/action/disconnect")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewReceiveSlackEventsApiV2IntegrationsSlackEventsPostRequest generates requests for ReceiveSlackEventsApiV2IntegrationsSlackEventsPost
+func NewReceiveSlackEventsApiV2IntegrationsSlackEventsPostRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v2/integrations/slack/events")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetSlackIntegrationApiV2IntegrationsSlackMeIntegrationGetRequest generates requests for GetSlackIntegrationApiV2IntegrationsSlackMeIntegrationGet
+func NewGetSlackIntegrationApiV2IntegrationsSlackMeIntegrationGetRequest(server string, params *GetSlackIntegrationApiV2IntegrationsSlackMeIntegrationGetParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v2/integrations/slack/me/integration")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "company_id", params.CompanyId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: "uuid"}); err != nil {
+			return nil, err
+		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+			return nil, err
+		} else {
+			for k, v := range parsed {
+				for _, v2 := range v {
+					queryValues.Add(k, v2)
+				}
+			}
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
 	}
 
 	req, err := http.NewRequest("GET", queryURL.String(), nil)
@@ -20397,6 +24025,81 @@ func NewCreateBusinessUnitApiV2OrganizationBusinessUnitsPostRequestWithBody(serv
 	return req, nil
 }
 
+// NewListBusinessUnitsForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdGetRequest generates requests for ListBusinessUnitsForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdGet
+func NewListBusinessUnitsForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdGetRequest(server string, companyId openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "company_id", companyId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v2/organization/business-units/by-company/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetBusinessUnitForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdBusinessUnitIdGetRequest generates requests for GetBusinessUnitForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdBusinessUnitIdGet
+func NewGetBusinessUnitForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdBusinessUnitIdGetRequest(server string, companyId openapi_types.UUID, businessUnitId openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "company_id", companyId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "business_unit_id", businessUnitId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v2/organization/business-units/by-company/%s/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewDeleteBusinessUnitApiV2OrganizationBusinessUnitsBusinessUnitIdDeleteRequest generates requests for DeleteBusinessUnitApiV2OrganizationBusinessUnitsBusinessUnitIdDelete
 func NewDeleteBusinessUnitApiV2OrganizationBusinessUnitsBusinessUnitIdDeleteRequest(server string, businessUnitId openapi_types.UUID) (*http.Request, error) {
 	var err error
@@ -20812,6 +24515,412 @@ func NewGetRemediationArtifactByIdApiV2RemediationArtifactsArtifactIdGetRequest(
 	}
 
 	operationPath := fmt.Sprintf("/api/v2/remediation/artifacts/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewResolveThreadApiV2RemediationOrchestratorThreadsActionResolvePostRequest calls the generic ResolveThreadApiV2RemediationOrchestratorThreadsActionResolvePost builder with application/json body
+func NewResolveThreadApiV2RemediationOrchestratorThreadsActionResolvePostRequest(server string, body ResolveThreadApiV2RemediationOrchestratorThreadsActionResolvePostJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewResolveThreadApiV2RemediationOrchestratorThreadsActionResolvePostRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewResolveThreadApiV2RemediationOrchestratorThreadsActionResolvePostRequestWithBody generates requests for ResolveThreadApiV2RemediationOrchestratorThreadsActionResolvePost with any type of body
+func NewResolveThreadApiV2RemediationOrchestratorThreadsActionResolvePostRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v2/remediation/orchestrator-threads/action/resolve")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewStartThreadApiV2RemediationOrchestratorThreadsActionStartPostRequest calls the generic StartThreadApiV2RemediationOrchestratorThreadsActionStartPost builder with application/json body
+func NewStartThreadApiV2RemediationOrchestratorThreadsActionStartPostRequest(server string, body StartThreadApiV2RemediationOrchestratorThreadsActionStartPostJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewStartThreadApiV2RemediationOrchestratorThreadsActionStartPostRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewStartThreadApiV2RemediationOrchestratorThreadsActionStartPostRequestWithBody generates requests for StartThreadApiV2RemediationOrchestratorThreadsActionStartPost with any type of body
+func NewStartThreadApiV2RemediationOrchestratorThreadsActionStartPostRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v2/remediation/orchestrator-threads/action/start")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewStreamStartApiV2RemediationOrchestratorThreadsActionStreamStartPostRequest calls the generic StreamStartApiV2RemediationOrchestratorThreadsActionStreamStartPost builder with application/json body
+func NewStreamStartApiV2RemediationOrchestratorThreadsActionStreamStartPostRequest(server string, body StreamStartApiV2RemediationOrchestratorThreadsActionStreamStartPostJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewStreamStartApiV2RemediationOrchestratorThreadsActionStreamStartPostRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewStreamStartApiV2RemediationOrchestratorThreadsActionStreamStartPostRequestWithBody generates requests for StreamStartApiV2RemediationOrchestratorThreadsActionStreamStartPost with any type of body
+func NewStreamStartApiV2RemediationOrchestratorThreadsActionStreamStartPostRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v2/remediation/orchestrator-threads/action/stream-start")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewRetryBackgroundRemediationApiV2RemediationOrchestratorThreadsThreadIdActionRetryBackgroundRemediationPostRequest generates requests for RetryBackgroundRemediationApiV2RemediationOrchestratorThreadsThreadIdActionRetryBackgroundRemediationPost
+func NewRetryBackgroundRemediationApiV2RemediationOrchestratorThreadsThreadIdActionRetryBackgroundRemediationPostRequest(server string, threadId openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "thread_id", threadId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v2/remediation/orchestrator-threads/%s/action/retry-background-remediation", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionSendMessagePostRequest calls the generic SendMessageApiV2RemediationOrchestratorThreadsThreadIdActionSendMessagePost builder with application/json body
+func NewSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionSendMessagePostRequest(server string, threadId openapi_types.UUID, body SendMessageApiV2RemediationOrchestratorThreadsThreadIdActionSendMessagePostJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionSendMessagePostRequestWithBody(server, threadId, "application/json", bodyReader)
+}
+
+// NewSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionSendMessagePostRequestWithBody generates requests for SendMessageApiV2RemediationOrchestratorThreadsThreadIdActionSendMessagePost with any type of body
+func NewSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionSendMessagePostRequestWithBody(server string, threadId openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "thread_id", threadId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v2/remediation/orchestrator-threads/%s/action/send-message", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewStreamGenerateArtifactsApiV2RemediationOrchestratorThreadsThreadIdActionStreamGenerateArtifactsPostRequest generates requests for StreamGenerateArtifactsApiV2RemediationOrchestratorThreadsThreadIdActionStreamGenerateArtifactsPost
+func NewStreamGenerateArtifactsApiV2RemediationOrchestratorThreadsThreadIdActionStreamGenerateArtifactsPostRequest(server string, threadId openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "thread_id", threadId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v2/remediation/orchestrator-threads/%s/action/stream-generate-artifacts", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewStreamSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionStreamSendMessagePostRequest calls the generic StreamSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionStreamSendMessagePost builder with application/json body
+func NewStreamSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionStreamSendMessagePostRequest(server string, threadId openapi_types.UUID, body StreamSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionStreamSendMessagePostJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewStreamSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionStreamSendMessagePostRequestWithBody(server, threadId, "application/json", bodyReader)
+}
+
+// NewStreamSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionStreamSendMessagePostRequestWithBody generates requests for StreamSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionStreamSendMessagePost with any type of body
+func NewStreamSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionStreamSendMessagePostRequestWithBody(server string, threadId openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "thread_id", threadId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v2/remediation/orchestrator-threads/%s/action/stream-send-message", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetArtifactsApiV2RemediationOrchestratorThreadsThreadIdArtifactsGetRequest generates requests for GetArtifactsApiV2RemediationOrchestratorThreadsThreadIdArtifactsGet
+func NewGetArtifactsApiV2RemediationOrchestratorThreadsThreadIdArtifactsGetRequest(server string, threadId openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "thread_id", threadId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v2/remediation/orchestrator-threads/%s/artifacts", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewStreamThreadEventsApiV2RemediationOrchestratorThreadsThreadIdEventsGetRequest generates requests for StreamThreadEventsApiV2RemediationOrchestratorThreadsThreadIdEventsGet
+func NewStreamThreadEventsApiV2RemediationOrchestratorThreadsThreadIdEventsGetRequest(server string, threadId openapi_types.UUID, params *StreamThreadEventsApiV2RemediationOrchestratorThreadsThreadIdEventsGetParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "thread_id", threadId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v2/remediation/orchestrator-threads/%s/events", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.After != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "after", *params.After, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetMessagesApiV2RemediationOrchestratorThreadsThreadIdMessagesGetRequest generates requests for GetMessagesApiV2RemediationOrchestratorThreadsThreadIdMessagesGet
+func NewGetMessagesApiV2RemediationOrchestratorThreadsThreadIdMessagesGetRequest(server string, threadId openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "thread_id", threadId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v2/remediation/orchestrator-threads/%s/messages", pathParam0)
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -22753,6 +26862,58 @@ func NewActionSetFlagApiV2SystemFeatureFlagsBusinessUnitActionSetFlagKeyPatchReq
 	return req, nil
 }
 
+// NewDeleteFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyDeleteRequest generates requests for DeleteFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyDelete
+func NewDeleteFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyDeleteRequest(server string, flagKey string, params *DeleteFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyDeleteParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "flag_key", flagKey, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v2/system/feature-flags/business-unit/by-key/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "business_unit_id", params.BusinessUnitId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: "uuid"}); err != nil {
+			return nil, err
+		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+			return nil, err
+		} else {
+			for k, v := range parsed {
+				for _, v2 := range v {
+					queryValues.Add(k, v2)
+				}
+			}
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewGetFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyGetRequest generates requests for GetFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyGet
 func NewGetFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyGetRequest(server string, flagKey string, params *GetFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyGetParams) (*http.Request, error) {
 	var err error
@@ -23261,6 +27422,58 @@ func NewActionSetFlagApiV2SystemFeatureFlagsCompanyActionSetFlagKeyPatchRequestW
 	return req, nil
 }
 
+// NewDeleteFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyDeleteRequest generates requests for DeleteFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyDelete
+func NewDeleteFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyDeleteRequest(server string, flagKey string, params *DeleteFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyDeleteParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "flag_key", flagKey, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v2/system/feature-flags/company/by-key/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "company_id", params.CompanyId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: "uuid"}); err != nil {
+			return nil, err
+		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+			return nil, err
+		} else {
+			for k, v := range parsed {
+				for _, v2 := range v {
+					queryValues.Add(k, v2)
+				}
+			}
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewGetFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyGetRequest generates requests for GetFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyGet
 func NewGetFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyGetRequest(server string, flagKey string, params *GetFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyGetParams) (*http.Request, error) {
 	var err error
@@ -23619,6 +27832,71 @@ func NewCreateFlagApiV2SystemFeatureFlagsRootPostRequestWithBody(server string, 
 	return req, nil
 }
 
+// NewListRootFlagsApiV2SystemFeatureFlagsRootAdminGetRequest generates requests for ListRootFlagsApiV2SystemFeatureFlagsRootAdminGet
+func NewListRootFlagsApiV2SystemFeatureFlagsRootAdminGetRequest(server string, params *ListRootFlagsApiV2SystemFeatureFlagsRootAdminGetParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v2/system/feature-flags/root-admin")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.ApiLimit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "api_limit", *params.ApiLimit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.ApiOffset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "api_offset", *params.ApiOffset, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewActionSetFlagApiV2SystemFeatureFlagsRootActionSetFlagKeyPatchRequest calls the generic ActionSetFlagApiV2SystemFeatureFlagsRootActionSetFlagKeyPatch builder with application/json body
 func NewActionSetFlagApiV2SystemFeatureFlagsRootActionSetFlagKeyPatchRequest(server string, flagKey string, body ActionSetFlagApiV2SystemFeatureFlagsRootActionSetFlagKeyPatchJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
@@ -23662,6 +27940,40 @@ func NewActionSetFlagApiV2SystemFeatureFlagsRootActionSetFlagKeyPatchRequestWith
 	}
 
 	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteFlagByKeyApiV2SystemFeatureFlagsRootByKeyFlagKeyDeleteRequest generates requests for DeleteFlagByKeyApiV2SystemFeatureFlagsRootByKeyFlagKeyDelete
+func NewDeleteFlagByKeyApiV2SystemFeatureFlagsRootByKeyFlagKeyDeleteRequest(server string, flagKey string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "flag_key", flagKey, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v2/system/feature-flags/root/by-key/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
 
 	return req, nil
 }
@@ -24556,200 +28868,6 @@ func NewGetResourcesCountApiV2TempDashboardResourcesCountGetRequest(server strin
 	return req, nil
 }
 
-// NewGetResourceHealthDetailsApiV2TempDashboardResourcesHealthDetailsGetRequest generates requests for GetResourceHealthDetailsApiV2TempDashboardResourcesHealthDetailsGet
-func NewGetResourceHealthDetailsApiV2TempDashboardResourcesHealthDetailsGetRequest(server string, params *GetResourceHealthDetailsApiV2TempDashboardResourcesHealthDetailsGetParams) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/api/v2/temp-dashboard/resources/health/details")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	if params != nil {
-		queryValues := queryURL.Query()
-
-		if params.CloudAccount != nil {
-
-			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cloud_account", *params.CloudAccount, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: "uuid"}); err != nil {
-				return nil, err
-			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-				return nil, err
-			} else {
-				for k, v := range parsed {
-					for _, v2 := range v {
-						queryValues.Add(k, v2)
-					}
-				}
-			}
-
-		}
-
-		if params.StartDate != nil {
-
-			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "start_date", *params.StartDate, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
-				return nil, err
-			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-				return nil, err
-			} else {
-				for k, v := range parsed {
-					for _, v2 := range v {
-						queryValues.Add(k, v2)
-					}
-				}
-			}
-
-		}
-
-		if params.EndDate != nil {
-
-			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "end_date", *params.EndDate, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
-				return nil, err
-			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-				return nil, err
-			} else {
-				for k, v := range parsed {
-					for _, v2 := range v {
-						queryValues.Add(k, v2)
-					}
-				}
-			}
-
-		}
-
-		if params.CategoriesFilter != nil {
-
-			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "categories_filter", *params.CategoriesFilter, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
-				return nil, err
-			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-				return nil, err
-			} else {
-				for k, v := range parsed {
-					for _, v2 := range v {
-						queryValues.Add(k, v2)
-					}
-				}
-			}
-
-		}
-
-		queryURL.RawQuery = queryValues.Encode()
-	}
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewGetResourceHealthSummaryApiV2TempDashboardResourcesHealthSummaryGetRequest generates requests for GetResourceHealthSummaryApiV2TempDashboardResourcesHealthSummaryGet
-func NewGetResourceHealthSummaryApiV2TempDashboardResourcesHealthSummaryGetRequest(server string, params *GetResourceHealthSummaryApiV2TempDashboardResourcesHealthSummaryGetParams) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/api/v2/temp-dashboard/resources/health/summary")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	if params != nil {
-		queryValues := queryURL.Query()
-
-		if params.CloudAccount != nil {
-
-			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cloud_account", *params.CloudAccount, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: "uuid"}); err != nil {
-				return nil, err
-			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-				return nil, err
-			} else {
-				for k, v := range parsed {
-					for _, v2 := range v {
-						queryValues.Add(k, v2)
-					}
-				}
-			}
-
-		}
-
-		if params.StartDate != nil {
-
-			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "start_date", *params.StartDate, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
-				return nil, err
-			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-				return nil, err
-			} else {
-				for k, v := range parsed {
-					for _, v2 := range v {
-						queryValues.Add(k, v2)
-					}
-				}
-			}
-
-		}
-
-		if params.EndDate != nil {
-
-			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "end_date", *params.EndDate, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
-				return nil, err
-			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-				return nil, err
-			} else {
-				for k, v := range parsed {
-					for _, v2 := range v {
-						queryValues.Add(k, v2)
-					}
-				}
-			}
-
-		}
-
-		if params.CategoriesFilter != nil {
-
-			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "categories_filter", *params.CategoriesFilter, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
-				return nil, err
-			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-				return nil, err
-			} else {
-				for k, v := range parsed {
-					for _, v2 := range v {
-						queryValues.Add(k, v2)
-					}
-				}
-			}
-
-		}
-
-		queryURL.RawQuery = queryValues.Encode()
-	}
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
 // NewGetSavingsApiV2TempDashboardSavingsGetRequest generates requests for GetSavingsApiV2TempDashboardSavingsGet
 func NewGetSavingsApiV2TempDashboardSavingsGetRequest(server string, params *GetSavingsApiV2TempDashboardSavingsGetParams) (*http.Request, error) {
 	var err error
@@ -24912,33 +29030,6 @@ func NewGetSavingsProgressApiV2TempDashboardSavingsProgressGetRequest(server str
 	return req, nil
 }
 
-// NewNangoWebhookApiV2WebhooksNangoPostRequest generates requests for NangoWebhookApiV2WebhooksNangoPost
-func NewNangoWebhookApiV2WebhooksNangoPostRequest(server string) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/api/v2/webhooks/nango")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("POST", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
 // NewStripeWebhookApiV2WebhooksStripePostRequest generates requests for StripeWebhookApiV2WebhooksStripePost
 func NewStripeWebhookApiV2WebhooksStripePostRequest(server string) (*http.Request, error) {
 	var err error
@@ -25009,6 +29100,11 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
+	// RequestPasswordResetApiV2AuthActionRequestPasswordResetPostWithBodyWithResponse request with any body
+	RequestPasswordResetApiV2AuthActionRequestPasswordResetPostWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RequestPasswordResetApiV2AuthActionRequestPasswordResetPostResponse, error)
+
+	RequestPasswordResetApiV2AuthActionRequestPasswordResetPostWithResponse(ctx context.Context, body RequestPasswordResetApiV2AuthActionRequestPasswordResetPostJSONRequestBody, reqEditors ...RequestEditorFn) (*RequestPasswordResetApiV2AuthActionRequestPasswordResetPostResponse, error)
+
 	// SendOwnerSignupInvitationApiV2AuthActionSendOwnerSignupInvitationPostWithBodyWithResponse request with any body
 	SendOwnerSignupInvitationApiV2AuthActionSendOwnerSignupInvitationPostWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SendOwnerSignupInvitationApiV2AuthActionSendOwnerSignupInvitationPostResponse, error)
 
@@ -25262,6 +29358,12 @@ type ClientWithResponsesInterface interface {
 	// GetAzureResourcesCountApiV2CloudAzureDiscoveryResourcesCountByCategoryGetWithResponse request
 	GetAzureResourcesCountApiV2CloudAzureDiscoveryResourcesCountByCategoryGetWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetAzureResourcesCountApiV2CloudAzureDiscoveryResourcesCountByCategoryGetResponse, error)
 
+	// ListReservationsApiV2CloudAzureReservationsGetWithResponse request
+	ListReservationsApiV2CloudAzureReservationsGetWithResponse(ctx context.Context, params *ListReservationsApiV2CloudAzureReservationsGetParams, reqEditors ...RequestEditorFn) (*ListReservationsApiV2CloudAzureReservationsGetResponse, error)
+
+	// ListReservationCoverageApiV2CloudAzureReservationsCoverageGetWithResponse request
+	ListReservationCoverageApiV2CloudAzureReservationsCoverageGetWithResponse(ctx context.Context, params *ListReservationCoverageApiV2CloudAzureReservationsCoverageGetParams, reqEditors ...RequestEditorFn) (*ListReservationCoverageApiV2CloudAzureReservationsCoverageGetResponse, error)
+
 	// ListAzureSourcedRecommendationsApiV2CloudAzureSourcedRecommendationsGetWithResponse request
 	ListAzureSourcedRecommendationsApiV2CloudAzureSourcedRecommendationsGetWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListAzureSourcedRecommendationsApiV2CloudAzureSourcedRecommendationsGetResponse, error)
 
@@ -25285,12 +29387,18 @@ type ClientWithResponsesInterface interface {
 	UpdateCloudAccountIntegrationApiV2CloudCloudAccountIntegrationsCloudAccountIntegrationIdPatchWithResponse(ctx context.Context, cloudAccountIntegrationId openapi_types.UUID, body UpdateCloudAccountIntegrationApiV2CloudCloudAccountIntegrationsCloudAccountIntegrationIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateCloudAccountIntegrationApiV2CloudCloudAccountIntegrationsCloudAccountIntegrationIdPatchResponse, error)
 
 	// ListCloudAccountsApiV2CloudCloudAccountsGetWithResponse request
-	ListCloudAccountsApiV2CloudCloudAccountsGetWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListCloudAccountsApiV2CloudCloudAccountsGetResponse, error)
+	ListCloudAccountsApiV2CloudCloudAccountsGetWithResponse(ctx context.Context, params *ListCloudAccountsApiV2CloudCloudAccountsGetParams, reqEditors ...RequestEditorFn) (*ListCloudAccountsApiV2CloudCloudAccountsGetResponse, error)
 
 	// CreateCloudAccountApiV2CloudCloudAccountsPostWithBodyWithResponse request with any body
 	CreateCloudAccountApiV2CloudCloudAccountsPostWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateCloudAccountApiV2CloudCloudAccountsPostResponse, error)
 
 	CreateCloudAccountApiV2CloudCloudAccountsPostWithResponse(ctx context.Context, body CreateCloudAccountApiV2CloudCloudAccountsPostJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateCloudAccountApiV2CloudCloudAccountsPostResponse, error)
+
+	// ListCloudAccountsForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdGetWithResponse request
+	ListCloudAccountsForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdGetWithResponse(ctx context.Context, companyId openapi_types.UUID, reqEditors ...RequestEditorFn) (*ListCloudAccountsForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdGetResponse, error)
+
+	// GetCloudAccountForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdCloudAccountIdGetWithResponse request
+	GetCloudAccountForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdCloudAccountIdGetWithResponse(ctx context.Context, companyId openapi_types.UUID, cloudAccountId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetCloudAccountForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdCloudAccountIdGetResponse, error)
 
 	// GetAwsSetupGuideApiV2CloudCloudAccountsDocumentationAwsSetupGuideGetWithResponse request
 	GetAwsSetupGuideApiV2CloudCloudAccountsDocumentationAwsSetupGuideGetWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetAwsSetupGuideApiV2CloudCloudAccountsDocumentationAwsSetupGuideGetResponse, error)
@@ -25330,6 +29438,12 @@ type ClientWithResponsesInterface interface {
 	// StartCloudAccountSetupApiV2CloudCloudAccountsCloudAccountIdActionSetupPostWithResponse request
 	StartCloudAccountSetupApiV2CloudCloudAccountsCloudAccountIdActionSetupPostWithResponse(ctx context.Context, cloudAccountId openapi_types.UUID, reqEditors ...RequestEditorFn) (*StartCloudAccountSetupApiV2CloudCloudAccountsCloudAccountIdActionSetupPostResponse, error)
 
+	// GetCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsGetWithResponse request
+	GetCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsGetWithResponse(ctx context.Context, cloudAccountId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsGetResponse, error)
+
+	// UpdateCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsPutWithResponse request
+	UpdateCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsPutWithResponse(ctx context.Context, cloudAccountId openapi_types.UUID, reqEditors ...RequestEditorFn) (*UpdateCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsPutResponse, error)
+
 	// ListLatestCustomRecommendationsForAccountApiV2CloudCloudAccountsCloudAccountIdCustomRecommendationsLatestGetWithResponse request
 	ListLatestCustomRecommendationsForAccountApiV2CloudCloudAccountsCloudAccountIdCustomRecommendationsLatestGetWithResponse(ctx context.Context, cloudAccountId openapi_types.UUID, reqEditors ...RequestEditorFn) (*ListLatestCustomRecommendationsForAccountApiV2CloudCloudAccountsCloudAccountIdCustomRecommendationsLatestGetResponse, error)
 
@@ -25338,6 +29452,14 @@ type ClientWithResponsesInterface interface {
 
 	// ListRemediationSessionsForAccountApiV2CloudCloudAccountsCloudAccountIdRemediationSessionGetWithResponse request
 	ListRemediationSessionsForAccountApiV2CloudCloudAccountsCloudAccountIdRemediationSessionGetWithResponse(ctx context.Context, cloudAccountId openapi_types.UUID, reqEditors ...RequestEditorFn) (*ListRemediationSessionsForAccountApiV2CloudCloudAccountsCloudAccountIdRemediationSessionGetResponse, error)
+
+	// GetCloudAccountSettingsApiV2CloudCloudAccountsCloudAccountIdSettingsGetWithResponse request
+	GetCloudAccountSettingsApiV2CloudCloudAccountsCloudAccountIdSettingsGetWithResponse(ctx context.Context, cloudAccountId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetCloudAccountSettingsApiV2CloudCloudAccountsCloudAccountIdSettingsGetResponse, error)
+
+	// UpdateCloudAccountAgentArchitectureApiV2CloudCloudAccountsCloudAccountIdSettingsAgentArchitecturePatchWithBodyWithResponse request with any body
+	UpdateCloudAccountAgentArchitectureApiV2CloudCloudAccountsCloudAccountIdSettingsAgentArchitecturePatchWithBodyWithResponse(ctx context.Context, cloudAccountId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateCloudAccountAgentArchitectureApiV2CloudCloudAccountsCloudAccountIdSettingsAgentArchitecturePatchResponse, error)
+
+	UpdateCloudAccountAgentArchitectureApiV2CloudCloudAccountsCloudAccountIdSettingsAgentArchitecturePatchWithResponse(ctx context.Context, cloudAccountId openapi_types.UUID, body UpdateCloudAccountAgentArchitectureApiV2CloudCloudAccountsCloudAccountIdSettingsAgentArchitecturePatchJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateCloudAccountAgentArchitectureApiV2CloudCloudAccountsCloudAccountIdSettingsAgentArchitecturePatchResponse, error)
 
 	// GetCloudAccountInitialSetupWarmAttemptsApiV2CloudCloudAccountsCloudAccountIdWarmAttemptsInitialSetupGetWithResponse request
 	GetCloudAccountInitialSetupWarmAttemptsApiV2CloudCloudAccountsCloudAccountIdWarmAttemptsInitialSetupGetWithResponse(ctx context.Context, cloudAccountId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetCloudAccountInitialSetupWarmAttemptsApiV2CloudCloudAccountsCloudAccountIdWarmAttemptsInitialSetupGetResponse, error)
@@ -25350,6 +29472,16 @@ type ClientWithResponsesInterface interface {
 
 	CreateCostDataSourceApiV2CloudCostDataSourcesPostWithResponse(ctx context.Context, body CreateCostDataSourceApiV2CloudCostDataSourcesPostJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateCostDataSourceApiV2CloudCostDataSourcesPostResponse, error)
 
+	// ApplyCostDataSourceCandidateApiV2CloudCostDataSourcesActionApplyCandidatePostWithBodyWithResponse request with any body
+	ApplyCostDataSourceCandidateApiV2CloudCostDataSourcesActionApplyCandidatePostWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ApplyCostDataSourceCandidateApiV2CloudCostDataSourcesActionApplyCandidatePostResponse, error)
+
+	ApplyCostDataSourceCandidateApiV2CloudCostDataSourcesActionApplyCandidatePostWithResponse(ctx context.Context, body ApplyCostDataSourceCandidateApiV2CloudCostDataSourcesActionApplyCandidatePostJSONRequestBody, reqEditors ...RequestEditorFn) (*ApplyCostDataSourceCandidateApiV2CloudCostDataSourcesActionApplyCandidatePostResponse, error)
+
+	// ValidateCostDataSourceCandidateApiV2CloudCostDataSourcesActionValidateCandidatePostWithBodyWithResponse request with any body
+	ValidateCostDataSourceCandidateApiV2CloudCostDataSourcesActionValidateCandidatePostWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ValidateCostDataSourceCandidateApiV2CloudCostDataSourcesActionValidateCandidatePostResponse, error)
+
+	ValidateCostDataSourceCandidateApiV2CloudCostDataSourcesActionValidateCandidatePostWithResponse(ctx context.Context, body ValidateCostDataSourceCandidateApiV2CloudCostDataSourcesActionValidateCandidatePostJSONRequestBody, reqEditors ...RequestEditorFn) (*ValidateCostDataSourceCandidateApiV2CloudCostDataSourcesActionValidateCandidatePostResponse, error)
+
 	// DeleteCostDataSourceApiV2CloudCostDataSourcesSourceIdDeleteWithResponse request
 	DeleteCostDataSourceApiV2CloudCostDataSourcesSourceIdDeleteWithResponse(ctx context.Context, sourceId openapi_types.UUID, params *DeleteCostDataSourceApiV2CloudCostDataSourcesSourceIdDeleteParams, reqEditors ...RequestEditorFn) (*DeleteCostDataSourceApiV2CloudCostDataSourcesSourceIdDeleteResponse, error)
 
@@ -25360,6 +29492,16 @@ type ClientWithResponsesInterface interface {
 	UpdateCostDataSourceApiV2CloudCostDataSourcesSourceIdPatchWithBodyWithResponse(ctx context.Context, sourceId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateCostDataSourceApiV2CloudCostDataSourcesSourceIdPatchResponse, error)
 
 	UpdateCostDataSourceApiV2CloudCostDataSourcesSourceIdPatchWithResponse(ctx context.Context, sourceId openapi_types.UUID, body UpdateCostDataSourceApiV2CloudCostDataSourcesSourceIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateCostDataSourceApiV2CloudCostDataSourcesSourceIdPatchResponse, error)
+
+	// RetryCostSourceImportApiV2CloudCostDataSourcesSourceIdActionRetryImportPostWithBodyWithResponse request with any body
+	RetryCostSourceImportApiV2CloudCostDataSourcesSourceIdActionRetryImportPostWithBodyWithResponse(ctx context.Context, sourceId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RetryCostSourceImportApiV2CloudCostDataSourcesSourceIdActionRetryImportPostResponse, error)
+
+	RetryCostSourceImportApiV2CloudCostDataSourcesSourceIdActionRetryImportPostWithResponse(ctx context.Context, sourceId openapi_types.UUID, body RetryCostSourceImportApiV2CloudCostDataSourcesSourceIdActionRetryImportPostJSONRequestBody, reqEditors ...RequestEditorFn) (*RetryCostSourceImportApiV2CloudCostDataSourcesSourceIdActionRetryImportPostResponse, error)
+
+	// RetryCostSourceMatchingApiV2CloudCostDataSourcesSourceIdActionRetryMatchingPostWithBodyWithResponse request with any body
+	RetryCostSourceMatchingApiV2CloudCostDataSourcesSourceIdActionRetryMatchingPostWithBodyWithResponse(ctx context.Context, sourceId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RetryCostSourceMatchingApiV2CloudCostDataSourcesSourceIdActionRetryMatchingPostResponse, error)
+
+	RetryCostSourceMatchingApiV2CloudCostDataSourcesSourceIdActionRetryMatchingPostWithResponse(ctx context.Context, sourceId openapi_types.UUID, body RetryCostSourceMatchingApiV2CloudCostDataSourcesSourceIdActionRetryMatchingPostJSONRequestBody, reqEditors ...RequestEditorFn) (*RetryCostSourceMatchingApiV2CloudCostDataSourcesSourceIdActionRetryMatchingPostResponse, error)
 
 	// SetCostDataSourceEnabledApiV2CloudCostDataSourcesSourceIdActionSetEnabledPostWithBodyWithResponse request with any body
 	SetCostDataSourceEnabledApiV2CloudCostDataSourcesSourceIdActionSetEnabledPostWithBodyWithResponse(ctx context.Context, sourceId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SetCostDataSourceEnabledApiV2CloudCostDataSourcesSourceIdActionSetEnabledPostResponse, error)
@@ -25429,6 +29571,9 @@ type ClientWithResponsesInterface interface {
 	// ListCustomRecommendationSourceRowsApiV2CloudCustomRecommendationsCustomRecommendationIdSourcesSourceKeyRowsGetWithResponse request
 	ListCustomRecommendationSourceRowsApiV2CloudCustomRecommendationsCustomRecommendationIdSourcesSourceKeyRowsGetWithResponse(ctx context.Context, customRecommendationId openapi_types.UUID, sourceKey string, params *ListCustomRecommendationSourceRowsApiV2CloudCustomRecommendationsCustomRecommendationIdSourcesSourceKeyRowsGetParams, reqEditors ...RequestEditorFn) (*ListCustomRecommendationSourceRowsApiV2CloudCustomRecommendationsCustomRecommendationIdSourcesSourceKeyRowsGetResponse, error)
 
+	// GetCustomRecommendationVersionsApiV2CloudCustomRecommendationsCustomRecommendationIdVersionsGetWithResponse request
+	GetCustomRecommendationVersionsApiV2CloudCustomRecommendationsCustomRecommendationIdVersionsGetWithResponse(ctx context.Context, customRecommendationId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetCustomRecommendationVersionsApiV2CloudCustomRecommendationsCustomRecommendationIdVersionsGetResponse, error)
+
 	// SubmitEvaluationApiV2CloudEvaluationsPostWithBodyWithResponse request with any body
 	SubmitEvaluationApiV2CloudEvaluationsPostWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SubmitEvaluationApiV2CloudEvaluationsPostResponse, error)
 
@@ -25470,6 +29615,12 @@ type ClientWithResponsesInterface interface {
 
 	RefreshGcpIntegrationToAwsWifApiV2CloudGcpCredentialsCloudAccountIdActionRefreshWifPostWithResponse(ctx context.Context, cloudAccountId openapi_types.UUID, body RefreshGcpIntegrationToAwsWifApiV2CloudGcpCredentialsCloudAccountIdActionRefreshWifPostJSONRequestBody, reqEditors ...RequestEditorFn) (*RefreshGcpIntegrationToAwsWifApiV2CloudGcpCredentialsCloudAccountIdActionRefreshWifPostResponse, error)
 
+	// ListGcpResourceDiscoveryAuditLogsApiV2CloudGcpDiscoveryAuditLogsGetWithResponse request
+	ListGcpResourceDiscoveryAuditLogsApiV2CloudGcpDiscoveryAuditLogsGetWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListGcpResourceDiscoveryAuditLogsApiV2CloudGcpDiscoveryAuditLogsGetResponse, error)
+
+	// GetGcpResourceDiscoveryAuditLogApiV2CloudGcpDiscoveryAuditLogsAuditLogIdGetWithResponse request
+	GetGcpResourceDiscoveryAuditLogApiV2CloudGcpDiscoveryAuditLogsAuditLogIdGetWithResponse(ctx context.Context, auditLogId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetGcpResourceDiscoveryAuditLogApiV2CloudGcpDiscoveryAuditLogsAuditLogIdGetResponse, error)
+
 	// ListGcpResourceDiscoveriesApiV2CloudGcpDiscoveryResourcesGetWithResponse request
 	ListGcpResourceDiscoveriesApiV2CloudGcpDiscoveryResourcesGetWithResponse(ctx context.Context, params *ListGcpResourceDiscoveriesApiV2CloudGcpDiscoveryResourcesGetParams, reqEditors ...RequestEditorFn) (*ListGcpResourceDiscoveriesApiV2CloudGcpDiscoveryResourcesGetResponse, error)
 
@@ -25488,6 +29639,11 @@ type ClientWithResponsesInterface interface {
 
 	// GetGcpResourceTypeCountsApiV2CloudGcpDiscoveryResourcesTypeCountsGetWithResponse request
 	GetGcpResourceTypeCountsApiV2CloudGcpDiscoveryResourcesTypeCountsGetWithResponse(ctx context.Context, params *GetGcpResourceTypeCountsApiV2CloudGcpDiscoveryResourcesTypeCountsGetParams, reqEditors ...RequestEditorFn) (*GetGcpResourceTypeCountsApiV2CloudGcpDiscoveryResourcesTypeCountsGetResponse, error)
+
+	// UpdateGcpResourceConstraintsApiV2CloudGcpDiscoveryResourcesResourceIdConstraintsPatchWithBodyWithResponse request with any body
+	UpdateGcpResourceConstraintsApiV2CloudGcpDiscoveryResourcesResourceIdConstraintsPatchWithBodyWithResponse(ctx context.Context, resourceId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateGcpResourceConstraintsApiV2CloudGcpDiscoveryResourcesResourceIdConstraintsPatchResponse, error)
+
+	UpdateGcpResourceConstraintsApiV2CloudGcpDiscoveryResourcesResourceIdConstraintsPatchWithResponse(ctx context.Context, resourceId openapi_types.UUID, body UpdateGcpResourceConstraintsApiV2CloudGcpDiscoveryResourcesResourceIdConstraintsPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateGcpResourceConstraintsApiV2CloudGcpDiscoveryResourcesResourceIdConstraintsPatchResponse, error)
 
 	// GetGovernanceGapsApiV2CloudGovernanceGapsGetWithResponse request
 	GetGovernanceGapsApiV2CloudGovernanceGapsGetWithResponse(ctx context.Context, params *GetGovernanceGapsApiV2CloudGovernanceGapsGetParams, reqEditors ...RequestEditorFn) (*GetGovernanceGapsApiV2CloudGovernanceGapsGetResponse, error)
@@ -25535,6 +29691,9 @@ type ClientWithResponsesInterface interface {
 	// QueryObservationsApiV2CloudObservationsGetWithResponse request
 	QueryObservationsApiV2CloudObservationsGetWithResponse(ctx context.Context, params *QueryObservationsApiV2CloudObservationsGetParams, reqEditors ...RequestEditorFn) (*QueryObservationsApiV2CloudObservationsGetResponse, error)
 
+	// ListRecommendationActivitiesApiV2CloudRecommendationActivitiesGetWithResponse request
+	ListRecommendationActivitiesApiV2CloudRecommendationActivitiesGetWithResponse(ctx context.Context, params *ListRecommendationActivitiesApiV2CloudRecommendationActivitiesGetParams, reqEditors ...RequestEditorFn) (*ListRecommendationActivitiesApiV2CloudRecommendationActivitiesGetResponse, error)
+
 	// ListRecommendationAgentOperationsApiV2CloudRecommendationAgentOperationsGetWithResponse request
 	ListRecommendationAgentOperationsApiV2CloudRecommendationAgentOperationsGetWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListRecommendationAgentOperationsApiV2CloudRecommendationAgentOperationsGetResponse, error)
 
@@ -25546,6 +29705,16 @@ type ClientWithResponsesInterface interface {
 
 	// InspectRecommendationAgentOperationSourceApiV2CloudRecommendationAgentOperationsRecommendationAgentOperationIdSourcesFocusCostAttributionRowsGetWithResponse request
 	InspectRecommendationAgentOperationSourceApiV2CloudRecommendationAgentOperationsRecommendationAgentOperationIdSourcesFocusCostAttributionRowsGetWithResponse(ctx context.Context, recommendationAgentOperationId openapi_types.UUID, params *InspectRecommendationAgentOperationSourceApiV2CloudRecommendationAgentOperationsRecommendationAgentOperationIdSourcesFocusCostAttributionRowsGetParams, reqEditors ...RequestEditorFn) (*InspectRecommendationAgentOperationSourceApiV2CloudRecommendationAgentOperationsRecommendationAgentOperationIdSourcesFocusCostAttributionRowsGetResponse, error)
+
+	// AddRecommendationCommentApiV2CloudRecommendationsRecommendationIdActionAddCommentPostWithBodyWithResponse request with any body
+	AddRecommendationCommentApiV2CloudRecommendationsRecommendationIdActionAddCommentPostWithBodyWithResponse(ctx context.Context, recommendationId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AddRecommendationCommentApiV2CloudRecommendationsRecommendationIdActionAddCommentPostResponse, error)
+
+	AddRecommendationCommentApiV2CloudRecommendationsRecommendationIdActionAddCommentPostWithResponse(ctx context.Context, recommendationId openapi_types.UUID, body AddRecommendationCommentApiV2CloudRecommendationsRecommendationIdActionAddCommentPostJSONRequestBody, reqEditors ...RequestEditorFn) (*AddRecommendationCommentApiV2CloudRecommendationsRecommendationIdActionAddCommentPostResponse, error)
+
+	// ChangeRecommendationStatusApiV2CloudRecommendationsRecommendationIdActionChangeStatusPostWithBodyWithResponse request with any body
+	ChangeRecommendationStatusApiV2CloudRecommendationsRecommendationIdActionChangeStatusPostWithBodyWithResponse(ctx context.Context, recommendationId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ChangeRecommendationStatusApiV2CloudRecommendationsRecommendationIdActionChangeStatusPostResponse, error)
+
+	ChangeRecommendationStatusApiV2CloudRecommendationsRecommendationIdActionChangeStatusPostWithResponse(ctx context.Context, recommendationId openapi_types.UUID, body ChangeRecommendationStatusApiV2CloudRecommendationsRecommendationIdActionChangeStatusPostJSONRequestBody, reqEditors ...RequestEditorFn) (*ChangeRecommendationStatusApiV2CloudRecommendationsRecommendationIdActionChangeStatusPostResponse, error)
 
 	// GetResourceTypeCategoriesApiV2CloudResourceTypesCategoriesGetWithResponse request
 	GetResourceTypeCategoriesApiV2CloudResourceTypesCategoriesGetWithResponse(ctx context.Context, params *GetResourceTypeCategoriesApiV2CloudResourceTypesCategoriesGetParams, reqEditors ...RequestEditorFn) (*GetResourceTypeCategoriesApiV2CloudResourceTypesCategoriesGetResponse, error)
@@ -25676,11 +29845,17 @@ type ClientWithResponsesInterface interface {
 
 	DisconnectGithubApiV2IntegrationsGithubActionDisconnectPostWithResponse(ctx context.Context, body DisconnectGithubApiV2IntegrationsGithubActionDisconnectPostJSONRequestBody, reqEditors ...RequestEditorFn) (*DisconnectGithubApiV2IntegrationsGithubActionDisconnectPostResponse, error)
 
+	// NangoWebhookApiV2IntegrationsGithubEventsPostWithResponse request
+	NangoWebhookApiV2IntegrationsGithubEventsPostWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*NangoWebhookApiV2IntegrationsGithubEventsPostResponse, error)
+
 	// GetCurrentUserGithubConnectionApiV2IntegrationsGithubMeGetWithResponse request
 	GetCurrentUserGithubConnectionApiV2IntegrationsGithubMeGetWithResponse(ctx context.Context, params *GetCurrentUserGithubConnectionApiV2IntegrationsGithubMeGetParams, reqEditors ...RequestEditorFn) (*GetCurrentUserGithubConnectionApiV2IntegrationsGithubMeGetResponse, error)
 
 	// GetGithubIntegrationListApiV2IntegrationsGithubMeIntegrationGetWithResponse request
 	GetGithubIntegrationListApiV2IntegrationsGithubMeIntegrationGetWithResponse(ctx context.Context, params *GetGithubIntegrationListApiV2IntegrationsGithubMeIntegrationGetParams, reqEditors ...RequestEditorFn) (*GetGithubIntegrationListApiV2IntegrationsGithubMeIntegrationGetResponse, error)
+
+	// GetGithubPullRequestStatusApiV2IntegrationsGithubMePullRequestGetWithResponse request
+	GetGithubPullRequestStatusApiV2IntegrationsGithubMePullRequestGetWithResponse(ctx context.Context, params *GetGithubPullRequestStatusApiV2IntegrationsGithubMePullRequestGetParams, reqEditors ...RequestEditorFn) (*GetGithubPullRequestStatusApiV2IntegrationsGithubMePullRequestGetResponse, error)
 
 	// GetGithubScanStatusApiV2IntegrationsGithubMeScanStatusGetWithResponse request
 	GetGithubScanStatusApiV2IntegrationsGithubMeScanStatusGetWithResponse(ctx context.Context, params *GetGithubScanStatusApiV2IntegrationsGithubMeScanStatusGetParams, reqEditors ...RequestEditorFn) (*GetGithubScanStatusApiV2IntegrationsGithubMeScanStatusGetResponse, error)
@@ -25706,6 +29881,27 @@ type ClientWithResponsesInterface interface {
 
 	// FetchJiraProjectsApiV2IntegrationsJiraProjectsGetWithResponse request
 	FetchJiraProjectsApiV2IntegrationsJiraProjectsGetWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*FetchJiraProjectsApiV2IntegrationsJiraProjectsGetResponse, error)
+
+	// CancelSlackApiV2IntegrationsSlackActionCancelPostWithBodyWithResponse request with any body
+	CancelSlackApiV2IntegrationsSlackActionCancelPostWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CancelSlackApiV2IntegrationsSlackActionCancelPostResponse, error)
+
+	CancelSlackApiV2IntegrationsSlackActionCancelPostWithResponse(ctx context.Context, body CancelSlackApiV2IntegrationsSlackActionCancelPostJSONRequestBody, reqEditors ...RequestEditorFn) (*CancelSlackApiV2IntegrationsSlackActionCancelPostResponse, error)
+
+	// ConnectSlackApiV2IntegrationsSlackActionConnectPostWithBodyWithResponse request with any body
+	ConnectSlackApiV2IntegrationsSlackActionConnectPostWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ConnectSlackApiV2IntegrationsSlackActionConnectPostResponse, error)
+
+	ConnectSlackApiV2IntegrationsSlackActionConnectPostWithResponse(ctx context.Context, body ConnectSlackApiV2IntegrationsSlackActionConnectPostJSONRequestBody, reqEditors ...RequestEditorFn) (*ConnectSlackApiV2IntegrationsSlackActionConnectPostResponse, error)
+
+	// DisconnectSlackApiV2IntegrationsSlackActionDisconnectPostWithBodyWithResponse request with any body
+	DisconnectSlackApiV2IntegrationsSlackActionDisconnectPostWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DisconnectSlackApiV2IntegrationsSlackActionDisconnectPostResponse, error)
+
+	DisconnectSlackApiV2IntegrationsSlackActionDisconnectPostWithResponse(ctx context.Context, body DisconnectSlackApiV2IntegrationsSlackActionDisconnectPostJSONRequestBody, reqEditors ...RequestEditorFn) (*DisconnectSlackApiV2IntegrationsSlackActionDisconnectPostResponse, error)
+
+	// ReceiveSlackEventsApiV2IntegrationsSlackEventsPostWithResponse request
+	ReceiveSlackEventsApiV2IntegrationsSlackEventsPostWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ReceiveSlackEventsApiV2IntegrationsSlackEventsPostResponse, error)
+
+	// GetSlackIntegrationApiV2IntegrationsSlackMeIntegrationGetWithResponse request
+	GetSlackIntegrationApiV2IntegrationsSlackMeIntegrationGetWithResponse(ctx context.Context, params *GetSlackIntegrationApiV2IntegrationsSlackMeIntegrationGetParams, reqEditors ...RequestEditorFn) (*GetSlackIntegrationApiV2IntegrationsSlackMeIntegrationGetResponse, error)
 
 	// CreateCheckoutSessionApiV2LicenseAndBillingBillingActionCreateCheckoutSessionPostWithBodyWithResponse request with any body
 	CreateCheckoutSessionApiV2LicenseAndBillingBillingActionCreateCheckoutSessionPostWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateCheckoutSessionApiV2LicenseAndBillingBillingActionCreateCheckoutSessionPostResponse, error)
@@ -25808,6 +30004,12 @@ type ClientWithResponsesInterface interface {
 
 	CreateBusinessUnitApiV2OrganizationBusinessUnitsPostWithResponse(ctx context.Context, body CreateBusinessUnitApiV2OrganizationBusinessUnitsPostJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateBusinessUnitApiV2OrganizationBusinessUnitsPostResponse, error)
 
+	// ListBusinessUnitsForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdGetWithResponse request
+	ListBusinessUnitsForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdGetWithResponse(ctx context.Context, companyId openapi_types.UUID, reqEditors ...RequestEditorFn) (*ListBusinessUnitsForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdGetResponse, error)
+
+	// GetBusinessUnitForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdBusinessUnitIdGetWithResponse request
+	GetBusinessUnitForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdBusinessUnitIdGetWithResponse(ctx context.Context, companyId openapi_types.UUID, businessUnitId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetBusinessUnitForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdBusinessUnitIdGetResponse, error)
+
 	// DeleteBusinessUnitApiV2OrganizationBusinessUnitsBusinessUnitIdDeleteWithResponse request
 	DeleteBusinessUnitApiV2OrganizationBusinessUnitsBusinessUnitIdDeleteWithResponse(ctx context.Context, businessUnitId openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteBusinessUnitApiV2OrganizationBusinessUnitsBusinessUnitIdDeleteResponse, error)
 
@@ -25851,6 +30053,46 @@ type ClientWithResponsesInterface interface {
 
 	// GetRemediationArtifactByIdApiV2RemediationArtifactsArtifactIdGetWithResponse request
 	GetRemediationArtifactByIdApiV2RemediationArtifactsArtifactIdGetWithResponse(ctx context.Context, artifactId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetRemediationArtifactByIdApiV2RemediationArtifactsArtifactIdGetResponse, error)
+
+	// ResolveThreadApiV2RemediationOrchestratorThreadsActionResolvePostWithBodyWithResponse request with any body
+	ResolveThreadApiV2RemediationOrchestratorThreadsActionResolvePostWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ResolveThreadApiV2RemediationOrchestratorThreadsActionResolvePostResponse, error)
+
+	ResolveThreadApiV2RemediationOrchestratorThreadsActionResolvePostWithResponse(ctx context.Context, body ResolveThreadApiV2RemediationOrchestratorThreadsActionResolvePostJSONRequestBody, reqEditors ...RequestEditorFn) (*ResolveThreadApiV2RemediationOrchestratorThreadsActionResolvePostResponse, error)
+
+	// StartThreadApiV2RemediationOrchestratorThreadsActionStartPostWithBodyWithResponse request with any body
+	StartThreadApiV2RemediationOrchestratorThreadsActionStartPostWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*StartThreadApiV2RemediationOrchestratorThreadsActionStartPostResponse, error)
+
+	StartThreadApiV2RemediationOrchestratorThreadsActionStartPostWithResponse(ctx context.Context, body StartThreadApiV2RemediationOrchestratorThreadsActionStartPostJSONRequestBody, reqEditors ...RequestEditorFn) (*StartThreadApiV2RemediationOrchestratorThreadsActionStartPostResponse, error)
+
+	// StreamStartApiV2RemediationOrchestratorThreadsActionStreamStartPostWithBodyWithResponse request with any body
+	StreamStartApiV2RemediationOrchestratorThreadsActionStreamStartPostWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*StreamStartApiV2RemediationOrchestratorThreadsActionStreamStartPostResponse, error)
+
+	StreamStartApiV2RemediationOrchestratorThreadsActionStreamStartPostWithResponse(ctx context.Context, body StreamStartApiV2RemediationOrchestratorThreadsActionStreamStartPostJSONRequestBody, reqEditors ...RequestEditorFn) (*StreamStartApiV2RemediationOrchestratorThreadsActionStreamStartPostResponse, error)
+
+	// RetryBackgroundRemediationApiV2RemediationOrchestratorThreadsThreadIdActionRetryBackgroundRemediationPostWithResponse request
+	RetryBackgroundRemediationApiV2RemediationOrchestratorThreadsThreadIdActionRetryBackgroundRemediationPostWithResponse(ctx context.Context, threadId openapi_types.UUID, reqEditors ...RequestEditorFn) (*RetryBackgroundRemediationApiV2RemediationOrchestratorThreadsThreadIdActionRetryBackgroundRemediationPostResponse, error)
+
+	// SendMessageApiV2RemediationOrchestratorThreadsThreadIdActionSendMessagePostWithBodyWithResponse request with any body
+	SendMessageApiV2RemediationOrchestratorThreadsThreadIdActionSendMessagePostWithBodyWithResponse(ctx context.Context, threadId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SendMessageApiV2RemediationOrchestratorThreadsThreadIdActionSendMessagePostResponse, error)
+
+	SendMessageApiV2RemediationOrchestratorThreadsThreadIdActionSendMessagePostWithResponse(ctx context.Context, threadId openapi_types.UUID, body SendMessageApiV2RemediationOrchestratorThreadsThreadIdActionSendMessagePostJSONRequestBody, reqEditors ...RequestEditorFn) (*SendMessageApiV2RemediationOrchestratorThreadsThreadIdActionSendMessagePostResponse, error)
+
+	// StreamGenerateArtifactsApiV2RemediationOrchestratorThreadsThreadIdActionStreamGenerateArtifactsPostWithResponse request
+	StreamGenerateArtifactsApiV2RemediationOrchestratorThreadsThreadIdActionStreamGenerateArtifactsPostWithResponse(ctx context.Context, threadId openapi_types.UUID, reqEditors ...RequestEditorFn) (*StreamGenerateArtifactsApiV2RemediationOrchestratorThreadsThreadIdActionStreamGenerateArtifactsPostResponse, error)
+
+	// StreamSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionStreamSendMessagePostWithBodyWithResponse request with any body
+	StreamSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionStreamSendMessagePostWithBodyWithResponse(ctx context.Context, threadId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*StreamSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionStreamSendMessagePostResponse, error)
+
+	StreamSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionStreamSendMessagePostWithResponse(ctx context.Context, threadId openapi_types.UUID, body StreamSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionStreamSendMessagePostJSONRequestBody, reqEditors ...RequestEditorFn) (*StreamSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionStreamSendMessagePostResponse, error)
+
+	// GetArtifactsApiV2RemediationOrchestratorThreadsThreadIdArtifactsGetWithResponse request
+	GetArtifactsApiV2RemediationOrchestratorThreadsThreadIdArtifactsGetWithResponse(ctx context.Context, threadId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetArtifactsApiV2RemediationOrchestratorThreadsThreadIdArtifactsGetResponse, error)
+
+	// StreamThreadEventsApiV2RemediationOrchestratorThreadsThreadIdEventsGetWithResponse request
+	StreamThreadEventsApiV2RemediationOrchestratorThreadsThreadIdEventsGetWithResponse(ctx context.Context, threadId openapi_types.UUID, params *StreamThreadEventsApiV2RemediationOrchestratorThreadsThreadIdEventsGetParams, reqEditors ...RequestEditorFn) (*StreamThreadEventsApiV2RemediationOrchestratorThreadsThreadIdEventsGetResponse, error)
+
+	// GetMessagesApiV2RemediationOrchestratorThreadsThreadIdMessagesGetWithResponse request
+	GetMessagesApiV2RemediationOrchestratorThreadsThreadIdMessagesGetWithResponse(ctx context.Context, threadId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetMessagesApiV2RemediationOrchestratorThreadsThreadIdMessagesGetResponse, error)
 
 	// ListRemediationSessionActivitiesApiV2RemediationSessionActivitiesGetWithResponse request
 	ListRemediationSessionActivitiesApiV2RemediationSessionActivitiesGetWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListRemediationSessionActivitiesApiV2RemediationSessionActivitiesGetResponse, error)
@@ -26031,6 +30273,9 @@ type ClientWithResponsesInterface interface {
 
 	ActionSetFlagApiV2SystemFeatureFlagsBusinessUnitActionSetFlagKeyPatchWithResponse(ctx context.Context, flagKey string, params *ActionSetFlagApiV2SystemFeatureFlagsBusinessUnitActionSetFlagKeyPatchParams, body ActionSetFlagApiV2SystemFeatureFlagsBusinessUnitActionSetFlagKeyPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*ActionSetFlagApiV2SystemFeatureFlagsBusinessUnitActionSetFlagKeyPatchResponse, error)
 
+	// DeleteFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyDeleteWithResponse request
+	DeleteFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyDeleteWithResponse(ctx context.Context, flagKey string, params *DeleteFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyDeleteParams, reqEditors ...RequestEditorFn) (*DeleteFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyDeleteResponse, error)
+
 	// GetFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyGetWithResponse request
 	GetFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyGetWithResponse(ctx context.Context, flagKey string, params *GetFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyGetParams, reqEditors ...RequestEditorFn) (*GetFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyGetResponse, error)
 
@@ -26069,6 +30314,9 @@ type ClientWithResponsesInterface interface {
 
 	ActionSetFlagApiV2SystemFeatureFlagsCompanyActionSetFlagKeyPatchWithResponse(ctx context.Context, flagKey string, params *ActionSetFlagApiV2SystemFeatureFlagsCompanyActionSetFlagKeyPatchParams, body ActionSetFlagApiV2SystemFeatureFlagsCompanyActionSetFlagKeyPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*ActionSetFlagApiV2SystemFeatureFlagsCompanyActionSetFlagKeyPatchResponse, error)
 
+	// DeleteFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyDeleteWithResponse request
+	DeleteFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyDeleteWithResponse(ctx context.Context, flagKey string, params *DeleteFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyDeleteParams, reqEditors ...RequestEditorFn) (*DeleteFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyDeleteResponse, error)
+
 	// GetFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyGetWithResponse request
 	GetFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyGetWithResponse(ctx context.Context, flagKey string, params *GetFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyGetParams, reqEditors ...RequestEditorFn) (*GetFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyGetResponse, error)
 
@@ -26095,10 +30343,16 @@ type ClientWithResponsesInterface interface {
 
 	CreateFlagApiV2SystemFeatureFlagsRootPostWithResponse(ctx context.Context, body CreateFlagApiV2SystemFeatureFlagsRootPostJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateFlagApiV2SystemFeatureFlagsRootPostResponse, error)
 
+	// ListRootFlagsApiV2SystemFeatureFlagsRootAdminGetWithResponse request
+	ListRootFlagsApiV2SystemFeatureFlagsRootAdminGetWithResponse(ctx context.Context, params *ListRootFlagsApiV2SystemFeatureFlagsRootAdminGetParams, reqEditors ...RequestEditorFn) (*ListRootFlagsApiV2SystemFeatureFlagsRootAdminGetResponse, error)
+
 	// ActionSetFlagApiV2SystemFeatureFlagsRootActionSetFlagKeyPatchWithBodyWithResponse request with any body
 	ActionSetFlagApiV2SystemFeatureFlagsRootActionSetFlagKeyPatchWithBodyWithResponse(ctx context.Context, flagKey string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ActionSetFlagApiV2SystemFeatureFlagsRootActionSetFlagKeyPatchResponse, error)
 
 	ActionSetFlagApiV2SystemFeatureFlagsRootActionSetFlagKeyPatchWithResponse(ctx context.Context, flagKey string, body ActionSetFlagApiV2SystemFeatureFlagsRootActionSetFlagKeyPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*ActionSetFlagApiV2SystemFeatureFlagsRootActionSetFlagKeyPatchResponse, error)
+
+	// DeleteFlagByKeyApiV2SystemFeatureFlagsRootByKeyFlagKeyDeleteWithResponse request
+	DeleteFlagByKeyApiV2SystemFeatureFlagsRootByKeyFlagKeyDeleteWithResponse(ctx context.Context, flagKey string, reqEditors ...RequestEditorFn) (*DeleteFlagByKeyApiV2SystemFeatureFlagsRootByKeyFlagKeyDeleteResponse, error)
 
 	// GetFlagByKeyApiV2SystemFeatureFlagsRootByKeyFlagKeyGetWithResponse request
 	GetFlagByKeyApiV2SystemFeatureFlagsRootByKeyFlagKeyGetWithResponse(ctx context.Context, flagKey string, reqEditors ...RequestEditorFn) (*GetFlagByKeyApiV2SystemFeatureFlagsRootByKeyFlagKeyGetResponse, error)
@@ -26164,23 +30418,37 @@ type ClientWithResponsesInterface interface {
 	// GetResourcesCountApiV2TempDashboardResourcesCountGetWithResponse request
 	GetResourcesCountApiV2TempDashboardResourcesCountGetWithResponse(ctx context.Context, params *GetResourcesCountApiV2TempDashboardResourcesCountGetParams, reqEditors ...RequestEditorFn) (*GetResourcesCountApiV2TempDashboardResourcesCountGetResponse, error)
 
-	// GetResourceHealthDetailsApiV2TempDashboardResourcesHealthDetailsGetWithResponse request
-	GetResourceHealthDetailsApiV2TempDashboardResourcesHealthDetailsGetWithResponse(ctx context.Context, params *GetResourceHealthDetailsApiV2TempDashboardResourcesHealthDetailsGetParams, reqEditors ...RequestEditorFn) (*GetResourceHealthDetailsApiV2TempDashboardResourcesHealthDetailsGetResponse, error)
-
-	// GetResourceHealthSummaryApiV2TempDashboardResourcesHealthSummaryGetWithResponse request
-	GetResourceHealthSummaryApiV2TempDashboardResourcesHealthSummaryGetWithResponse(ctx context.Context, params *GetResourceHealthSummaryApiV2TempDashboardResourcesHealthSummaryGetParams, reqEditors ...RequestEditorFn) (*GetResourceHealthSummaryApiV2TempDashboardResourcesHealthSummaryGetResponse, error)
-
 	// GetSavingsApiV2TempDashboardSavingsGetWithResponse request
 	GetSavingsApiV2TempDashboardSavingsGetWithResponse(ctx context.Context, params *GetSavingsApiV2TempDashboardSavingsGetParams, reqEditors ...RequestEditorFn) (*GetSavingsApiV2TempDashboardSavingsGetResponse, error)
 
 	// GetSavingsProgressApiV2TempDashboardSavingsProgressGetWithResponse request
 	GetSavingsProgressApiV2TempDashboardSavingsProgressGetWithResponse(ctx context.Context, params *GetSavingsProgressApiV2TempDashboardSavingsProgressGetParams, reqEditors ...RequestEditorFn) (*GetSavingsProgressApiV2TempDashboardSavingsProgressGetResponse, error)
 
-	// NangoWebhookApiV2WebhooksNangoPostWithResponse request
-	NangoWebhookApiV2WebhooksNangoPostWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*NangoWebhookApiV2WebhooksNangoPostResponse, error)
-
 	// StripeWebhookApiV2WebhooksStripePostWithResponse request
 	StripeWebhookApiV2WebhooksStripePostWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*StripeWebhookApiV2WebhooksStripePostResponse, error)
+}
+
+type RequestPasswordResetApiV2AuthActionRequestPasswordResetPostResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON202      *BaseApiResponse
+	JSON422      *HTTPValidationError
+}
+
+// Status returns HTTPResponse.Status
+func (r RequestPasswordResetApiV2AuthActionRequestPasswordResetPostResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RequestPasswordResetApiV2AuthActionRequestPasswordResetPostResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
 }
 
 type SendOwnerSignupInvitationApiV2AuthActionSendOwnerSignupInvitationPostResponse struct {
@@ -27700,6 +31968,52 @@ func (r GetAzureResourcesCountApiV2CloudAzureDiscoveryResourcesCountByCategoryGe
 	return 0
 }
 
+type ListReservationsApiV2CloudAzureReservationsGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *BaseApiResponse
+	JSON422      *HTTPValidationError
+}
+
+// Status returns HTTPResponse.Status
+func (r ListReservationsApiV2CloudAzureReservationsGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListReservationsApiV2CloudAzureReservationsGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ListReservationCoverageApiV2CloudAzureReservationsCoverageGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *BaseApiResponse
+	JSON422      *HTTPValidationError
+}
+
+// Status returns HTTPResponse.Status
+func (r ListReservationCoverageApiV2CloudAzureReservationsCoverageGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListReservationCoverageApiV2CloudAzureReservationsCoverageGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type ListAzureSourcedRecommendationsApiV2CloudAzureSourcedRecommendationsGetResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -27840,6 +32154,7 @@ type ListCloudAccountsApiV2CloudCloudAccountsGetResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *BaseApiResponse
+	JSON422      *HTTPValidationError
 }
 
 // Status returns HTTPResponse.Status
@@ -27875,6 +32190,52 @@ func (r CreateCloudAccountApiV2CloudCloudAccountsPostResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r CreateCloudAccountApiV2CloudCloudAccountsPostResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ListCloudAccountsForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *BaseApiResponse
+	JSON422      *HTTPValidationError
+}
+
+// Status returns HTTPResponse.Status
+func (r ListCloudAccountsForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListCloudAccountsForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetCloudAccountForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdCloudAccountIdGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *BaseApiResponse
+	JSON422      *HTTPValidationError
+}
+
+// Status returns HTTPResponse.Status
+func (r GetCloudAccountForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdCloudAccountIdGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetCloudAccountForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdCloudAccountIdGetResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -28109,6 +32470,52 @@ func (r StartCloudAccountSetupApiV2CloudCloudAccountsCloudAccountIdActionSetupPo
 	return 0
 }
 
+type GetCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *BaseApiResponse
+	JSON422      *HTTPValidationError
+}
+
+// Status returns HTTPResponse.Status
+func (r GetCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UpdateCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsPutResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *BaseApiResponse
+	JSON422      *HTTPValidationError
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsPutResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsPutResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type ListLatestCustomRecommendationsForAccountApiV2CloudCloudAccountsCloudAccountIdCustomRecommendationsLatestGetResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -28172,6 +32579,52 @@ func (r ListRemediationSessionsForAccountApiV2CloudCloudAccountsCloudAccountIdRe
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r ListRemediationSessionsForAccountApiV2CloudCloudAccountsCloudAccountIdRemediationSessionGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetCloudAccountSettingsApiV2CloudCloudAccountsCloudAccountIdSettingsGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *BaseApiResponse
+	JSON422      *HTTPValidationError
+}
+
+// Status returns HTTPResponse.Status
+func (r GetCloudAccountSettingsApiV2CloudCloudAccountsCloudAccountIdSettingsGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetCloudAccountSettingsApiV2CloudCloudAccountsCloudAccountIdSettingsGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UpdateCloudAccountAgentArchitectureApiV2CloudCloudAccountsCloudAccountIdSettingsAgentArchitecturePatchResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *BaseApiResponse
+	JSON422      *HTTPValidationError
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateCloudAccountAgentArchitectureApiV2CloudCloudAccountsCloudAccountIdSettingsAgentArchitecturePatchResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateCloudAccountAgentArchitectureApiV2CloudCloudAccountsCloudAccountIdSettingsAgentArchitecturePatchResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -28247,6 +32700,53 @@ func (r CreateCostDataSourceApiV2CloudCostDataSourcesPostResponse) StatusCode() 
 	return 0
 }
 
+type ApplyCostDataSourceCandidateApiV2CloudCostDataSourcesActionApplyCandidatePostResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *CloudCostDataSourceApplyResponse
+	JSON409      *CloudCostDataSourceApplyResponse
+	JSON422      *HTTPValidationError
+}
+
+// Status returns HTTPResponse.Status
+func (r ApplyCostDataSourceCandidateApiV2CloudCostDataSourcesActionApplyCandidatePostResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ApplyCostDataSourceCandidateApiV2CloudCostDataSourcesActionApplyCandidatePostResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ValidateCostDataSourceCandidateApiV2CloudCostDataSourcesActionValidateCandidatePostResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *BaseApiResponse
+	JSON422      *HTTPValidationError
+}
+
+// Status returns HTTPResponse.Status
+func (r ValidateCostDataSourceCandidateApiV2CloudCostDataSourcesActionValidateCandidatePostResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ValidateCostDataSourceCandidateApiV2CloudCostDataSourcesActionValidateCandidatePostResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type DeleteCostDataSourceApiV2CloudCostDataSourcesSourceIdDeleteResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -28310,6 +32810,56 @@ func (r UpdateCostDataSourceApiV2CloudCostDataSourcesSourceIdPatchResponse) Stat
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r UpdateCostDataSourceApiV2CloudCostDataSourcesSourceIdPatchResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type RetryCostSourceImportApiV2CloudCostDataSourcesSourceIdActionRetryImportPostResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON202      *RecoveryResponse
+	JSON409      *RecoveryRejectedResponse
+	JSON422      *HTTPValidationError
+	JSON503      *RecoveryRejectedResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r RetryCostSourceImportApiV2CloudCostDataSourcesSourceIdActionRetryImportPostResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RetryCostSourceImportApiV2CloudCostDataSourcesSourceIdActionRetryImportPostResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type RetryCostSourceMatchingApiV2CloudCostDataSourcesSourceIdActionRetryMatchingPostResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON202      *RecoveryResponse
+	JSON409      *RecoveryRejectedResponse
+	JSON422      *HTTPValidationError
+	JSON503      *RecoveryRejectedResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r RetryCostSourceMatchingApiV2CloudCostDataSourcesSourceIdActionRetryMatchingPostResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RetryCostSourceMatchingApiV2CloudCostDataSourcesSourceIdActionRetryMatchingPostResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -28728,6 +33278,29 @@ func (r ListCustomRecommendationSourceRowsApiV2CloudCustomRecommendationsCustomR
 	return 0
 }
 
+type GetCustomRecommendationVersionsApiV2CloudCustomRecommendationsCustomRecommendationIdVersionsGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *BaseApiResponse
+	JSON422      *HTTPValidationError
+}
+
+// Status returns HTTPResponse.Status
+func (r GetCustomRecommendationVersionsApiV2CloudCustomRecommendationsCustomRecommendationIdVersionsGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetCustomRecommendationVersionsApiV2CloudCustomRecommendationsCustomRecommendationIdVersionsGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type SubmitEvaluationApiV2CloudEvaluationsPostResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -28935,6 +33508,51 @@ func (r RefreshGcpIntegrationToAwsWifApiV2CloudGcpCredentialsCloudAccountIdActio
 	return 0
 }
 
+type ListGcpResourceDiscoveryAuditLogsApiV2CloudGcpDiscoveryAuditLogsGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *BaseApiResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r ListGcpResourceDiscoveryAuditLogsApiV2CloudGcpDiscoveryAuditLogsGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListGcpResourceDiscoveryAuditLogsApiV2CloudGcpDiscoveryAuditLogsGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetGcpResourceDiscoveryAuditLogApiV2CloudGcpDiscoveryAuditLogsAuditLogIdGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *BaseApiResponse
+	JSON422      *HTTPValidationError
+}
+
+// Status returns HTTPResponse.Status
+func (r GetGcpResourceDiscoveryAuditLogApiV2CloudGcpDiscoveryAuditLogsAuditLogIdGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetGcpResourceDiscoveryAuditLogApiV2CloudGcpDiscoveryAuditLogsAuditLogIdGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type ListGcpResourceDiscoveriesApiV2CloudGcpDiscoveryResourcesGetResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -29044,6 +33662,29 @@ func (r GetGcpResourceTypeCountsApiV2CloudGcpDiscoveryResourcesTypeCountsGetResp
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r GetGcpResourceTypeCountsApiV2CloudGcpDiscoveryResourcesTypeCountsGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UpdateGcpResourceConstraintsApiV2CloudGcpDiscoveryResourcesResourceIdConstraintsPatchResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *BaseApiResponse
+	JSON422      *HTTPValidationError
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateGcpResourceConstraintsApiV2CloudGcpDiscoveryResourcesResourceIdConstraintsPatchResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateGcpResourceConstraintsApiV2CloudGcpDiscoveryResourcesResourceIdConstraintsPatchResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -29326,6 +33967,29 @@ func (r QueryObservationsApiV2CloudObservationsGetResponse) StatusCode() int {
 	return 0
 }
 
+type ListRecommendationActivitiesApiV2CloudRecommendationActivitiesGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *BaseApiResponse
+	JSON422      *HTTPValidationError
+}
+
+// Status returns HTTPResponse.Status
+func (r ListRecommendationActivitiesApiV2CloudRecommendationActivitiesGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListRecommendationActivitiesApiV2CloudRecommendationActivitiesGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type ListRecommendationAgentOperationsApiV2CloudRecommendationAgentOperationsGetResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -29411,6 +34075,52 @@ func (r InspectRecommendationAgentOperationSourceApiV2CloudRecommendationAgentOp
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r InspectRecommendationAgentOperationSourceApiV2CloudRecommendationAgentOperationsRecommendationAgentOperationIdSourcesFocusCostAttributionRowsGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type AddRecommendationCommentApiV2CloudRecommendationsRecommendationIdActionAddCommentPostResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *BaseApiResponse
+	JSON422      *HTTPValidationError
+}
+
+// Status returns HTTPResponse.Status
+func (r AddRecommendationCommentApiV2CloudRecommendationsRecommendationIdActionAddCommentPostResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AddRecommendationCommentApiV2CloudRecommendationsRecommendationIdActionAddCommentPostResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ChangeRecommendationStatusApiV2CloudRecommendationsRecommendationIdActionChangeStatusPostResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *BaseApiResponse
+	JSON422      *HTTPValidationError
+}
+
+// Status returns HTTPResponse.Status
+func (r ChangeRecommendationStatusApiV2CloudRecommendationsRecommendationIdActionChangeStatusPostResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ChangeRecommendationStatusApiV2CloudRecommendationsRecommendationIdActionChangeStatusPostResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -30174,6 +34884,28 @@ func (r DisconnectGithubApiV2IntegrationsGithubActionDisconnectPostResponse) Sta
 	return 0
 }
 
+type NangoWebhookApiV2IntegrationsGithubEventsPostResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *interface{}
+}
+
+// Status returns HTTPResponse.Status
+func (r NangoWebhookApiV2IntegrationsGithubEventsPostResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r NangoWebhookApiV2IntegrationsGithubEventsPostResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type GetCurrentUserGithubConnectionApiV2IntegrationsGithubMeGetResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -30214,6 +34946,29 @@ func (r GetGithubIntegrationListApiV2IntegrationsGithubMeIntegrationGetResponse)
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r GetGithubIntegrationListApiV2IntegrationsGithubMeIntegrationGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetGithubPullRequestStatusApiV2IntegrationsGithubMePullRequestGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *BaseApiResponse
+	JSON422      *HTTPValidationError
+}
+
+// Status returns HTTPResponse.Status
+func (r GetGithubPullRequestStatusApiV2IntegrationsGithubMePullRequestGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetGithubPullRequestStatusApiV2IntegrationsGithubMePullRequestGetResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -30371,6 +35126,120 @@ func (r FetchJiraProjectsApiV2IntegrationsJiraProjectsGetResponse) Status() stri
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r FetchJiraProjectsApiV2IntegrationsJiraProjectsGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CancelSlackApiV2IntegrationsSlackActionCancelPostResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *BaseApiResponse
+	JSON422      *HTTPValidationError
+}
+
+// Status returns HTTPResponse.Status
+func (r CancelSlackApiV2IntegrationsSlackActionCancelPostResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CancelSlackApiV2IntegrationsSlackActionCancelPostResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ConnectSlackApiV2IntegrationsSlackActionConnectPostResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *BaseApiResponse
+	JSON422      *HTTPValidationError
+}
+
+// Status returns HTTPResponse.Status
+func (r ConnectSlackApiV2IntegrationsSlackActionConnectPostResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ConnectSlackApiV2IntegrationsSlackActionConnectPostResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DisconnectSlackApiV2IntegrationsSlackActionDisconnectPostResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *BaseApiResponse
+	JSON422      *HTTPValidationError
+}
+
+// Status returns HTTPResponse.Status
+func (r DisconnectSlackApiV2IntegrationsSlackActionDisconnectPostResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DisconnectSlackApiV2IntegrationsSlackActionDisconnectPostResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ReceiveSlackEventsApiV2IntegrationsSlackEventsPostResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *interface{}
+}
+
+// Status returns HTTPResponse.Status
+func (r ReceiveSlackEventsApiV2IntegrationsSlackEventsPostResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ReceiveSlackEventsApiV2IntegrationsSlackEventsPostResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetSlackIntegrationApiV2IntegrationsSlackMeIntegrationGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *BaseApiResponse
+	JSON422      *HTTPValidationError
+}
+
+// Status returns HTTPResponse.Status
+func (r GetSlackIntegrationApiV2IntegrationsSlackMeIntegrationGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetSlackIntegrationApiV2IntegrationsSlackMeIntegrationGetResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -30948,6 +35817,52 @@ func (r CreateBusinessUnitApiV2OrganizationBusinessUnitsPostResponse) StatusCode
 	return 0
 }
 
+type ListBusinessUnitsForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *BaseApiResponse
+	JSON422      *HTTPValidationError
+}
+
+// Status returns HTTPResponse.Status
+func (r ListBusinessUnitsForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListBusinessUnitsForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetBusinessUnitForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdBusinessUnitIdGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *BaseApiResponse
+	JSON422      *HTTPValidationError
+}
+
+// Status returns HTTPResponse.Status
+func (r GetBusinessUnitForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdBusinessUnitIdGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetBusinessUnitForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdBusinessUnitIdGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type DeleteBusinessUnitApiV2OrganizationBusinessUnitsBusinessUnitIdDeleteResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -31216,6 +36131,236 @@ func (r GetRemediationArtifactByIdApiV2RemediationArtifactsArtifactIdGetResponse
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r GetRemediationArtifactByIdApiV2RemediationArtifactsArtifactIdGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ResolveThreadApiV2RemediationOrchestratorThreadsActionResolvePostResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *BaseApiResponse
+	JSON422      *HTTPValidationError
+}
+
+// Status returns HTTPResponse.Status
+func (r ResolveThreadApiV2RemediationOrchestratorThreadsActionResolvePostResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ResolveThreadApiV2RemediationOrchestratorThreadsActionResolvePostResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type StartThreadApiV2RemediationOrchestratorThreadsActionStartPostResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *BaseApiResponse
+	JSON422      *HTTPValidationError
+}
+
+// Status returns HTTPResponse.Status
+func (r StartThreadApiV2RemediationOrchestratorThreadsActionStartPostResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r StartThreadApiV2RemediationOrchestratorThreadsActionStartPostResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type StreamStartApiV2RemediationOrchestratorThreadsActionStreamStartPostResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *interface{}
+	JSON422      *HTTPValidationError
+}
+
+// Status returns HTTPResponse.Status
+func (r StreamStartApiV2RemediationOrchestratorThreadsActionStreamStartPostResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r StreamStartApiV2RemediationOrchestratorThreadsActionStreamStartPostResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type RetryBackgroundRemediationApiV2RemediationOrchestratorThreadsThreadIdActionRetryBackgroundRemediationPostResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *BaseApiResponse
+	JSON422      *HTTPValidationError
+}
+
+// Status returns HTTPResponse.Status
+func (r RetryBackgroundRemediationApiV2RemediationOrchestratorThreadsThreadIdActionRetryBackgroundRemediationPostResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RetryBackgroundRemediationApiV2RemediationOrchestratorThreadsThreadIdActionRetryBackgroundRemediationPostResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type SendMessageApiV2RemediationOrchestratorThreadsThreadIdActionSendMessagePostResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *BaseApiResponse
+	JSON422      *HTTPValidationError
+}
+
+// Status returns HTTPResponse.Status
+func (r SendMessageApiV2RemediationOrchestratorThreadsThreadIdActionSendMessagePostResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r SendMessageApiV2RemediationOrchestratorThreadsThreadIdActionSendMessagePostResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type StreamGenerateArtifactsApiV2RemediationOrchestratorThreadsThreadIdActionStreamGenerateArtifactsPostResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *interface{}
+	JSON422      *HTTPValidationError
+}
+
+// Status returns HTTPResponse.Status
+func (r StreamGenerateArtifactsApiV2RemediationOrchestratorThreadsThreadIdActionStreamGenerateArtifactsPostResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r StreamGenerateArtifactsApiV2RemediationOrchestratorThreadsThreadIdActionStreamGenerateArtifactsPostResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type StreamSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionStreamSendMessagePostResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *interface{}
+	JSON422      *HTTPValidationError
+}
+
+// Status returns HTTPResponse.Status
+func (r StreamSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionStreamSendMessagePostResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r StreamSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionStreamSendMessagePostResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetArtifactsApiV2RemediationOrchestratorThreadsThreadIdArtifactsGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *BaseApiResponse
+	JSON422      *HTTPValidationError
+}
+
+// Status returns HTTPResponse.Status
+func (r GetArtifactsApiV2RemediationOrchestratorThreadsThreadIdArtifactsGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetArtifactsApiV2RemediationOrchestratorThreadsThreadIdArtifactsGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type StreamThreadEventsApiV2RemediationOrchestratorThreadsThreadIdEventsGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *interface{}
+	JSON422      *HTTPValidationError
+}
+
+// Status returns HTTPResponse.Status
+func (r StreamThreadEventsApiV2RemediationOrchestratorThreadsThreadIdEventsGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r StreamThreadEventsApiV2RemediationOrchestratorThreadsThreadIdEventsGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetMessagesApiV2RemediationOrchestratorThreadsThreadIdMessagesGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *BaseApiResponse
+	JSON422      *HTTPValidationError
+}
+
+// Status returns HTTPResponse.Status
+func (r GetMessagesApiV2RemediationOrchestratorThreadsThreadIdMessagesGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetMessagesApiV2RemediationOrchestratorThreadsThreadIdMessagesGetResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -32252,6 +37397,29 @@ func (r ActionSetFlagApiV2SystemFeatureFlagsBusinessUnitActionSetFlagKeyPatchRes
 	return 0
 }
 
+type DeleteFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyDeleteResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *BaseApiResponse
+	JSON422      *HTTPValidationError
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyDeleteResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyDeleteResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type GetFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyGetResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -32482,6 +37650,29 @@ func (r ActionSetFlagApiV2SystemFeatureFlagsCompanyActionSetFlagKeyPatchResponse
 	return 0
 }
 
+type DeleteFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyDeleteResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *BaseApiResponse
+	JSON422      *HTTPValidationError
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyDeleteResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyDeleteResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type GetFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyGetResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -32665,6 +37856,29 @@ func (r CreateFlagApiV2SystemFeatureFlagsRootPostResponse) StatusCode() int {
 	return 0
 }
 
+type ListRootFlagsApiV2SystemFeatureFlagsRootAdminGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *BaseApiResponse
+	JSON422      *HTTPValidationError
+}
+
+// Status returns HTTPResponse.Status
+func (r ListRootFlagsApiV2SystemFeatureFlagsRootAdminGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListRootFlagsApiV2SystemFeatureFlagsRootAdminGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type ActionSetFlagApiV2SystemFeatureFlagsRootActionSetFlagKeyPatchResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -32682,6 +37896,29 @@ func (r ActionSetFlagApiV2SystemFeatureFlagsRootActionSetFlagKeyPatchResponse) S
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r ActionSetFlagApiV2SystemFeatureFlagsRootActionSetFlagKeyPatchResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteFlagByKeyApiV2SystemFeatureFlagsRootByKeyFlagKeyDeleteResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *BaseApiResponse
+	JSON422      *HTTPValidationError
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteFlagByKeyApiV2SystemFeatureFlagsRootByKeyFlagKeyDeleteResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteFlagByKeyApiV2SystemFeatureFlagsRootByKeyFlagKeyDeleteResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -33140,52 +38377,6 @@ func (r GetResourcesCountApiV2TempDashboardResourcesCountGetResponse) StatusCode
 	return 0
 }
 
-type GetResourceHealthDetailsApiV2TempDashboardResourcesHealthDetailsGetResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *BaseApiResponse
-	JSON422      *HTTPValidationError
-}
-
-// Status returns HTTPResponse.Status
-func (r GetResourceHealthDetailsApiV2TempDashboardResourcesHealthDetailsGetResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r GetResourceHealthDetailsApiV2TempDashboardResourcesHealthDetailsGetResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type GetResourceHealthSummaryApiV2TempDashboardResourcesHealthSummaryGetResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *BaseApiResponse
-	JSON422      *HTTPValidationError
-}
-
-// Status returns HTTPResponse.Status
-func (r GetResourceHealthSummaryApiV2TempDashboardResourcesHealthSummaryGetResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r GetResourceHealthSummaryApiV2TempDashboardResourcesHealthSummaryGetResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
 type GetSavingsApiV2TempDashboardSavingsGetResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -33232,28 +38423,6 @@ func (r GetSavingsProgressApiV2TempDashboardSavingsProgressGetResponse) StatusCo
 	return 0
 }
 
-type NangoWebhookApiV2WebhooksNangoPostResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON501      *interface{}
-}
-
-// Status returns HTTPResponse.Status
-func (r NangoWebhookApiV2WebhooksNangoPostResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r NangoWebhookApiV2WebhooksNangoPostResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
 type StripeWebhookApiV2WebhooksStripePostResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -33274,6 +38443,23 @@ func (r StripeWebhookApiV2WebhooksStripePostResponse) StatusCode() int {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
+}
+
+// RequestPasswordResetApiV2AuthActionRequestPasswordResetPostWithBodyWithResponse request with arbitrary body returning *RequestPasswordResetApiV2AuthActionRequestPasswordResetPostResponse
+func (c *ClientWithResponses) RequestPasswordResetApiV2AuthActionRequestPasswordResetPostWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RequestPasswordResetApiV2AuthActionRequestPasswordResetPostResponse, error) {
+	rsp, err := c.RequestPasswordResetApiV2AuthActionRequestPasswordResetPostWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRequestPasswordResetApiV2AuthActionRequestPasswordResetPostResponse(rsp)
+}
+
+func (c *ClientWithResponses) RequestPasswordResetApiV2AuthActionRequestPasswordResetPostWithResponse(ctx context.Context, body RequestPasswordResetApiV2AuthActionRequestPasswordResetPostJSONRequestBody, reqEditors ...RequestEditorFn) (*RequestPasswordResetApiV2AuthActionRequestPasswordResetPostResponse, error) {
+	rsp, err := c.RequestPasswordResetApiV2AuthActionRequestPasswordResetPost(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRequestPasswordResetApiV2AuthActionRequestPasswordResetPostResponse(rsp)
 }
 
 // SendOwnerSignupInvitationApiV2AuthActionSendOwnerSignupInvitationPostWithBodyWithResponse request with arbitrary body returning *SendOwnerSignupInvitationApiV2AuthActionSendOwnerSignupInvitationPostResponse
@@ -34087,6 +39273,24 @@ func (c *ClientWithResponses) GetAzureResourcesCountApiV2CloudAzureDiscoveryReso
 	return ParseGetAzureResourcesCountApiV2CloudAzureDiscoveryResourcesCountByCategoryGetResponse(rsp)
 }
 
+// ListReservationsApiV2CloudAzureReservationsGetWithResponse request returning *ListReservationsApiV2CloudAzureReservationsGetResponse
+func (c *ClientWithResponses) ListReservationsApiV2CloudAzureReservationsGetWithResponse(ctx context.Context, params *ListReservationsApiV2CloudAzureReservationsGetParams, reqEditors ...RequestEditorFn) (*ListReservationsApiV2CloudAzureReservationsGetResponse, error) {
+	rsp, err := c.ListReservationsApiV2CloudAzureReservationsGet(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListReservationsApiV2CloudAzureReservationsGetResponse(rsp)
+}
+
+// ListReservationCoverageApiV2CloudAzureReservationsCoverageGetWithResponse request returning *ListReservationCoverageApiV2CloudAzureReservationsCoverageGetResponse
+func (c *ClientWithResponses) ListReservationCoverageApiV2CloudAzureReservationsCoverageGetWithResponse(ctx context.Context, params *ListReservationCoverageApiV2CloudAzureReservationsCoverageGetParams, reqEditors ...RequestEditorFn) (*ListReservationCoverageApiV2CloudAzureReservationsCoverageGetResponse, error) {
+	rsp, err := c.ListReservationCoverageApiV2CloudAzureReservationsCoverageGet(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListReservationCoverageApiV2CloudAzureReservationsCoverageGetResponse(rsp)
+}
+
 // ListAzureSourcedRecommendationsApiV2CloudAzureSourcedRecommendationsGetWithResponse request returning *ListAzureSourcedRecommendationsApiV2CloudAzureSourcedRecommendationsGetResponse
 func (c *ClientWithResponses) ListAzureSourcedRecommendationsApiV2CloudAzureSourcedRecommendationsGetWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListAzureSourcedRecommendationsApiV2CloudAzureSourcedRecommendationsGetResponse, error) {
 	rsp, err := c.ListAzureSourcedRecommendationsApiV2CloudAzureSourcedRecommendationsGet(ctx, reqEditors...)
@@ -34158,8 +39362,8 @@ func (c *ClientWithResponses) UpdateCloudAccountIntegrationApiV2CloudCloudAccoun
 }
 
 // ListCloudAccountsApiV2CloudCloudAccountsGetWithResponse request returning *ListCloudAccountsApiV2CloudCloudAccountsGetResponse
-func (c *ClientWithResponses) ListCloudAccountsApiV2CloudCloudAccountsGetWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListCloudAccountsApiV2CloudCloudAccountsGetResponse, error) {
-	rsp, err := c.ListCloudAccountsApiV2CloudCloudAccountsGet(ctx, reqEditors...)
+func (c *ClientWithResponses) ListCloudAccountsApiV2CloudCloudAccountsGetWithResponse(ctx context.Context, params *ListCloudAccountsApiV2CloudCloudAccountsGetParams, reqEditors ...RequestEditorFn) (*ListCloudAccountsApiV2CloudCloudAccountsGetResponse, error) {
+	rsp, err := c.ListCloudAccountsApiV2CloudCloudAccountsGet(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -34181,6 +39385,24 @@ func (c *ClientWithResponses) CreateCloudAccountApiV2CloudCloudAccountsPostWithR
 		return nil, err
 	}
 	return ParseCreateCloudAccountApiV2CloudCloudAccountsPostResponse(rsp)
+}
+
+// ListCloudAccountsForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdGetWithResponse request returning *ListCloudAccountsForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdGetResponse
+func (c *ClientWithResponses) ListCloudAccountsForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdGetWithResponse(ctx context.Context, companyId openapi_types.UUID, reqEditors ...RequestEditorFn) (*ListCloudAccountsForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdGetResponse, error) {
+	rsp, err := c.ListCloudAccountsForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdGet(ctx, companyId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListCloudAccountsForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdGetResponse(rsp)
+}
+
+// GetCloudAccountForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdCloudAccountIdGetWithResponse request returning *GetCloudAccountForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdCloudAccountIdGetResponse
+func (c *ClientWithResponses) GetCloudAccountForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdCloudAccountIdGetWithResponse(ctx context.Context, companyId openapi_types.UUID, cloudAccountId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetCloudAccountForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdCloudAccountIdGetResponse, error) {
+	rsp, err := c.GetCloudAccountForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdCloudAccountIdGet(ctx, companyId, cloudAccountId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetCloudAccountForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdCloudAccountIdGetResponse(rsp)
 }
 
 // GetAwsSetupGuideApiV2CloudCloudAccountsDocumentationAwsSetupGuideGetWithResponse request returning *GetAwsSetupGuideApiV2CloudCloudAccountsDocumentationAwsSetupGuideGetResponse
@@ -34305,6 +39527,24 @@ func (c *ClientWithResponses) StartCloudAccountSetupApiV2CloudCloudAccountsCloud
 	return ParseStartCloudAccountSetupApiV2CloudCloudAccountsCloudAccountIdActionSetupPostResponse(rsp)
 }
 
+// GetCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsGetWithResponse request returning *GetCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsGetResponse
+func (c *ClientWithResponses) GetCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsGetWithResponse(ctx context.Context, cloudAccountId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsGetResponse, error) {
+	rsp, err := c.GetCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsGet(ctx, cloudAccountId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsGetResponse(rsp)
+}
+
+// UpdateCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsPutWithResponse request returning *UpdateCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsPutResponse
+func (c *ClientWithResponses) UpdateCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsPutWithResponse(ctx context.Context, cloudAccountId openapi_types.UUID, reqEditors ...RequestEditorFn) (*UpdateCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsPutResponse, error) {
+	rsp, err := c.UpdateCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsPut(ctx, cloudAccountId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsPutResponse(rsp)
+}
+
 // ListLatestCustomRecommendationsForAccountApiV2CloudCloudAccountsCloudAccountIdCustomRecommendationsLatestGetWithResponse request returning *ListLatestCustomRecommendationsForAccountApiV2CloudCloudAccountsCloudAccountIdCustomRecommendationsLatestGetResponse
 func (c *ClientWithResponses) ListLatestCustomRecommendationsForAccountApiV2CloudCloudAccountsCloudAccountIdCustomRecommendationsLatestGetWithResponse(ctx context.Context, cloudAccountId openapi_types.UUID, reqEditors ...RequestEditorFn) (*ListLatestCustomRecommendationsForAccountApiV2CloudCloudAccountsCloudAccountIdCustomRecommendationsLatestGetResponse, error) {
 	rsp, err := c.ListLatestCustomRecommendationsForAccountApiV2CloudCloudAccountsCloudAccountIdCustomRecommendationsLatestGet(ctx, cloudAccountId, reqEditors...)
@@ -34330,6 +39570,32 @@ func (c *ClientWithResponses) ListRemediationSessionsForAccountApiV2CloudCloudAc
 		return nil, err
 	}
 	return ParseListRemediationSessionsForAccountApiV2CloudCloudAccountsCloudAccountIdRemediationSessionGetResponse(rsp)
+}
+
+// GetCloudAccountSettingsApiV2CloudCloudAccountsCloudAccountIdSettingsGetWithResponse request returning *GetCloudAccountSettingsApiV2CloudCloudAccountsCloudAccountIdSettingsGetResponse
+func (c *ClientWithResponses) GetCloudAccountSettingsApiV2CloudCloudAccountsCloudAccountIdSettingsGetWithResponse(ctx context.Context, cloudAccountId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetCloudAccountSettingsApiV2CloudCloudAccountsCloudAccountIdSettingsGetResponse, error) {
+	rsp, err := c.GetCloudAccountSettingsApiV2CloudCloudAccountsCloudAccountIdSettingsGet(ctx, cloudAccountId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetCloudAccountSettingsApiV2CloudCloudAccountsCloudAccountIdSettingsGetResponse(rsp)
+}
+
+// UpdateCloudAccountAgentArchitectureApiV2CloudCloudAccountsCloudAccountIdSettingsAgentArchitecturePatchWithBodyWithResponse request with arbitrary body returning *UpdateCloudAccountAgentArchitectureApiV2CloudCloudAccountsCloudAccountIdSettingsAgentArchitecturePatchResponse
+func (c *ClientWithResponses) UpdateCloudAccountAgentArchitectureApiV2CloudCloudAccountsCloudAccountIdSettingsAgentArchitecturePatchWithBodyWithResponse(ctx context.Context, cloudAccountId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateCloudAccountAgentArchitectureApiV2CloudCloudAccountsCloudAccountIdSettingsAgentArchitecturePatchResponse, error) {
+	rsp, err := c.UpdateCloudAccountAgentArchitectureApiV2CloudCloudAccountsCloudAccountIdSettingsAgentArchitecturePatchWithBody(ctx, cloudAccountId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateCloudAccountAgentArchitectureApiV2CloudCloudAccountsCloudAccountIdSettingsAgentArchitecturePatchResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateCloudAccountAgentArchitectureApiV2CloudCloudAccountsCloudAccountIdSettingsAgentArchitecturePatchWithResponse(ctx context.Context, cloudAccountId openapi_types.UUID, body UpdateCloudAccountAgentArchitectureApiV2CloudCloudAccountsCloudAccountIdSettingsAgentArchitecturePatchJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateCloudAccountAgentArchitectureApiV2CloudCloudAccountsCloudAccountIdSettingsAgentArchitecturePatchResponse, error) {
+	rsp, err := c.UpdateCloudAccountAgentArchitectureApiV2CloudCloudAccountsCloudAccountIdSettingsAgentArchitecturePatch(ctx, cloudAccountId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateCloudAccountAgentArchitectureApiV2CloudCloudAccountsCloudAccountIdSettingsAgentArchitecturePatchResponse(rsp)
 }
 
 // GetCloudAccountInitialSetupWarmAttemptsApiV2CloudCloudAccountsCloudAccountIdWarmAttemptsInitialSetupGetWithResponse request returning *GetCloudAccountInitialSetupWarmAttemptsApiV2CloudCloudAccountsCloudAccountIdWarmAttemptsInitialSetupGetResponse
@@ -34367,6 +39633,40 @@ func (c *ClientWithResponses) CreateCostDataSourceApiV2CloudCostDataSourcesPostW
 	return ParseCreateCostDataSourceApiV2CloudCostDataSourcesPostResponse(rsp)
 }
 
+// ApplyCostDataSourceCandidateApiV2CloudCostDataSourcesActionApplyCandidatePostWithBodyWithResponse request with arbitrary body returning *ApplyCostDataSourceCandidateApiV2CloudCostDataSourcesActionApplyCandidatePostResponse
+func (c *ClientWithResponses) ApplyCostDataSourceCandidateApiV2CloudCostDataSourcesActionApplyCandidatePostWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ApplyCostDataSourceCandidateApiV2CloudCostDataSourcesActionApplyCandidatePostResponse, error) {
+	rsp, err := c.ApplyCostDataSourceCandidateApiV2CloudCostDataSourcesActionApplyCandidatePostWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseApplyCostDataSourceCandidateApiV2CloudCostDataSourcesActionApplyCandidatePostResponse(rsp)
+}
+
+func (c *ClientWithResponses) ApplyCostDataSourceCandidateApiV2CloudCostDataSourcesActionApplyCandidatePostWithResponse(ctx context.Context, body ApplyCostDataSourceCandidateApiV2CloudCostDataSourcesActionApplyCandidatePostJSONRequestBody, reqEditors ...RequestEditorFn) (*ApplyCostDataSourceCandidateApiV2CloudCostDataSourcesActionApplyCandidatePostResponse, error) {
+	rsp, err := c.ApplyCostDataSourceCandidateApiV2CloudCostDataSourcesActionApplyCandidatePost(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseApplyCostDataSourceCandidateApiV2CloudCostDataSourcesActionApplyCandidatePostResponse(rsp)
+}
+
+// ValidateCostDataSourceCandidateApiV2CloudCostDataSourcesActionValidateCandidatePostWithBodyWithResponse request with arbitrary body returning *ValidateCostDataSourceCandidateApiV2CloudCostDataSourcesActionValidateCandidatePostResponse
+func (c *ClientWithResponses) ValidateCostDataSourceCandidateApiV2CloudCostDataSourcesActionValidateCandidatePostWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ValidateCostDataSourceCandidateApiV2CloudCostDataSourcesActionValidateCandidatePostResponse, error) {
+	rsp, err := c.ValidateCostDataSourceCandidateApiV2CloudCostDataSourcesActionValidateCandidatePostWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseValidateCostDataSourceCandidateApiV2CloudCostDataSourcesActionValidateCandidatePostResponse(rsp)
+}
+
+func (c *ClientWithResponses) ValidateCostDataSourceCandidateApiV2CloudCostDataSourcesActionValidateCandidatePostWithResponse(ctx context.Context, body ValidateCostDataSourceCandidateApiV2CloudCostDataSourcesActionValidateCandidatePostJSONRequestBody, reqEditors ...RequestEditorFn) (*ValidateCostDataSourceCandidateApiV2CloudCostDataSourcesActionValidateCandidatePostResponse, error) {
+	rsp, err := c.ValidateCostDataSourceCandidateApiV2CloudCostDataSourcesActionValidateCandidatePost(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseValidateCostDataSourceCandidateApiV2CloudCostDataSourcesActionValidateCandidatePostResponse(rsp)
+}
+
 // DeleteCostDataSourceApiV2CloudCostDataSourcesSourceIdDeleteWithResponse request returning *DeleteCostDataSourceApiV2CloudCostDataSourcesSourceIdDeleteResponse
 func (c *ClientWithResponses) DeleteCostDataSourceApiV2CloudCostDataSourcesSourceIdDeleteWithResponse(ctx context.Context, sourceId openapi_types.UUID, params *DeleteCostDataSourceApiV2CloudCostDataSourcesSourceIdDeleteParams, reqEditors ...RequestEditorFn) (*DeleteCostDataSourceApiV2CloudCostDataSourcesSourceIdDeleteResponse, error) {
 	rsp, err := c.DeleteCostDataSourceApiV2CloudCostDataSourcesSourceIdDelete(ctx, sourceId, params, reqEditors...)
@@ -34400,6 +39700,40 @@ func (c *ClientWithResponses) UpdateCostDataSourceApiV2CloudCostDataSourcesSourc
 		return nil, err
 	}
 	return ParseUpdateCostDataSourceApiV2CloudCostDataSourcesSourceIdPatchResponse(rsp)
+}
+
+// RetryCostSourceImportApiV2CloudCostDataSourcesSourceIdActionRetryImportPostWithBodyWithResponse request with arbitrary body returning *RetryCostSourceImportApiV2CloudCostDataSourcesSourceIdActionRetryImportPostResponse
+func (c *ClientWithResponses) RetryCostSourceImportApiV2CloudCostDataSourcesSourceIdActionRetryImportPostWithBodyWithResponse(ctx context.Context, sourceId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RetryCostSourceImportApiV2CloudCostDataSourcesSourceIdActionRetryImportPostResponse, error) {
+	rsp, err := c.RetryCostSourceImportApiV2CloudCostDataSourcesSourceIdActionRetryImportPostWithBody(ctx, sourceId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRetryCostSourceImportApiV2CloudCostDataSourcesSourceIdActionRetryImportPostResponse(rsp)
+}
+
+func (c *ClientWithResponses) RetryCostSourceImportApiV2CloudCostDataSourcesSourceIdActionRetryImportPostWithResponse(ctx context.Context, sourceId openapi_types.UUID, body RetryCostSourceImportApiV2CloudCostDataSourcesSourceIdActionRetryImportPostJSONRequestBody, reqEditors ...RequestEditorFn) (*RetryCostSourceImportApiV2CloudCostDataSourcesSourceIdActionRetryImportPostResponse, error) {
+	rsp, err := c.RetryCostSourceImportApiV2CloudCostDataSourcesSourceIdActionRetryImportPost(ctx, sourceId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRetryCostSourceImportApiV2CloudCostDataSourcesSourceIdActionRetryImportPostResponse(rsp)
+}
+
+// RetryCostSourceMatchingApiV2CloudCostDataSourcesSourceIdActionRetryMatchingPostWithBodyWithResponse request with arbitrary body returning *RetryCostSourceMatchingApiV2CloudCostDataSourcesSourceIdActionRetryMatchingPostResponse
+func (c *ClientWithResponses) RetryCostSourceMatchingApiV2CloudCostDataSourcesSourceIdActionRetryMatchingPostWithBodyWithResponse(ctx context.Context, sourceId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RetryCostSourceMatchingApiV2CloudCostDataSourcesSourceIdActionRetryMatchingPostResponse, error) {
+	rsp, err := c.RetryCostSourceMatchingApiV2CloudCostDataSourcesSourceIdActionRetryMatchingPostWithBody(ctx, sourceId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRetryCostSourceMatchingApiV2CloudCostDataSourcesSourceIdActionRetryMatchingPostResponse(rsp)
+}
+
+func (c *ClientWithResponses) RetryCostSourceMatchingApiV2CloudCostDataSourcesSourceIdActionRetryMatchingPostWithResponse(ctx context.Context, sourceId openapi_types.UUID, body RetryCostSourceMatchingApiV2CloudCostDataSourcesSourceIdActionRetryMatchingPostJSONRequestBody, reqEditors ...RequestEditorFn) (*RetryCostSourceMatchingApiV2CloudCostDataSourcesSourceIdActionRetryMatchingPostResponse, error) {
+	rsp, err := c.RetryCostSourceMatchingApiV2CloudCostDataSourcesSourceIdActionRetryMatchingPost(ctx, sourceId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRetryCostSourceMatchingApiV2CloudCostDataSourcesSourceIdActionRetryMatchingPostResponse(rsp)
 }
 
 // SetCostDataSourceEnabledApiV2CloudCostDataSourcesSourceIdActionSetEnabledPostWithBodyWithResponse request with arbitrary body returning *SetCostDataSourceEnabledApiV2CloudCostDataSourcesSourceIdActionSetEnabledPostResponse
@@ -34620,6 +39954,15 @@ func (c *ClientWithResponses) ListCustomRecommendationSourceRowsApiV2CloudCustom
 	return ParseListCustomRecommendationSourceRowsApiV2CloudCustomRecommendationsCustomRecommendationIdSourcesSourceKeyRowsGetResponse(rsp)
 }
 
+// GetCustomRecommendationVersionsApiV2CloudCustomRecommendationsCustomRecommendationIdVersionsGetWithResponse request returning *GetCustomRecommendationVersionsApiV2CloudCustomRecommendationsCustomRecommendationIdVersionsGetResponse
+func (c *ClientWithResponses) GetCustomRecommendationVersionsApiV2CloudCustomRecommendationsCustomRecommendationIdVersionsGetWithResponse(ctx context.Context, customRecommendationId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetCustomRecommendationVersionsApiV2CloudCustomRecommendationsCustomRecommendationIdVersionsGetResponse, error) {
+	rsp, err := c.GetCustomRecommendationVersionsApiV2CloudCustomRecommendationsCustomRecommendationIdVersionsGet(ctx, customRecommendationId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetCustomRecommendationVersionsApiV2CloudCustomRecommendationsCustomRecommendationIdVersionsGetResponse(rsp)
+}
+
 // SubmitEvaluationApiV2CloudEvaluationsPostWithBodyWithResponse request with arbitrary body returning *SubmitEvaluationApiV2CloudEvaluationsPostResponse
 func (c *ClientWithResponses) SubmitEvaluationApiV2CloudEvaluationsPostWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SubmitEvaluationApiV2CloudEvaluationsPostResponse, error) {
 	rsp, err := c.SubmitEvaluationApiV2CloudEvaluationsPostWithBody(ctx, contentType, body, reqEditors...)
@@ -34757,6 +40100,24 @@ func (c *ClientWithResponses) RefreshGcpIntegrationToAwsWifApiV2CloudGcpCredenti
 	return ParseRefreshGcpIntegrationToAwsWifApiV2CloudGcpCredentialsCloudAccountIdActionRefreshWifPostResponse(rsp)
 }
 
+// ListGcpResourceDiscoveryAuditLogsApiV2CloudGcpDiscoveryAuditLogsGetWithResponse request returning *ListGcpResourceDiscoveryAuditLogsApiV2CloudGcpDiscoveryAuditLogsGetResponse
+func (c *ClientWithResponses) ListGcpResourceDiscoveryAuditLogsApiV2CloudGcpDiscoveryAuditLogsGetWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListGcpResourceDiscoveryAuditLogsApiV2CloudGcpDiscoveryAuditLogsGetResponse, error) {
+	rsp, err := c.ListGcpResourceDiscoveryAuditLogsApiV2CloudGcpDiscoveryAuditLogsGet(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListGcpResourceDiscoveryAuditLogsApiV2CloudGcpDiscoveryAuditLogsGetResponse(rsp)
+}
+
+// GetGcpResourceDiscoveryAuditLogApiV2CloudGcpDiscoveryAuditLogsAuditLogIdGetWithResponse request returning *GetGcpResourceDiscoveryAuditLogApiV2CloudGcpDiscoveryAuditLogsAuditLogIdGetResponse
+func (c *ClientWithResponses) GetGcpResourceDiscoveryAuditLogApiV2CloudGcpDiscoveryAuditLogsAuditLogIdGetWithResponse(ctx context.Context, auditLogId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetGcpResourceDiscoveryAuditLogApiV2CloudGcpDiscoveryAuditLogsAuditLogIdGetResponse, error) {
+	rsp, err := c.GetGcpResourceDiscoveryAuditLogApiV2CloudGcpDiscoveryAuditLogsAuditLogIdGet(ctx, auditLogId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetGcpResourceDiscoveryAuditLogApiV2CloudGcpDiscoveryAuditLogsAuditLogIdGetResponse(rsp)
+}
+
 // ListGcpResourceDiscoveriesApiV2CloudGcpDiscoveryResourcesGetWithResponse request returning *ListGcpResourceDiscoveriesApiV2CloudGcpDiscoveryResourcesGetResponse
 func (c *ClientWithResponses) ListGcpResourceDiscoveriesApiV2CloudGcpDiscoveryResourcesGetWithResponse(ctx context.Context, params *ListGcpResourceDiscoveriesApiV2CloudGcpDiscoveryResourcesGetParams, reqEditors ...RequestEditorFn) (*ListGcpResourceDiscoveriesApiV2CloudGcpDiscoveryResourcesGetResponse, error) {
 	rsp, err := c.ListGcpResourceDiscoveriesApiV2CloudGcpDiscoveryResourcesGet(ctx, params, reqEditors...)
@@ -34816,6 +40177,23 @@ func (c *ClientWithResponses) GetGcpResourceTypeCountsApiV2CloudGcpDiscoveryReso
 		return nil, err
 	}
 	return ParseGetGcpResourceTypeCountsApiV2CloudGcpDiscoveryResourcesTypeCountsGetResponse(rsp)
+}
+
+// UpdateGcpResourceConstraintsApiV2CloudGcpDiscoveryResourcesResourceIdConstraintsPatchWithBodyWithResponse request with arbitrary body returning *UpdateGcpResourceConstraintsApiV2CloudGcpDiscoveryResourcesResourceIdConstraintsPatchResponse
+func (c *ClientWithResponses) UpdateGcpResourceConstraintsApiV2CloudGcpDiscoveryResourcesResourceIdConstraintsPatchWithBodyWithResponse(ctx context.Context, resourceId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateGcpResourceConstraintsApiV2CloudGcpDiscoveryResourcesResourceIdConstraintsPatchResponse, error) {
+	rsp, err := c.UpdateGcpResourceConstraintsApiV2CloudGcpDiscoveryResourcesResourceIdConstraintsPatchWithBody(ctx, resourceId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateGcpResourceConstraintsApiV2CloudGcpDiscoveryResourcesResourceIdConstraintsPatchResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateGcpResourceConstraintsApiV2CloudGcpDiscoveryResourcesResourceIdConstraintsPatchWithResponse(ctx context.Context, resourceId openapi_types.UUID, body UpdateGcpResourceConstraintsApiV2CloudGcpDiscoveryResourcesResourceIdConstraintsPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateGcpResourceConstraintsApiV2CloudGcpDiscoveryResourcesResourceIdConstraintsPatchResponse, error) {
+	rsp, err := c.UpdateGcpResourceConstraintsApiV2CloudGcpDiscoveryResourcesResourceIdConstraintsPatch(ctx, resourceId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateGcpResourceConstraintsApiV2CloudGcpDiscoveryResourcesResourceIdConstraintsPatchResponse(rsp)
 }
 
 // GetGovernanceGapsApiV2CloudGovernanceGapsGetWithResponse request returning *GetGovernanceGapsApiV2CloudGovernanceGapsGetResponse
@@ -34966,6 +40344,15 @@ func (c *ClientWithResponses) QueryObservationsApiV2CloudObservationsGetWithResp
 	return ParseQueryObservationsApiV2CloudObservationsGetResponse(rsp)
 }
 
+// ListRecommendationActivitiesApiV2CloudRecommendationActivitiesGetWithResponse request returning *ListRecommendationActivitiesApiV2CloudRecommendationActivitiesGetResponse
+func (c *ClientWithResponses) ListRecommendationActivitiesApiV2CloudRecommendationActivitiesGetWithResponse(ctx context.Context, params *ListRecommendationActivitiesApiV2CloudRecommendationActivitiesGetParams, reqEditors ...RequestEditorFn) (*ListRecommendationActivitiesApiV2CloudRecommendationActivitiesGetResponse, error) {
+	rsp, err := c.ListRecommendationActivitiesApiV2CloudRecommendationActivitiesGet(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListRecommendationActivitiesApiV2CloudRecommendationActivitiesGetResponse(rsp)
+}
+
 // ListRecommendationAgentOperationsApiV2CloudRecommendationAgentOperationsGetWithResponse request returning *ListRecommendationAgentOperationsApiV2CloudRecommendationAgentOperationsGetResponse
 func (c *ClientWithResponses) ListRecommendationAgentOperationsApiV2CloudRecommendationAgentOperationsGetWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListRecommendationAgentOperationsApiV2CloudRecommendationAgentOperationsGetResponse, error) {
 	rsp, err := c.ListRecommendationAgentOperationsApiV2CloudRecommendationAgentOperationsGet(ctx, reqEditors...)
@@ -35000,6 +40387,40 @@ func (c *ClientWithResponses) InspectRecommendationAgentOperationSourceApiV2Clou
 		return nil, err
 	}
 	return ParseInspectRecommendationAgentOperationSourceApiV2CloudRecommendationAgentOperationsRecommendationAgentOperationIdSourcesFocusCostAttributionRowsGetResponse(rsp)
+}
+
+// AddRecommendationCommentApiV2CloudRecommendationsRecommendationIdActionAddCommentPostWithBodyWithResponse request with arbitrary body returning *AddRecommendationCommentApiV2CloudRecommendationsRecommendationIdActionAddCommentPostResponse
+func (c *ClientWithResponses) AddRecommendationCommentApiV2CloudRecommendationsRecommendationIdActionAddCommentPostWithBodyWithResponse(ctx context.Context, recommendationId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AddRecommendationCommentApiV2CloudRecommendationsRecommendationIdActionAddCommentPostResponse, error) {
+	rsp, err := c.AddRecommendationCommentApiV2CloudRecommendationsRecommendationIdActionAddCommentPostWithBody(ctx, recommendationId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAddRecommendationCommentApiV2CloudRecommendationsRecommendationIdActionAddCommentPostResponse(rsp)
+}
+
+func (c *ClientWithResponses) AddRecommendationCommentApiV2CloudRecommendationsRecommendationIdActionAddCommentPostWithResponse(ctx context.Context, recommendationId openapi_types.UUID, body AddRecommendationCommentApiV2CloudRecommendationsRecommendationIdActionAddCommentPostJSONRequestBody, reqEditors ...RequestEditorFn) (*AddRecommendationCommentApiV2CloudRecommendationsRecommendationIdActionAddCommentPostResponse, error) {
+	rsp, err := c.AddRecommendationCommentApiV2CloudRecommendationsRecommendationIdActionAddCommentPost(ctx, recommendationId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAddRecommendationCommentApiV2CloudRecommendationsRecommendationIdActionAddCommentPostResponse(rsp)
+}
+
+// ChangeRecommendationStatusApiV2CloudRecommendationsRecommendationIdActionChangeStatusPostWithBodyWithResponse request with arbitrary body returning *ChangeRecommendationStatusApiV2CloudRecommendationsRecommendationIdActionChangeStatusPostResponse
+func (c *ClientWithResponses) ChangeRecommendationStatusApiV2CloudRecommendationsRecommendationIdActionChangeStatusPostWithBodyWithResponse(ctx context.Context, recommendationId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ChangeRecommendationStatusApiV2CloudRecommendationsRecommendationIdActionChangeStatusPostResponse, error) {
+	rsp, err := c.ChangeRecommendationStatusApiV2CloudRecommendationsRecommendationIdActionChangeStatusPostWithBody(ctx, recommendationId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseChangeRecommendationStatusApiV2CloudRecommendationsRecommendationIdActionChangeStatusPostResponse(rsp)
+}
+
+func (c *ClientWithResponses) ChangeRecommendationStatusApiV2CloudRecommendationsRecommendationIdActionChangeStatusPostWithResponse(ctx context.Context, recommendationId openapi_types.UUID, body ChangeRecommendationStatusApiV2CloudRecommendationsRecommendationIdActionChangeStatusPostJSONRequestBody, reqEditors ...RequestEditorFn) (*ChangeRecommendationStatusApiV2CloudRecommendationsRecommendationIdActionChangeStatusPostResponse, error) {
+	rsp, err := c.ChangeRecommendationStatusApiV2CloudRecommendationsRecommendationIdActionChangeStatusPost(ctx, recommendationId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseChangeRecommendationStatusApiV2CloudRecommendationsRecommendationIdActionChangeStatusPostResponse(rsp)
 }
 
 // GetResourceTypeCategoriesApiV2CloudResourceTypesCategoriesGetWithResponse request returning *GetResourceTypeCategoriesApiV2CloudResourceTypesCategoriesGetResponse
@@ -35419,6 +40840,15 @@ func (c *ClientWithResponses) DisconnectGithubApiV2IntegrationsGithubActionDisco
 	return ParseDisconnectGithubApiV2IntegrationsGithubActionDisconnectPostResponse(rsp)
 }
 
+// NangoWebhookApiV2IntegrationsGithubEventsPostWithResponse request returning *NangoWebhookApiV2IntegrationsGithubEventsPostResponse
+func (c *ClientWithResponses) NangoWebhookApiV2IntegrationsGithubEventsPostWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*NangoWebhookApiV2IntegrationsGithubEventsPostResponse, error) {
+	rsp, err := c.NangoWebhookApiV2IntegrationsGithubEventsPost(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseNangoWebhookApiV2IntegrationsGithubEventsPostResponse(rsp)
+}
+
 // GetCurrentUserGithubConnectionApiV2IntegrationsGithubMeGetWithResponse request returning *GetCurrentUserGithubConnectionApiV2IntegrationsGithubMeGetResponse
 func (c *ClientWithResponses) GetCurrentUserGithubConnectionApiV2IntegrationsGithubMeGetWithResponse(ctx context.Context, params *GetCurrentUserGithubConnectionApiV2IntegrationsGithubMeGetParams, reqEditors ...RequestEditorFn) (*GetCurrentUserGithubConnectionApiV2IntegrationsGithubMeGetResponse, error) {
 	rsp, err := c.GetCurrentUserGithubConnectionApiV2IntegrationsGithubMeGet(ctx, params, reqEditors...)
@@ -35435,6 +40865,15 @@ func (c *ClientWithResponses) GetGithubIntegrationListApiV2IntegrationsGithubMeI
 		return nil, err
 	}
 	return ParseGetGithubIntegrationListApiV2IntegrationsGithubMeIntegrationGetResponse(rsp)
+}
+
+// GetGithubPullRequestStatusApiV2IntegrationsGithubMePullRequestGetWithResponse request returning *GetGithubPullRequestStatusApiV2IntegrationsGithubMePullRequestGetResponse
+func (c *ClientWithResponses) GetGithubPullRequestStatusApiV2IntegrationsGithubMePullRequestGetWithResponse(ctx context.Context, params *GetGithubPullRequestStatusApiV2IntegrationsGithubMePullRequestGetParams, reqEditors ...RequestEditorFn) (*GetGithubPullRequestStatusApiV2IntegrationsGithubMePullRequestGetResponse, error) {
+	rsp, err := c.GetGithubPullRequestStatusApiV2IntegrationsGithubMePullRequestGet(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetGithubPullRequestStatusApiV2IntegrationsGithubMePullRequestGetResponse(rsp)
 }
 
 // GetGithubScanStatusApiV2IntegrationsGithubMeScanStatusGetWithResponse request returning *GetGithubScanStatusApiV2IntegrationsGithubMeScanStatusGetResponse
@@ -35514,6 +40953,75 @@ func (c *ClientWithResponses) FetchJiraProjectsApiV2IntegrationsJiraProjectsGetW
 		return nil, err
 	}
 	return ParseFetchJiraProjectsApiV2IntegrationsJiraProjectsGetResponse(rsp)
+}
+
+// CancelSlackApiV2IntegrationsSlackActionCancelPostWithBodyWithResponse request with arbitrary body returning *CancelSlackApiV2IntegrationsSlackActionCancelPostResponse
+func (c *ClientWithResponses) CancelSlackApiV2IntegrationsSlackActionCancelPostWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CancelSlackApiV2IntegrationsSlackActionCancelPostResponse, error) {
+	rsp, err := c.CancelSlackApiV2IntegrationsSlackActionCancelPostWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCancelSlackApiV2IntegrationsSlackActionCancelPostResponse(rsp)
+}
+
+func (c *ClientWithResponses) CancelSlackApiV2IntegrationsSlackActionCancelPostWithResponse(ctx context.Context, body CancelSlackApiV2IntegrationsSlackActionCancelPostJSONRequestBody, reqEditors ...RequestEditorFn) (*CancelSlackApiV2IntegrationsSlackActionCancelPostResponse, error) {
+	rsp, err := c.CancelSlackApiV2IntegrationsSlackActionCancelPost(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCancelSlackApiV2IntegrationsSlackActionCancelPostResponse(rsp)
+}
+
+// ConnectSlackApiV2IntegrationsSlackActionConnectPostWithBodyWithResponse request with arbitrary body returning *ConnectSlackApiV2IntegrationsSlackActionConnectPostResponse
+func (c *ClientWithResponses) ConnectSlackApiV2IntegrationsSlackActionConnectPostWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ConnectSlackApiV2IntegrationsSlackActionConnectPostResponse, error) {
+	rsp, err := c.ConnectSlackApiV2IntegrationsSlackActionConnectPostWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseConnectSlackApiV2IntegrationsSlackActionConnectPostResponse(rsp)
+}
+
+func (c *ClientWithResponses) ConnectSlackApiV2IntegrationsSlackActionConnectPostWithResponse(ctx context.Context, body ConnectSlackApiV2IntegrationsSlackActionConnectPostJSONRequestBody, reqEditors ...RequestEditorFn) (*ConnectSlackApiV2IntegrationsSlackActionConnectPostResponse, error) {
+	rsp, err := c.ConnectSlackApiV2IntegrationsSlackActionConnectPost(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseConnectSlackApiV2IntegrationsSlackActionConnectPostResponse(rsp)
+}
+
+// DisconnectSlackApiV2IntegrationsSlackActionDisconnectPostWithBodyWithResponse request with arbitrary body returning *DisconnectSlackApiV2IntegrationsSlackActionDisconnectPostResponse
+func (c *ClientWithResponses) DisconnectSlackApiV2IntegrationsSlackActionDisconnectPostWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DisconnectSlackApiV2IntegrationsSlackActionDisconnectPostResponse, error) {
+	rsp, err := c.DisconnectSlackApiV2IntegrationsSlackActionDisconnectPostWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDisconnectSlackApiV2IntegrationsSlackActionDisconnectPostResponse(rsp)
+}
+
+func (c *ClientWithResponses) DisconnectSlackApiV2IntegrationsSlackActionDisconnectPostWithResponse(ctx context.Context, body DisconnectSlackApiV2IntegrationsSlackActionDisconnectPostJSONRequestBody, reqEditors ...RequestEditorFn) (*DisconnectSlackApiV2IntegrationsSlackActionDisconnectPostResponse, error) {
+	rsp, err := c.DisconnectSlackApiV2IntegrationsSlackActionDisconnectPost(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDisconnectSlackApiV2IntegrationsSlackActionDisconnectPostResponse(rsp)
+}
+
+// ReceiveSlackEventsApiV2IntegrationsSlackEventsPostWithResponse request returning *ReceiveSlackEventsApiV2IntegrationsSlackEventsPostResponse
+func (c *ClientWithResponses) ReceiveSlackEventsApiV2IntegrationsSlackEventsPostWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ReceiveSlackEventsApiV2IntegrationsSlackEventsPostResponse, error) {
+	rsp, err := c.ReceiveSlackEventsApiV2IntegrationsSlackEventsPost(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseReceiveSlackEventsApiV2IntegrationsSlackEventsPostResponse(rsp)
+}
+
+// GetSlackIntegrationApiV2IntegrationsSlackMeIntegrationGetWithResponse request returning *GetSlackIntegrationApiV2IntegrationsSlackMeIntegrationGetResponse
+func (c *ClientWithResponses) GetSlackIntegrationApiV2IntegrationsSlackMeIntegrationGetWithResponse(ctx context.Context, params *GetSlackIntegrationApiV2IntegrationsSlackMeIntegrationGetParams, reqEditors ...RequestEditorFn) (*GetSlackIntegrationApiV2IntegrationsSlackMeIntegrationGetResponse, error) {
+	rsp, err := c.GetSlackIntegrationApiV2IntegrationsSlackMeIntegrationGet(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetSlackIntegrationApiV2IntegrationsSlackMeIntegrationGetResponse(rsp)
 }
 
 // CreateCheckoutSessionApiV2LicenseAndBillingBillingActionCreateCheckoutSessionPostWithBodyWithResponse request with arbitrary body returning *CreateCheckoutSessionApiV2LicenseAndBillingBillingActionCreateCheckoutSessionPostResponse
@@ -35845,6 +41353,24 @@ func (c *ClientWithResponses) CreateBusinessUnitApiV2OrganizationBusinessUnitsPo
 	return ParseCreateBusinessUnitApiV2OrganizationBusinessUnitsPostResponse(rsp)
 }
 
+// ListBusinessUnitsForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdGetWithResponse request returning *ListBusinessUnitsForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdGetResponse
+func (c *ClientWithResponses) ListBusinessUnitsForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdGetWithResponse(ctx context.Context, companyId openapi_types.UUID, reqEditors ...RequestEditorFn) (*ListBusinessUnitsForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdGetResponse, error) {
+	rsp, err := c.ListBusinessUnitsForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdGet(ctx, companyId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListBusinessUnitsForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdGetResponse(rsp)
+}
+
+// GetBusinessUnitForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdBusinessUnitIdGetWithResponse request returning *GetBusinessUnitForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdBusinessUnitIdGetResponse
+func (c *ClientWithResponses) GetBusinessUnitForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdBusinessUnitIdGetWithResponse(ctx context.Context, companyId openapi_types.UUID, businessUnitId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetBusinessUnitForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdBusinessUnitIdGetResponse, error) {
+	rsp, err := c.GetBusinessUnitForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdBusinessUnitIdGet(ctx, companyId, businessUnitId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetBusinessUnitForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdBusinessUnitIdGetResponse(rsp)
+}
+
 // DeleteBusinessUnitApiV2OrganizationBusinessUnitsBusinessUnitIdDeleteWithResponse request returning *DeleteBusinessUnitApiV2OrganizationBusinessUnitsBusinessUnitIdDeleteResponse
 func (c *ClientWithResponses) DeleteBusinessUnitApiV2OrganizationBusinessUnitsBusinessUnitIdDeleteWithResponse(ctx context.Context, businessUnitId openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteBusinessUnitApiV2OrganizationBusinessUnitsBusinessUnitIdDeleteResponse, error) {
 	rsp, err := c.DeleteBusinessUnitApiV2OrganizationBusinessUnitsBusinessUnitIdDelete(ctx, businessUnitId, reqEditors...)
@@ -35983,6 +41509,136 @@ func (c *ClientWithResponses) GetRemediationArtifactByIdApiV2RemediationArtifact
 		return nil, err
 	}
 	return ParseGetRemediationArtifactByIdApiV2RemediationArtifactsArtifactIdGetResponse(rsp)
+}
+
+// ResolveThreadApiV2RemediationOrchestratorThreadsActionResolvePostWithBodyWithResponse request with arbitrary body returning *ResolveThreadApiV2RemediationOrchestratorThreadsActionResolvePostResponse
+func (c *ClientWithResponses) ResolveThreadApiV2RemediationOrchestratorThreadsActionResolvePostWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ResolveThreadApiV2RemediationOrchestratorThreadsActionResolvePostResponse, error) {
+	rsp, err := c.ResolveThreadApiV2RemediationOrchestratorThreadsActionResolvePostWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseResolveThreadApiV2RemediationOrchestratorThreadsActionResolvePostResponse(rsp)
+}
+
+func (c *ClientWithResponses) ResolveThreadApiV2RemediationOrchestratorThreadsActionResolvePostWithResponse(ctx context.Context, body ResolveThreadApiV2RemediationOrchestratorThreadsActionResolvePostJSONRequestBody, reqEditors ...RequestEditorFn) (*ResolveThreadApiV2RemediationOrchestratorThreadsActionResolvePostResponse, error) {
+	rsp, err := c.ResolveThreadApiV2RemediationOrchestratorThreadsActionResolvePost(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseResolveThreadApiV2RemediationOrchestratorThreadsActionResolvePostResponse(rsp)
+}
+
+// StartThreadApiV2RemediationOrchestratorThreadsActionStartPostWithBodyWithResponse request with arbitrary body returning *StartThreadApiV2RemediationOrchestratorThreadsActionStartPostResponse
+func (c *ClientWithResponses) StartThreadApiV2RemediationOrchestratorThreadsActionStartPostWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*StartThreadApiV2RemediationOrchestratorThreadsActionStartPostResponse, error) {
+	rsp, err := c.StartThreadApiV2RemediationOrchestratorThreadsActionStartPostWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseStartThreadApiV2RemediationOrchestratorThreadsActionStartPostResponse(rsp)
+}
+
+func (c *ClientWithResponses) StartThreadApiV2RemediationOrchestratorThreadsActionStartPostWithResponse(ctx context.Context, body StartThreadApiV2RemediationOrchestratorThreadsActionStartPostJSONRequestBody, reqEditors ...RequestEditorFn) (*StartThreadApiV2RemediationOrchestratorThreadsActionStartPostResponse, error) {
+	rsp, err := c.StartThreadApiV2RemediationOrchestratorThreadsActionStartPost(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseStartThreadApiV2RemediationOrchestratorThreadsActionStartPostResponse(rsp)
+}
+
+// StreamStartApiV2RemediationOrchestratorThreadsActionStreamStartPostWithBodyWithResponse request with arbitrary body returning *StreamStartApiV2RemediationOrchestratorThreadsActionStreamStartPostResponse
+func (c *ClientWithResponses) StreamStartApiV2RemediationOrchestratorThreadsActionStreamStartPostWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*StreamStartApiV2RemediationOrchestratorThreadsActionStreamStartPostResponse, error) {
+	rsp, err := c.StreamStartApiV2RemediationOrchestratorThreadsActionStreamStartPostWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseStreamStartApiV2RemediationOrchestratorThreadsActionStreamStartPostResponse(rsp)
+}
+
+func (c *ClientWithResponses) StreamStartApiV2RemediationOrchestratorThreadsActionStreamStartPostWithResponse(ctx context.Context, body StreamStartApiV2RemediationOrchestratorThreadsActionStreamStartPostJSONRequestBody, reqEditors ...RequestEditorFn) (*StreamStartApiV2RemediationOrchestratorThreadsActionStreamStartPostResponse, error) {
+	rsp, err := c.StreamStartApiV2RemediationOrchestratorThreadsActionStreamStartPost(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseStreamStartApiV2RemediationOrchestratorThreadsActionStreamStartPostResponse(rsp)
+}
+
+// RetryBackgroundRemediationApiV2RemediationOrchestratorThreadsThreadIdActionRetryBackgroundRemediationPostWithResponse request returning *RetryBackgroundRemediationApiV2RemediationOrchestratorThreadsThreadIdActionRetryBackgroundRemediationPostResponse
+func (c *ClientWithResponses) RetryBackgroundRemediationApiV2RemediationOrchestratorThreadsThreadIdActionRetryBackgroundRemediationPostWithResponse(ctx context.Context, threadId openapi_types.UUID, reqEditors ...RequestEditorFn) (*RetryBackgroundRemediationApiV2RemediationOrchestratorThreadsThreadIdActionRetryBackgroundRemediationPostResponse, error) {
+	rsp, err := c.RetryBackgroundRemediationApiV2RemediationOrchestratorThreadsThreadIdActionRetryBackgroundRemediationPost(ctx, threadId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRetryBackgroundRemediationApiV2RemediationOrchestratorThreadsThreadIdActionRetryBackgroundRemediationPostResponse(rsp)
+}
+
+// SendMessageApiV2RemediationOrchestratorThreadsThreadIdActionSendMessagePostWithBodyWithResponse request with arbitrary body returning *SendMessageApiV2RemediationOrchestratorThreadsThreadIdActionSendMessagePostResponse
+func (c *ClientWithResponses) SendMessageApiV2RemediationOrchestratorThreadsThreadIdActionSendMessagePostWithBodyWithResponse(ctx context.Context, threadId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SendMessageApiV2RemediationOrchestratorThreadsThreadIdActionSendMessagePostResponse, error) {
+	rsp, err := c.SendMessageApiV2RemediationOrchestratorThreadsThreadIdActionSendMessagePostWithBody(ctx, threadId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionSendMessagePostResponse(rsp)
+}
+
+func (c *ClientWithResponses) SendMessageApiV2RemediationOrchestratorThreadsThreadIdActionSendMessagePostWithResponse(ctx context.Context, threadId openapi_types.UUID, body SendMessageApiV2RemediationOrchestratorThreadsThreadIdActionSendMessagePostJSONRequestBody, reqEditors ...RequestEditorFn) (*SendMessageApiV2RemediationOrchestratorThreadsThreadIdActionSendMessagePostResponse, error) {
+	rsp, err := c.SendMessageApiV2RemediationOrchestratorThreadsThreadIdActionSendMessagePost(ctx, threadId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionSendMessagePostResponse(rsp)
+}
+
+// StreamGenerateArtifactsApiV2RemediationOrchestratorThreadsThreadIdActionStreamGenerateArtifactsPostWithResponse request returning *StreamGenerateArtifactsApiV2RemediationOrchestratorThreadsThreadIdActionStreamGenerateArtifactsPostResponse
+func (c *ClientWithResponses) StreamGenerateArtifactsApiV2RemediationOrchestratorThreadsThreadIdActionStreamGenerateArtifactsPostWithResponse(ctx context.Context, threadId openapi_types.UUID, reqEditors ...RequestEditorFn) (*StreamGenerateArtifactsApiV2RemediationOrchestratorThreadsThreadIdActionStreamGenerateArtifactsPostResponse, error) {
+	rsp, err := c.StreamGenerateArtifactsApiV2RemediationOrchestratorThreadsThreadIdActionStreamGenerateArtifactsPost(ctx, threadId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseStreamGenerateArtifactsApiV2RemediationOrchestratorThreadsThreadIdActionStreamGenerateArtifactsPostResponse(rsp)
+}
+
+// StreamSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionStreamSendMessagePostWithBodyWithResponse request with arbitrary body returning *StreamSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionStreamSendMessagePostResponse
+func (c *ClientWithResponses) StreamSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionStreamSendMessagePostWithBodyWithResponse(ctx context.Context, threadId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*StreamSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionStreamSendMessagePostResponse, error) {
+	rsp, err := c.StreamSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionStreamSendMessagePostWithBody(ctx, threadId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseStreamSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionStreamSendMessagePostResponse(rsp)
+}
+
+func (c *ClientWithResponses) StreamSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionStreamSendMessagePostWithResponse(ctx context.Context, threadId openapi_types.UUID, body StreamSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionStreamSendMessagePostJSONRequestBody, reqEditors ...RequestEditorFn) (*StreamSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionStreamSendMessagePostResponse, error) {
+	rsp, err := c.StreamSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionStreamSendMessagePost(ctx, threadId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseStreamSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionStreamSendMessagePostResponse(rsp)
+}
+
+// GetArtifactsApiV2RemediationOrchestratorThreadsThreadIdArtifactsGetWithResponse request returning *GetArtifactsApiV2RemediationOrchestratorThreadsThreadIdArtifactsGetResponse
+func (c *ClientWithResponses) GetArtifactsApiV2RemediationOrchestratorThreadsThreadIdArtifactsGetWithResponse(ctx context.Context, threadId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetArtifactsApiV2RemediationOrchestratorThreadsThreadIdArtifactsGetResponse, error) {
+	rsp, err := c.GetArtifactsApiV2RemediationOrchestratorThreadsThreadIdArtifactsGet(ctx, threadId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetArtifactsApiV2RemediationOrchestratorThreadsThreadIdArtifactsGetResponse(rsp)
+}
+
+// StreamThreadEventsApiV2RemediationOrchestratorThreadsThreadIdEventsGetWithResponse request returning *StreamThreadEventsApiV2RemediationOrchestratorThreadsThreadIdEventsGetResponse
+func (c *ClientWithResponses) StreamThreadEventsApiV2RemediationOrchestratorThreadsThreadIdEventsGetWithResponse(ctx context.Context, threadId openapi_types.UUID, params *StreamThreadEventsApiV2RemediationOrchestratorThreadsThreadIdEventsGetParams, reqEditors ...RequestEditorFn) (*StreamThreadEventsApiV2RemediationOrchestratorThreadsThreadIdEventsGetResponse, error) {
+	rsp, err := c.StreamThreadEventsApiV2RemediationOrchestratorThreadsThreadIdEventsGet(ctx, threadId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseStreamThreadEventsApiV2RemediationOrchestratorThreadsThreadIdEventsGetResponse(rsp)
+}
+
+// GetMessagesApiV2RemediationOrchestratorThreadsThreadIdMessagesGetWithResponse request returning *GetMessagesApiV2RemediationOrchestratorThreadsThreadIdMessagesGetResponse
+func (c *ClientWithResponses) GetMessagesApiV2RemediationOrchestratorThreadsThreadIdMessagesGetWithResponse(ctx context.Context, threadId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetMessagesApiV2RemediationOrchestratorThreadsThreadIdMessagesGetResponse, error) {
+	rsp, err := c.GetMessagesApiV2RemediationOrchestratorThreadsThreadIdMessagesGet(ctx, threadId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetMessagesApiV2RemediationOrchestratorThreadsThreadIdMessagesGetResponse(rsp)
 }
 
 // ListRemediationSessionActivitiesApiV2RemediationSessionActivitiesGetWithResponse request returning *ListRemediationSessionActivitiesApiV2RemediationSessionActivitiesGetResponse
@@ -36566,6 +42222,15 @@ func (c *ClientWithResponses) ActionSetFlagApiV2SystemFeatureFlagsBusinessUnitAc
 	return ParseActionSetFlagApiV2SystemFeatureFlagsBusinessUnitActionSetFlagKeyPatchResponse(rsp)
 }
 
+// DeleteFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyDeleteWithResponse request returning *DeleteFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyDeleteResponse
+func (c *ClientWithResponses) DeleteFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyDeleteWithResponse(ctx context.Context, flagKey string, params *DeleteFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyDeleteParams, reqEditors ...RequestEditorFn) (*DeleteFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyDeleteResponse, error) {
+	rsp, err := c.DeleteFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyDelete(ctx, flagKey, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyDeleteResponse(rsp)
+}
+
 // GetFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyGetWithResponse request returning *GetFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyGetResponse
 func (c *ClientWithResponses) GetFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyGetWithResponse(ctx context.Context, flagKey string, params *GetFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyGetParams, reqEditors ...RequestEditorFn) (*GetFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyGetResponse, error) {
 	rsp, err := c.GetFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyGet(ctx, flagKey, params, reqEditors...)
@@ -36688,6 +42353,15 @@ func (c *ClientWithResponses) ActionSetFlagApiV2SystemFeatureFlagsCompanyActionS
 	return ParseActionSetFlagApiV2SystemFeatureFlagsCompanyActionSetFlagKeyPatchResponse(rsp)
 }
 
+// DeleteFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyDeleteWithResponse request returning *DeleteFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyDeleteResponse
+func (c *ClientWithResponses) DeleteFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyDeleteWithResponse(ctx context.Context, flagKey string, params *DeleteFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyDeleteParams, reqEditors ...RequestEditorFn) (*DeleteFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyDeleteResponse, error) {
+	rsp, err := c.DeleteFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyDelete(ctx, flagKey, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyDeleteResponse(rsp)
+}
+
 // GetFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyGetWithResponse request returning *GetFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyGetResponse
 func (c *ClientWithResponses) GetFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyGetWithResponse(ctx context.Context, flagKey string, params *GetFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyGetParams, reqEditors ...RequestEditorFn) (*GetFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyGetResponse, error) {
 	rsp, err := c.GetFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyGet(ctx, flagKey, params, reqEditors...)
@@ -36768,6 +42442,15 @@ func (c *ClientWithResponses) CreateFlagApiV2SystemFeatureFlagsRootPostWithRespo
 	return ParseCreateFlagApiV2SystemFeatureFlagsRootPostResponse(rsp)
 }
 
+// ListRootFlagsApiV2SystemFeatureFlagsRootAdminGetWithResponse request returning *ListRootFlagsApiV2SystemFeatureFlagsRootAdminGetResponse
+func (c *ClientWithResponses) ListRootFlagsApiV2SystemFeatureFlagsRootAdminGetWithResponse(ctx context.Context, params *ListRootFlagsApiV2SystemFeatureFlagsRootAdminGetParams, reqEditors ...RequestEditorFn) (*ListRootFlagsApiV2SystemFeatureFlagsRootAdminGetResponse, error) {
+	rsp, err := c.ListRootFlagsApiV2SystemFeatureFlagsRootAdminGet(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListRootFlagsApiV2SystemFeatureFlagsRootAdminGetResponse(rsp)
+}
+
 // ActionSetFlagApiV2SystemFeatureFlagsRootActionSetFlagKeyPatchWithBodyWithResponse request with arbitrary body returning *ActionSetFlagApiV2SystemFeatureFlagsRootActionSetFlagKeyPatchResponse
 func (c *ClientWithResponses) ActionSetFlagApiV2SystemFeatureFlagsRootActionSetFlagKeyPatchWithBodyWithResponse(ctx context.Context, flagKey string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ActionSetFlagApiV2SystemFeatureFlagsRootActionSetFlagKeyPatchResponse, error) {
 	rsp, err := c.ActionSetFlagApiV2SystemFeatureFlagsRootActionSetFlagKeyPatchWithBody(ctx, flagKey, contentType, body, reqEditors...)
@@ -36783,6 +42466,15 @@ func (c *ClientWithResponses) ActionSetFlagApiV2SystemFeatureFlagsRootActionSetF
 		return nil, err
 	}
 	return ParseActionSetFlagApiV2SystemFeatureFlagsRootActionSetFlagKeyPatchResponse(rsp)
+}
+
+// DeleteFlagByKeyApiV2SystemFeatureFlagsRootByKeyFlagKeyDeleteWithResponse request returning *DeleteFlagByKeyApiV2SystemFeatureFlagsRootByKeyFlagKeyDeleteResponse
+func (c *ClientWithResponses) DeleteFlagByKeyApiV2SystemFeatureFlagsRootByKeyFlagKeyDeleteWithResponse(ctx context.Context, flagKey string, reqEditors ...RequestEditorFn) (*DeleteFlagByKeyApiV2SystemFeatureFlagsRootByKeyFlagKeyDeleteResponse, error) {
+	rsp, err := c.DeleteFlagByKeyApiV2SystemFeatureFlagsRootByKeyFlagKeyDelete(ctx, flagKey, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteFlagByKeyApiV2SystemFeatureFlagsRootByKeyFlagKeyDeleteResponse(rsp)
 }
 
 // GetFlagByKeyApiV2SystemFeatureFlagsRootByKeyFlagKeyGetWithResponse request returning *GetFlagByKeyApiV2SystemFeatureFlagsRootByKeyFlagKeyGetResponse
@@ -36981,24 +42673,6 @@ func (c *ClientWithResponses) GetResourcesCountApiV2TempDashboardResourcesCountG
 	return ParseGetResourcesCountApiV2TempDashboardResourcesCountGetResponse(rsp)
 }
 
-// GetResourceHealthDetailsApiV2TempDashboardResourcesHealthDetailsGetWithResponse request returning *GetResourceHealthDetailsApiV2TempDashboardResourcesHealthDetailsGetResponse
-func (c *ClientWithResponses) GetResourceHealthDetailsApiV2TempDashboardResourcesHealthDetailsGetWithResponse(ctx context.Context, params *GetResourceHealthDetailsApiV2TempDashboardResourcesHealthDetailsGetParams, reqEditors ...RequestEditorFn) (*GetResourceHealthDetailsApiV2TempDashboardResourcesHealthDetailsGetResponse, error) {
-	rsp, err := c.GetResourceHealthDetailsApiV2TempDashboardResourcesHealthDetailsGet(ctx, params, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseGetResourceHealthDetailsApiV2TempDashboardResourcesHealthDetailsGetResponse(rsp)
-}
-
-// GetResourceHealthSummaryApiV2TempDashboardResourcesHealthSummaryGetWithResponse request returning *GetResourceHealthSummaryApiV2TempDashboardResourcesHealthSummaryGetResponse
-func (c *ClientWithResponses) GetResourceHealthSummaryApiV2TempDashboardResourcesHealthSummaryGetWithResponse(ctx context.Context, params *GetResourceHealthSummaryApiV2TempDashboardResourcesHealthSummaryGetParams, reqEditors ...RequestEditorFn) (*GetResourceHealthSummaryApiV2TempDashboardResourcesHealthSummaryGetResponse, error) {
-	rsp, err := c.GetResourceHealthSummaryApiV2TempDashboardResourcesHealthSummaryGet(ctx, params, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseGetResourceHealthSummaryApiV2TempDashboardResourcesHealthSummaryGetResponse(rsp)
-}
-
 // GetSavingsApiV2TempDashboardSavingsGetWithResponse request returning *GetSavingsApiV2TempDashboardSavingsGetResponse
 func (c *ClientWithResponses) GetSavingsApiV2TempDashboardSavingsGetWithResponse(ctx context.Context, params *GetSavingsApiV2TempDashboardSavingsGetParams, reqEditors ...RequestEditorFn) (*GetSavingsApiV2TempDashboardSavingsGetResponse, error) {
 	rsp, err := c.GetSavingsApiV2TempDashboardSavingsGet(ctx, params, reqEditors...)
@@ -37017,15 +42691,6 @@ func (c *ClientWithResponses) GetSavingsProgressApiV2TempDashboardSavingsProgres
 	return ParseGetSavingsProgressApiV2TempDashboardSavingsProgressGetResponse(rsp)
 }
 
-// NangoWebhookApiV2WebhooksNangoPostWithResponse request returning *NangoWebhookApiV2WebhooksNangoPostResponse
-func (c *ClientWithResponses) NangoWebhookApiV2WebhooksNangoPostWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*NangoWebhookApiV2WebhooksNangoPostResponse, error) {
-	rsp, err := c.NangoWebhookApiV2WebhooksNangoPost(ctx, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseNangoWebhookApiV2WebhooksNangoPostResponse(rsp)
-}
-
 // StripeWebhookApiV2WebhooksStripePostWithResponse request returning *StripeWebhookApiV2WebhooksStripePostResponse
 func (c *ClientWithResponses) StripeWebhookApiV2WebhooksStripePostWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*StripeWebhookApiV2WebhooksStripePostResponse, error) {
 	rsp, err := c.StripeWebhookApiV2WebhooksStripePost(ctx, reqEditors...)
@@ -37033,6 +42698,39 @@ func (c *ClientWithResponses) StripeWebhookApiV2WebhooksStripePostWithResponse(c
 		return nil, err
 	}
 	return ParseStripeWebhookApiV2WebhooksStripePostResponse(rsp)
+}
+
+// ParseRequestPasswordResetApiV2AuthActionRequestPasswordResetPostResponse parses an HTTP response from a RequestPasswordResetApiV2AuthActionRequestPasswordResetPostWithResponse call
+func ParseRequestPasswordResetApiV2AuthActionRequestPasswordResetPostResponse(rsp *http.Response) (*RequestPasswordResetApiV2AuthActionRequestPasswordResetPostResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RequestPasswordResetApiV2AuthActionRequestPasswordResetPostResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 202:
+		var dest BaseApiResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON202 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
 }
 
 // ParseSendOwnerSignupInvitationApiV2AuthActionSendOwnerSignupInvitationPostResponse parses an HTTP response from a SendOwnerSignupInvitationApiV2AuthActionSendOwnerSignupInvitationPostWithResponse call
@@ -39075,6 +44773,72 @@ func ParseGetAzureResourcesCountApiV2CloudAzureDiscoveryResourcesCountByCategory
 	return response, nil
 }
 
+// ParseListReservationsApiV2CloudAzureReservationsGetResponse parses an HTTP response from a ListReservationsApiV2CloudAzureReservationsGetWithResponse call
+func ParseListReservationsApiV2CloudAzureReservationsGetResponse(rsp *http.Response) (*ListReservationsApiV2CloudAzureReservationsGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListReservationsApiV2CloudAzureReservationsGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BaseApiResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListReservationCoverageApiV2CloudAzureReservationsCoverageGetResponse parses an HTTP response from a ListReservationCoverageApiV2CloudAzureReservationsCoverageGetWithResponse call
+func ParseListReservationCoverageApiV2CloudAzureReservationsCoverageGetResponse(rsp *http.Response) (*ListReservationCoverageApiV2CloudAzureReservationsCoverageGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListReservationCoverageApiV2CloudAzureReservationsCoverageGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BaseApiResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseListAzureSourcedRecommendationsApiV2CloudAzureSourcedRecommendationsGetResponse parses an HTTP response from a ListAzureSourcedRecommendationsApiV2CloudAzureSourcedRecommendationsGetWithResponse call
 func ParseListAzureSourcedRecommendationsApiV2CloudAzureSourcedRecommendationsGetResponse(rsp *http.Response) (*ListAzureSourcedRecommendationsApiV2CloudAzureSourcedRecommendationsGetResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -39280,6 +45044,13 @@ func ParseListCloudAccountsApiV2CloudCloudAccountsGetResponse(rsp *http.Response
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
 	}
 
 	return response, nil
@@ -39305,6 +45076,72 @@ func ParseCreateCloudAccountApiV2CloudCloudAccountsPostResponse(rsp *http.Respon
 			return nil, err
 		}
 		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListCloudAccountsForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdGetResponse parses an HTTP response from a ListCloudAccountsForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdGetWithResponse call
+func ParseListCloudAccountsForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdGetResponse(rsp *http.Response) (*ListCloudAccountsForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListCloudAccountsForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BaseApiResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetCloudAccountForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdCloudAccountIdGetResponse parses an HTTP response from a GetCloudAccountForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdCloudAccountIdGetWithResponse call
+func ParseGetCloudAccountForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdCloudAccountIdGetResponse(rsp *http.Response) (*GetCloudAccountForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdCloudAccountIdGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetCloudAccountForCompanyApiV2CloudCloudAccountsByCompanyCompanyIdCloudAccountIdGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BaseApiResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
 		var dest HTTPValidationError
@@ -39634,6 +45471,72 @@ func ParseStartCloudAccountSetupApiV2CloudCloudAccountsCloudAccountIdActionSetup
 	return response, nil
 }
 
+// ParseGetCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsGetResponse parses an HTTP response from a GetCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsGetWithResponse call
+func ParseGetCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsGetResponse(rsp *http.Response) (*GetCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BaseApiResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsPutResponse parses an HTTP response from a UpdateCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsPutWithResponse call
+func ParseUpdateCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsPutResponse(rsp *http.Response) (*UpdateCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsPutResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateCloudAccountCredentialsApiV2CloudCloudAccountsCloudAccountIdCredentialsPutResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BaseApiResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseListLatestCustomRecommendationsForAccountApiV2CloudCloudAccountsCloudAccountIdCustomRecommendationsLatestGetResponse parses an HTTP response from a ListLatestCustomRecommendationsForAccountApiV2CloudCloudAccountsCloudAccountIdCustomRecommendationsLatestGetWithResponse call
 func ParseListLatestCustomRecommendationsForAccountApiV2CloudCloudAccountsCloudAccountIdCustomRecommendationsLatestGetResponse(rsp *http.Response) (*ListLatestCustomRecommendationsForAccountApiV2CloudCloudAccountsCloudAccountIdCustomRecommendationsLatestGetResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -39709,6 +45612,72 @@ func ParseListRemediationSessionsForAccountApiV2CloudCloudAccountsCloudAccountId
 	}
 
 	response := &ListRemediationSessionsForAccountApiV2CloudCloudAccountsCloudAccountIdRemediationSessionGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BaseApiResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetCloudAccountSettingsApiV2CloudCloudAccountsCloudAccountIdSettingsGetResponse parses an HTTP response from a GetCloudAccountSettingsApiV2CloudCloudAccountsCloudAccountIdSettingsGetWithResponse call
+func ParseGetCloudAccountSettingsApiV2CloudCloudAccountsCloudAccountIdSettingsGetResponse(rsp *http.Response) (*GetCloudAccountSettingsApiV2CloudCloudAccountsCloudAccountIdSettingsGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetCloudAccountSettingsApiV2CloudCloudAccountsCloudAccountIdSettingsGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BaseApiResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateCloudAccountAgentArchitectureApiV2CloudCloudAccountsCloudAccountIdSettingsAgentArchitecturePatchResponse parses an HTTP response from a UpdateCloudAccountAgentArchitectureApiV2CloudCloudAccountsCloudAccountIdSettingsAgentArchitecturePatchWithResponse call
+func ParseUpdateCloudAccountAgentArchitectureApiV2CloudCloudAccountsCloudAccountIdSettingsAgentArchitecturePatchResponse(rsp *http.Response) (*UpdateCloudAccountAgentArchitectureApiV2CloudCloudAccountsCloudAccountIdSettingsAgentArchitecturePatchResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateCloudAccountAgentArchitectureApiV2CloudCloudAccountsCloudAccountIdSettingsAgentArchitecturePatchResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -39832,6 +45801,79 @@ func ParseCreateCostDataSourceApiV2CloudCostDataSourcesPostResponse(rsp *http.Re
 	return response, nil
 }
 
+// ParseApplyCostDataSourceCandidateApiV2CloudCostDataSourcesActionApplyCandidatePostResponse parses an HTTP response from a ApplyCostDataSourceCandidateApiV2CloudCostDataSourcesActionApplyCandidatePostWithResponse call
+func ParseApplyCostDataSourceCandidateApiV2CloudCostDataSourcesActionApplyCandidatePostResponse(rsp *http.Response) (*ApplyCostDataSourceCandidateApiV2CloudCostDataSourcesActionApplyCandidatePostResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ApplyCostDataSourceCandidateApiV2CloudCostDataSourcesActionApplyCandidatePostResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest CloudCostDataSourceApplyResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest CloudCostDataSourceApplyResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseValidateCostDataSourceCandidateApiV2CloudCostDataSourcesActionValidateCandidatePostResponse parses an HTTP response from a ValidateCostDataSourceCandidateApiV2CloudCostDataSourcesActionValidateCandidatePostWithResponse call
+func ParseValidateCostDataSourceCandidateApiV2CloudCostDataSourcesActionValidateCandidatePostResponse(rsp *http.Response) (*ValidateCostDataSourceCandidateApiV2CloudCostDataSourcesActionValidateCandidatePostResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ValidateCostDataSourceCandidateApiV2CloudCostDataSourcesActionValidateCandidatePostResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BaseApiResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseDeleteCostDataSourceApiV2CloudCostDataSourcesSourceIdDeleteResponse parses an HTTP response from a DeleteCostDataSourceApiV2CloudCostDataSourcesSourceIdDeleteWithResponse call
 func ParseDeleteCostDataSourceApiV2CloudCostDataSourcesSourceIdDeleteResponse(rsp *http.Response) (*DeleteCostDataSourceApiV2CloudCostDataSourcesSourceIdDeleteResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -39925,6 +45967,100 @@ func ParseUpdateCostDataSourceApiV2CloudCostDataSourcesSourceIdPatchResponse(rsp
 			return nil, err
 		}
 		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseRetryCostSourceImportApiV2CloudCostDataSourcesSourceIdActionRetryImportPostResponse parses an HTTP response from a RetryCostSourceImportApiV2CloudCostDataSourcesSourceIdActionRetryImportPostWithResponse call
+func ParseRetryCostSourceImportApiV2CloudCostDataSourcesSourceIdActionRetryImportPostResponse(rsp *http.Response) (*RetryCostSourceImportApiV2CloudCostDataSourcesSourceIdActionRetryImportPostResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RetryCostSourceImportApiV2CloudCostDataSourcesSourceIdActionRetryImportPostResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 202:
+		var dest RecoveryResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON202 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest RecoveryRejectedResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 503:
+		var dest RecoveryRejectedResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseRetryCostSourceMatchingApiV2CloudCostDataSourcesSourceIdActionRetryMatchingPostResponse parses an HTTP response from a RetryCostSourceMatchingApiV2CloudCostDataSourcesSourceIdActionRetryMatchingPostWithResponse call
+func ParseRetryCostSourceMatchingApiV2CloudCostDataSourcesSourceIdActionRetryMatchingPostResponse(rsp *http.Response) (*RetryCostSourceMatchingApiV2CloudCostDataSourcesSourceIdActionRetryMatchingPostResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RetryCostSourceMatchingApiV2CloudCostDataSourcesSourceIdActionRetryMatchingPostResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 202:
+		var dest RecoveryResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON202 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest RecoveryRejectedResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 503:
+		var dest RecoveryRejectedResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
 
 	}
 
@@ -40511,6 +46647,39 @@ func ParseListCustomRecommendationSourceRowsApiV2CloudCustomRecommendationsCusto
 	return response, nil
 }
 
+// ParseGetCustomRecommendationVersionsApiV2CloudCustomRecommendationsCustomRecommendationIdVersionsGetResponse parses an HTTP response from a GetCustomRecommendationVersionsApiV2CloudCustomRecommendationsCustomRecommendationIdVersionsGetWithResponse call
+func ParseGetCustomRecommendationVersionsApiV2CloudCustomRecommendationsCustomRecommendationIdVersionsGetResponse(rsp *http.Response) (*GetCustomRecommendationVersionsApiV2CloudCustomRecommendationsCustomRecommendationIdVersionsGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetCustomRecommendationVersionsApiV2CloudCustomRecommendationsCustomRecommendationIdVersionsGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BaseApiResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseSubmitEvaluationApiV2CloudEvaluationsPostResponse parses an HTTP response from a SubmitEvaluationApiV2CloudEvaluationsPostWithResponse call
 func ParseSubmitEvaluationApiV2CloudEvaluationsPostResponse(rsp *http.Response) (*SubmitEvaluationApiV2CloudEvaluationsPostResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -40808,6 +46977,65 @@ func ParseRefreshGcpIntegrationToAwsWifApiV2CloudGcpCredentialsCloudAccountIdAct
 	return response, nil
 }
 
+// ParseListGcpResourceDiscoveryAuditLogsApiV2CloudGcpDiscoveryAuditLogsGetResponse parses an HTTP response from a ListGcpResourceDiscoveryAuditLogsApiV2CloudGcpDiscoveryAuditLogsGetWithResponse call
+func ParseListGcpResourceDiscoveryAuditLogsApiV2CloudGcpDiscoveryAuditLogsGetResponse(rsp *http.Response) (*ListGcpResourceDiscoveryAuditLogsApiV2CloudGcpDiscoveryAuditLogsGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListGcpResourceDiscoveryAuditLogsApiV2CloudGcpDiscoveryAuditLogsGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BaseApiResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetGcpResourceDiscoveryAuditLogApiV2CloudGcpDiscoveryAuditLogsAuditLogIdGetResponse parses an HTTP response from a GetGcpResourceDiscoveryAuditLogApiV2CloudGcpDiscoveryAuditLogsAuditLogIdGetWithResponse call
+func ParseGetGcpResourceDiscoveryAuditLogApiV2CloudGcpDiscoveryAuditLogsAuditLogIdGetResponse(rsp *http.Response) (*GetGcpResourceDiscoveryAuditLogApiV2CloudGcpDiscoveryAuditLogsAuditLogIdGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetGcpResourceDiscoveryAuditLogApiV2CloudGcpDiscoveryAuditLogsAuditLogIdGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BaseApiResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseListGcpResourceDiscoveriesApiV2CloudGcpDiscoveryResourcesGetResponse parses an HTTP response from a ListGcpResourceDiscoveriesApiV2CloudGcpDiscoveryResourcesGetWithResponse call
 func ParseListGcpResourceDiscoveriesApiV2CloudGcpDiscoveryResourcesGetResponse(rsp *http.Response) (*ListGcpResourceDiscoveriesApiV2CloudGcpDiscoveryResourcesGetResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -40949,6 +47177,39 @@ func ParseGetGcpResourceTypeCountsApiV2CloudGcpDiscoveryResourcesTypeCountsGetRe
 	}
 
 	response := &GetGcpResourceTypeCountsApiV2CloudGcpDiscoveryResourcesTypeCountsGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BaseApiResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateGcpResourceConstraintsApiV2CloudGcpDiscoveryResourcesResourceIdConstraintsPatchResponse parses an HTTP response from a UpdateGcpResourceConstraintsApiV2CloudGcpDiscoveryResourcesResourceIdConstraintsPatchWithResponse call
+func ParseUpdateGcpResourceConstraintsApiV2CloudGcpDiscoveryResourcesResourceIdConstraintsPatchResponse(rsp *http.Response) (*UpdateGcpResourceConstraintsApiV2CloudGcpDiscoveryResourcesResourceIdConstraintsPatchResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateGcpResourceConstraintsApiV2CloudGcpDiscoveryResourcesResourceIdConstraintsPatchResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -41369,6 +47630,39 @@ func ParseQueryObservationsApiV2CloudObservationsGetResponse(rsp *http.Response)
 	return response, nil
 }
 
+// ParseListRecommendationActivitiesApiV2CloudRecommendationActivitiesGetResponse parses an HTTP response from a ListRecommendationActivitiesApiV2CloudRecommendationActivitiesGetWithResponse call
+func ParseListRecommendationActivitiesApiV2CloudRecommendationActivitiesGetResponse(rsp *http.Response) (*ListRecommendationActivitiesApiV2CloudRecommendationActivitiesGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListRecommendationActivitiesApiV2CloudRecommendationActivitiesGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BaseApiResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseListRecommendationAgentOperationsApiV2CloudRecommendationAgentOperationsGetResponse parses an HTTP response from a ListRecommendationAgentOperationsApiV2CloudRecommendationAgentOperationsGetWithResponse call
 func ParseListRecommendationAgentOperationsApiV2CloudRecommendationAgentOperationsGetResponse(rsp *http.Response) (*ListRecommendationAgentOperationsApiV2CloudRecommendationAgentOperationsGetResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -41470,6 +47764,72 @@ func ParseInspectRecommendationAgentOperationSourceApiV2CloudRecommendationAgent
 	}
 
 	response := &InspectRecommendationAgentOperationSourceApiV2CloudRecommendationAgentOperationsRecommendationAgentOperationIdSourcesFocusCostAttributionRowsGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BaseApiResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAddRecommendationCommentApiV2CloudRecommendationsRecommendationIdActionAddCommentPostResponse parses an HTTP response from a AddRecommendationCommentApiV2CloudRecommendationsRecommendationIdActionAddCommentPostWithResponse call
+func ParseAddRecommendationCommentApiV2CloudRecommendationsRecommendationIdActionAddCommentPostResponse(rsp *http.Response) (*AddRecommendationCommentApiV2CloudRecommendationsRecommendationIdActionAddCommentPostResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AddRecommendationCommentApiV2CloudRecommendationsRecommendationIdActionAddCommentPostResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BaseApiResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseChangeRecommendationStatusApiV2CloudRecommendationsRecommendationIdActionChangeStatusPostResponse parses an HTTP response from a ChangeRecommendationStatusApiV2CloudRecommendationsRecommendationIdActionChangeStatusPostWithResponse call
+func ParseChangeRecommendationStatusApiV2CloudRecommendationsRecommendationIdActionChangeStatusPostResponse(rsp *http.Response) (*ChangeRecommendationStatusApiV2CloudRecommendationsRecommendationIdActionChangeStatusPostResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ChangeRecommendationStatusApiV2CloudRecommendationsRecommendationIdActionChangeStatusPostResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -42569,6 +48929,32 @@ func ParseDisconnectGithubApiV2IntegrationsGithubActionDisconnectPostResponse(rs
 	return response, nil
 }
 
+// ParseNangoWebhookApiV2IntegrationsGithubEventsPostResponse parses an HTTP response from a NangoWebhookApiV2IntegrationsGithubEventsPostWithResponse call
+func ParseNangoWebhookApiV2IntegrationsGithubEventsPostResponse(rsp *http.Response) (*NangoWebhookApiV2IntegrationsGithubEventsPostResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &NangoWebhookApiV2IntegrationsGithubEventsPostResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest interface{}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseGetCurrentUserGithubConnectionApiV2IntegrationsGithubMeGetResponse parses an HTTP response from a GetCurrentUserGithubConnectionApiV2IntegrationsGithubMeGetWithResponse call
 func ParseGetCurrentUserGithubConnectionApiV2IntegrationsGithubMeGetResponse(rsp *http.Response) (*GetCurrentUserGithubConnectionApiV2IntegrationsGithubMeGetResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -42611,6 +48997,39 @@ func ParseGetGithubIntegrationListApiV2IntegrationsGithubMeIntegrationGetRespons
 	}
 
 	response := &GetGithubIntegrationListApiV2IntegrationsGithubMeIntegrationGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BaseApiResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetGithubPullRequestStatusApiV2IntegrationsGithubMePullRequestGetResponse parses an HTTP response from a GetGithubPullRequestStatusApiV2IntegrationsGithubMePullRequestGetWithResponse call
+func ParseGetGithubPullRequestStatusApiV2IntegrationsGithubMePullRequestGetResponse(rsp *http.Response) (*GetGithubPullRequestStatusApiV2IntegrationsGithubMePullRequestGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetGithubPullRequestStatusApiV2IntegrationsGithubMePullRequestGetResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -42832,6 +49251,164 @@ func ParseFetchJiraProjectsApiV2IntegrationsJiraProjectsGetResponse(rsp *http.Re
 			return nil, err
 		}
 		response.JSON501 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCancelSlackApiV2IntegrationsSlackActionCancelPostResponse parses an HTTP response from a CancelSlackApiV2IntegrationsSlackActionCancelPostWithResponse call
+func ParseCancelSlackApiV2IntegrationsSlackActionCancelPostResponse(rsp *http.Response) (*CancelSlackApiV2IntegrationsSlackActionCancelPostResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CancelSlackApiV2IntegrationsSlackActionCancelPostResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BaseApiResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseConnectSlackApiV2IntegrationsSlackActionConnectPostResponse parses an HTTP response from a ConnectSlackApiV2IntegrationsSlackActionConnectPostWithResponse call
+func ParseConnectSlackApiV2IntegrationsSlackActionConnectPostResponse(rsp *http.Response) (*ConnectSlackApiV2IntegrationsSlackActionConnectPostResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ConnectSlackApiV2IntegrationsSlackActionConnectPostResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BaseApiResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDisconnectSlackApiV2IntegrationsSlackActionDisconnectPostResponse parses an HTTP response from a DisconnectSlackApiV2IntegrationsSlackActionDisconnectPostWithResponse call
+func ParseDisconnectSlackApiV2IntegrationsSlackActionDisconnectPostResponse(rsp *http.Response) (*DisconnectSlackApiV2IntegrationsSlackActionDisconnectPostResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DisconnectSlackApiV2IntegrationsSlackActionDisconnectPostResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BaseApiResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseReceiveSlackEventsApiV2IntegrationsSlackEventsPostResponse parses an HTTP response from a ReceiveSlackEventsApiV2IntegrationsSlackEventsPostWithResponse call
+func ParseReceiveSlackEventsApiV2IntegrationsSlackEventsPostResponse(rsp *http.Response) (*ReceiveSlackEventsApiV2IntegrationsSlackEventsPostResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ReceiveSlackEventsApiV2IntegrationsSlackEventsPostResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest interface{}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetSlackIntegrationApiV2IntegrationsSlackMeIntegrationGetResponse parses an HTTP response from a GetSlackIntegrationApiV2IntegrationsSlackMeIntegrationGetWithResponse call
+func ParseGetSlackIntegrationApiV2IntegrationsSlackMeIntegrationGetResponse(rsp *http.Response) (*GetSlackIntegrationApiV2IntegrationsSlackMeIntegrationGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetSlackIntegrationApiV2IntegrationsSlackMeIntegrationGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BaseApiResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
 
 	}
 
@@ -43635,6 +50212,72 @@ func ParseCreateBusinessUnitApiV2OrganizationBusinessUnitsPostResponse(rsp *http
 	return response, nil
 }
 
+// ParseListBusinessUnitsForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdGetResponse parses an HTTP response from a ListBusinessUnitsForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdGetWithResponse call
+func ParseListBusinessUnitsForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdGetResponse(rsp *http.Response) (*ListBusinessUnitsForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListBusinessUnitsForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BaseApiResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetBusinessUnitForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdBusinessUnitIdGetResponse parses an HTTP response from a GetBusinessUnitForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdBusinessUnitIdGetWithResponse call
+func ParseGetBusinessUnitForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdBusinessUnitIdGetResponse(rsp *http.Response) (*GetBusinessUnitForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdBusinessUnitIdGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetBusinessUnitForCompanyApiV2OrganizationBusinessUnitsByCompanyCompanyIdBusinessUnitIdGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BaseApiResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseDeleteBusinessUnitApiV2OrganizationBusinessUnitsBusinessUnitIdDeleteResponse parses an HTTP response from a DeleteBusinessUnitApiV2OrganizationBusinessUnitsBusinessUnitIdDeleteWithResponse call
 func ParseDeleteBusinessUnitApiV2OrganizationBusinessUnitsBusinessUnitIdDeleteResponse(rsp *http.Response) (*DeleteBusinessUnitApiV2OrganizationBusinessUnitsBusinessUnitIdDeleteResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -43993,6 +50636,336 @@ func ParseGetRemediationArtifactByIdApiV2RemediationArtifactsArtifactIdGetRespon
 	}
 
 	response := &GetRemediationArtifactByIdApiV2RemediationArtifactsArtifactIdGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BaseApiResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseResolveThreadApiV2RemediationOrchestratorThreadsActionResolvePostResponse parses an HTTP response from a ResolveThreadApiV2RemediationOrchestratorThreadsActionResolvePostWithResponse call
+func ParseResolveThreadApiV2RemediationOrchestratorThreadsActionResolvePostResponse(rsp *http.Response) (*ResolveThreadApiV2RemediationOrchestratorThreadsActionResolvePostResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ResolveThreadApiV2RemediationOrchestratorThreadsActionResolvePostResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BaseApiResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseStartThreadApiV2RemediationOrchestratorThreadsActionStartPostResponse parses an HTTP response from a StartThreadApiV2RemediationOrchestratorThreadsActionStartPostWithResponse call
+func ParseStartThreadApiV2RemediationOrchestratorThreadsActionStartPostResponse(rsp *http.Response) (*StartThreadApiV2RemediationOrchestratorThreadsActionStartPostResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &StartThreadApiV2RemediationOrchestratorThreadsActionStartPostResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BaseApiResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseStreamStartApiV2RemediationOrchestratorThreadsActionStreamStartPostResponse parses an HTTP response from a StreamStartApiV2RemediationOrchestratorThreadsActionStreamStartPostWithResponse call
+func ParseStreamStartApiV2RemediationOrchestratorThreadsActionStreamStartPostResponse(rsp *http.Response) (*StreamStartApiV2RemediationOrchestratorThreadsActionStreamStartPostResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &StreamStartApiV2RemediationOrchestratorThreadsActionStreamStartPostResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest interface{}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseRetryBackgroundRemediationApiV2RemediationOrchestratorThreadsThreadIdActionRetryBackgroundRemediationPostResponse parses an HTTP response from a RetryBackgroundRemediationApiV2RemediationOrchestratorThreadsThreadIdActionRetryBackgroundRemediationPostWithResponse call
+func ParseRetryBackgroundRemediationApiV2RemediationOrchestratorThreadsThreadIdActionRetryBackgroundRemediationPostResponse(rsp *http.Response) (*RetryBackgroundRemediationApiV2RemediationOrchestratorThreadsThreadIdActionRetryBackgroundRemediationPostResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RetryBackgroundRemediationApiV2RemediationOrchestratorThreadsThreadIdActionRetryBackgroundRemediationPostResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BaseApiResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionSendMessagePostResponse parses an HTTP response from a SendMessageApiV2RemediationOrchestratorThreadsThreadIdActionSendMessagePostWithResponse call
+func ParseSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionSendMessagePostResponse(rsp *http.Response) (*SendMessageApiV2RemediationOrchestratorThreadsThreadIdActionSendMessagePostResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &SendMessageApiV2RemediationOrchestratorThreadsThreadIdActionSendMessagePostResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BaseApiResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseStreamGenerateArtifactsApiV2RemediationOrchestratorThreadsThreadIdActionStreamGenerateArtifactsPostResponse parses an HTTP response from a StreamGenerateArtifactsApiV2RemediationOrchestratorThreadsThreadIdActionStreamGenerateArtifactsPostWithResponse call
+func ParseStreamGenerateArtifactsApiV2RemediationOrchestratorThreadsThreadIdActionStreamGenerateArtifactsPostResponse(rsp *http.Response) (*StreamGenerateArtifactsApiV2RemediationOrchestratorThreadsThreadIdActionStreamGenerateArtifactsPostResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &StreamGenerateArtifactsApiV2RemediationOrchestratorThreadsThreadIdActionStreamGenerateArtifactsPostResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest interface{}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseStreamSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionStreamSendMessagePostResponse parses an HTTP response from a StreamSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionStreamSendMessagePostWithResponse call
+func ParseStreamSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionStreamSendMessagePostResponse(rsp *http.Response) (*StreamSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionStreamSendMessagePostResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &StreamSendMessageApiV2RemediationOrchestratorThreadsThreadIdActionStreamSendMessagePostResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest interface{}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetArtifactsApiV2RemediationOrchestratorThreadsThreadIdArtifactsGetResponse parses an HTTP response from a GetArtifactsApiV2RemediationOrchestratorThreadsThreadIdArtifactsGetWithResponse call
+func ParseGetArtifactsApiV2RemediationOrchestratorThreadsThreadIdArtifactsGetResponse(rsp *http.Response) (*GetArtifactsApiV2RemediationOrchestratorThreadsThreadIdArtifactsGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetArtifactsApiV2RemediationOrchestratorThreadsThreadIdArtifactsGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BaseApiResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseStreamThreadEventsApiV2RemediationOrchestratorThreadsThreadIdEventsGetResponse parses an HTTP response from a StreamThreadEventsApiV2RemediationOrchestratorThreadsThreadIdEventsGetWithResponse call
+func ParseStreamThreadEventsApiV2RemediationOrchestratorThreadsThreadIdEventsGetResponse(rsp *http.Response) (*StreamThreadEventsApiV2RemediationOrchestratorThreadsThreadIdEventsGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &StreamThreadEventsApiV2RemediationOrchestratorThreadsThreadIdEventsGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest interface{}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetMessagesApiV2RemediationOrchestratorThreadsThreadIdMessagesGetResponse parses an HTTP response from a GetMessagesApiV2RemediationOrchestratorThreadsThreadIdMessagesGetWithResponse call
+func ParseGetMessagesApiV2RemediationOrchestratorThreadsThreadIdMessagesGetResponse(rsp *http.Response) (*GetMessagesApiV2RemediationOrchestratorThreadsThreadIdMessagesGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetMessagesApiV2RemediationOrchestratorThreadsThreadIdMessagesGetResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -45467,6 +52440,39 @@ func ParseActionSetFlagApiV2SystemFeatureFlagsBusinessUnitActionSetFlagKeyPatchR
 	return response, nil
 }
 
+// ParseDeleteFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyDeleteResponse parses an HTTP response from a DeleteFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyDeleteWithResponse call
+func ParseDeleteFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyDeleteResponse(rsp *http.Response) (*DeleteFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyDeleteResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyDeleteResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BaseApiResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseGetFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyGetResponse parses an HTTP response from a GetFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyGetWithResponse call
 func ParseGetFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyGetResponse(rsp *http.Response) (*GetFlagByKeyApiV2SystemFeatureFlagsBusinessUnitByKeyFlagKeyGetResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -45797,6 +52803,39 @@ func ParseActionSetFlagApiV2SystemFeatureFlagsCompanyActionSetFlagKeyPatchRespon
 	return response, nil
 }
 
+// ParseDeleteFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyDeleteResponse parses an HTTP response from a DeleteFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyDeleteWithResponse call
+func ParseDeleteFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyDeleteResponse(rsp *http.Response) (*DeleteFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyDeleteResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyDeleteResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BaseApiResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseGetFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyGetResponse parses an HTTP response from a GetFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyGetWithResponse call
 func ParseGetFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyGetResponse(rsp *http.Response) (*GetFlagByKeyApiV2SystemFeatureFlagsCompanyByKeyFlagKeyGetResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -46054,6 +53093,39 @@ func ParseCreateFlagApiV2SystemFeatureFlagsRootPostResponse(rsp *http.Response) 
 	return response, nil
 }
 
+// ParseListRootFlagsApiV2SystemFeatureFlagsRootAdminGetResponse parses an HTTP response from a ListRootFlagsApiV2SystemFeatureFlagsRootAdminGetWithResponse call
+func ParseListRootFlagsApiV2SystemFeatureFlagsRootAdminGetResponse(rsp *http.Response) (*ListRootFlagsApiV2SystemFeatureFlagsRootAdminGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListRootFlagsApiV2SystemFeatureFlagsRootAdminGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BaseApiResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseActionSetFlagApiV2SystemFeatureFlagsRootActionSetFlagKeyPatchResponse parses an HTTP response from a ActionSetFlagApiV2SystemFeatureFlagsRootActionSetFlagKeyPatchWithResponse call
 func ParseActionSetFlagApiV2SystemFeatureFlagsRootActionSetFlagKeyPatchResponse(rsp *http.Response) (*ActionSetFlagApiV2SystemFeatureFlagsRootActionSetFlagKeyPatchResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -46063,6 +53135,39 @@ func ParseActionSetFlagApiV2SystemFeatureFlagsRootActionSetFlagKeyPatchResponse(
 	}
 
 	response := &ActionSetFlagApiV2SystemFeatureFlagsRootActionSetFlagKeyPatchResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BaseApiResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteFlagByKeyApiV2SystemFeatureFlagsRootByKeyFlagKeyDeleteResponse parses an HTTP response from a DeleteFlagByKeyApiV2SystemFeatureFlagsRootByKeyFlagKeyDeleteWithResponse call
+func ParseDeleteFlagByKeyApiV2SystemFeatureFlagsRootByKeyFlagKeyDeleteResponse(rsp *http.Response) (*DeleteFlagByKeyApiV2SystemFeatureFlagsRootByKeyFlagKeyDeleteResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteFlagByKeyApiV2SystemFeatureFlagsRootByKeyFlagKeyDeleteResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -46691,72 +53796,6 @@ func ParseGetResourcesCountApiV2TempDashboardResourcesCountGetResponse(rsp *http
 	return response, nil
 }
 
-// ParseGetResourceHealthDetailsApiV2TempDashboardResourcesHealthDetailsGetResponse parses an HTTP response from a GetResourceHealthDetailsApiV2TempDashboardResourcesHealthDetailsGetWithResponse call
-func ParseGetResourceHealthDetailsApiV2TempDashboardResourcesHealthDetailsGetResponse(rsp *http.Response) (*GetResourceHealthDetailsApiV2TempDashboardResourcesHealthDetailsGetResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &GetResourceHealthDetailsApiV2TempDashboardResourcesHealthDetailsGetResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest BaseApiResponse
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
-		var dest HTTPValidationError
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON422 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseGetResourceHealthSummaryApiV2TempDashboardResourcesHealthSummaryGetResponse parses an HTTP response from a GetResourceHealthSummaryApiV2TempDashboardResourcesHealthSummaryGetWithResponse call
-func ParseGetResourceHealthSummaryApiV2TempDashboardResourcesHealthSummaryGetResponse(rsp *http.Response) (*GetResourceHealthSummaryApiV2TempDashboardResourcesHealthSummaryGetResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &GetResourceHealthSummaryApiV2TempDashboardResourcesHealthSummaryGetResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest BaseApiResponse
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
-		var dest HTTPValidationError
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON422 = &dest
-
-	}
-
-	return response, nil
-}
-
 // ParseGetSavingsApiV2TempDashboardSavingsGetResponse parses an HTTP response from a GetSavingsApiV2TempDashboardSavingsGetWithResponse call
 func ParseGetSavingsApiV2TempDashboardSavingsGetResponse(rsp *http.Response) (*GetSavingsApiV2TempDashboardSavingsGetResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -46817,32 +53856,6 @@ func ParseGetSavingsProgressApiV2TempDashboardSavingsProgressGetResponse(rsp *ht
 			return nil, err
 		}
 		response.JSON422 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseNangoWebhookApiV2WebhooksNangoPostResponse parses an HTTP response from a NangoWebhookApiV2WebhooksNangoPostWithResponse call
-func ParseNangoWebhookApiV2WebhooksNangoPostResponse(rsp *http.Response) (*NangoWebhookApiV2WebhooksNangoPostResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &NangoWebhookApiV2WebhooksNangoPostResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 501:
-		var dest interface{}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON501 = &dest
 
 	}
 

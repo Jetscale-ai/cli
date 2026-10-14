@@ -72,7 +72,10 @@ Run this before suggesting any commit. If it fails, fix the issue first.
 
 - `internal/api/generated/client.gen.go` is machine-generated. Never hand-edit
   it. `mage generateClient` overwrites only that file, not its directory.
-- Regenerate with `mage generate` after updating `openapi/spec.json`.
+- Use pinned `mage generateClient` after updating `openapi/spec.json` when
+  regeneration is authorized. `mage generate` also runs `go mod tidy`; do not
+  use it during a dependency-frozen review. Reproduction proves consistency, not
+  Backend producer identity; retain exact raw schema/manifest/run evidence.
 - If regeneration breaks the build, fix in the spec or in wrapper code, not in
   the generated output.
 
@@ -126,6 +129,26 @@ OS keychain storage and independent server sessions remain outstanding. Native
 Windows CI found held-reader replacement and test-executable naming failures;
 repairs await native CI confirmation. Documentation or offline tests grant no
 application-call authority.
+
+### Proposed Stack stdin-auth path (inactive)
+
+Working-tree `--login EMAIL --password-stdin` uses a temporary in-memory session
+with detached signout; it never saves credentials. It rejects credential-file
+and channel-token combinations. The generic reader's ability to accept a file is
+not permission for unstable automation to do so.
+
+Only the qualified Stack wrapper's internal anonymous pipe is proposed for
+`https://unstable.jetscale.ai`, `devops+unstable@jetscale.ai` and the approved
+1Password reference. Require the publication, actual-capture synthetic
+qualification and runtime evidence gates in the
+[proposed constitution scope](../AGENTS.md#proposed-stack-mediated-temporary-cli-authentication).
+Basics and flags need separate authorization; neither chains provider setup,
+FOCUS, BU creation or external provisioning. Login/signout can invalidate all
+operator sessions. Failed or unverified cleanup blocks further writes; never
+retry login/apply to discover whether an earlier operation succeeded. Dirty
+unstable-channel builds are inputs, not provenance, authority or deployment
+proof. Existing browser-only registration and CLI's secret and delivery bans
+remain unchanged until human-reviewed publication.
 
 ## Branch Strategy
 

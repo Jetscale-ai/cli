@@ -1,8 +1,10 @@
 package auth
 
 import (
+	"context"
 	"encoding/json"
 	"encoding/pem"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -243,6 +245,162 @@ func TestSessionVerificationCleanupAndRedaction(t *testing.T) {
 	_, err := LoginSession(srv.URL, "fixture", "fake-password", "")
 	if err == nil || strings.Contains(err.Error(), "fake-password") {
 		t.Fatal("login error body exposed")
+	}
+}
+
+func TestSessionContextCancellation(t *testing.T) {
+	isolateSessionStore(t)
+	for _, operation := range []string{"sign-in", "me", "me-body", "sign-out"} {
+		t.Run(operation, func(t *testing.T) {
+			var calls atomic.Int32
+			srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				calls.Add(1)
+				_, _ = io.Copy(io.Discard, r.Body)
+				if operation == "me-body" {
+					_, _ = io.WriteString(w, `{"data":`)
+					w.(http.Flusher).Flush()
+				}
+				<-r.Context().Done()
+			}))
+			defer srv.Close()
+			ctx, cancel := context.WithTimeout(context.Background(), 100*time.Millisecond)
+			defer cancel()
+			start := time.Now()
+			var err error
+			if operation == "sign-in" {
+				_, err = LoginSessionContext(ctx, srv.URL, "fixture", "synthetic-secret", "")
+			} else {
+				s := fixtureSession(t, srv.URL, "synthetic-secret")
+				defer s.HTTPClient.CloseIdleConnections()
+				if strings.HasPrefix(operation, "me") {
+					_, err = s.WhoamiContext(ctx)
+				} else {
+					err = s.SignOutContext(ctx)
+					if len(s.jar.snapshot()) != 1 {
+						t.Fatal("unconfirmed sign-out discarded local credentials")
+					}
+				}
+			}
+			if !errors.Is(err, context.DeadlineExceeded) || calls.Load() != 1 || time.Since(start) > time.Second || strings.Contains(err.Error(), "synthetic-secret") || strings.Contains(err.Error(), srv.URL) {
+				t.Fatalf("context not honored or error not sanitized: %v", err)
+			}
+			if operation == "sign-in" && (!strings.Contains(err.Error(), "outcome uncertain") || !strings.Contains(err.Error(), "no automatic retry")) {
+				t.Fatalf("ambiguous sign-in not reported: %v", err)
+			}
+		})
+	}
+}
+
+func TestSessionAlreadyCanceledLoginDoesNotSend(t *testing.T) {
+	isolateSessionStore(t)
+	var calls atomic.Int32
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) { calls.Add(1) }))
+	defer srv.Close()
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
+	_, err := LoginSessionContext(ctx, srv.URL, "fixture", "synthetic-secret", "")
+	if !errors.Is(err, context.Canceled) || !strings.Contains(err.Error(), "not attempted") || calls.Load() != 0 {
+		t.Fatalf("already canceled login attempted: %v", err)
+	}
+}
+
+func TestSessionCanceledVerificationDetachedCleanup(t *testing.T) {
+	isolateSessionStore(t)
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	var cleanups atomic.Int32
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch r.URL.Path {
+		case "/api/v2/auth/sign-in":
+			http.SetCookie(w, &http.Cookie{Name: "session", Value: "synthetic-secret", Path: "/"})
+		case "/api/v2/auth/me":
+			cancel()
+			<-r.Context().Done()
+		case "/api/v2/auth/sign-out":
+			cleanups.Add(1)
+			if cookie, err := r.Cookie("session"); err != nil || cookie.Value != "synthetic-secret" {
+				t.Error("cleanup missing accepted session")
+			}
+		}
+	}))
+	defer srv.Close()
+	_, err := LoginSessionContext(ctx, srv.URL, "fixture", "synthetic-secret", "")
+	if !errors.Is(err, context.Canceled) || cleanups.Load() != 1 || !strings.Contains(err.Error(), "cleanup sign-out completed") {
+		t.Fatalf("canceled verification not cleaned up: %v", err)
+	}
+}
+
+func TestSessionFailedLoginCleanupGrace(t *testing.T) {
+	isolateSessionStore(t)
+	for _, failedSignIn := range []bool{false, true} {
+		t.Run(fmt.Sprint(failedSignIn), func(t *testing.T) {
+			var cleanups atomic.Int32
+			srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				switch r.URL.Path {
+				case "/api/v2/auth/sign-in":
+					http.SetCookie(w, &http.Cookie{Name: "session", Value: "synthetic-secret", Path: "/"})
+					if failedSignIn {
+						w.WriteHeader(500)
+					}
+				case "/api/v2/auth/me":
+					w.WriteHeader(401)
+				case "/api/v2/auth/sign-out":
+					cleanups.Add(1)
+					_, _ = io.Copy(io.Discard, r.Body)
+					<-r.Context().Done()
+				}
+			}))
+			defer srv.Close()
+			start := time.Now()
+			_, err := LoginSessionContext(context.Background(), srv.URL, "fixture", "synthetic-secret", "")
+			elapsed := time.Since(start)
+			if err == nil || cleanups.Load() != 1 || elapsed < 4*time.Second || elapsed > 7*time.Second || !strings.Contains(err.Error(), "cleanup sign-out failed") || !strings.Contains(err.Error(), "cleanup unverified") {
+				t.Fatalf("cleanup grace not bounded/explicit: %v (%v)", err, elapsed)
+			}
+		})
+	}
+}
+
+func TestSessionFailedSignInCookieCleanup(t *testing.T) {
+	isolateSessionStore(t)
+	for _, cleanupStatus := range []int{http.StatusNoContent, http.StatusUnauthorized, http.StatusInternalServerError} {
+		t.Run(fmt.Sprint(cleanupStatus), func(t *testing.T) {
+			var logins, cleanups, verifications atomic.Int32
+			srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				switch r.URL.Path {
+				case "/api/v2/auth/sign-in":
+					logins.Add(1)
+					http.SetCookie(w, &http.Cookie{Name: "session", Value: "synthetic-secret", Path: "/"})
+					w.WriteHeader(http.StatusInternalServerError)
+				case "/api/v2/auth/sign-out":
+					cleanups.Add(1)
+					if cookie, err := r.Cookie("session"); err != nil || cookie.Value != "synthetic-secret" {
+						t.Error("cleanup did not use the issued cookie")
+					}
+					w.WriteHeader(cleanupStatus)
+				default:
+					verifications.Add(1)
+				}
+				_, _ = io.WriteString(w, "synthetic-secret")
+			}))
+			defer srv.Close()
+			s, err := LoginSession(srv.URL, "fixture", "synthetic-secret", "")
+			if s != nil || err == nil || !strings.Contains(err.Error(), "sign-in outcome uncertain (HTTP 500)") ||
+				strings.Contains(err.Error(), "synthetic-secret") || logins.Load() != 1 || cleanups.Load() != 1 || verifications.Load() != 0 {
+				t.Fatalf("failed login cookie state mishandled: %v", err)
+			}
+			want := "cleanup sign-out completed"
+			if cleanupStatus != http.StatusNoContent {
+				want = "cleanup sign-out failed"
+			}
+			if !strings.Contains(err.Error(), want) {
+				t.Fatalf("cleanup result missing: %v", err)
+			}
+		})
+	}
+	path, _ := tokensPath()
+	if _, err := os.Stat(path); !os.IsNotExist(err) {
+		t.Fatal("failed login persisted credentials")
 	}
 }
 

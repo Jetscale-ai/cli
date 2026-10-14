@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"context"
 	"os"
 	"path/filepath"
 	"strings"
@@ -26,6 +27,8 @@ var (
 	flagOutput          string
 	flagCAFile          string
 	flagCredentialsFile string
+	flagLogin           string
+	flagPasswordStdin   bool
 )
 
 func newRootCmd() *cobra.Command {
@@ -62,6 +65,8 @@ Developer shortcuts:
 	root.PersistentFlags().StringVar(&flagAPIURL, "api-url", "", "override API URL directly")
 	root.PersistentFlags().StringVar(&flagCAFile, "ca-file", "", "additional trusted CA PEM for authenticated API requests")
 	root.PersistentFlags().StringVar(&flagCredentialsFile, "credentials-file", "", "local build only: read admin credentials from dotenv, sign in for one command, then sign out without saving")
+	root.PersistentFlags().StringVar(&flagLogin, "login", "", "email or username for one-command authentication (requires --password-stdin; never saves credentials)")
+	root.PersistentFlags().BoolVar(&flagPasswordStdin, "password-stdin", false, "read one non-empty password line from non-terminal stdin (max 4 KiB, 5-second deadline; requires --login)")
 	root.PersistentFlags().StringVar(&flagAccount, "account", "", "cloud account name or ID override")
 	root.PersistentFlags().StringVarP(&flagOutput, "output", "o", "table", "output format: table, json, yaml")
 
@@ -71,8 +76,14 @@ Developer shortcuts:
 	root.AddCommand(newAccountsCmd())
 	root.AddCommand(newSystemCmd())
 	root.AddCommand(newRecommendationsCmd())
+	prepare := newPrepareCmd()
+	root.AddCommand(prepare)
+	flags := newFlagsCmd()
+	root.AddCommand(flags)
 
 	wrapSessionLifecycle(root)
+	wrapPrepareDeadlineCleanup(prepare)
+	wrapPrepareDeadlineCleanup(flags)
 	adaptHelp(root, root.Name())
 	return root
 }
@@ -104,7 +115,11 @@ func resolveAPI() (name string, url string, err error) {
 }
 
 func Execute() error {
-	return newRootCmd().Execute()
+	return ExecuteContext(context.Background())
+}
+
+func ExecuteContext(ctx context.Context) error {
+	return newRootCmd().ExecuteContext(ctx)
 }
 
 // printer returns a Printer configured from the global --output flag.
