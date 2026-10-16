@@ -64,9 +64,14 @@ example Stack's `scripts/unstable-seed.py`.
 
 ## Known Backend limits
 
-- Business units have no slug uniqueness in the database, and managed-agent
-  provisioning follows the unit's commit. Serialize creates per company and
-  never create again after an uncertain outcome.
+- Since Backend 13.41.2 a business unit's slug is unique per company: an
+  identical create returns the existing unit and a differing one conflicts.
+  Managed-agent provisioning still follows the unit's commit; never create again
+  after an uncertain outcome.
+- Company domain emails are not unique in the database. `companies create`
+  refuses a name or domain that another slug already has (`name_in_use`,
+  `domain_in_use`), but that check is a read before the write; only a Backend
+  whose setup refuses a domain another company owns closes the race.
 - A cloud account's stored credentials cannot be read back, so `link` reports
   `credentials_compared: false` for an existing link.
 - Linking a provider account whose integration exists outside the caller's view

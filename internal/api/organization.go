@@ -99,9 +99,10 @@ type LicenseSpec struct {
 	BillingInterval string
 }
 
-// EnsureCompany creates the company only when no company has the slug. With a
-// license it uses the Backend's atomic company-plus-license setup, so a company
-// is never left without the license it was created for.
+// EnsureCompany creates the company only when no company has the slug, the
+// name or any of the domains; a name or domain under another slug is a
+// conflict. With a license it uses the Backend's atomic company-plus-license
+// setup, so a company is never left without the license it was created for.
 func (c *Client) EnsureCompany(ctx context.Context, spec CompanySpec, dryRun bool) (Result, error) {
 	r := Result{Resource: "company"}
 	existing, err := c.ListCompanies(ctx, map[string]string{"slug": "eq " + spec.Slug})
@@ -128,6 +129,13 @@ func (c *Client) EnsureCompany(ctx context.Context, spec CompanySpec, dryRun boo
 			r.Status = StatusDrift
 		}
 		return r, nil
+	}
+	other, reason, err := c.companyClaiming(ctx, spec)
+	if err != nil {
+		return r, err
+	}
+	if other != nil {
+		return r, &ConflictError{Resource: "company", Reason: reason, ID: other.ID()}
 	}
 	if dryRun {
 		r.Status = StatusPlanned
@@ -159,6 +167,38 @@ func (c *Client) EnsureCompany(ctx context.Context, spec CompanySpec, dryRun boo
 	}
 	r.ID, r.Status, r.Details = after[0].ID(), StatusCreated, after[0].Project(CompanyFields...)
 	return r, nil
+}
+
+// companyClaiming finds a company under another slug that already has the
+// name or one of the domains. Creating beside it would leave two tenants that
+// people confuse and that both claim the domain's sign-ins.
+func (c *Client) companyClaiming(ctx context.Context, spec CompanySpec) (Record, string, error) {
+	companies, err := c.ListCompanies(ctx, nil)
+	if err != nil {
+		return nil, "", err
+	}
+	for _, company := range companies {
+		if strings.EqualFold(strings.TrimSpace(company.String("name")), strings.TrimSpace(spec.Name)) {
+			return company, "name_in_use", nil
+		}
+		for _, domain := range company.Strings("domain_emails") {
+			for _, want := range spec.DomainEmails {
+				if emailDomain(domain) == emailDomain(want) {
+					return company, "domain_in_use", nil
+				}
+			}
+		}
+	}
+	return nil, "", nil
+}
+
+// emailDomain reduces "billing@acme.com" and "Acme.com" alike to "acme.com".
+func emailDomain(value string) string {
+	_, domain, found := strings.Cut(value, "@")
+	if !found {
+		domain = value
+	}
+	return strings.ToLower(strings.TrimSpace(domain))
 }
 
 type bodyCall func(context.Context, string, io.Reader, ...generated.RequestEditorFn) (*http.Response, error)
