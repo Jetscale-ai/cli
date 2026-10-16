@@ -97,6 +97,10 @@ func newCompaniesCreateCmd() *cobra.Command {
 		Short: "Create a company unless one with the slug exists",
 		Long: `Create a company unless one with the slug already exists.
 
+A company under another slug that already has the name or one of the domain
+emails is a conflict (exit 4, name_in_use or domain_in_use), checked on
+--dry-run too: creating beside it would leave two tenants claiming the domain.
+
 With --license-plan the company and its license are created in one atomic
 Backend setup, so a new company is never left without its license. The plan
 must be active. An existing company is compared by name, domain emails and

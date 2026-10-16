@@ -203,6 +203,36 @@ func TestCompanyCreateIsNoopWhenMatchingAndDriftWhenNot(t *testing.T) {
 	}
 }
 
+func TestCompanyCreateRefusesANameOrDomainUnderAnotherSlug(t *testing.T) {
+	f, server := newFakeBackend(t)
+	existing := map[string]any{"id": "99999999-9999-4999-8999-999999999999", "name": "Unstable Jetscale", "slug": "jetscale.ai", "domain_emails": []string{"jetscale.ai"}, "is_root": false}
+	f.on("GET /api/v2/organization/companies", func(r *http.Request, _ []byte) (int, any) {
+		if r.URL.Query().Get("slug") != "" {
+			return list()
+		}
+		return list(existing)
+	})
+	create := []string{"-o", "json", "companies", "create", "--slug", "unstable-jetscale", "--domain-email", "jetscale.ai"}
+	for _, tc := range []struct{ name, reason string }{
+		{"Unstable Jetscale", "name_in_use"},
+		{"Another Name", "domain_in_use"},
+	} {
+		for _, dryRun := range []bool{true, false} {
+			args := append(append([]string{}, create...), "--name", tc.name)
+			if dryRun {
+				args = append(args, "--dry-run")
+			}
+			stdout, _, code := run(t, server, args...)
+			if code != ExitConflict || !strings.Contains(stdout, tc.reason) || !strings.Contains(stdout, "99999999-9999-4999-8999-999999999999") {
+				t.Fatalf("%q (dry run %v) must conflict with %s and exit %d: %d %s", tc.name, dryRun, tc.reason, ExitConflict, code, stdout)
+			}
+		}
+	}
+	if f.count("POST /api/v2/organization/companies")+f.count("POST /api/v2/organization/action/setup-company") != 0 {
+		t.Fatal("a company must never be created beside one with its name or domain")
+	}
+}
+
 func TestCompanyCreateWithLicenseUsesAtomicSetup(t *testing.T) {
 	f, server := newFakeBackend(t)
 	created := false
