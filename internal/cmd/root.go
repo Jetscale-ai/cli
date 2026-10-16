@@ -37,22 +37,19 @@ func newRootCmd() *cobra.Command {
 		Short: "JetScale CLI — cloud cost optimization from the terminal",
 		Long: `jetscale is the operator CLI for the JetScale cloud cost optimization platform.
 
-It provides authenticated access to recommendations, analysis, and remediation
-plans through a scriptable terminal interface.
-
 This ` + buildinfo.Channel + ` build defaults to ` + buildinfo.DefaultURL() + `.
 Use -i to switch instances or --local for local development.
 
-Get started:
-  jetscale auth login
+Resource commands are noun-verb (list, get, create, set, link, wait), write
+idempotently (created / already exists / drift), take --dry-run on every write,
+print -o json or -q IDs, and exit 0 ok, 1 failure, 2 usage, 3 not found,
+4 conflict, 5 forbidden or unconfirmed, 6 timeout, 7 drift.`,
+		Example: `  jetscale auth login
+  jetscale config set company unstable-jetscale
   jetscale accounts list
-  jetscale accounts use prod-us-east-1
   jetscale recommendations list
-
-Developer shortcuts:
-  jetscale --local auth login                 # authenticate to local backend
-  jetscale --local accounts list              # discover local accounts
-  jetscale --account staging recommendations list  # one-off account override`,
+  jetscale feature-flags get CLOUD.FOCUS --root
+  jetscale api organization/companies --paginate`,
 		SilenceUsage:  true,
 		SilenceErrors: true,
 		PersistentPreRunE: func(_ *cobra.Command, _ []string) error {
@@ -67,19 +64,39 @@ Developer shortcuts:
 	root.PersistentFlags().StringVar(&flagCredentialsFile, "credentials-file", "", "local build only: read admin credentials from dotenv, sign in for one command, then sign out without saving")
 	root.PersistentFlags().StringVar(&flagLogin, "login", "", "email or username for one-command authentication (requires --password-stdin; never saves credentials)")
 	root.PersistentFlags().BoolVar(&flagPasswordStdin, "password-stdin", false, "read one non-empty password line from non-terminal stdin (max 4 KiB, 5-second deadline; requires --login)")
-	root.PersistentFlags().StringVar(&flagAccount, "account", "", "cloud account name or ID override")
+	root.PersistentFlags().StringVar(&flagAccount, "account", "", "cloud account: ID, provider account ID or name")
 	root.PersistentFlags().StringVarP(&flagOutput, "output", "o", "table", "output format: table, json, yaml")
 
-	root.AddCommand(newVersionCmd())
-	root.AddCommand(newConfigCmd())
-	root.AddCommand(newAuthCmd())
-	root.AddCommand(newAccountsCmd())
-	root.AddCommand(newSystemCmd())
-	root.AddCommand(newRecommendationsCmd())
+	root.AddGroup(
+		&cobra.Group{ID: groupCore, Title: "Core Commands:"},
+		&cobra.Group{ID: groupBilling, Title: "Billing Commands:"},
+	)
+	auth := newAuthCmd()
+	auth.GroupID = groupCore
+	root.AddCommand(
+		auth,
+		newCompaniesCmd(),
+		newBusinessUnitsCmd(),
+		newAccountsCmd(),
+		newRecommendationsCmd(),
+		newCostSourcesCmd(),
+		newFeatureFlagsCmd(),
+		newPlansCmd(),
+		newLicensesCmd(),
+		newAPICmd(),
+		newConfigCmd(),
+		newSystemCmd(),
+		newVersionCmd(),
+	)
+	// The published basics and flags lanes still call these; hidden from help.
 	prepare := newPrepareCmd()
-	root.AddCommand(prepare)
+	prepare.Hidden = true
+	prepare.Short = "Deprecated: use companies, business-units and feature-flags"
 	flags := newFlagsCmd()
-	root.AddCommand(flags)
+	flags.Hidden = true
+	flags.Short = "Deprecated: use feature-flags"
+	root.AddCommand(prepare, flags)
+	root.SetFlagErrorFunc(func(_ *cobra.Command, err error) error { return usageError(err) })
 
 	wrapSessionLifecycle(root)
 	wrapPrepareDeadlineCleanup(prepare)
@@ -87,6 +104,11 @@ Developer shortcuts:
 	adaptHelp(root, root.Name())
 	return root
 }
+
+const (
+	groupCore    = "core"
+	groupBilling = "billing"
+)
 
 func executableName() string {
 	name := filepath.Base(os.Args[0])

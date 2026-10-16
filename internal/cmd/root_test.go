@@ -195,7 +195,7 @@ func TestRecommendationsHelp(t *testing.T) {
 	}
 
 	out := buf.String()
-	for _, sub := range []string{"list", "show"} {
+	for _, sub := range []string{"list", "get", "sources"} {
 		if !strings.Contains(out, sub) {
 			t.Errorf("expected %q in recommendations help, got: %q", sub, out)
 		}
@@ -226,7 +226,7 @@ func TestRecommendationsListHasFlags(t *testing.T) {
 	}
 
 	out := buf.String()
-	for _, flag := range []string{"--limit", "--offset"} {
+	for _, flag := range []string{"--limit", "--all-accounts"} {
 		if !strings.Contains(out, flag) {
 			t.Errorf("expected %q in list help, got: %q", flag, out)
 		}
