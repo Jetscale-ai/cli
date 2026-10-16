@@ -8,6 +8,7 @@ import (
 	"net/http/httptest"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"sync"
 	"testing"
@@ -383,13 +384,15 @@ func TestCloudAccountLinkedElsewhereIsConflict(t *testing.T) {
 
 func TestCredentialFileRejectsPublicFilesAndUnknownKeys(t *testing.T) {
 	_, server := newFakeBackend(t)
-	public := filepath.Join(t.TempDir(), "public.json")
-	if err := os.WriteFile(public, []byte(`{"external_id":"x"}`), 0o644); err != nil {
-		t.Fatal(err)
-	}
 	args := []string{"accounts", "link", "--company", "c", "--business-unit", "b", "--name", "n", "--provider", "aws", "--role-arn", "arn:aws:iam::402289717651:role/R"}
-	if _, _, code := run(t, server, append(args, "--credential-file", public)...); code != ExitUsage {
-		t.Fatalf("group/world-readable credential file must be refused, got %d", code)
+	if runtime.GOOS != "windows" {
+		public := filepath.Join(t.TempDir(), "public.json")
+		if err := os.WriteFile(public, []byte(`{"external_id":"x"}`), 0o644); err != nil {
+			t.Fatal(err)
+		}
+		if _, _, code := run(t, server, append(args, "--credential-file", public)...); code != ExitUsage {
+			t.Fatalf("group/world-readable credential file must be refused, got %d", code)
+		}
 	}
 	unknown := privateCredentialFile(t, `{"client_secret":"x"}`)
 	if _, _, code := run(t, server, append(args, "--credential-file", unknown)...); code != ExitUsage {

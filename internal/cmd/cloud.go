@@ -7,6 +7,7 @@ import (
 	"io"
 	"os"
 	"regexp"
+	"runtime"
 	"slices"
 	"strings"
 
@@ -31,7 +32,9 @@ func readCredentialFile(path string, allowed []string) (map[string]string, error
 	if err != nil {
 		return nil, usageError(errors.New("--credential-file is not readable"))
 	}
-	if info.Mode().IsRegular() && info.Mode().Perm()&0o077 != 0 {
+	// Windows mode bits do not describe ACLs (files report 0666), so the
+	// group/other check applies only where permissions are mode bits.
+	if runtime.GOOS != "windows" && info.Mode().IsRegular() && info.Mode().Perm()&0o077 != 0 {
 		return nil, usageError(errors.New("--credential-file must not be readable by group or others"))
 	}
 	file, err := os.Open(path)
