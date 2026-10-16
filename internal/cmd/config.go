@@ -98,16 +98,30 @@ func newConfigSetCmd() *cobra.Command {
 
   default-instance    Change the default instance (e.g. for enterprise deploy)
   instance.<name>     Set or add a named instance URL
+  company             Default --company for the current instance ("" clears it)
 
 Examples:
   jetscale config set default-instance acme
-  jetscale config set instance.acme https://jetscale.acme-corp.com`,
+  jetscale config set instance.acme https://jetscale.acme-corp.com
+  jetscale config set company unstable-jetscale`,
 		Args: cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			key, value := args[0], args[1]
 			cfg, err := config.Load()
 			if err != nil {
 				return err
+			}
+
+			if key == "company" {
+				instance, _, err := resolveAPI()
+				if err != nil {
+					return err
+				}
+				if err := config.SetCompany(instance, value); err != nil {
+					return err
+				}
+				_, _ = fmt.Fprintf(cmd.OutOrStdout(), "Default company for %s: %q\nSaved.\n", instance, value)
+				return nil
 			}
 
 			switch {
@@ -126,7 +140,7 @@ Examples:
 				_, _ = fmt.Fprintf(cmd.OutOrStdout(), "Added instance %q → %s\n", name, value)
 
 			default:
-				return fmt.Errorf("unknown config key %q (supported: default-instance, instance.<name>)", key)
+				return fmt.Errorf("unknown config key %q (supported: default-instance, instance.<name>, company)", key)
 			}
 
 			if err := config.Save(cfg); err != nil {
@@ -145,7 +159,8 @@ func newConfigGetCmd() *cobra.Command {
 		Long: `Get a configuration value. Supported keys:
 
   default-instance    Show the default instance name
-  api-url             Show the resolved API URL (after all overrides)`,
+  api-url             Show the resolved API URL (after all overrides)
+  company             Show the resolved default company (after flag/env overrides)`,
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			key := args[0]
@@ -169,8 +184,15 @@ func newConfigGetCmd() *cobra.Command {
 				}
 				_, _ = fmt.Fprintln(cmd.OutOrStdout(), url)
 
+			case "company":
+				instance, _, err := config.Resolve(cfg, flagInstance, flagLocal, flagAPIURL)
+				if err != nil {
+					return err
+				}
+				_, _ = fmt.Fprintln(cmd.OutOrStdout(), config.ResolveCompany(cfg, instance, ""))
+
 			default:
-				return fmt.Errorf("unknown config key %q (supported: default-instance, api-url)", key)
+				return fmt.Errorf("unknown config key %q (supported: default-instance, api-url, company)", key)
 			}
 			return nil
 		},

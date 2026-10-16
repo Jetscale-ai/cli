@@ -614,7 +614,9 @@ func TestStdinAuthTemporaryAccountListing(t *testing.T) {
 	if err := root.Execute(); err != nil {
 		t.Fatal(err)
 	}
-	var rows []accountRow
+	var rows []struct {
+		Name string `json:"name"`
+	}
 	if json.Unmarshal(stdout.Bytes(), &rows) != nil || len(rows) != 1 || rows[0].Name != "Fixture account" {
 		t.Fatal("account results were not preserved as JSON")
 	}

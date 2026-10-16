@@ -23,6 +23,7 @@ const (
 type Instance struct {
 	APIURL        string `yaml:"api_url"`
 	ActiveAccount string `yaml:"active_account,omitempty"`
+	Company       string `yaml:"company,omitempty"`
 }
 
 // Config is the on-disk config file structure.
@@ -259,6 +260,38 @@ func SetActiveAccount(instanceName, accountName string) error {
 		return fmt.Errorf("instance %q not found", instanceName)
 	}
 	inst.ActiveAccount = accountName
+	cfg.Instances[instanceName] = inst
+	return Save(cfg)
+}
+
+// ResolveCompany returns the company selector for an instance:
+//  1. --company flag
+//  2. channel COMPANY environment variable
+//  3. cfg.Instances[instanceName].Company (set with: config set company)
+func ResolveCompany(cfg Config, instanceName string, companyFlag string) string {
+	if companyFlag != "" {
+		return companyFlag
+	}
+	if v := os.Getenv(buildinfo.EnvVar("COMPANY")); v != "" {
+		return v
+	}
+	if inst, ok := cfg.Instances[instanceName]; ok {
+		return inst.Company
+	}
+	return ""
+}
+
+// SetCompany persists the default company for an instance; empty clears it.
+func SetCompany(instanceName, company string) error {
+	cfg, err := Load()
+	if err != nil {
+		return err
+	}
+	inst, ok := cfg.Instances[instanceName]
+	if !ok {
+		return fmt.Errorf("instance %q not found", instanceName)
+	}
+	inst.Company = company
 	cfg.Instances[instanceName] = inst
 	return Save(cfg)
 }

@@ -116,6 +116,9 @@ func TestLocalCredentialSessionLifecycle(t *testing.T) {
 			if scenario == "status-error" {
 				command = []string{"auth", "status"}
 			}
+			if scenario == "bad-me" {
+				command = []string{"auth", "whoami"}
+			}
 			args := []string{"--api-url", server.URL, "--credentials-file", creds, "-o", "json"}
 			root.SetArgs(append(args, command...))
 			err := root.Execute()
@@ -134,7 +137,9 @@ func TestLocalCredentialSessionLifecycle(t *testing.T) {
 				t.Errorf("logout attempts=%d, want %d", logoutCalls, wantLogout)
 			}
 			if scenario == "success" {
-				var rows []accountRow
+				var rows []struct {
+					Name string `json:"name"`
+				}
 				if err := json.Unmarshal(stdout.Bytes(), &rows); err != nil {
 					t.Fatalf("stdout not JSON: %v", err)
 				}

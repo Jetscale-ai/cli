@@ -158,7 +158,7 @@ jetscale auth whoami                        # check identity
 jetscale accounts list                      # discover cloud accounts
 jetscale accounts use prod-us-east-1        # set active account
 jetscale system info -o json                # backend version info
-jetscale recommendations list --limit 10    # AWS-sourced recommendations
+jetscale recommendations list --limit 10    # latest recommendations
 jetscale recommendations show <id>          # existing recommendation details
 
 # Script-friendly
@@ -242,15 +242,39 @@ See [ROADMAP.md](ROADMAP.md) for work packages and exit criteria.
 ## Commands
 
 ```text
-jetscale auth login|logout|whoami|status     # authentication
-jetscale accounts list|use|current           # cloud account selection
-jetscale config show|set|get|instances       # CLI configuration
-jetscale system info|diagnostics             # backend health
-jetscale recommendations list|show <id>      # AWS-sourced read commands
-jetscale prepare basics --manifest FILE     # bounded assessment; --apply opt-in
-jetscale flags show|plan|apply --profile FILE # enable-only feature flags
-jetscale version [-o json|yaml]               # offline build metadata
+Core commands (noun-verb; get also answers to show and view)
+  jetscale auth login|logout|whoami|status
+  jetscale companies list|get|create
+  jetscale business-units list|get|create          # alias: bu
+  jetscale accounts list|get|link|status|wait|use|current
+  jetscale recommendations list|get|sources|inspect|regenerate   # alias: recs
+  jetscale cost-sources list|get|create|validate|enable
+  jetscale feature-flags list|get|set              # --root | --company [--business-unit|--account]
+
+Billing commands
+  jetscale plans list|get
+  jetscale licenses list|get
+
+Additional commands
+  jetscale api <path> [-X METHOD] [-f k=v] [-F k=v] [--input FILE] [--paginate]
+  jetscale config show|set|get|instances           # config set company <slug>
+  jetscale system info|diagnostics
+  jetscale version [-o json|yaml]
 ```
+
+Resource commands share one contract, described in
+[Resource Commands](docs/resource-commands.md): `-o json` with curated fields or
+`-q` for IDs, explicit empty lists, idempotent writes that report created,
+already exists (unchanged) or drift and never change a drifted resource,
+`--dry-run` on every write, prompts only on a terminal with `-y/--yes` to skip
+them, secrets only through `--credential-file`, errors with a `Try:` line and a
+`transient` flag, and exit codes 0 ok, 1 failure or uncertain write, 2 usage, 3
+not found, 4 conflict, 5 forbidden or unconfirmed, 6 timeout, 7 drift.
+`--company` defaults to `config set company`.
+
+The older `prepare basics` and `flags show|plan|apply --profile` commands remain
+for the published basics and flags lanes but are hidden from help; use
+`companies`, `business-units` and `feature-flags` instead.
 
 For the bounded basics API subset, implemented Stack wrapper with optional
 non-secret manifest, and pending unstable API/auth registration, see
@@ -279,7 +303,7 @@ operator sessions. See the
     --credentials-file <path> local-channel per-command auth from a dotenv file
     --login <email>      temporary per-command login; requires --password-stdin
     --password-stdin     bounded password line; temporary memory-only session
-    --account <name>     cloud account override
+    --account <name>     cloud account: ID, provider account ID or name
 -o, --output <format>   table, json, yaml (default: table)
 ```
 
