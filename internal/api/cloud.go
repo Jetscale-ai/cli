@@ -380,7 +380,13 @@ func costSourceDrift(source Record, spec CostSourceSpec) []string {
 		want = append(want, item.ProviderAccountID)
 	}
 	have := []string{}
-	if raw, ok := source["coverage"].([]any); ok {
+	// The backend returns coverage as source_accounts; coverage is only the
+	// create request's field.
+	raw, ok := source["source_accounts"].([]any)
+	if !ok {
+		raw, ok = source["coverage"].([]any)
+	}
+	if ok {
 		for _, item := range raw {
 			if m, ok := item.(map[string]any); ok {
 				have = append(have, Record(m).String("provider_account_id"))
