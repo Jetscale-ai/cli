@@ -453,7 +453,7 @@ func TestCostSourceCreateReportsDriftWithoutWriting(t *testing.T) {
 	f.withAccounts(map[string]any{"id": testAccountID, "name": "Unstable AWS", "cloud_provider_type": "AWS", "provider_account_id": "402289717651", "business_unit": testUnitID})
 	f.on("GET /api/v2/cloud/cost-data-sources", func(*http.Request, []byte) (int, any) {
 		return list(map[string]any{"id": "99999999-9999-4999-8999-999999999999", "name": "Unstable AWS FOCUS", "source_kind": "focus_s3", "provider_scope_id": "081373342681",
-			"coverage":        []map[string]any{{"provider_account_id": "402289717651"}},
+			"source_accounts": []map[string]any{{"cloud_account": testAccountID, "provider_account_id": "402289717651"}},
 			"provider_config": map[string]any{"bucket": "old-bucket", "prefix": "focus/", "external_id": "never-printed"}})
 	})
 	stdout, stderr, code := run(t, server, "-o", "json", "cost-sources", "create", "--company", "unstable-jetscale", "--provider", "aws", "--name", "Unstable AWS FOCUS", "--provider-scope-id", "081373342681", "--cover", "402289717651", "--bucket", "new-bucket", "--prefix", "focus/")
@@ -466,5 +466,26 @@ func TestCostSourceCreateReportsDriftWithoutWriting(t *testing.T) {
 	}
 	if f.count("POST /api/v2/cloud/cost-data-sources") != 0 {
 		t.Fatal("drifted source must not be written")
+	}
+}
+
+// The backend reports coverage as source_accounts; an unchanged source must be
+// a no-op, not coverage drift.
+func TestCostSourceCreateMatchesBackendCoverage(t *testing.T) {
+	f, server := newFakeBackend(t)
+	f.withCompany()
+	f.withAccounts(map[string]any{"id": testAccountID, "name": "Unstable AWS", "cloud_provider_type": "AWS", "provider_account_id": "402289717651", "business_unit": testUnitID})
+	f.on("GET /api/v2/cloud/cost-data-sources", func(*http.Request, []byte) (int, any) {
+		return list(map[string]any{"id": "99999999-9999-4999-8999-999999999999", "name": "Unstable AWS FOCUS", "source_kind": "focus_s3", "provider_scope_id": "081373342681",
+			"source_accounts": []map[string]any{{"cloud_account": testAccountID, "provider_account_id": "402289717651"}},
+			"provider_config": map[string]any{"bucket": "focus-bucket", "prefix": "focus/"}})
+	})
+	stdout, _, code := run(t, server, "-o", "json", "cost-sources", "create", "--company", "unstable-jetscale", "--provider", "aws", "--name", "Unstable AWS FOCUS", "--provider-scope-id", "081373342681", "--cover", "402289717651", "--bucket", "focus-bucket", "--prefix", "focus/")
+	result := decode(t, stdout).(map[string]any)
+	if code != 0 || result["status"] != "noop" || result["drift"] != nil {
+		t.Fatalf("unchanged source must be a no-op: %d %s", code, stdout)
+	}
+	if f.count("POST /api/v2/cloud/cost-data-sources") != 0 {
+		t.Fatal("unchanged source must not be written")
 	}
 }
