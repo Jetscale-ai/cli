@@ -2,6 +2,8 @@ module github.com/Jetscale-ai/cli
 
 go 1.25.0
 
+toolchain go1.26.10
+
 require (
 	github.com/google/uuid v1.5.0
 	github.com/magefile/mage v1.16.0
