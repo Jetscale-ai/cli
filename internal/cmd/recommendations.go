@@ -3,6 +3,7 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	"strings"
 
 	"github.com/Jetscale-ai/cli/internal/api"
 	"github.com/Jetscale-ai/cli/internal/config"
@@ -171,12 +172,43 @@ func newRecsInspectCmd() *cobra.Command {
 
 func newRecsRegenerateCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "regenerate <recommendation-id>",
-		Short:   "Request a new recommendation version (starts inference; not idempotent)",
-		Args:    exactArgs(1),
-		Example: `  jetscale recommendations regenerate 3f2c0a6e-0000-4000-8000-000000000000 -y`,
+		Use:   "regenerate <recommendation-id>",
+		Short: "Regenerate in place (same ID/version; starts inference; not idempotent)",
+		Args:  exactArgs(1),
+		Long: `Regenerate an existing resource recommendation in place (same ID/version).
+A successful run overwrites its result rather than creating a new version.
+Capture the completed result and its evidence before the next successful run
+replaces them.
+
+By default the Backend selects all eligible evidence sources. --exclude-source
+omits a source for this run only; it does not disable a billing source or change
+stored FOCUS data. Exclusions require a superuser and Backend-supported source
+keys for this resource. Every accepted call starts inference; do not retry an
+uncertain submission.`,
+		Example: `  jetscale recommendations regenerate 3f2c0a6e-0000-4000-8000-000000000000 -y
+  jetscale recommendations regenerate 3f2c0a6e-0000-4000-8000-000000000000 --exclude-source focus-cost-attribution -y`,
+		PreRunE: func(cmd *cobra.Command, _ []string) error {
+			excludedSources, _ := cmd.Flags().GetStringArray("exclude-source")
+			if cmd.Flags().Changed("exclude-source") && len(excludedSources) == 0 {
+				return usageError(errors.New("--exclude-source must not be empty or blank"))
+			}
+			if len(excludedSources) > 32 {
+				return usageError(errors.New("--exclude-source accepts at most 32 source keys"))
+			}
+			seen := make(map[string]bool, len(excludedSources))
+			for _, key := range excludedSources {
+				if strings.TrimSpace(key) == "" {
+					return usageError(errors.New("--exclude-source must not be empty or blank"))
+				}
+				if seen[key] {
+					return usageError(errors.New("--exclude-source must not contain duplicate keys"))
+				}
+				seen[key] = true
+			}
+			return nil
+		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			ok, err := confirm(cmd, "Regenerate starts inference work and is not idempotent. Continue?")
+			ok, err := confirm(cmd, "Regenerate starts inference and overwrites this recommendation on success (same ID/version; not idempotent). Continue?")
 			if err != nil {
 				return err
 			}
@@ -188,13 +220,15 @@ func newRecsRegenerateCmd() *cobra.Command {
 				return err
 			}
 			defer run.cancel()
-			rec, err := run.client.RegenerateRecommendation(run.ctx, args[0])
+			excludedSources, _ := cmd.Flags().GetStringArray("exclude-source")
+			rec, err := run.client.RegenerateRecommendation(run.ctx, args[0], excludedSources)
 			if err != nil {
 				return apiExit(err)
 			}
 			return run.record(rec)
 		},
 	}
+	cmd.Flags().StringArray("exclude-source", nil, "omit an evidence source for this run only (repeatable; e.g. focus-cost-attribution; requires superuser)")
 	addYesFlag(cmd, "inference starts on every call")
 	return cmd
 }

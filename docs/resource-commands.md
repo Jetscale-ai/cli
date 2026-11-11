@@ -62,6 +62,46 @@ example Stack's `scripts/unstable-seed.py`.
 | 6    | Timeout                                                 |
 | 7    | Drift: the resource exists but differs from the request |
 
+## Recommendation regeneration
+
+`recommendations regenerate <recommendation-id>` reruns an existing resource
+recommendation in place. Success overwrites its result while keeping the same
+recommendation UUID and version; no new-version API exists yet. Use the same
+recommendation UUID for browser, CLI and MCP comparisons with or without FOCUS.
+The Backend selects eligible evidence sources by default. For a comparison
+without FOCUS, exclude only the FOCUS source:
+
+```sh
+# Without FOCUS for this run only
+jetscale recommendations regenerate <recommendation-id> \
+  --exclude-source focus-cost-attribution --yes -o json
+
+# Wait for completion and capture the first result and evidence before continuing.
+# Same UUID/version, normal eligible sources (including FOCUS when available)
+jetscale recommendations regenerate <recommendation-id> --yes -o json
+```
+
+`--exclude-source` is repeatable. The CLI rejects blank keys, duplicate keys and
+more than 32 exclusions before authentication or API access. The Backend decides
+which keys the resource supports and requires superuser authorization for
+exclusions; the flag does not grant that permission.
+
+Exclusions are not saved as CLI defaults, do not disable billing sources, and do
+not delete or re-ingest FOCUS data. Omitting the flag does not force FOCUS to be
+available or prove model consumption. Verify each run's operation-bound saved
+evidence separately. Every accepted request starts inference; wait for the first
+run to finish and capture its completed result and evidence before submitting
+the second. The next successful run replaces them on the same recommendation, so
+the shared UUID/version is not a comparison snapshot. Reconcile an uncertain
+outcome rather than retrying.
+
+For local testing, use `./bin/jetscale-local` from `cli/` with
+`--api-url https://jetscale.internal` and
+`--ca-file ../stack/certs/jetscale-dev-ca.pem`. Reuse the human-authenticated
+session; browser or MCP reauthentication does not authenticate the CLI. These
+examples document capability, not authorization to start inference on any
+tenant.
+
 ## Known Backend limits
 
 - Since Backend 13.41.2 a business unit's slug is unique per company: an

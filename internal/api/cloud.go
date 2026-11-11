@@ -223,15 +223,19 @@ func (c *Client) InspectRecommendationSource(ctx context.Context, recommendation
 	return dataRecord(body)
 }
 
-// RegenerateRecommendation requests one new version. It is not idempotent:
-// every accepted call starts inference work.
-func (c *Client) RegenerateRecommendation(ctx context.Context, recommendationID string) (Record, error) {
+// RegenerateRecommendation overwrites the existing result on success (same ID/version).
+// It is not idempotent: every accepted call starts inference work.
+func (c *Client) RegenerateRecommendation(ctx context.Context, recommendationID string, excludedSourceKeys []string) (Record, error) {
 	id, ok := resourceUUID(recommendationID)
 	if !ok {
 		return nil, &NotFoundError{Resource: "recommendation", Selector: recommendationID}
 	}
+	request := generated.RegenerateCustomRecommendationRequest{}
+	if len(excludedSourceKeys) > 0 {
+		request.ExcludedSourceKeys = &excludedSourceKeys
+	}
 	body, err := c.write(ctx, func(ctx context.Context) (*http.Response, error) {
-		return c.gen.RegenerateCustomRecommendationApiV2CloudCustomRecommendationsCustomRecommendationIdActionRegeneratePost(ctx, id, generated.RegenerateCustomRecommendationRequest{})
+		return c.gen.RegenerateCustomRecommendationApiV2CloudCustomRecommendationsCustomRecommendationIdActionRegeneratePost(ctx, id, request)
 	})
 	if err != nil {
 		return nil, err

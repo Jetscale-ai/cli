@@ -230,9 +230,15 @@ Known gaps:
   and test-executable naming failures; the repairs await native CI confirmation.
   See the [validation record](docs/local-dev.md#credential-free-validation) for
   local checks and the failing CI run.
-- The refreshed schema and generated bindings include custom recommendation
-  regeneration, `excluded_source_keys`, and operation inspection. Their Cobra
-  commands remain pending, as do `analyze` and `plan`.
+- `recommendations regenerate` overwrites the existing recommendation in place
+  on success, keeping the same UUID and version; it does not create a new
+  version. Capture each completed result and its evidence before the next
+  successful run replaces them. Per-run `--exclude-source` keys, including
+  `focus-cost-attribution`, use the generated request. Backend source validation
+  and superuser authorization remain authoritative. Dedicated
+  operation-inspection commands, `analyze` and `plan` remain pending; use `api`
+  for supported operation reads. See the
+  [regeneration examples](docs/resource-commands.md#recommendation-regeneration).
 - Credential-free generation, contract, and serialization tests can be
   automated; they neither prove semantic E2E behavior nor authorize regeneration
   calls.

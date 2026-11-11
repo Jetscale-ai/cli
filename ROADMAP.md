@@ -345,9 +345,11 @@ parity.
 
 The checked-in schema and regenerated bindings now include custom regeneration
 (including streaming), `excluded_source_keys`, operation list/detail, and
-operation-bound FOCUS source inspection/rows. Cobra wiring for those workflows
-remains pending. Existing AWS-sourced `show` is not inspection of a multi-cloud
-regeneration run; do not claim dashboard parity.
+operation-bound FOCUS source inspection/rows. Cobra wires non-streaming
+regeneration with per-run `--exclude-source`, source listing and source
+inspection; streaming regeneration and operation list/detail remain pending.
+Existing AWS-sourced `show` is not inspection of a multi-cloud regeneration run;
+do not claim dashboard parity.
 
 **Exit criteria:** Preserve tested AWS read behavior; wire the generated
 multi-cloud regeneration/inspection contracts into explicitly authorized

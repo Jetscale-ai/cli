@@ -429,7 +429,9 @@ The refreshed `openapi/spec.json` and generated client include custom
 recommendation regeneration and streaming regeneration with
 `RegenerateCustomRecommendationRequest.excluded_source_keys`, plus
 recommendation-agent operation list/detail and operation-bound FOCUS
-inspection/rows. Their Cobra commands remain pending; AWS-sourced
+inspection/rows. Cobra wires non-streaming `recommendations regenerate` (with
+repeatable `--exclude-source`), `sources` and source `inspect`; streaming
+regeneration and operation list/detail commands remain pending. AWS-sourced
 `recommendations list` / `show` is not the multi-cloud workflow. Bindings are
 automatic, but intentional command UX/service changes remain hand-maintained and
 must pass compilation and contract tests.
