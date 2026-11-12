@@ -211,6 +211,38 @@ func TestRecommendationsListHelpIsOffline(t *testing.T) {
 	}
 }
 
+func TestRecommendationsListRejectsUnsafeFilterValues(t *testing.T) {
+	for _, tc := range []struct {
+		name  string
+		flags []string
+		flag  string
+	}{
+		{"status whitespace", []string{"--status", "ne DISCOVERED"}, "status"},
+		// StringSlice CSV-parses bare commas into separate values; quote to keep one value.
+		{"status comma", []string{"--status", `"DISCOVERED,IN_PROGRESS"`}, "status"},
+		{"resource-type whitespace", []string{"--resource-type", "AWS::EC2:: Instance"}, "resource-type"},
+		{"resource-type comma", []string{"--resource-type", `"AWS::EC2::Instance,AWS::S3::Bucket"`}, "resource-type"},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			f, server := newFakeBackend(t)
+			args := append([]string{"-o", "json", "--company", "unstable-jetscale", "--account", testAccountID}, tc.flags...)
+			args = append(args, "recommendations", "list")
+			stdout, stderr, code := run(t, server, args...)
+			if code != ExitUsage {
+				t.Fatalf("unsafe %s must be a usage error: %d %s %s", tc.flag, code, stdout, stderr)
+			}
+			if !strings.Contains(stdout+stderr, "--"+tc.flag) {
+				t.Errorf("usage error must name --%s: %s %s", tc.flag, stdout, stderr)
+			}
+			f.mu.Lock()
+			defer f.mu.Unlock()
+			if len(f.requests) != 0 {
+				t.Fatalf("unsafe filter values must not access the Backend: %v", f.requests)
+			}
+		})
+	}
+}
+
 func TestRecommendationsListOmitsStatusWhenUnset(t *testing.T) {
 	f, server, endpoint := recommendationListBackend(t, func(r *http.Request) (int, any) {
 		for _, key := range []string{"status", "cloud_resource_type", "resource_type"} {

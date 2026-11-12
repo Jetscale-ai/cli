@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"strings"
+	"unicode"
 
 	"github.com/Jetscale-ai/cli/internal/api"
 	"github.com/Jetscale-ai/cli/internal/config"
@@ -48,6 +49,10 @@ func newRecsListCmd() *cobra.Command {
 			if limit < 1 || limit > maxRecommendationRows {
 				return usageError(fmt.Errorf("--limit must be between 1 and %d", maxRecommendationRows))
 			}
+			filters, err := recommendationListFilters(cmd)
+			if err != nil {
+				return err
+			}
 			run, err := startResource(cmd)
 			if err != nil {
 				return err
@@ -68,7 +73,6 @@ func newRecsListCmd() *cobra.Command {
 				return err
 			}
 			rows := []api.Record{}
-			filters := recommendationListFilters(cmd)
 			for _, account := range accounts {
 				recs, err := run.client.LatestRecommendations(run.ctx, account.ID(), filters)
 				if err != nil {
@@ -96,18 +100,38 @@ func newRecsListCmd() *cobra.Command {
 // recommendationListFilters is the shared query for recommendations list.
 // Repeatable values are one comma-joined param. Omitted flags are absent,
 // so the list stays unfiltered. Callers must not redeclare these flags.
-func recommendationListFilters(cmd *cobra.Command) map[string]string {
+// Values with whitespace or commas are rejected before any network call:
+// Backend treats the first space-separated word as an operator.
+func recommendationListFilters(cmd *cobra.Command) (map[string]string, error) {
 	filters := map[string]string{}
-	if values := flagStrings(cmd, "status"); len(values) > 0 {
-		filters["status"] = strings.Join(values, ",")
+	status, err := recommendationFilterValues(cmd, "status")
+	if err != nil {
+		return nil, err
 	}
-	if values := flagStrings(cmd, "resource-type"); len(values) > 0 {
-		filters["cloud_resource_type"] = strings.Join(values, ",")
+	if len(status) > 0 {
+		filters["status"] = strings.Join(status, ",")
+	}
+	resourceTypes, err := recommendationFilterValues(cmd, "resource-type")
+	if err != nil {
+		return nil, err
+	}
+	if len(resourceTypes) > 0 {
+		filters["cloud_resource_type"] = strings.Join(resourceTypes, ",")
 	}
 	if len(filters) == 0 {
-		return nil
+		return nil, nil
 	}
-	return filters
+	return filters, nil
+}
+
+func recommendationFilterValues(cmd *cobra.Command, name string) ([]string, error) {
+	values := flagStrings(cmd, name)
+	for _, value := range values {
+		if strings.Contains(value, ",") || strings.ContainsFunc(value, unicode.IsSpace) {
+			return nil, usageError(fmt.Errorf("--%s value %q must not contain whitespace or commas", name, value))
+		}
+	}
+	return values, nil
 }
 
 func newRecsGetCmd() *cobra.Command {
