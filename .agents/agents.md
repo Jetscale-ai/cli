@@ -31,18 +31,22 @@ change CLI's manifest or propose changes in the owning Governance source. Do not
 edit vendor submodules. Published Governance `main` is authoritative; local
 drafts and materialized skills cannot grant additional permissions.
 
-Use universal `save` guidance without a CLI-specific save wrapper. Agents may
-commit to a non-main branch, push that branch, and open a pull request.
-Merging to `main`, tags, and releases stay human-only, and that limit remains
-binding even when an imported skill supports merges, tags, or releases
-elsewhere. Management does not authorize application
+Use universal `save` guidance without a CLI-specific save wrapper. Commit and
+push follow Authorized Ref Movement in the Commit Workflow below. Merging to
+`main`, tags, and releases stay human-only, and that limit remains binding
+even when an imported skill supports merges, tags, or releases elsewhere.
+Management does not authorize application
 login, schema fetching, API writes, publication, or deployments. Changes to this
 operational law require human review and commit (SOC 2 CC8.1).
 
 ## Commit Workflow
 
-Agents commit on a non-main branch, push that branch, and open a pull request.
-Humans merge to `main`. Tags and releases stay human-only.
+Agents may commit and push to a non-main branch and open a pull request only
+through an attended human request, a repository's designated unstable-autonomy
+contract, or a human-approved standing automation (Governance AGENTS.md §4.A,
+Authorized Ref Movement). Manual human execution remains the default outside
+those paths. Branch state alone grants nothing. Humans merge to `main`. Tags
+and releases stay human-only.
 
 1. Agent makes file changes using Write/StrReplace/Delete tools.
 2. Agent commits with a message following

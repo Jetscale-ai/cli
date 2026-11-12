@@ -41,9 +41,8 @@ The manifest selects `baseline`, `go-service`, and `terminal`, plus the
 Governance-owned `gha-workflow-naming` skill. `terminal-ux` covers the ordinary
 Cobra command surface; `tui-design` is available only for future
 persistent-screen interfaces. No custom save wrapper is introduced: use
-universal `save` guidance subject to CLI's branch boundary: agents may commit
-and push a non-main branch and open a pull request. Merging to `main`, tags,
-and releases stay human-only.
+universal `save` guidance subject to the Authorized Ref Movement red line
+below. Merging to `main`, tags, and releases stay human-only.
 
 The management integration is materialized locally; this documentation amendment
 still requires human review and commit (SOC 2 CC8.1). It does not activate the
@@ -52,8 +51,12 @@ See the [refresh procedure](.agents/README.md#refresh-from-governance).
 
 ### Universal Red Lines (Excerpt)
 
-- Agents may commit to a non-main branch, push that branch, and open a pull
-  request. Merging to `main`, tags, and releases stay human-only.
+- **Authorized Ref Movement:** Agents may commit and push to a non-main branch
+  and open a pull request only through an attended human request, a
+  repository's designated unstable-autonomy contract, or a human-approved
+  standing automation. Manual human execution remains the default outside those
+  paths. Branch state alone grants nothing. Merging to `main`, tags, and
+  releases stay human-only. (Governance AGENTS.md §4.A.)
 - Agents must never output, log, or persist secrets.
 - Agents must never impersonate humans.
 
