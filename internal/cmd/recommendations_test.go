@@ -2,9 +2,13 @@ package cmd
 
 import (
 	"bytes"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"slices"
+	"sort"
 	"strings"
+	"sync"
 	"testing"
 
 	"github.com/Jetscale-ai/cli/internal/config"
@@ -652,4 +656,88 @@ func TestRecommendationsListEmptyScopeSkipsLatest(t *testing.T) {
 			t.Fatal("empty business unit must not call the latest route")
 		}
 	})
+}
+
+func TestRecommendationsListBatchesAccountIDsAndStopsAtLimit(t *testing.T) {
+	const (
+		accountCount = 120
+		rowLimit     = 60
+	)
+	accounts := make([]map[string]any, 0, accountCount)
+	ids := make([]string, 0, accountCount)
+	for i := 0; i < accountCount; i++ {
+		id := fmt.Sprintf("%08x-0000-4000-8000-%012x", i+1, i+1)
+		ids = append(ids, id)
+		accounts = append(accounts, map[string]any{
+			"id":                  id,
+			"name":                fmt.Sprintf("acct-%d", i+1),
+			"provider_account_id": fmt.Sprintf("%012d", i+1),
+			"business_unit":       testUnitID,
+		})
+	}
+	sort.Strings(ids)
+
+	f, server := newFakeBackend(t)
+	f.withCompany()
+	f.withAccounts(accounts...)
+	var (
+		mu      sync.Mutex
+		batches [][]string
+	)
+	f.on(latestRecommendationsRoute, func(r *http.Request, _ []byte) (int, any) {
+		assertRecommendationScopeQuery(t, r)
+		raw := r.URL.Query().Get("cloud_source_account")
+		parts := strings.Split(raw, ",")
+		if len(parts) == 0 || len(parts) > recommendationAccountBatchSize {
+			t.Errorf("batch size %d out of bounds: %s", len(parts), raw)
+		}
+		mu.Lock()
+		batches = append(batches, append([]string(nil), parts...))
+		batchIndex := len(batches) - 1
+		mu.Unlock()
+		items := make([]map[string]any, 0, len(parts))
+		for j, accountID := range parts {
+			items = append(items, map[string]any{
+				"id":                   fmt.Sprintf("rec-%d-%d", batchIndex, j),
+				"title":                fmt.Sprintf("Rec %d/%d", batchIndex, j),
+				"status":               "DISCOVERED",
+				"cloud_source_account": accountID,
+			})
+		}
+		return list(items...)
+	})
+
+	stdout, stderr, code := run(t, server, "-o", "json", "--company", "unstable-jetscale", "--limit", fmt.Sprintf("%d", rowLimit), "recommendations", "list")
+	if code != 0 {
+		t.Fatalf("batched list failed: %d %s %s", code, stdout, stderr)
+	}
+	mu.Lock()
+	gotBatches := append([][]string(nil), batches...)
+	mu.Unlock()
+	if len(gotBatches) != 2 {
+		t.Fatalf("expected two batches before the limit fills, got %d", len(gotBatches))
+	}
+	if f.count(latestRecommendationsRoute) != 2 {
+		t.Fatalf("third batch must not be fetched after --limit: got %d calls", f.count(latestRecommendationsRoute))
+	}
+	if len(gotBatches[0]) != recommendationAccountBatchSize || len(gotBatches[1]) != recommendationAccountBatchSize {
+		t.Fatalf("full batches must be size %d: %#v", recommendationAccountBatchSize, gotBatches)
+	}
+	wantFirst := ids[:recommendationAccountBatchSize]
+	wantSecond := ids[recommendationAccountBatchSize : 2*recommendationAccountBatchSize]
+	if !slices.Equal(gotBatches[0], wantFirst) || !slices.Equal(gotBatches[1], wantSecond) {
+		t.Fatalf("batches must follow sorted account order:\n first=%v\n want=%v\n second=%v\n want=%v", gotBatches[0], wantFirst, gotBatches[1], wantSecond)
+	}
+	rows := decode(t, stdout).([]any)
+	if len(rows) != rowLimit {
+		t.Fatalf("--limit must hold across batches: got %d rows, want %d", len(rows), rowLimit)
+	}
+	seen := map[string]bool{}
+	for _, row := range rows {
+		id, _ := row.(map[string]any)["id"].(string)
+		if id == "" || seen[id] {
+			t.Fatalf("rows must be unique by id: %s", stdout)
+		}
+		seen[id] = true
+	}
 }

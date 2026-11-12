@@ -3,6 +3,7 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	"sort"
 	"strings"
 	"unicode"
 
@@ -12,7 +13,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
-const maxRecommendationRows = 1000
+const (
+	maxRecommendationRows          = 1000
+	recommendationAccountBatchSize = 50 // keep cloud_source_account under common ~8 KiB URL limits
+)
 
 func newRecommendationsCmd() *cobra.Command {
 	cmd := &cobra.Command{
@@ -101,9 +105,15 @@ func newRecsListCmd() *cobra.Command {
 					accountIDs = append(accountIDs, id)
 				}
 			}
+			sort.Strings(accountIDs)
 			rows := []api.Record{}
-			if len(accountIDs) > 0 {
-				recs, listErr := run.client.LatestRecommendationsForAccounts(run.ctx, accountIDs, filters)
+			seen := map[string]bool{}
+			for start := 0; start < len(accountIDs) && len(rows) < limit; start += recommendationAccountBatchSize {
+				end := start + recommendationAccountBatchSize
+				if end > len(accountIDs) {
+					end = len(accountIDs)
+				}
+				recs, listErr := run.client.LatestRecommendationsForAccounts(run.ctx, accountIDs[start:end], filters)
 				if listErr != nil {
 					return apiExit(listErr)
 				}
@@ -111,6 +121,11 @@ func newRecsListCmd() *cobra.Command {
 					if len(rows) == limit {
 						break
 					}
+					id := rec.ID()
+					if id == "" || seen[id] {
+						continue
+					}
+					seen[id] = true
 					row := rec.Project(api.RecommendationFields...)
 					row["cloud_account_id"] = rec.String("cloud_source_account")
 					rows = append(rows, row)
