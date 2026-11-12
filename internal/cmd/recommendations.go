@@ -42,6 +42,7 @@ func newRecsListCmd() *cobra.Command {
 		Short: "List the latest recommendation versions per cloud account",
 		Args:  exactArgs(0),
 		Example: `  jetscale recommendations list --company unstable-jetscale
+  jetscale recommendations list --company acme --business-unit acme-clouds
   jetscale recommendations list --account 402289717651 --limit 20 -o json
   jetscale recommendations list --company acme --all-accounts -q`,
 		RunE: func(cmd *cobra.Command, _ []string) error {
@@ -53,14 +54,23 @@ func newRecsListCmd() *cobra.Command {
 			if err != nil {
 				return err
 			}
+			businessUnit := flagString(cmd, "business-unit")
+			if businessUnit != "" && explicitAccount(cmd) != "" {
+				return usageError(errors.New("--business-unit and --account are mutually exclusive"))
+			}
 			run, err := startResource(cmd)
 			if err != nil {
 				return err
 			}
 			defer run.cancel()
+			if businessUnit != "" && run.companySelector() == "" {
+				return usageError(errors.New("--business-unit needs a company"))
+			}
 			var accounts []api.Record
 			selector := explicitAccount(cmd)
-			if selector == "" && !flagBool(cmd, "all-accounts") {
+			// A business unit is the scope. The remembered active account stays
+			// in force only when no unit and no --all-accounts is set.
+			if selector == "" && businessUnit == "" && !flagBool(cmd, "all-accounts") {
 				cfg, _ := config.Load()
 				selector = config.ResolveAccount(cfg, run.instance, "")
 			}
@@ -72,18 +82,37 @@ func newRecsListCmd() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			rows := []api.Record{}
+			if businessUnit != "" {
+				company, companyErr := run.company()
+				if companyErr != nil {
+					return companyErr
+				}
+				unit, unitErr := run.client.ResolveBusinessUnit(run.ctx, company.ID(), businessUnit)
+				if unitErr != nil {
+					return apiExit(unitErr)
+				}
+				accounts = keepRecords(accounts, func(record api.Record) bool {
+					return record.String("business_unit") == unit.ID()
+				})
+			}
+			accountIDs := make([]string, 0, len(accounts))
 			for _, account := range accounts {
-				recs, err := run.client.LatestRecommendations(run.ctx, account.ID(), filters)
-				if err != nil {
-					return apiExit(err)
+				if id := account.ID(); id != "" {
+					accountIDs = append(accountIDs, id)
+				}
+			}
+			rows := []api.Record{}
+			if len(accountIDs) > 0 {
+				recs, listErr := run.client.LatestRecommendationsForAccounts(run.ctx, accountIDs, filters)
+				if listErr != nil {
+					return apiExit(listErr)
 				}
 				for _, rec := range recs {
 					if len(rows) == limit {
 						break
 					}
 					row := rec.Project(api.RecommendationFields...)
-					row["cloud_account_id"] = account.ID()
+					row["cloud_account_id"] = rec.String("cloud_source_account")
 					rows = append(rows, row)
 				}
 			}
@@ -92,6 +121,7 @@ func newRecsListCmd() *cobra.Command {
 	}
 	cmd.Flags().Int("limit", 100, fmt.Sprintf("maximum rows (max %d)", maxRecommendationRows))
 	cmd.Flags().Bool("all-accounts", false, "ignore the active account and list every account in scope")
+	cmd.Flags().String("business-unit", "", "only accounts of this business unit (needs a company)")
 	cmd.Flags().StringSlice("status", nil, "raw Backend status (repeatable; DISCOVERED, IN_PROGRESS, COMPLETED, DISCARDED, POSTPONED, STALE; no filter when omitted)")
 	cmd.Flags().StringSlice("resource-type", nil, "cloud resource type (repeatable; no filter when omitted)")
 	return cmd
