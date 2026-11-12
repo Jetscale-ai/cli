@@ -68,8 +68,9 @@ func newRecsListCmd() *cobra.Command {
 				return err
 			}
 			rows := []api.Record{}
+			filters := recommendationListFilters(cmd)
 			for _, account := range accounts {
-				recs, err := run.client.LatestRecommendations(run.ctx, account.ID())
+				recs, err := run.client.LatestRecommendations(run.ctx, account.ID(), filters)
 				if err != nil {
 					return apiExit(err)
 				}
@@ -87,7 +88,26 @@ func newRecsListCmd() *cobra.Command {
 	}
 	cmd.Flags().Int("limit", 100, fmt.Sprintf("maximum rows (max %d)", maxRecommendationRows))
 	cmd.Flags().Bool("all-accounts", false, "ignore the active account and list every account in scope")
+	cmd.Flags().StringSlice("status", nil, "raw Backend status (repeatable; DISCOVERED, IN_PROGRESS, COMPLETED, DISCARDED, POSTPONED, STALE; no filter when omitted)")
+	cmd.Flags().StringSlice("resource-type", nil, "cloud resource type (repeatable; no filter when omitted)")
 	return cmd
+}
+
+// recommendationListFilters is the shared query for recommendations list.
+// Repeatable values are one comma-joined param. Omitted flags are absent,
+// so the list stays unfiltered. Callers must not redeclare these flags.
+func recommendationListFilters(cmd *cobra.Command) map[string]string {
+	filters := map[string]string{}
+	if values := flagStrings(cmd, "status"); len(values) > 0 {
+		filters["status"] = strings.Join(values, ",")
+	}
+	if values := flagStrings(cmd, "resource-type"); len(values) > 0 {
+		filters["cloud_resource_type"] = strings.Join(values, ",")
+	}
+	if len(filters) == 0 {
+		return nil
+	}
+	return filters
 }
 
 func newRecsGetCmd() *cobra.Command {
