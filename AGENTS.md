@@ -19,7 +19,7 @@ unratified.
 > **Proposed amendment (2026-09-14):** Channel strategy, compatibility metadata,
 > verification scope, and the artifact-only publication contract below require
 > human review and commit before becoming effective. This draft does not ratify
-> itself, activate CI, or widen the agent commit/push/tag ban. Existing ratified
+> itself, activate CI, or authorize agents to merge, tag, or release. Existing ratified
 > law remains in force. Work packages and exit criteria are in
 > [ROADMAP.md](ROADMAP.md).
 
@@ -41,7 +41,9 @@ The manifest selects `baseline`, `go-service`, and `terminal`, plus the
 Governance-owned `gha-workflow-naming` skill. `terminal-ux` covers the ordinary
 Cobra command surface; `tui-design` is available only for future
 persistent-screen interfaces. No custom save wrapper is introduced: use
-universal `save` guidance subject to CLI's human-only commit/push/tag boundary.
+universal `save` guidance subject to CLI's branch boundary: agents may commit
+and push a non-main branch and open a pull request. Merging to `main`, tags,
+and releases stay human-only.
 
 The management integration is materialized locally; this documentation amendment
 still requires human review and commit (SOC 2 CC8.1). It does not activate the
@@ -50,7 +52,8 @@ See the [refresh procedure](.agents/README.md#refresh-from-governance).
 
 ### Universal Red Lines (Excerpt)
 
-- Agents must never execute commits, pushes, or tags.
+- Agents may commit to a non-main branch, push that branch, and open a pull
+  request. Merging to `main`, tags, and releases stay human-only.
 - Agents must never output, log, or persist secrets.
 - Agents must never impersonate humans.
 
@@ -345,7 +348,7 @@ side effects (Business Goal; SOC 2 CC8.1).
 This proposal registers only GitHub Actions artifact builds in `Jetscale-ai/cli`
 through the single renamed receiver `.github/workflows/build-cli.yml`. It grants
 no new agent write permissions and is not a designated unstable Git-write
-exception. Existing agent commit, push, and tag prohibitions remain unchanged;
+exception. Merging to `main`, tags, and releases stay human-only;
 only human review and commit can ratify this authority.
 
 | Backend branch | CLI workflow ref | Channel    | Binary              | Artifact version             |
@@ -436,8 +439,8 @@ live channel does not make it a stable release or authorize production access.
    covers only the old unstable-only receiver with synthetic provenance; it is
    ignored ephemeral evidence, not proof of the new path or durable upstream
    proof. Neither that pass, implemented source, nor this proposal ratifies
-   authority, activates CI, proves a new CI run, or grants agent commit/push/tag
-   authority.
+   authority, activates CI, proves a new CI run, or grants agents merge, tag,
+   or release authority.
 5. **Fail closed and recover:** Failed checks, mismatched run/attempt/SHA/hash,
    unknown source/consumer, secret exposure, or exhausted bounds stop
    publication. Do not upload a runnable binary after validation failure.
