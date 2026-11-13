@@ -31,21 +31,29 @@ change CLI's manifest or propose changes in the owning Governance source. Do not
 edit vendor submodules. Published Governance `main` is authoritative; local
 drafts and materialized skills cannot grant additional permissions.
 
-Use universal `save` guidance without a CLI-specific save wrapper. CLI's ban on
-agent commits, pushes, and tags remains binding even when an imported skill
-supports those actions elsewhere. Management does not authorize application
+Use universal `save` guidance without a CLI-specific save wrapper. Commit and
+push follow Authorized Ref Movement in the Commit Workflow below. Merging to
+`main`, tags, and releases stay human-only, and that limit remains binding
+even when an imported skill supports merges, tags, or releases elsewhere.
+Management does not authorize application
 login, schema fetching, API writes, publication, or deployments. Changes to this
 operational law require human review and commit (SOC 2 CC8.1).
 
 ## Commit Workflow
 
-Agents prepare changes. Humans commit.
+Agents may commit and push to a non-main branch and open a pull request only
+through an attended human request, a repository's designated unstable-autonomy
+contract, or a human-approved standing automation (Governance AGENTS.md §4.A,
+Authorized Ref Movement). Manual human execution remains the default outside
+those paths. Branch state alone grants nothing. Humans merge to `main`. Tags
+and releases stay human-only.
 
 1. Agent makes file changes using Write/StrReplace/Delete tools.
-2. Agent suggests a commit message following
+2. Agent commits with a message following
    [Conventional Commits](https://www.conventionalcommits.org/) (`feat:`,
    `fix:`, `chore:`, `docs:`, `refactor:`, `test:`, `ci:`).
-3. Agent **STOPS** and waits for human to review and commit.
+3. Agent pushes the non-main branch and opens a pull request, then **STOPS**.
+   Humans review and merge. Agents do not merge to `main`, tag, or release.
 
 Material changes must include an `audit_log:` trailer:
 
@@ -64,7 +72,7 @@ audit_log:
 mage test && mage lint
 ```
 
-Run this before suggesting any commit. If it fails, fix the issue first.
+Run this before committing. If it fails, fix the issue first.
 
 ## Code Organization Rules
 
@@ -194,7 +202,7 @@ Do not manually create GitHub Releases or tags.
 ### Proposed branch-matched artifact builds
 
 This remains an authority proposal pending human review/commit and activation,
-not new agent commit/push/tag permission. The single receiver
+not permission to merge to `main`, tag, or release. The single receiver
 `.github/workflows/build-cli.yml` accepts `workflow_dispatch` only on the exact
 matching `main` or `unstable` branch. `scripts/unstable_build.py` and
 `scripts/package_unstable.py` retain their names but support both lanes:
