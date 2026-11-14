@@ -163,33 +163,107 @@ functionality or authorize publication.
 Platform Governance. **Proposed:** 2026-10-13. **Rationale:** attributable,
 bounded non-secret setup without captured credentials (SOC 2 CC6.1 and CC8.1).
 
-Source implements `--login EMAIL --password-stdin`, `prepare basics` and
-`flags show|plan|apply`. This proposes only Stack-mediated execution against
-`https://unstable.jetscale.ai` as `devops+unstable@jetscale.ai`. Only a
-qualified Stack wrapper may resolve
+CLI seed auth stages: capacity, auth_prepare and sso_activate.
+
+Source implements `--login EMAIL --password-stdin`, `prepare basics`,
+`flags show|plan|apply` and the resource primitives below. This proposes only
+Stack-mediated execution against `https://unstable.jetscale.ai` as
+`devops+unstable@jetscale.ai`. Only a qualified Stack wrapper may resolve
 `op://Everyone's Agents/JETSCALE_DEFAULT_ADMIN_PASSWORD (unstable)/password`
 inside the helper and pass it through an internal anonymous pipe. Credentials
 and temporary sessions stay in process memory; no secrets in arguments,
 environment, files, logs, capture or the session store. Interactive persistent
-login and credential-file fallback are excluded from this proposal.
+login and credential-file fallback are excluded from this amendment.
 
-Activation requires human-reviewed publication of the Governance Constitution
-and secret-management amendments and Stack runtime contract, plus human review
-and publication of applicable CLI law. Before any real secret, require synthetic
-helper qualification under the actual capture configuration and verified runtime
-provenance, identity, isolation, downstream effects, numeric bounds and
-recovery. A local uncommitted unstable-channel build is permitted input only,
-never provenance or authority. Login/signout may invalidate all operator
-sessions; that effect requires explicit authorization and coordination.
+This amendment is effective only after human review, commit and publication of
+matching Governance Constitution and secret-management law, CLI law, and Stack
+seed registration/procedure on their respective `main` branches. Until then,
+existing published narrower authority remains binding; this amendment grants no
+current execution authority and cannot authorize its own execution or
+ratification. Stack's
+[seed registration](https://github.com/Jetscale-AI/Stack/blob/main/docs/operations/unstable-browser-contract.md#cli-seed-api-registration)
+and
+[seed procedure](https://github.com/Jetscale-AI/Stack/blob/main/docs/operations/unstable-cli-seed.md)
+own the authoritative execution scope, ordering, exact session budgets, bounds
+and recovery. These CLI primitives do not implement a seed orchestrator.
 
-Basics and feature flags each require their own bounded human authorization
-through existing APIs only. This grants no cloud onboarding, FOCUS setup or
-ingestion, BU creation, external-agent provisioning, production access,
-delivery, installation, staging, commit, push or tag rights. Supported flag keys
-do not expand those effects. Published browser-only credential authority and all
-narrower bans remain binding until the amendments are published; this proposal
-cannot authorize its own execution or ratification. See
-[Prepare Basics](docs/prepare-basics.md) and
+The future registered auth profile is only `Unstable Jetscale` /
+`unstable-jetscale`, with explicit resolved company UUID and exact target
+`agent@jetscale.ai`. Company linkage is not privilege containment: the target
+becomes a platform-wide superadmin. Require an explicit human grant covering
+that privilege, invitation/email and seat effects, application-wide root auth
+impact and full company cascades. The operator and credential source remain
+unchanged; no target-user login source is added. The default nine seed stages
+remain unchanged. Auth stages are opt-in and cannot be mixed with legacy stages
+in one selection; existing basics and legacy flags retain their scoped
+authorization. Assessment-only and test-only requests remain narrow.
+
+The auth stages use only these effects:
+
+- `capacity`: fixed `auth.min_seats=2` through `licenses ensure-capacity` on the
+  existing eligible company license. Unlimited or larger/sufficient capacity is
+  a noop; grow only `max_seats`, never reduce it or alter commercial terms or
+  other quotas. This does not calculate occupancy or prove invitation
+  eligibility.
+- `auth_prepare`: create missing non-secret `AUTH.MULTI` and `AUTH.SSO.WORKOS`
+  rows DISABLED through generic `feature-flags`; never disable existing rows.
+  Use named `users get` / `users ensure-superuser` with explicit company to
+  invite the target or elevate an already ACTIVE, signup-complete matching user.
+  No company mapping is written here. Incomplete invitations remain incomplete;
+  the primitives do not complete signup or set passwords.
+- `sso_activate`: require completed target identity and password-first evidence;
+  establish effective `AUTH.MULTI`, then reconcile the exact provider
+  `OrganizationSSO`, then the existing `[Console] Jetscale` organization
+  mapping, then enable `AUTH.SSO.WORKOS`. Mapping reconciliation is
+  create-missing or exact-match noop only, using
+  `WORKOS_SSO_PROVIDER_TYPE_COMPANY_SETTING_KEY` and
+  `WORKOS_SSO_ORG_ID_COMPANY_SETTING_KEY`; conflicting mappings block. Inspect
+  `WORKOS_SSO_REQUIRED_COMPANY_SETTING_KEY` read-only. An absent row requires
+  deployed false-default evidence, not an assumption that absence means false.
+  Mapping creation can activate already-true SSO gates, so Stack must verify
+  impact, effective multi-auth and password preservation before that write.
+
+Stack must require root impact evidence and exclusive writers before auth
+mutation. Other-company reads are limited to bounded required-SSO policy and the
+two auth flags, plus exact-email invitation-conflict metadata; no other-company
+writes or unrelated data reads. Generic `feature-flags` does not prove
+isolation, cascade completion or auth readiness. Legacy `flags` retains its
+four-key allowlist and is not an auth-stage surface; its safeguards do not
+transfer to generic commands.
+
+Before real credentials, qualify both binary and helper with synthetic secrets
+under the actual capture and transport configuration, and verify deployed
+compatibility, origin, identity, isolation, downstream effects and recovery.
+Preserve the nonzero actor and explicit superuser guard; no privilege
+self-provisioning. A local uncommitted unstable-channel build is permitted input
+only, never provenance or qualification. Login/signout may invalidate all
+operator sessions; that effect requires authorization and coordination.
+
+Auth commands require explicit HTTP/time caps and `--max-pages 1`, with one
+reserved cleanup attempt per command and final process-exit verification after
+signout. Stack owns exact per-command budgets and the overall 900-second limit,
+including a 300-second cleanup reserve, 100-descendant ceiling and 1,000
+combined charged-request ceiling, including authentication and cleanup. These
+ceilings can block larger topology; per-command caps do not replace aggregate
+accounting. Use zero automatic retries and exclusive-writer coordination.
+Reconcile uncertain writes through scoped reads, never replay; failed or
+unverified cleanup blocks further runtime work.
+
+Completion requires fresh exact-email evidence of the pinned company,
+`is_superuser:true`, `status:ACTIVE` and non-null `signup_completed_at`, plus
+password-first verification through a separately authorized, qualified surface.
+Optional SSO is not a blocker for password-only completion. User/flag success
+proves neither password/SAML round trips nor later read-only MCP readiness; this
+amendment adds no OAuth/MCP setup or login source.
+
+No auth-stage permission is added for disabling flags, required-SSO/domain/trust
+changes, reassignment, resend, activation, password reset, WorkOS/IdP
+administration, external-agent provisioning, production access, infrastructure,
+delivery, installation, staging, commit, push or tags. Existing seed cloud/FOCUS
+and BU effects remain delegated by Stack under their separate human-started,
+private-file and credential-transfer constraints; this amendment neither expands
+nor removes that delegation. Preserve existing secret, filesystem, tenancy and
+delivery restrictions. See [Prepare Basics](docs/prepare-basics.md) and
 [Feature Flags](docs/feature-flags.md) for implemented behavior and proof
 limits.
 

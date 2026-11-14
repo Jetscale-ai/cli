@@ -146,17 +146,68 @@ and channel-token combinations. The generic reader's ability to accept a file is
 not permission for unstable automation to do so.
 
 Only the qualified Stack wrapper's internal anonymous pipe is proposed for
-`https://unstable.jetscale.ai`, `devops+unstable@jetscale.ai` and the approved
-1Password reference. Require the publication, actual-capture synthetic
-qualification and runtime evidence gates in the
-[proposed constitution scope](../AGENTS.md#proposed-stack-mediated-temporary-cli-authentication).
-Basics and flags need separate authorization; neither chains provider setup,
-FOCUS, BU creation or external provisioning. Login/signout can invalidate all
-operator sessions. Failed or unverified cleanup blocks further writes; never
-retry login/apply to discover whether an earlier operation succeeded. Dirty
-unstable-channel builds are inputs, not provenance, authority or deployment
-proof. Existing browser-only registration and CLI's secret and delivery bans
-remain unchanged until human-reviewed publication.
+`https://unstable.jetscale.ai`, `devops+unstable@jetscale.ai` and the unchanged
+approved 1Password reference. The
+[proposed constitution scope](../AGENTS.md#proposed-stack-mediated-temporary-cli-authentication)
+requires matching human review, commit and publication on Governance, CLI and
+Stack `main`; until then, this proposal grants no execution authority. Stack's
+[seed registration](https://github.com/Jetscale-AI/Stack/blob/main/docs/operations/unstable-browser-contract.md#cli-seed-api-registration)
+and
+[seed procedure](https://github.com/Jetscale-AI/Stack/blob/main/docs/operations/unstable-cli-seed.md)
+own execution scope, ordering, exact session budgets, bounds and recovery.
+
+The future opt-in auth profile selects only `Unstable Jetscale` /
+`unstable-jetscale`, explicit pinned company UUID and `agent@jetscale.ai`.
+Require explicit human authorization for platform-wide superadmin privilege,
+invitation/email, seat, root-wide auth impact and full company cascades; company
+linkage does not contain privilege. The default nine stages remain unchanged;
+auth selections cannot mix legacy stages. Existing cloud/FOCUS and BU seed
+effects retain Stack's separate human-started/private-file and
+credential-transfer constraints, not new authority from this auth proposal.
+
+Follow the stage effects in the constitution: `capacity` fixes
+`auth.min_seats=2` with unlimited/larger capacity noop; `auth_prepare` creates
+only missing non-secret auth rows DISABLED and uses named user reconciliation,
+without mappings; `sso_activate` requires completed identity/password-first
+proof, then effective MULTI, exact `OrganizationSSO` provider, existing
+`[Console] Jetscale` organization mapping and SSO. Use only the two named
+mapping keys; inspect required-SSO read-only, requiring deployed false-default
+evidence if absent. Account for activation by mapping writes, not just flag
+writes.
+
+Stack must verify root impact and exclusive writers. Limit other-company reads
+to bounded required-SSO policy/two-flag evidence and exact-email invitation
+conflicts; no other-company writes. Generic `feature-flags` does not establish
+isolation, effective policy, cascade completion or readiness; legacy `flags`
+keeps its four-key list and separate safeguards. Preserve the existing nonzero
+actor/explicit superuser guard and operator identity; never self-provision
+privilege or substitute a login source.
+
+Qualify binary and helper using synthetic secrets under actual capture and
+transport settings before real credentials, then verify operation-relevant
+runtime evidence. Keep password transfer in the internal anonymous pipe and
+sessions in memory. Auth commands must pass explicit HTTP/time caps and
+`--max-pages 1`, reserve one cleanup attempt, sign out and check the final
+process exit; printed JSON is not cleanup proof. Stack owns per-command budgets
+and the 900-second overall limit with 300-second cleanup reserve,
+100-descendant/1,000 combined charged-request ceilings, including auth and
+cleanup. Larger topology may block; do not enlarge limits or retry
+automatically.
+
+Login/signout can invalidate operator sessions and requires authorization and
+coordination. Reconcile uncertain writes by scoped reads, never login/write
+replay; failed or unverified cleanup blocks further runtime work. Pending is not
+complete: require fresh target company/superuser/ACTIVE/signup timestamp
+evidence and separately authorized password-first verification. Optional SSO
+does not block password-only completion, and this proposal adds no OAuth/MCP
+setup.
+
+No disabling, required-SSO/domain/trust changes, reassignment, resend,
+activation, password reset, WorkOS/IdP administration, external-agent
+provisioning or privilege self-provisioning is authorized. Preserve secret,
+filesystem, tenancy and delivery bans. Dirty builds and source/test inspection
+are not qualification, provenance, deployed compatibility or live success; this
+proposal cannot authorize its own execution or ratification.
 
 ## Branch Strategy
 
