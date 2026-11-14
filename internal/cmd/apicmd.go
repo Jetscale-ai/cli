@@ -49,6 +49,7 @@ reply is printed as received and exits by the usual codes.`,
 	cmd.Flags().String("input", "", "file with the JSON request body (- for stdin)")
 	cmd.Flags().Bool("paginate", false, "fetch every page of a GET collection")
 	cmd.Flags().Bool("require-superuser", false, "refuse to run (exit 5) unless the signed-in user is an active superuser")
+	cmd.Flags().Int("max-pages", api.DefaultMaxPages, "maximum pages per collection (1-20); incomplete results fail rather than truncate")
 	cmd.Flags().Duration("timeout", 2*time.Minute, "overall deadline for the command (max 30m)")
 	return cmd
 }
@@ -195,7 +196,8 @@ func runAPI(cmd *cobra.Command, args []string) error {
 		return run.printReply(method, reply)
 	}
 	items := []json.RawMessage{}
-	for page := 0; page < 20; page++ {
+	total := -1
+	for page := 0; page < api.MaxPages(run.ctx); page++ {
 		query.Set("api_limit", strconv.Itoa(apiPageSize))
 		query.Set("api_offset", strconv.Itoa(page*apiPageSize))
 		reply, err := run.client.Raw(run.ctx, method, withQuery(path, query), nil)
@@ -214,13 +216,22 @@ func runAPI(cmd *cobra.Command, args []string) error {
 		if json.Unmarshal(reply.Body, &envelope) != nil || envelope.Data == nil {
 			return &ExitError{Code: ExitFailure, Reason: "invalid_response", Err: errors.New("--paginate needs a {\"data\": [...]} collection")}
 		}
+		if envelope.Meta.Total != nil {
+			if *envelope.Meta.Total < 0 || (total >= 0 && total != *envelope.Meta.Total) {
+				return apiExit(api.ErrInvalidResponse)
+			}
+			total = *envelope.Meta.Total
+		}
 		items = append(items, envelope.Data...)
-		if len(envelope.Data) < apiPageSize || (envelope.Meta.Total != nil && len(items) >= *envelope.Meta.Total) {
+		if total >= 0 && (len(items) > total || (len(envelope.Data) < apiPageSize && len(items) != total)) {
+			return &ExitError{Code: ExitFailure, Reason: "invalid_response", Err: errors.New("incomplete or inconsistent collection")}
+		}
+		if len(envelope.Data) < apiPageSize || (total >= 0 && len(items) == total) {
 			merged, _ := json.Marshal(items)
 			return run.out.PrintRaw(merged)
 		}
 	}
-	return &ExitError{Code: ExitFailure, Reason: "page_bound", Err: errors.New("collection exceeds 20 pages; narrow it with fields")}
+	return apiExit(api.ErrPageBound)
 }
 
 func withQuery(path string, query url.Values) string {

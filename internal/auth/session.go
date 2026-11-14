@@ -14,6 +14,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/Jetscale-ai/cli/internal/api/generated"
@@ -45,12 +46,34 @@ func LoginSession(baseURL, login, password, caFile string) (*Session, error) {
 // LoginSessionContext honors ctx for sign-in and verification. Failed acquisition
 // cleanup has a separate five-second grace period and never retries sign-in.
 func LoginSessionContext(ctx context.Context, baseURL, login, password, caFile string) (*Session, error) {
+	return loginSessionContext(ctx, baseURL, login, password, caFile, 0)
+}
+
+// LoginSessionBoundedContext counts all session traffic, reserving one request
+// exclusively for SignOutContext. The budget survives detached cleanup contexts.
+func LoginSessionBoundedContext(ctx context.Context, baseURL, login, password, caFile string, maxRequests int) (*Session, error) {
+	if maxRequests < 2 {
+		return nil, errors.New("HTTP request limit must be at least 2")
+	}
+	return loginSessionContext(ctx, baseURL, login, password, caFile, maxRequests)
+}
+
+func loginSessionContext(ctx context.Context, baseURL, login, password, caFile string, maxRequests int) (*Session, error) {
 	if err := ctx.Err(); err != nil {
 		return nil, fmt.Errorf("sign-in not attempted: %w", err)
 	}
 	s, err := newSession(baseURL, caFile, "")
 	if err != nil {
 		return nil, err
+	}
+	if maxRequests != 0 {
+		t := s.HTTPClient.Transport.(*originTransport)
+		t.bounded, t.remaining, t.cleanupAvailable = true, maxRequests-1, true
+		// Fresh HTTP/1 connections cannot enter net/http's reused-connection retry path.
+		t.base.DisableKeepAlives = true
+		t.base.ForceAttemptHTTP2 = false
+		t.base.Protocols = new(http.Protocols)
+		t.base.Protocols.SetHTTP1(true)
 	}
 	succeeded := false
 	defer func() {
@@ -61,14 +84,14 @@ func LoginSessionContext(ctx context.Context, baseURL, login, password, caFile s
 	resp, err := s.gen.SignInApiV2AuthSignInPost(ctx, generated.SignInApiV2AuthSignInPostJSONRequestBody{Login: login, Password: password})
 	if err != nil {
 		reason := errors.Join(errors.New("sign-in outcome uncertain (network, TLS, cancellation, or redirect policy): a server session may exist; no automatic retry"), ctx.Err())
-		if len(s.jar.snapshot()) != 0 {
+		if len(s.jar.snapshot()) != 0 || maxRequests != 0 {
 			return nil, s.cleanupLoginFailure(reason)
 		}
 		return nil, fmt.Errorf("%w; cleanup unverified", reason)
 	}
 	_ = resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
-		if len(s.jar.snapshot()) != 0 {
+		if len(s.jar.snapshot()) != 0 || maxRequests != 0 {
 			return nil, s.cleanupLoginFailure(fmt.Errorf("sign-in outcome uncertain (HTTP %d): a server session may exist; no automatic retry", resp.StatusCode))
 		}
 		return nil, fmt.Errorf("sign-in failed (HTTP %d)", resp.StatusCode)
@@ -92,8 +115,12 @@ func (s *Session) cleanupLoginFailure(reason error) error {
 	// Cleanup needs its own grace period after the acquisition context expires.
 	ctx, cancel := context.WithTimeout(context.Background(), loginCleanupTimeout)
 	defer cancel()
+	hadCookie := len(s.jar.snapshot()) != 0
 	if cleanupErr := s.SignOutContext(ctx); cleanupErr != nil {
 		return fmt.Errorf("%w; cleanup sign-out failed: %w", reason, cleanupErr)
+	}
+	if s.HTTPClient.Transport.(*originTransport).bounded && !hadCookie {
+		return fmt.Errorf("%w; cleanup unverified: no usable session cookie", reason)
 	}
 	return fmt.Errorf("%w; cleanup sign-out completed", reason)
 }
@@ -167,6 +194,9 @@ func (s *Session) Whoami() (WhoamiResult, error) {
 func (s *Session) WhoamiContext(ctx context.Context) (WhoamiResult, error) {
 	resp, err := s.gen.MeApiV2AuthMeGet(ctx)
 	if err != nil {
+		if errors.Is(err, ErrHTTPRequestBound) {
+			return WhoamiResult{}, ErrHTTPRequestBound
+		}
 		return WhoamiResult{}, errors.Join(errors.New("whoami request failed (network, TLS, cancellation, or redirect policy)"), ctx.Err())
 	}
 	defer func() { _ = resp.Body.Close() }()
@@ -201,8 +231,12 @@ func (s *Session) SignOut() error {
 }
 
 func (s *Session) SignOutContext(ctx context.Context) error {
+	ctx = context.WithValue(ctx, signOutCleanupKey{}, true)
 	resp, err := s.gen.SignOutApiV2AuthSignOutPost(ctx)
 	if err != nil {
+		if errors.Is(err, ErrHTTPRequestBound) {
+			return errors.Join(errors.New("sign-out cleanup unverified: reserved request already used"), ErrHTTPRequestBound)
+		}
 		return errors.Join(errors.New("sign-out cleanup unverified (network, TLS, cancellation, or redirect policy): server session may still be active"), ctx.Err())
 	}
 	_ = resp.Body.Close()
@@ -382,11 +416,22 @@ func validBearer(token string) bool {
 	return true
 }
 
+// ErrHTTPRequestBound means this request was blocked before dispatch, not an
+// uncertain mutation. It carries no request URL, credentials, or Backend body.
+var ErrHTTPRequestBound = errors.New("HTTP request bound exhausted; request not sent")
+
+type signOutCleanupKey struct{}
+
 type originTransport struct {
 	origin string
 	base   *http.Transport
 	token  string
 	jar    *sessionJar
+
+	requestMu        sync.Mutex
+	bounded          bool
+	remaining        int
+	cleanupAvailable bool
 }
 
 func (t *originTransport) RoundTrip(req *http.Request) (*http.Response, error) {
@@ -399,6 +444,24 @@ func (t *originTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 	}
 	if req.Host != "" && req.Host != req.URL.Host {
 		return nil, errors.New("request blocked: overridden Host")
+	}
+	if t.bounded {
+		t.requestMu.Lock()
+		allowed := false
+		if cleanup, _ := req.Context().Value(signOutCleanupKey{}).(bool); cleanup {
+			allowed = t.cleanupAvailable
+			t.cleanupAvailable = false
+		} else if t.remaining > 0 {
+			t.remaining--
+			allowed = true
+		}
+		t.requestMu.Unlock()
+		if !allowed {
+			if req.Body != nil {
+				_ = req.Body.Close()
+			}
+			return nil, ErrHTTPRequestBound
+		}
 	}
 	r := req.Clone(req.Context())
 	for name := range r.Header {

@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/Jetscale-ai/cli/internal/api"
+	"github.com/Jetscale-ai/cli/internal/auth"
 	"github.com/spf13/cobra"
 )
 
@@ -198,6 +199,10 @@ func apiExit(err error) error {
 		return &ExitError{Code: ExitConflict, Reason: conflict.Reason, Err: err, Fields: fields}
 	case errors.As(err, &uncertain), errors.Is(err, api.ErrUncertain):
 		return &ExitError{Code: ExitFailure, Reason: "outcome_uncertain", Err: err}
+	case errors.Is(err, auth.ErrHTTPRequestBound):
+		return &ExitError{Code: ExitFailure, Reason: "http_request_bound", Err: err}
+	case errors.Is(err, api.ErrPageBound):
+		return &ExitError{Code: ExitFailure, Reason: "page_bound", Err: err}
 	case errors.As(err, &backend):
 		fields := map[string]any{"status": backend.Status}
 		if backend.Name != "" {
