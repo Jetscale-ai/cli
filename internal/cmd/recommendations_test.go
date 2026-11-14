@@ -2,10 +2,16 @@ package cmd
 
 import (
 	"bytes"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"slices"
+	"sort"
 	"strings"
+	"sync"
 	"testing"
+
+	"github.com/Jetscale-ai/cli/internal/config"
 )
 
 func TestRegenerateHelpDescribesInPlaceOverwriteOffline(t *testing.T) {
@@ -192,6 +198,8 @@ func TestRecommendationsListHelpIsOffline(t *testing.T) {
 		"--resource-type",
 		"--limit",
 		"--all-accounts",
+		"--business-unit",
+		"needs a company",
 		"DISCOVERED",
 		"IN_PROGRESS",
 		"COMPLETED",
@@ -262,7 +270,7 @@ func TestRecommendationsListOmitsStatusWhenUnset(t *testing.T) {
 	assertAccountRecommendationList(t, f, endpoint)
 }
 
-func TestRecommendationsListPassesRepeatableFiltersOnAccountRoute(t *testing.T) {
+func TestRecommendationsListPassesRepeatableFilters(t *testing.T) {
 	for _, tc := range []struct {
 		name         string
 		flags        []string
@@ -293,7 +301,7 @@ func TestRecommendationsListPassesRepeatableFiltersOnAccountRoute(t *testing.T) 
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			f, server, endpoint := recommendationListBackend(t, func(r *http.Request) (int, any) {
-				if r.URL.Path != "/api/v2/cloud/cloud-accounts/"+testAccountID+"/custom-recommendations/latest" {
+				if r.URL.Path != "/api/v2/cloud/custom-recommendations/latest" {
 					t.Errorf("path: %s", r.URL.Path)
 				}
 				assertQuery(t, r, "status", tc.status)
@@ -325,11 +333,13 @@ func TestRecommendationsListJSONIncludesFreshnessFields(t *testing.T) {
 		return list(
 			map[string]any{
 				"id": freshID, "title": "Resize", "status": "DISCOVERED",
-				"freshness_status": "CURRENT", "stale_at": staleAt, "resource_version_id": versionID,
+				"cloud_source_account": testAccountID,
+				"freshness_status":     "CURRENT", "stale_at": staleAt, "resource_version_id": versionID,
 			},
 			map[string]any{
 				"id": legacyID, "title": "Legacy", "status": "DISCOVERED",
-				"freshness_status": nil, "stale_at": nil, "resource_version_id": nil,
+				"cloud_source_account": testAccountID,
+				"freshness_status":     nil, "stale_at": nil, "resource_version_id": nil,
 			},
 		)
 	})
@@ -401,9 +411,12 @@ func recommendationListBackend(t *testing.T, respond func(*http.Request) (int, a
 		"id":                  testAccountID,
 		"name":                "Unstable",
 		"provider_account_id": "402289717651",
+		"business_unit":       testUnitID,
 	})
-	endpoint := "GET /api/v2/cloud/cloud-accounts/" + testAccountID + "/custom-recommendations/latest"
+	endpoint := latestRecommendationsRoute
 	f.on(endpoint, func(r *http.Request, _ []byte) (int, any) {
+		assertQuery(t, r, "cloud_source_account", testAccountID)
+		assertRecommendationScopeQuery(t, r)
 		return respond(r)
 	})
 	return f, server, endpoint
@@ -426,9 +439,305 @@ func assertQuery(t *testing.T, r *http.Request, key, want string) {
 func assertAccountRecommendationList(t *testing.T, f *fakeBackend, endpoint string) {
 	t.Helper()
 	if f.count(endpoint) != 1 {
-		t.Fatalf("account list must be called once, got %d", f.count(endpoint))
+		t.Fatalf("latest list must be called once, got %d", f.count(endpoint))
 	}
-	if f.count("GET /api/v2/cloud/custom-recommendations/latest") != 0 {
-		t.Fatal("list must stay on the per-account route")
+	if f.count(accountRecommendationsRoute) != 0 {
+		t.Fatal("list must be one cross-account read")
+	}
+}
+
+const (
+	otherAccountID              = "88888888-8888-4888-8888-888888888888"
+	latestRecommendationsRoute  = "GET /api/v2/cloud/custom-recommendations/latest"
+	accountRecommendationsRoute = "GET /api/v2/cloud/cloud-accounts/" + testAccountID + "/custom-recommendations/latest"
+)
+
+func assertRecommendationScopeQuery(t *testing.T, r *http.Request) {
+	t.Helper()
+	if r.URL.Path != "/api/v2/cloud/custom-recommendations/latest" {
+		t.Errorf("path: %s", r.URL.Path)
+	}
+	if _, ok := r.URL.Query()["cloud_source_account"]; !ok {
+		t.Errorf("cloud_source_account must be sent: %s", r.URL.RawQuery)
+	}
+	for _, key := range []string{"business_unit", "company", "company_id", "cloud_account_id"} {
+		if _, ok := r.URL.Query()[key]; ok {
+			t.Errorf("must not send %s: %s", key, r.URL.RawQuery)
+		}
+	}
+}
+
+func rememberActiveAccount(t *testing.T, account string) {
+	t.Helper()
+	cfg, err := config.Load()
+	if err != nil {
+		t.Fatal(err)
+	}
+	// run() passes --api-url, so the resolved instance name is "--api-url".
+	inst := cfg.Instances["--api-url"]
+	inst.ActiveAccount = account
+	cfg.Instances["--api-url"] = inst
+	if err := config.Save(cfg); err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestRecommendationsListUsesOneScopedLatestRead(t *testing.T) {
+	f, server := newFakeBackend(t)
+	f.withCompany()
+	f.withAccounts(
+		map[string]any{"id": testAccountID, "name": "Unstable", "provider_account_id": "402289717651", "business_unit": testUnitID},
+		map[string]any{"id": otherAccountID, "name": "Other", "provider_account_id": "999999999999", "business_unit": testOtherUnit},
+	)
+	f.on(latestRecommendationsRoute, func(r *http.Request, _ []byte) (int, any) {
+		assertQuery(t, r, "cloud_source_account", testAccountID+","+otherAccountID)
+		assertQuery(t, r, "status", "")
+		assertQuery(t, r, "api_limit", "100")
+		assertQuery(t, r, "api_offset", "0")
+		assertRecommendationScopeQuery(t, r)
+		return list(
+			map[string]any{"id": "rec-a", "title": "A", "status": "DISCOVERED", "cloud_source_account": testAccountID},
+			map[string]any{"id": "rec-b", "title": "B", "status": "POSTPONED", "cloud_source_account": otherAccountID},
+		)
+	})
+	stdout, stderr, code := run(t, server, "-o", "json", "--company", "unstable-jetscale", "recommendations", "list")
+	if code != 0 {
+		t.Fatalf("company list failed: %d %s %s", code, stdout, stderr)
+	}
+	if f.count(latestRecommendationsRoute) != 1 {
+		t.Fatalf("two accounts must be one latest read, got %d", f.count(latestRecommendationsRoute))
+	}
+	for _, id := range []string{testAccountID, otherAccountID} {
+		if f.count("GET /api/v2/cloud/cloud-accounts/"+id+"/custom-recommendations/latest") != 0 {
+			t.Fatalf("list must not call the per-account route for %s", id)
+		}
+	}
+	rows := decode(t, stdout).([]any)
+	if len(rows) != 2 {
+		t.Fatalf("expected both rows: %s", stdout)
+	}
+	if rows[0].(map[string]any)["cloud_account_id"] != testAccountID || rows[1].(map[string]any)["cloud_account_id"] != otherAccountID {
+		t.Fatalf("cloud_account_id must come from cloud_source_account: %s", stdout)
+	}
+}
+
+func TestRecommendationsListBusinessUnitSendsOnlyThatUnitsAccounts(t *testing.T) {
+	f, server := newFakeBackend(t)
+	f.withCompany()
+	f.withUnit()
+	f.withAccounts(
+		map[string]any{"id": testAccountID, "name": "Unstable", "provider_account_id": "402289717651", "business_unit": testUnitID},
+		map[string]any{"id": otherAccountID, "name": "Other", "provider_account_id": "999999999999", "business_unit": testOtherUnit},
+	)
+	rememberActiveAccount(t, "Other")
+	f.on(latestRecommendationsRoute, func(r *http.Request, _ []byte) (int, any) {
+		assertQuery(t, r, "cloud_source_account", testAccountID)
+		assertQuery(t, r, "status", "STALE")
+		assertRecommendationScopeQuery(t, r)
+		return list(map[string]any{"id": "rec-unit", "title": "Unit", "status": "STALE", "cloud_source_account": testAccountID})
+	})
+	stdout, stderr, code := run(t, server, "--company", "unstable-jetscale", "--business-unit", "unstable-jetscale-clouds", "--status", "STALE", "recommendations", "list")
+	if code != 0 || !strings.Contains(stdout, "rec-unit") {
+		t.Fatalf("business unit list failed: %d %s %s", code, stdout, stderr)
+	}
+	if f.count(latestRecommendationsRoute) != 1 || f.count(accountRecommendationsRoute) != 0 {
+		t.Fatalf("business unit must be one scoped latest read: latest=%d account=%d", f.count(latestRecommendationsRoute), f.count(accountRecommendationsRoute))
+	}
+}
+
+func TestRecommendationsListAccountSendsOneID(t *testing.T) {
+	for _, tc := range []struct {
+		name  string
+		args  []string
+		setup func(t *testing.T)
+		want  string
+	}{
+		{name: "explicit account", args: []string{"--account", "402289717651"}, want: testAccountID},
+		{name: "active account", setup: func(t *testing.T) { rememberActiveAccount(t, "Other") }, want: otherAccountID},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			f, server := newFakeBackend(t)
+			f.withCompany()
+			f.withAccounts(
+				map[string]any{"id": testAccountID, "name": "Unstable", "provider_account_id": "402289717651", "business_unit": testUnitID},
+				map[string]any{"id": otherAccountID, "name": "Other", "provider_account_id": "999999999999", "business_unit": testOtherUnit},
+			)
+			if tc.setup != nil {
+				tc.setup(t)
+			}
+			f.on(latestRecommendationsRoute, func(r *http.Request, _ []byte) (int, any) {
+				assertQuery(t, r, "cloud_source_account", tc.want)
+				assertRecommendationScopeQuery(t, r)
+				return list(map[string]any{"id": "rec-one", "title": "One", "status": "DISCOVERED", "cloud_source_account": tc.want})
+			})
+			args := append([]string{"--company", "unstable-jetscale"}, tc.args...)
+			args = append(args, "recommendations", "list")
+			stdout, stderr, code := run(t, server, args...)
+			if code != 0 {
+				t.Fatalf("single-account list failed: %d %s %s", code, stdout, stderr)
+			}
+			if f.count(latestRecommendationsRoute) != 1 {
+				t.Fatalf("expected one latest read, got %d", f.count(latestRecommendationsRoute))
+			}
+		})
+	}
+}
+
+func TestRecommendationsListAllAccountsIgnoresActiveAccount(t *testing.T) {
+	f, server := newFakeBackend(t)
+	f.withCompany()
+	f.withAccounts(
+		map[string]any{"id": testAccountID, "name": "Unstable", "provider_account_id": "402289717651"},
+		map[string]any{"id": otherAccountID, "name": "Other", "provider_account_id": "999999999999"},
+	)
+	rememberActiveAccount(t, "Unstable")
+	f.on(latestRecommendationsRoute, func(r *http.Request, _ []byte) (int, any) {
+		assertQuery(t, r, "cloud_source_account", testAccountID+","+otherAccountID)
+		return list()
+	})
+	stdout, stderr, code := run(t, server, "recommendations", "list", "--company", "unstable-jetscale", "--all-accounts")
+	if code != 0 || !strings.Contains(stdout, "No recommendations found.") {
+		t.Fatalf("--all-accounts failed: %d %s %s", code, stdout, stderr)
+	}
+	if f.count(latestRecommendationsRoute) != 1 {
+		t.Fatalf("--all-accounts must still be one latest read, got %d", f.count(latestRecommendationsRoute))
+	}
+}
+
+func TestRecommendationsListAccountAndBusinessUnitIsUsage(t *testing.T) {
+	f, server := newFakeBackend(t)
+	stdout, stderr, code := run(t, server, "--company", "unstable-jetscale", "--account", testAccountID, "--business-unit", "acme-clouds", "recommendations", "list")
+	if code != ExitUsage || !strings.Contains(stdout+stderr, "mutually exclusive") {
+		t.Fatalf("--account with --business-unit must be a usage error: %d %s %s", code, stdout, stderr)
+	}
+	f.mu.Lock()
+	defer f.mu.Unlock()
+	if len(f.requests) != 0 {
+		t.Fatalf("mutually exclusive flags must not hit Backend: %v", f.requests)
+	}
+}
+
+func TestRecommendationsListBusinessUnitNeedsCompany(t *testing.T) {
+	f, server := newFakeBackend(t)
+	stdout, stderr, code := run(t, server, "--business-unit", "acme-clouds", "recommendations", "list")
+	if code != ExitUsage || !strings.Contains(stdout+stderr, "needs a company") {
+		t.Fatalf("--business-unit without a company must be a usage error: %d %s %s", code, stdout, stderr)
+	}
+	f.mu.Lock()
+	defer f.mu.Unlock()
+	if len(f.requests) != 0 {
+		t.Fatalf("missing company must not hit Backend: %v", f.requests)
+	}
+}
+
+func TestRecommendationsListEmptyScopeSkipsLatest(t *testing.T) {
+	t.Run("company has no accounts", func(t *testing.T) {
+		f, server := newFakeBackend(t)
+		f.withCompany()
+		f.withAccounts()
+		stdout, stderr, code := run(t, server, "--company", "unstable-jetscale", "recommendations", "list")
+		if code != 0 || !strings.Contains(stdout, "No recommendations found.") {
+			t.Fatalf("empty company must say so: %d %s %s", code, stdout, stderr)
+		}
+		if f.count(latestRecommendationsRoute) != 0 || f.count(accountRecommendationsRoute) != 0 {
+			t.Fatal("empty account set must not call the latest route")
+		}
+	})
+	t.Run("business unit has no accounts", func(t *testing.T) {
+		f, server := newFakeBackend(t)
+		f.withCompany()
+		f.withUnit()
+		f.withAccounts(map[string]any{"id": otherAccountID, "name": "Other", "business_unit": testOtherUnit})
+		stdout, stderr, code := run(t, server, "--company", "unstable-jetscale", "--business-unit", "unstable-jetscale-clouds", "recommendations", "list")
+		if code != 0 || !strings.Contains(stdout, "No recommendations found.") {
+			t.Fatalf("empty business unit must say so: %d %s %s", code, stdout, stderr)
+		}
+		if f.count(latestRecommendationsRoute) != 0 {
+			t.Fatal("empty business unit must not call the latest route")
+		}
+	})
+}
+
+func TestRecommendationsListBatchesAccountIDsAndStopsAtLimit(t *testing.T) {
+	const (
+		accountCount = 120
+		rowLimit     = 60
+	)
+	accounts := make([]map[string]any, 0, accountCount)
+	ids := make([]string, 0, accountCount)
+	for i := 0; i < accountCount; i++ {
+		id := fmt.Sprintf("%08x-0000-4000-8000-%012x", i+1, i+1)
+		ids = append(ids, id)
+		accounts = append(accounts, map[string]any{
+			"id":                  id,
+			"name":                fmt.Sprintf("acct-%d", i+1),
+			"provider_account_id": fmt.Sprintf("%012d", i+1),
+			"business_unit":       testUnitID,
+		})
+	}
+	sort.Strings(ids)
+
+	f, server := newFakeBackend(t)
+	f.withCompany()
+	f.withAccounts(accounts...)
+	var (
+		mu      sync.Mutex
+		batches [][]string
+	)
+	f.on(latestRecommendationsRoute, func(r *http.Request, _ []byte) (int, any) {
+		assertRecommendationScopeQuery(t, r)
+		raw := r.URL.Query().Get("cloud_source_account")
+		parts := strings.Split(raw, ",")
+		if len(parts) == 0 || len(parts) > recommendationAccountBatchSize {
+			t.Errorf("batch size %d out of bounds: %s", len(parts), raw)
+		}
+		mu.Lock()
+		batches = append(batches, append([]string(nil), parts...))
+		batchIndex := len(batches) - 1
+		mu.Unlock()
+		items := make([]map[string]any, 0, len(parts))
+		for j, accountID := range parts {
+			items = append(items, map[string]any{
+				"id":                   fmt.Sprintf("rec-%d-%d", batchIndex, j),
+				"title":                fmt.Sprintf("Rec %d/%d", batchIndex, j),
+				"status":               "DISCOVERED",
+				"cloud_source_account": accountID,
+			})
+		}
+		return list(items...)
+	})
+
+	stdout, stderr, code := run(t, server, "-o", "json", "--company", "unstable-jetscale", "--limit", fmt.Sprintf("%d", rowLimit), "recommendations", "list")
+	if code != 0 {
+		t.Fatalf("batched list failed: %d %s %s", code, stdout, stderr)
+	}
+	mu.Lock()
+	gotBatches := append([][]string(nil), batches...)
+	mu.Unlock()
+	if len(gotBatches) != 2 {
+		t.Fatalf("expected two batches before the limit fills, got %d", len(gotBatches))
+	}
+	if f.count(latestRecommendationsRoute) != 2 {
+		t.Fatalf("third batch must not be fetched after --limit: got %d calls", f.count(latestRecommendationsRoute))
+	}
+	if len(gotBatches[0]) != recommendationAccountBatchSize || len(gotBatches[1]) != recommendationAccountBatchSize {
+		t.Fatalf("full batches must be size %d: %#v", recommendationAccountBatchSize, gotBatches)
+	}
+	wantFirst := ids[:recommendationAccountBatchSize]
+	wantSecond := ids[recommendationAccountBatchSize : 2*recommendationAccountBatchSize]
+	if !slices.Equal(gotBatches[0], wantFirst) || !slices.Equal(gotBatches[1], wantSecond) {
+		t.Fatalf("batches must follow sorted account order:\n first=%v\n want=%v\n second=%v\n want=%v", gotBatches[0], wantFirst, gotBatches[1], wantSecond)
+	}
+	rows := decode(t, stdout).([]any)
+	if len(rows) != rowLimit {
+		t.Fatalf("--limit must hold across batches: got %d rows, want %d", len(rows), rowLimit)
+	}
+	seen := map[string]bool{}
+	for _, row := range rows {
+		id, _ := row.(map[string]any)["id"].(string)
+		if id == "" || seen[id] {
+			t.Fatalf("rows must be unique by id: %s", stdout)
+		}
+		seen[id] = true
 	}
 }

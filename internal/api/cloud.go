@@ -166,6 +166,26 @@ func (c *Client) LatestRecommendations(ctx context.Context, accountID string, fi
 	}, filters)
 }
 
+// LatestRecommendationsForAccounts reads the cross-account latest route once.
+// accountIDs are sent as cloud_source_account (one ID, or comma-separated IDs
+// for IN). An empty list is refused so the route is never called unconstrained.
+// Callers must pass at most 50 IDs so the query stays under common URL limits.
+// filters are additional model-field params; nil adds none. cloud_source_account
+// from filters does not replace the account constraint.
+func (c *Client) LatestRecommendationsForAccounts(ctx context.Context, accountIDs []string, filters map[string]string) ([]Record, error) {
+	if len(accountIDs) == 0 {
+		return nil, errors.New("cloud_source_account is required")
+	}
+	merged := make(map[string]string, len(filters)+1)
+	for key, value := range filters {
+		merged[key] = value
+	}
+	merged["cloud_source_account"] = strings.Join(accountIDs, ",")
+	return c.listAll(ctx, func(ctx context.Context, editors ...generated.RequestEditorFn) (*http.Response, error) {
+		return c.gen.ListLatestCustomRecommendationsApiV2CloudCustomRecommendationsLatestGet(ctx, editors...)
+	}, merged)
+}
+
 func (c *Client) GetCustomRecommendation(ctx context.Context, recommendationID string) (Record, error) {
 	id, ok := resourceUUID(recommendationID)
 	if !ok {
