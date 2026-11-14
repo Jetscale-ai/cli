@@ -84,11 +84,10 @@ After refresh:
 
 Humans review and merge law changes to `main`. Agents may commit and push to a
 non-main branch only through an attended human request, a repository's
-designated unstable-autonomy contract, or a human-approved standing
-automation (Governance AGENTS.md §4.A, Authorized Ref Movement). Manual human
-execution remains the default outside those paths. Branch state alone grants
-nothing. Tags and releases stay human-only. No schema generation, binary
-installation, application login, API test, release, or deployment is part of
-this setup. Governance is an
-agent-development dependency only: ordinary Go builds and distributed binaries
-do not require the sibling checkout.
+designated unstable-autonomy contract, or a human-approved standing automation
+(Governance AGENTS.md §4.A, Authorized Ref Movement). Manual human execution
+remains the default outside those paths. Branch state alone grants nothing. Tags
+and releases stay human-only. No schema generation, binary installation,
+application login, API test, release, or deployment is part of this setup.
+Governance is an agent-development dependency only: ordinary Go builds and
+distributed binaries do not require the sibling checkout.

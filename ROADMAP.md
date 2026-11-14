@@ -32,12 +32,12 @@ review and commit. This is separate from CI publication activation.
 - Canonical and Cursor/Claude projections are generated, not vendored source.
   Refresh and validation instructions live in the
   [workspace guide](.agents/README.md).
-- Agents may commit and push to a non-main branch only through an attended
-  human request, a repository's designated unstable-autonomy contract, or a
-  human-approved standing automation (Governance AGENTS.md §4.A, Authorized
-  Ref Movement). Merging to `main`, tags, and releases stay human-only. This
-  work package adds no application access, schema refresh, publisher
-  activation, or dependency on Governance at binary runtime.
+- Agents may commit and push to a non-main branch only through an attended human
+  request, a repository's designated unstable-autonomy contract, or a
+  human-approved standing automation (Governance AGENTS.md §4.A, Authorized Ref
+  Movement). Merging to `main`, tags, and releases stay human-only. This work
+  package adds no application access, schema refresh, publisher activation, or
+  dependency on Governance at binary runtime.
 
 **Exit criteria:** Re-governing preserves local instructions and the manifest,
 managed links resolve with the sibling checkout present, and a second run leaves

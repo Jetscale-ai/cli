@@ -19,8 +19,8 @@ unratified.
 > **Proposed amendment (2026-09-14):** Channel strategy, compatibility metadata,
 > verification scope, and the artifact-only publication contract below require
 > human review and commit before becoming effective. This draft does not ratify
-> itself, activate CI, or authorize agents to merge, tag, or release. Existing ratified
-> law remains in force. Work packages and exit criteria are in
+> itself, activate CI, or authorize agents to merge, tag, or release. Existing
+> ratified law remains in force. Work packages and exit criteria are in
 > [ROADMAP.md](ROADMAP.md).
 
 ## 0. Situational Awareness (Required Context)
@@ -41,8 +41,8 @@ The manifest selects `baseline`, `go-service`, and `terminal`, plus the
 Governance-owned `gha-workflow-naming` skill. `terminal-ux` covers the ordinary
 Cobra command surface; `tui-design` is available only for future
 persistent-screen interfaces. No custom save wrapper is introduced: use
-universal `save` guidance subject to the Authorized Ref Movement red line
-below. Merging to `main`, tags, and releases stay human-only.
+universal `save` guidance subject to the Authorized Ref Movement red line below.
+Merging to `main`, tags, and releases stay human-only.
 
 The management integration is materialized locally; this documentation amendment
 still requires human review and commit (SOC 2 CC8.1). It does not activate the
@@ -52,11 +52,11 @@ See the [refresh procedure](.agents/README.md#refresh-from-governance).
 ### Universal Red Lines (Excerpt)
 
 - **Authorized Ref Movement:** Agents may commit and push to a non-main branch
-  and open a pull request only through an attended human request, a
-  repository's designated unstable-autonomy contract, or a human-approved
-  standing automation. Manual human execution remains the default outside those
-  paths. Branch state alone grants nothing. Merging to `main`, tags, and
-  releases stay human-only. (Governance AGENTS.md §4.A.)
+  and open a pull request only through an attended human request, a repository's
+  designated unstable-autonomy contract, or a human-approved standing
+  automation. Manual human execution remains the default outside those paths.
+  Branch state alone grants nothing. Merging to `main`, tags, and releases stay
+  human-only. (Governance AGENTS.md §4.A.)
 - Agents must never output, log, or persist secrets.
 - Agents must never impersonate humans.
 
@@ -351,8 +351,8 @@ side effects (Business Goal; SOC 2 CC8.1).
 This proposal registers only GitHub Actions artifact builds in `Jetscale-ai/cli`
 through the single renamed receiver `.github/workflows/build-cli.yml`. It grants
 no new agent write permissions and is not a designated unstable Git-write
-exception. Merging to `main`, tags, and releases stay human-only;
-only human review and commit can ratify this authority.
+exception. Merging to `main`, tags, and releases stay human-only; only human
+review and commit can ratify this authority.
 
 | Backend branch | CLI workflow ref | Channel    | Binary              | Artifact version             |
 | -------------- | ---------------- | ---------- | ------------------- | ---------------------------- |
@@ -442,8 +442,8 @@ live channel does not make it a stable release or authorize production access.
    covers only the old unstable-only receiver with synthetic provenance; it is
    ignored ephemeral evidence, not proof of the new path or durable upstream
    proof. Neither that pass, implemented source, nor this proposal ratifies
-   authority, activates CI, proves a new CI run, or grants agents merge, tag,
-   or release authority.
+   authority, activates CI, proves a new CI run, or grants agents merge, tag, or
+   release authority.
 5. **Fail closed and recover:** Failed checks, mismatched run/attempt/SHA/hash,
    unknown source/consumer, secret exposure, or exhausted bounds stop
    publication. Do not upload a runnable binary after validation failure.
