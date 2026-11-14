@@ -14,6 +14,7 @@ import (
 	"time"
 
 	"github.com/Jetscale-ai/cli/internal/api/generated"
+	"github.com/Jetscale-ai/cli/internal/auth"
 	"github.com/google/uuid"
 )
 
@@ -22,10 +23,30 @@ import (
 // carry the Backend's stable identity but never its free-text causes.
 const (
 	resourcePageSize = 100
-	resourceMaxPages = 20
+	DefaultMaxPages  = 20
 	resourceMaxBody  = 4 << 20
 	resourceTimeout  = 15 * time.Second
 )
+
+type maxPagesKey struct{}
+
+// WithMaxPages narrows each paginated collection independently; it never
+// turns an incomplete collection into a successful partial result.
+func WithMaxPages(ctx context.Context, pages int) (context.Context, error) {
+	if pages < 1 || pages > DefaultMaxPages {
+		return nil, fmt.Errorf("--max-pages must be between 1 and %d", DefaultMaxPages)
+	}
+	return context.WithValue(ctx, maxPagesKey{}, pages), nil
+}
+
+func MaxPages(ctx context.Context) int {
+	if pages, ok := ctx.Value(maxPagesKey{}).(int); ok {
+		return pages
+	}
+	return DefaultMaxPages
+}
+
+var ErrPageBound = errors.New("collection exceeds the page bound; narrow the filter")
 
 // APIError is a definitive Backend rejection.
 type APIError struct {
@@ -46,7 +67,7 @@ func (e *APIError) Error() string {
 }
 
 // ErrUncertain marks a write whose outcome could not be observed (transport
-// failure or timeout after sending). Reconcile by reading; never resend.
+// failure, timeout, or server error). Reconcile by reading; never resend.
 var ErrUncertain = errors.New("write outcome uncertain")
 
 // ErrTransport marks a read that failed before any Backend answer.
@@ -145,6 +166,9 @@ func (c *Client) read(ctx context.Context, do call) (json.RawMessage, error) {
 	defer cancel()
 	response, err := do(ctx)
 	if err != nil || response == nil {
+		if errors.Is(err, auth.ErrHTTPRequestBound) {
+			return nil, auth.ErrHTTPRequestBound
+		}
 		if ctx.Err() != nil && errors.Is(ctx.Err(), context.DeadlineExceeded) {
 			return nil, fmt.Errorf("%w: %w", ErrTransport, context.DeadlineExceeded)
 		}
@@ -159,6 +183,9 @@ func (c *Client) write(ctx context.Context, do call) (json.RawMessage, error) {
 	defer cancel()
 	response, err := do(ctx)
 	if err != nil || response == nil {
+		if errors.Is(err, auth.ErrHTTPRequestBound) {
+			return nil, auth.ErrHTTPRequestBound
+		}
 		return nil, ErrUncertain
 	}
 	data, err := decodeResponse(response)
@@ -166,8 +193,8 @@ func (c *Client) write(ctx context.Context, do call) (json.RawMessage, error) {
 	if err != nil && !errors.As(err, &apiErr) {
 		return nil, ErrUncertain
 	}
-	// A gateway error may follow a request the Backend already received.
-	if apiErr != nil && (apiErr.Status == http.StatusBadGateway || apiErr.Status == http.StatusGatewayTimeout) {
+	// A server error may follow a write the Backend already committed.
+	if apiErr != nil && apiErr.Status >= http.StatusInternalServerError {
 		return nil, ErrUncertain
 	}
 	return data, err
@@ -267,7 +294,7 @@ func (c *Client) listAll(ctx context.Context, fetch listCall, filters map[string
 	items := []Record{}
 	seen := map[string]bool{}
 	total := -1
-	for page := 0; page < resourceMaxPages; page++ {
+	for page := 0; page < MaxPages(ctx); page++ {
 		offset := page * resourcePageSize
 		body, err := c.read(ctx, func(ctx context.Context) (*http.Response, error) {
 			return fetch(ctx, listQuery(filters, offset))
@@ -285,6 +312,9 @@ func (c *Client) listAll(ctx context.Context, fetch listCall, filters map[string
 			return nil, ErrInvalidResponse
 		}
 		if envelope.Meta.Total != nil {
+			if *envelope.Meta.Total < 0 {
+				return nil, ErrInvalidResponse
+			}
 			if total >= 0 && total != *envelope.Meta.Total {
 				return nil, errors.New("collection changed while reading; retry the read")
 			}
@@ -298,7 +328,10 @@ func (c *Client) listAll(ctx context.Context, fetch listCall, filters map[string
 			seen[id] = true
 			items = append(items, item)
 		}
-		if total >= 0 && len(items) >= total {
+		if total >= 0 && len(items) > total {
+			return nil, ErrInvalidResponse
+		}
+		if total >= 0 && len(items) == total {
 			return items, nil
 		}
 		if len(envelope.Data) < resourcePageSize {
@@ -308,7 +341,7 @@ func (c *Client) listAll(ctx context.Context, fetch listCall, filters map[string
 			return items, nil
 		}
 	}
-	return nil, errors.New("collection exceeds the read bound; narrow the filter")
+	return nil, ErrPageBound
 }
 
 func listQuery(filters map[string]string, offset int) generated.RequestEditorFn {
@@ -420,6 +453,9 @@ func (c *Client) Raw(ctx context.Context, method, pathAndQuery string, body []by
 	}
 	response, err := base.Client.Do(request)
 	if err != nil {
+		if errors.Is(err, auth.ErrHTTPRequestBound) {
+			return RawResponse{}, auth.ErrHTTPRequestBound
+		}
 		if method != http.MethodGet {
 			return RawResponse{}, ErrUncertain
 		}

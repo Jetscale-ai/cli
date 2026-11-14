@@ -34,6 +34,7 @@ var slugPattern = regexp.MustCompile(`^[a-z0-9]+(?:-[a-z0-9]+)*$`)
 func addResourceFlags(group *cobra.Command, withCompany bool) {
 	group.PersistentFlags().Bool("require-superuser", false, "refuse to run (exit 5) unless the signed-in user is an active superuser")
 	group.PersistentFlags().Duration("timeout", 2*time.Minute, "overall deadline for the command (max 30m)")
+	group.PersistentFlags().Int("max-pages", api.DefaultMaxPages, "maximum pages per collection (1-20); incomplete results fail rather than truncate")
 	group.PersistentFlags().BoolP("quiet", "q", false, "print only IDs, one per line")
 	if withCompany {
 		group.PersistentFlags().String("company", "", "company ID, slug or exact name (default: config set company)")
@@ -65,6 +66,12 @@ func startResource(cmd *cobra.Command) (*resourceRun, error) {
 		return nil, usageError(err)
 	}
 	ctx, cancel := context.WithTimeout(cmd.Context(), timeout)
+	pages, _ := cmd.Flags().GetInt("max-pages")
+	ctx, err = api.WithMaxPages(ctx, pages)
+	if err != nil {
+		cancel()
+		return nil, usageError(err)
+	}
 	session, err := commandSession(cmd, instance, apiURL)
 	if err != nil {
 		cancel()

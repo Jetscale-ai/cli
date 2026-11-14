@@ -15,6 +15,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/Jetscale-ai/cli/internal/api"
 	"github.com/Jetscale-ai/cli/internal/auth"
 	"github.com/Jetscale-ai/cli/internal/buildinfo"
 	"github.com/spf13/cobra"
@@ -42,7 +43,19 @@ func wrapSessionLifecycle(command *cobra.Command) {
 	if run := command.RunE; run != nil {
 		command.RunE = func(cmd *cobra.Command, args []string) (err error) {
 			if err := validateStdinAuthFlags(cmd); err != nil {
+				if cap := cmd.Flag("max-http-requests"); cap != nil && cap.Changed {
+					return usageError(err)
+				}
 				return err
+			}
+			if err := validateRequestBounds(cmd); err != nil {
+				return err
+			}
+			if cap := cmd.Flag("max-http-requests"); cap != nil && cap.Changed {
+				timeout, _ := cmd.Flags().GetDuration("timeout")
+				ctx, cancel := context.WithTimeout(cmd.Context(), timeout)
+				defer cancel()
+				cmd.SetContext(ctx)
 			}
 			if flagPasswordStdin {
 				ctx, stop := signal.NotifyContext(cmd.Context(), os.Interrupt, syscall.SIGTERM)
@@ -80,6 +93,9 @@ func wrapSessionLifecycle(command *cobra.Command) {
 					return err
 				}
 				if _, err := commandSession(cmd, instance, apiURL); err != nil {
+					if errors.Is(err, auth.ErrHTTPRequestBound) {
+						return apiExit(err)
+					}
 					return err
 				}
 			}
@@ -149,7 +165,11 @@ func commandSession(cmd *cobra.Command, instance, apiURL string) (*auth.Session,
 			return nil, cmd.Context().Err()
 		}
 		_, _ = fmt.Fprintln(cmd.ErrOrStderr(), "Signing in for this command only; existing sessions for this user may be closed.")
-		session, err = auth.LoginSessionContext(cmd.Context(), apiURL, flagLogin, string(password), flagCAFile)
+		if cap := cmd.Flag("max-http-requests"); cap != nil && cap.Changed {
+			session, err = auth.LoginSessionBoundedContext(cmd.Context(), apiURL, flagLogin, string(password), flagCAFile, flagMaxHTTPRequests)
+		} else {
+			session, err = auth.LoginSessionContext(cmd.Context(), apiURL, flagLogin, string(password), flagCAFile)
+		}
 		if err != nil {
 			return nil, err
 		}
@@ -195,6 +215,35 @@ const (
 	passwordReadTimeout     = 5 * time.Second
 	temporarySignOutTimeout = 5 * time.Second
 )
+
+func validateRequestBounds(cmd *cobra.Command) error {
+	if cmd.Flag("max-pages") != nil {
+		pages, _ := cmd.Flags().GetInt("max-pages")
+		if _, err := api.WithMaxPages(cmd.Context(), pages); err != nil {
+			return usageError(err)
+		}
+	}
+	if cap := cmd.Flag("max-http-requests"); cap == nil || !cap.Changed {
+		return nil
+	}
+	if flagMaxHTTPRequests < 2 {
+		return usageError(errors.New("--max-http-requests must be at least 2 (including one reserved signout request)"))
+	}
+	if !flagPasswordStdin || strings.TrimSpace(flagLogin) == "" || cmd.Flag("max-pages") == nil {
+		return usageError(errors.New("--max-http-requests requires a resource command with --login and --password-stdin"))
+	}
+	timeout, _ := cmd.Flags().GetDuration("timeout")
+	if timeout <= 0 || timeout > maxResourceTimeout {
+		return usageError(fmt.Errorf("--timeout must be positive and at most %s", maxResourceTimeout))
+	}
+	if _, err := printer(cmd); err != nil {
+		return usageError(err)
+	}
+	if cmd.Name() == "api" && flagString(cmd, "input") == "-" {
+		return usageError(errors.New("--input - cannot share stdin with --password-stdin"))
+	}
+	return nil
+}
 
 func validateStdinAuthFlags(cmd *cobra.Command) error {
 	loginSet := flagLogin != ""

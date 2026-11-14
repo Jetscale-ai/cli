@@ -256,10 +256,12 @@ Core commands (noun-verb; get also answers to show and view)
   jetscale recommendations list|get|sources|inspect|regenerate   # alias: recs
   jetscale cost-sources list|get|create|validate|enable
   jetscale feature-flags list|get|set              # --root | --company [--business-unit|--account]
+  jetscale company-settings get|ensure
+  jetscale users get|ensure-superuser
 
 Billing commands
   jetscale plans list|get
-  jetscale licenses list|get
+  jetscale licenses list|get|ensure-capacity
 
 Additional commands
   jetscale api <path> [-X METHOD] [-f k=v] [-F k=v] [--input FILE] [--paginate]
@@ -276,7 +278,15 @@ already exists (unchanged) or drift and never change a drifted resource,
 them, secrets only through `--credential-file`, errors with a `Try:` line and a
 `transient` flag, and exit codes 0 ok, 1 failure or uncertain write, 2 usage, 3
 not found, 4 conflict, 5 forbidden or unconfirmed, 6 timeout, 7 drift.
-`--company` defaults to `config set company`.
+`--company` normally defaults to `config set company`; `users ensure-superuser`
+requires an explicit selector on the current invocation.
+
+For known non-secret company settings, quota-only seat growth and optional
+HTTP/page caps, see
+[Reconciliation Primitives](docs/reconciliation-primitives.md). For
+company-linked platform-wide superadmin invitations/promotions and pending
+signup handling, see [User Reconciliation](docs/users.md). These commands do not
+perform SSO, configure WorkOS or authorize Stack runtime execution.
 
 The older `prepare basics` and `flags show|plan|apply --profile` commands remain
 for the published basics and flags lanes but are hidden from help; use

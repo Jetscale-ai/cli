@@ -13,7 +13,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var resourceGroups = []string{"companies", "business-units", "accounts", "recommendations", "cost-sources", "feature-flags", "plans", "licenses", "api"}
+var resourceGroups = []string{"companies", "business-units", "accounts", "recommendations", "cost-sources", "feature-flags", "plans", "licenses", "company-settings", "users", "api"}
 
 func TestHelpShowsGroupsAndHidesDeprecatedCommands(t *testing.T) {
 	root := newRootCmd()
@@ -24,7 +24,7 @@ func TestHelpShowsGroupsAndHidesDeprecatedCommands(t *testing.T) {
 		t.Fatal(err)
 	}
 	help := out.String()
-	for _, want := range []string{"Core Commands:", "Billing Commands:", "Additional Commands:", "companies", "feature-flags", "api"} {
+	for _, want := range []string{"Core Commands:", "Billing Commands:", "Additional Commands:", "companies", "company-settings", "users", "feature-flags", "api"} {
 		if !strings.Contains(help, want) {
 			t.Errorf("root help lacks %q", want)
 		}

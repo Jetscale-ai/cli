@@ -29,6 +29,7 @@ var (
 	flagCredentialsFile string
 	flagLogin           string
 	flagPasswordStdin   bool
+	flagMaxHTTPRequests int
 )
 
 func newRootCmd() *cobra.Command {
@@ -52,8 +53,11 @@ print -o json or -q IDs, and exit 0 ok, 1 failure, 2 usage, 3 not found,
   jetscale api organization/companies --paginate`,
 		SilenceUsage:  true,
 		SilenceErrors: true,
-		PersistentPreRunE: func(_ *cobra.Command, _ []string) error {
-			return buildinfo.Validate()
+		PersistentPreRunE: func(cmd *cobra.Command, _ []string) error {
+			if err := buildinfo.Validate(); err != nil {
+				return err
+			}
+			return validateRequestBounds(cmd)
 		},
 	}
 
@@ -64,6 +68,7 @@ print -o json or -q IDs, and exit 0 ok, 1 failure, 2 usage, 3 not found,
 	root.PersistentFlags().StringVar(&flagCredentialsFile, "credentials-file", "", "local build only: read admin credentials from dotenv, sign in for one command, then sign out without saving")
 	root.PersistentFlags().StringVar(&flagLogin, "login", "", "email or username for one-command authentication (requires --password-stdin; never saves credentials)")
 	root.PersistentFlags().BoolVar(&flagPasswordStdin, "password-stdin", false, "read one non-empty password line from non-terminal stdin (max 4 KiB, 5-second deadline; requires --login)")
+	root.PersistentFlags().IntVar(&flagMaxHTTPRequests, "max-http-requests", 0, "opt-in total HTTP request cap (min 2, includes one reserved signout; resource commands with --login/--password-stdin only)")
 	root.PersistentFlags().StringVar(&flagAccount, "account", "", "cloud account: ID, provider account ID or name")
 	root.PersistentFlags().StringVarP(&flagOutput, "output", "o", "table", "output format: table, json, yaml")
 
@@ -76,6 +81,8 @@ print -o json or -q IDs, and exit 0 ok, 1 failure, 2 usage, 3 not found,
 	root.AddCommand(
 		auth,
 		newCompaniesCmd(),
+		newCompanySettingsCmd(),
+		newUsersCmd(),
 		newBusinessUnitsCmd(),
 		newAccountsCmd(),
 		newRecommendationsCmd(),
