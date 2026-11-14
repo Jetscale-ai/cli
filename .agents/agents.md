@@ -138,32 +138,35 @@ Windows CI found held-reader replacement and test-executable naming failures;
 repairs await native CI confirmation. Documentation or offline tests grant no
 application-call authority.
 
-### Proposed Stack stdin-auth path (inactive)
+### Stack stdin-auth path
 
 Working-tree `--login EMAIL --password-stdin` uses a temporary in-memory session
 with detached signout; it never saves credentials. It rejects credential-file
 and channel-token combinations. The generic reader's ability to accept a file is
 not permission for unstable automation to do so.
 
-Only the qualified Stack wrapper's internal anonymous pipe is proposed for
+Only the qualified Stack wrapper's internal anonymous pipe is permitted for
 `https://unstable.jetscale.ai`, `devops+unstable@jetscale.ai` and the unchanged
 approved 1Password reference. The
-[proposed constitution scope](../AGENTS.md#proposed-stack-mediated-temporary-cli-authentication)
-requires matching human review, commit and publication on Governance, CLI and
-Stack `main`; until then, this proposal grants no execution authority. Stack's
+[accepted constitution scope](../AGENTS.md#proposed-stack-mediated-temporary-cli-authentication)
+is ratified by human review and commit of that text and becomes effective
+automatically upon matching human-reviewed publication on Governance, CLI and
+Stack `main`. No later status edit, active marker or activation ceremony is
+required. Acceptance alone supplies neither publication nor runtime authority.
+Stack's
 [seed registration](https://github.com/Jetscale-AI/Stack/blob/main/docs/operations/unstable-browser-contract.md#cli-seed-api-registration)
 and
 [seed procedure](https://github.com/Jetscale-AI/Stack/blob/main/docs/operations/unstable-cli-seed.md)
 own execution scope, ordering, exact session budgets, bounds and recovery.
 
-The future opt-in auth profile selects only `Unstable Jetscale` /
-`unstable-jetscale`, explicit pinned company UUID and `agent@jetscale.ai`.
-Require explicit human authorization for platform-wide superadmin privilege,
-invitation/email, seat, root-wide auth impact and full company cascades; company
-linkage does not contain privilege. The default nine stages remain unchanged;
-auth selections cannot mix legacy stages. Existing cloud/FOCUS and BU seed
-effects retain Stack's separate human-started/private-file and
-credential-transfer constraints, not new authority from this auth proposal.
+The opt-in auth profile selects only `Unstable Jetscale` / `unstable-jetscale`,
+explicit pinned company UUID and `agent@jetscale.ai`. Require explicit human
+authorization for platform-wide superadmin privilege, invitation/email, seat,
+root-wide auth impact and full company cascades; company linkage does not
+contain privilege. The default nine stages remain unchanged; auth selections
+cannot mix legacy stages. Existing cloud/FOCUS and BU seed effects retain
+Stack's separate human-started/private-file and credential-transfer constraints,
+not new authority from this auth amendment.
 
 Follow the stage effects in the constitution: `capacity` fixes
 `auth.min_seats=2` with unlimited/larger capacity noop; `auth_prepare` creates
@@ -199,15 +202,15 @@ coordination. Reconcile uncertain writes by scoped reads, never login/write
 replay; failed or unverified cleanup blocks further runtime work. Pending is not
 complete: require fresh target company/superuser/ACTIVE/signup timestamp
 evidence and separately authorized password-first verification. Optional SSO
-does not block password-only completion, and this proposal adds no OAuth/MCP
+does not block password-only completion, and this amendment adds no OAuth/MCP
 setup.
 
 No disabling, required-SSO/domain/trust changes, reassignment, resend,
 activation, password reset, WorkOS/IdP administration, external-agent
 provisioning or privilege self-provisioning is authorized. Preserve secret,
 filesystem, tenancy and delivery bans. Dirty builds and source/test inspection
-are not qualification, provenance, deployed compatibility or live success; this
-proposal cannot authorize its own execution or ratification.
+are not qualification, provenance, deployed compatibility or live success. Human
+ratification/publication and runtime execution gates remain binding.
 
 ## Branch Strategy
 

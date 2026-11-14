@@ -159,14 +159,16 @@ functionality or authorize publication.
 
 ### Proposed Stack-mediated temporary CLI authentication
 
-**Status:** Proposed, not active. **Owner:** CLI Engineering and Jetscale
-Platform Governance. **Proposed:** 2026-10-13. **Rationale:** attributable,
+**Status:** Accepted. **Accepted:** 2026-11-14 by Paul Cuciureanu. **Owner:**
+CLI Engineering and Jetscale Platform Governance. **Rationale:** attributable,
 bounded non-secret setup without captured credentials (SOC 2 CC6.1 and CC8.1).
+The section heading retains its historical name for publication-parser and link
+compatibility; this status governs its lifecycle.
 
 CLI seed auth stages: capacity, auth_prepare and sso_activate.
 
 Source implements `--login EMAIL --password-stdin`, `prepare basics`,
-`flags show|plan|apply` and the resource primitives below. This proposes only
+`flags show|plan|apply` and the resource primitives below. This permits only
 Stack-mediated execution against `https://unstable.jetscale.ai` as
 `devops+unstable@jetscale.ai`. Only a qualified Stack wrapper may resolve
 `op://Everyone's Agents/JETSCALE_DEFAULT_ADMIN_PASSWORD (unstable)/password`
@@ -175,28 +177,30 @@ and temporary sessions stay in process memory; no secrets in arguments,
 environment, files, logs, capture or the session store. Interactive persistent
 login and credential-file fallback are excluded from this amendment.
 
-This amendment is effective only after human review, commit and publication of
-matching Governance Constitution and secret-management law, CLI law, and Stack
-seed registration/procedure on their respective `main` branches. Until then,
-existing published narrower authority remains binding; this amendment grants no
-current execution authority and cannot authorize its own execution or
-ratification. Stack's
+Human review and commit of this text constitute ratification. **Effective:**
+automatically upon matching human-reviewed publication of Governance
+Constitution and secret-management seed-auth law, CLI law, and Stack seed
+adoption/registration/procedure on their respective `main` branches. No later
+status edit, active marker, second ratification or activation ceremony is
+required. Until that publication, existing published narrower authority remains
+binding. Acceptance does not substitute for publication or execution gates and
+adds no agent authority to commit or publish law. Stack's
 [seed registration](https://github.com/Jetscale-AI/Stack/blob/main/docs/operations/unstable-browser-contract.md#cli-seed-api-registration)
 and
 [seed procedure](https://github.com/Jetscale-AI/Stack/blob/main/docs/operations/unstable-cli-seed.md)
 own the authoritative execution scope, ordering, exact session budgets, bounds
 and recovery. These CLI primitives do not implement a seed orchestrator.
 
-The future registered auth profile is only `Unstable Jetscale` /
-`unstable-jetscale`, with explicit resolved company UUID and exact target
-`agent@jetscale.ai`. Company linkage is not privilege containment: the target
-becomes a platform-wide superadmin. Require an explicit human grant covering
-that privilege, invitation/email and seat effects, application-wide root auth
-impact and full company cascades. The operator and credential source remain
-unchanged; no target-user login source is added. The default nine seed stages
-remain unchanged. Auth stages are opt-in and cannot be mixed with legacy stages
-in one selection; existing basics and legacy flags retain their scoped
-authorization. Assessment-only and test-only requests remain narrow.
+The registered auth profile is only `Unstable Jetscale` / `unstable-jetscale`,
+with explicit resolved company UUID and exact target `agent@jetscale.ai`.
+Company linkage is not privilege containment: the target becomes a platform-wide
+superadmin. Require an explicit human grant covering that privilege,
+invitation/email and seat effects, application-wide root auth impact and full
+company cascades. The operator and credential source remain unchanged; no
+target-user login source is added. The default nine seed stages remain
+unchanged. Auth stages are opt-in and cannot be mixed with legacy stages in one
+selection; existing basics and legacy flags retain their scoped authorization.
+Assessment-only and test-only requests remain narrow.
 
 The auth stages use only these effects:
 
