@@ -58,6 +58,27 @@ func (c *Client) ListCompanies(ctx context.Context, filters map[string]string) (
 	return c.listAll(ctx, c.gen.ListCompaniesApiV2OrganizationCompaniesGet, filters)
 }
 
+// ListCompanyIDs requires count-backed completeness and never exposes company metadata.
+func (c *Client) ListCompanyIDs(ctx context.Context) ([]Record, error) {
+	rows, err := c.listAllPages(ctx, c.gen.ListCompaniesApiV2OrganizationCompaniesGet, map[string]string{"api_fields": "id"}, true)
+	if err != nil {
+		return nil, err
+	}
+	ids := make([]Record, 0, len(rows))
+	seen := make(map[string]bool, len(rows))
+	for _, row := range rows {
+		rawID, ok := row["id"].(string)
+		id, valid := resourceUUID(rawID)
+		if !ok || !valid || seen[id.String()] {
+			return nil, ErrInvalidResponse
+		}
+		seen[id.String()] = true
+		ids = append(ids, Record{"id": id.String()})
+	}
+	sort.Slice(ids, func(i, j int) bool { return ids[i].ID() < ids[j].ID() })
+	return ids, nil
+}
+
 // ResolveCompany accepts an ID, slug or exact name.
 func (c *Client) ResolveCompany(ctx context.Context, selector string) (Record, error) {
 	if id, ok := resourceUUID(selector); ok {

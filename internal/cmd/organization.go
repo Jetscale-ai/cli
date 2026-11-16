@@ -29,7 +29,7 @@ changed. Every write supports --dry-run.`,
   jetscale companies create --name "Acme" --slug acme --domain-email acme.com --license-plan ESSENTIAL_ANNUAL --dry-run`,
 	}
 	addResourceFlags(cmd, false)
-	cmd.AddCommand(newCompaniesListCmd(), newCompaniesGetCmd(), newCompaniesCreateCmd())
+	cmd.AddCommand(newCompaniesListCmd(), newCompaniesIDsCmd(), newCompaniesGetCmd(), newCompaniesCreateCmd())
 	return cmd
 }
 
@@ -66,6 +66,27 @@ func newCompaniesListCmd() *cobra.Command {
 	cmd.Flags().String("slug", "", "only the company with this slug")
 	cmd.Flags().String("name", "", "only companies with this exact name")
 	return cmd
+}
+
+func newCompaniesIDsCmd() *cobra.Command {
+	return &cobra.Command{
+		Use:     "ids",
+		Short:   "List only company IDs with count-backed completeness",
+		Args:    exactArgs(0),
+		Example: `  jetscale companies ids --max-pages=1 -o json`,
+		RunE: func(cmd *cobra.Command, _ []string) error {
+			run, err := startResource(cmd)
+			if err != nil {
+				return err
+			}
+			defer run.cancel()
+			ids, err := run.client.ListCompanyIDs(run.ctx)
+			if err != nil {
+				return apiExit(err)
+			}
+			return run.list(ids, []string{"id"}, []output.Column{column("ID", "id")}, "companies")
+		},
+	}
 }
 
 func newCompaniesGetCmd() *cobra.Command {

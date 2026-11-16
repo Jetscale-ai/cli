@@ -291,6 +291,10 @@ type listCall func(context.Context, ...generated.RequestEditorFn) (*http.Respons
 // changes size mid-read, repeats an ID or exceeds the page bound fails rather
 // than returning a partial answer that could be mistaken for absence.
 func (c *Client) listAll(ctx context.Context, fetch listCall, filters map[string]string) ([]Record, error) {
+	return c.listAllPages(ctx, fetch, filters, false)
+}
+
+func (c *Client) listAllPages(ctx context.Context, fetch listCall, filters map[string]string, requireTotal bool) ([]Record, error) {
 	items := []Record{}
 	seen := map[string]bool{}
 	total := -1
@@ -308,7 +312,7 @@ func (c *Client) listAll(ctx context.Context, fetch listCall, filters map[string
 				Total *int `json:"total_count"`
 			} `json:"meta"`
 		}
-		if json.Unmarshal(body, &envelope) != nil || envelope.Data == nil {
+		if json.Unmarshal(body, &envelope) != nil || envelope.Data == nil || (requireTotal && envelope.Meta.Total == nil) {
 			return nil, ErrInvalidResponse
 		}
 		if envelope.Meta.Total != nil {

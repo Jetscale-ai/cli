@@ -1,9 +1,10 @@
-# Company-setting and license-capacity primitives
+# Company-ID, company-setting and license-capacity primitives
 
-These generic commands reconcile one explicitly selected company's application
-state. Stack owns unstable tenant restrictions, execution authority, identities,
-shared impacts, and writer coordination. Implementing these commands does not
-activate a live reconciliation or extend the published CLI authentication lanes.
+These commands provide narrow company-ID discovery and reconcile one explicitly
+selected company's application state. Stack owns unstable tenant restrictions,
+execution authority, identities, shared impacts, and writer coordination.
+Implementing these commands does not activate a live reconciliation or extend
+the published CLI authentication lanes.
 
 ## Command integration
 
@@ -85,6 +86,7 @@ additional. Five is not a sufficient total cap for a command that calls an API.
 | Fixture command                                                                      | Total HTTP requests | Additional command requests                                                    |
 | ------------------------------------------------------------------------------------ | ------------------- | ------------------------------------------------------------------------------ |
 | `companies list --require-superuser`                                                 | 6                   | One company-list page                                                          |
+| `companies ids --require-superuser --max-pages=1`                                    | 6                   | One count-backed ID-only company-list page                                     |
 | `users get EMAIL --require-superuser`                                                | 7                   | ACTIVE-superuser actor check and one user-list page                            |
 | `company-settings ensure KEY --company SLUG --yes --require-superuser` (missing row) | 10                  | Company lookup, initial setting read, pre-write setting read, create, readback |
 
@@ -93,6 +95,36 @@ the create but blocks its readback, yielding `outcome_uncertain`; `N = 10`
 completes the create, readback, and signout. Select caps from the full inspected
 path, not just the lifecycle overhead. These costs are local synthetic evidence,
 not deployed compatibility or live-execution authority.
+
+## Company IDs
+
+```bash
+jetscale companies ids --max-pages=1 -o json
+```
+
+This read-only command uses the existing generated company-list endpoint with
+`api_fields=id`, `api_sort=id`, page size 100, and no company filters. JSON
+output is a deterministically sorted array of records containing only a
+canonical, nonzero UUID `id`; an empty collection prints `[]`. Additional
+Backend fields are discarded rather than projected into output. YAML, table, and
+quiet output use the same ID-only collection; `-q` prints one ID per line.
+
+Every page must include a nonnegative integer `meta.total_count`. Missing/null
+counts, changing totals, malformed IDs, duplicate IDs (including equivalent UUID
+spellings), truncated JSON, and short pages that do not reach the total fail.
+Exhausting `--max-pages` also fails. No partial ID collection is printed. Unlike
+ordinary `companies list`, a short page without a total is not accepted as
+complete. Counts establish response completeness, not an atomic snapshot or
+independent proof of authorization/visibility; retain actor verification and
+writer coordination.
+
+The command inherits the transport, deadlines, HTTP cap, and reserved signout
+above. With stdin login, `--require-superuser`, and one complete page, its total
+cost is **six HTTP requests**: five lifecycle requests plus one ID-list GET.
+Stack's qualified wrapper may use `--max-http-requests 6 --max-pages 1` for that
+path; additional pages cannot bypass either cap. Existing memory-only session,
+signout, zero-retry, and aggregate Stack execution limits remain unchanged. This
+command adds no live-execution authority.
 
 ## Company settings
 

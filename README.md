@@ -250,7 +250,7 @@ See [ROADMAP.md](ROADMAP.md) for work packages and exit criteria.
 ```text
 Core commands (noun-verb; get also answers to show and view)
   jetscale auth login|logout|whoami|status
-  jetscale companies list|get|create
+  jetscale companies list|ids|get|create
   jetscale business-units list|get|create          # alias: bu
   jetscale accounts list|get|link|status|wait|use|current
   jetscale recommendations list|get|sources|inspect|regenerate   # alias: recs
@@ -281,8 +281,8 @@ not found, 4 conflict, 5 forbidden or unconfirmed, 6 timeout, 7 drift.
 `--company` normally defaults to `config set company`; `users ensure-superuser`
 requires an explicit selector on the current invocation.
 
-For known non-secret company settings, quota-only seat growth and optional
-HTTP/page caps, see
+For count-backed company-ID inspection, known non-secret company settings,
+quota-only seat growth and optional HTTP/page caps, see
 [Reconciliation Primitives](docs/reconciliation-primitives.md). For
 company-linked platform-wide superadmin invitations/promotions and pending
 signup handling, see [User Reconciliation](docs/users.md). These commands do not
