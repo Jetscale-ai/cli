@@ -165,7 +165,17 @@ bounded non-secret setup without captured credentials (SOC 2 CC6.1 and CC8.1).
 The section heading retains its historical name for publication-parser and link
 compatibility; this status governs its lifecycle.
 
-CLI seed auth stages: capacity, auth_prepare and sso_activate.
+**2026-11-16 amendment:** `sso_bootstrap` is accepted upon human review and
+commit of this text. **Rationale:** SOC 2 CC6.1/CC8.1; provision web/MCP SSO
+readiness without manual provisioning intervention. It becomes effective
+automatically upon matching human-reviewed publication of all revised Governance
+Constitution/secret-management, CLI law and Stack seed
+adoption/registration/procedure scope on their respective `main` branches. No
+later status edit, active marker or activation ceremony is required. Preserve
+the 2026-11-14 acceptance and existing published grants until that publication;
+this request authorizes preparation, not self-ratification or execution.
+
+CLI seed auth stages: capacity, auth_prepare, sso_activate and sso_bootstrap.
 
 Source implements `--login EMAIL --password-stdin`, `prepare basics`,
 `flags show|plan|apply` and the resource primitives below. This permits only
@@ -198,9 +208,13 @@ superadmin. Require an explicit human grant covering that privilege,
 invitation/email and seat effects, application-wide root auth impact and full
 company cascades. The operator and credential source remain unchanged; no
 target-user login source is added. The default nine seed stages remain
-unchanged. Auth stages are opt-in and cannot be mixed with legacy stages in one
-selection; existing basics and legacy flags retain their scoped authorization.
-Assessment-only and test-only requests remain narrow.
+unchanged. `sso_bootstrap` is opt-in and mutually exclusive with `capacity`,
+`auth_prepare`, `sso_activate` and the nine default seed stages. Preserve the
+legacy auth stages as opt-in, including their password-first requirement and
+prohibition on mixing the nine default stages. Existing basics and legacy flags
+retain their scoped authorization. The helper must fail closed for the new stage
+on old three-stage law, without re-disabling existing grants. Assessment-only
+and test-only requests remain narrow.
 
 The auth stages use only these effects:
 
@@ -227,6 +241,34 @@ The auth stages use only these effects:
   Mapping creation can activate already-true SSO gates, so Stack must verify
   impact, effective multi-auth and password preservation before that write.
 
+- `sso_bootstrap`: always ensure `auth.min_seats=2` quota-only on the existing
+  eligible license, create absent disabled non-secret `AUTH.MULTI` and
+  `AUTH.SSO.WORKOS` root/company rows, then ensure the exact company-linked
+  superadmin using the existing typed primitives. Invite an absent target once
+  with `SIGNUP_SUPERUSER`; reuse a matching `PENDING_ACTIVATION` identity and
+  valid unused invitation without resend. Preserve an existing completed
+  identity; only a matching signup-complete `ACTIVE` ordinary user may be
+  promoted. Conflicts block. No new CLI command or seed engine is required;
+  Stack owns orchestration.
+  - Optional SSO follows effective MULTI -> exact `OrganizationSSO` provider ->
+    existing `[Console] Jetscale` organization -> SSO. Use the same two mapping
+    keys, create-missing/exact-match-only reconciliation, mapping-activation
+    checks and read-only required-SSO inspection as above. Never disable
+    existing rows or change domains, trust or required-SSO policy.
+  - Before SSO configuration, require deployed shared web/MCP handler proof:
+    genuine first SSO completes the company-linked privileged identity,
+    preserves company/superadmin, sets `ACTIVE` and `signup_completed_at`,
+    consumes invitations and leaves the password hash absent. Require existing
+    IdP eligibility, isolated `unstable`/`unstable_user` deployment and deployed
+    WorkOS client/organization proof for both exact callbacks:
+    `https://unstable.jetscale.ai/auth/sso/callback` and
+    `https://unstable.jetscale.ai/oauth/sso/callback`. Local source/tests,
+    including an undelivered email-only fix, are not deployed behavior proof.
+  - No prior target password signup/login or prior web login is required; MCP
+    may be the first authentic SSO login. Preserve optional-password access in
+    every newly activated company, including other companies affected by roots;
+    required-SSO must be false with deployed absent-row default proof.
+
 Stack must require root impact evidence and exclusive writers before auth
 mutation. Other-company reads are limited to bounded required-SSO policy and the
 two auth flags, plus exact-email invitation-conflict metadata; no other-company
@@ -249,25 +291,35 @@ signout. Stack owns exact per-command budgets and the overall 900-second limit,
 including a 300-second cleanup reserve, 100-descendant ceiling and 1,000
 combined charged-request ceiling, including authentication and cleanup. These
 ceilings can block larger topology; per-command caps do not replace aggregate
-accounting. Use zero automatic retries and exclusive-writer coordination.
+accounting. Use zero automatic retries and global exclusive-writer coordination.
 Reconcile uncertain writes through scoped reads, never replay; failed or
 unverified cleanup blocks further runtime work.
 
-Completion requires fresh exact-email evidence of the pinned company,
-`is_superuser:true`, `status:ACTIVE` and non-null `signup_completed_at`, plus
-password-first verification through a separately authorized, qualified surface.
-Optional SSO is not a blocker for password-only completion. User/flag success
-proves neither password/SAML round trips nor later read-only MCP readiness; this
-amendment adds no OAuth/MCP setup or login source.
+Legacy auth completion requires fresh exact-email evidence of the pinned
+company, `is_superuser:true`, `status:ACTIVE` and non-null
+`signup_completed_at`, plus password-first verification through a separately
+authorized, qualified surface. Optional SSO is not a blocker for password-only
+completion. User/flag success proves neither password/SAML round trips nor later
+read-only MCP readiness; this amendment adds no OAuth/MCP setup or login source.
+
+For `sso_bootstrap`, verified configuration is "config ready awaiting first
+SSO", not `ACTIVE`, signup completion or login evidence. If optional SSO is
+omitted, report provisioning only, not SSO readiness. Genuine first SSO
+completion is a separately authorized login, not part of this provisioning
+stage; it requires no prior web login or target password signup/login.
 
 No auth-stage permission is added for disabling flags, required-SSO/domain/trust
-changes, reassignment, resend, activation, password reset, WorkOS/IdP
+changes, reassignment, resend, direct user activation/forced signup completion,
+password setting/reset, signup-link scraping, SAML/OAuth bypass, WorkOS/IdP
 administration, external-agent provisioning, production access, infrastructure,
 delivery, installation, staging, commit, push or tags. Existing seed cloud/FOCUS
 and BU effects remain delegated by Stack under their separate human-started,
 private-file and credential-transfer constraints; this amendment neither expands
 nor removes that delegation. Preserve existing secret, filesystem, tenancy and
-delivery restrictions. See [Prepare Basics](docs/prepare-basics.md) and
+delivery restrictions. No target credential source, provider administration,
+OAuth grants/MCP client setup or round-trip test authority is added. The direct
+activation ban does not prohibit separately authorized genuine first SSO
+completion. See [Prepare Basics](docs/prepare-basics.md) and
 [Feature Flags](docs/feature-flags.md) for implemented behavior and proof
 limits.
 

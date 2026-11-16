@@ -31,6 +31,27 @@ no clouds, FOCUS setup/ingestion, BU creation, external provisioning, production
 or delivery rights are added. Published browser-only credential authority and
 all narrower bans remain binding.
 
+## Separate Stack auth scope
+
+The 2026-11-16 `sso_bootstrap` amendment uses generic typed `feature-flags`, not
+this four-key `flags` profile. It always creates absent disabled non-secret
+`AUTH.MULTI` / `AUTH.SSO.WORKOS` root/company rows without disabling existing
+rows. Optional SSO establishes effective MULTI before exact provider/existing
+organization reconciliation and SSO; mappings can activate existing true gates.
+Require root-impact/full company-cascade and other-company optional-password
+protections, global writer coordination and the unchanged qualification/bounds.
+
+Follow
+[Stack auth-stage provisioning](prepare-basics.md#stack-auth-stage-provisioning)
+for the human-review/commit and matched-publication gate, deployed shared
+web/MCP completion proof, both exact callbacks, mutually exclusive selection and
+configuration-versus-login outcomes. It requires no prior target password
+signup/login or web login and grants no target credentials, provider
+administration, OAuth grants or round-trip test authority. The legacy auth
+stages/password-first requirement, nine default stages and four-key `flags`
+profile remain unchanged; old three-stage law must fail closed only for the new
+stage.
+
 ## Commands and targets
 
 ```text

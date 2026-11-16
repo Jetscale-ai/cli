@@ -26,6 +26,83 @@ Basics and flags require separate bounded authorization. A local uncommitted
 unstable-channel build is allowed input, not provenance or authority. This
 refactor includes no live execution, commit, push, installation or publication.
 
+## Stack auth-stage provisioning
+
+The
+[CLI auth law](../AGENTS.md#proposed-stack-mediated-temporary-cli-authentication)
+adds `sso_bootstrap` as a separate opt-in Stack stage, not a `prepare basics`
+option or new CLI command. Existing typed `licenses ensure-capacity`, generic
+`feature-flags`, `users get` / `users ensure-superuser` and company-setting
+primitives supply its operations; Stack owns orchestration, not a CLI seed
+engine. The basics manifest and its exclusions remain unchanged.
+
+**Amendment:** 2026-11-16, accepted upon human review and commit. **Rationale:**
+SOC 2 CC6.1/CC8.1 and web/MCP SSO readiness without manual provisioning
+intervention. Effectiveness is automatic upon matching human-reviewed
+publication of all revised Governance Constitution/secret-management, CLI law
+and Stack seed adoption/registration/procedure scope on their respective `main`
+branches, without another status edit, active marker or ceremony. Preserve the
+2026-11-14 acceptance and existing grants until then; this preparation is not
+self-ratification or execution. The helper must reject the new stage on old
+three-stage law. `sso_bootstrap` cannot be mixed with `capacity`,
+`auth_prepare`, `sso_activate` or the nine default seed stages; preserve all of
+them, including legacy password-first requirements and their existing selection
+restrictions.
+
+For only pinned `Unstable Jetscale` / `unstable-jetscale` and
+`agent@jetscale.ai`, always:
+
+1. Ensure minimum two seats on the existing eligible license, quota-only:
+   unlimited/sufficient capacity is a noop; grow only `max_seats`, never change
+   billing, plans, commercial terms or other quotas. This is not occupancy
+   proof.
+2. Create absent disabled non-secret `AUTH.MULTI` / `AUTH.SSO.WORKOS`
+   root/company rows; never disable existing rows.
+3. Ensure the exact company-linked platform-wide superadmin: invite an absent
+   target once with `SIGNUP_SUPERUSER`, or reuse a matching `PENDING_ACTIVATION`
+   identity and valid unused invitation without resend. Preserve an existing
+   completed identity; only a matching signup-complete `ACTIVE` ordinary user
+   may be promoted. Conflicts block, not automatic reassignment or activation.
+
+Optional SSO then follows effective MULTI -> exact `OrganizationSSO` provider ->
+existing `[Console] Jetscale` organization -> SSO, using create-missing or
+exact-match noops only. Mapping writes may activate existing true gates. Require
+root-impact/full selected-company cascade evidence, globally exclusive writers
+and optional-password protection in all newly activated companies, including
+root-affected other companies. Required-SSO stays false with deployed absent-row
+false-default proof; domains and trust remain unchanged. Other-company reads
+stay limited to two-flag/required-SSO/password-impact and exact-email invitation
+conflict metadata, never unrelated data or other-company writes.
+
+Before SSO configuration, require deployed shared web/MCP handler proof that
+genuine first SSO preserves company/superadmin, sets `ACTIVE` and
+`signup_completed_at`, consumes invitations and leaves the password hash absent;
+existing IdP eligibility; isolated `unstable`/`unstable_user` deployment; and
+deployed WorkOS client/organization proof for both exact callbacks:
+`https://unstable.jetscale.ai/auth/sso/callback` and
+`https://unstable.jetscale.ai/oauth/sso/callback`. An undelivered local
+email-only fix or source/tests do not prove deployed behavior. No prior target
+password signup/login or prior web login is required; MCP can be the first
+authentic SSO login.
+
+Verified configuration means "config ready awaiting first SSO", not `ACTIVE`,
+completed signup or login evidence. The current Stack `sso_bootstrap` helper
+always configures optional SSO; it has no provisioning-only selector. The law's
+provisioning-only outcome applies when SSO is omitted from authorized work, not
+to a selectable mode of this helper. Direct user activation/forced signup
+completion, password setting, signup-link scraping and SAML/OAuth bypass remain
+prohibited; genuine first SSO completion requires separate login authority. This
+stage adds no target credential source, provider administration, OAuth
+grants/MCP client setup or round-trip tests.
+
+Retain the same origin/operator/1Password reference and memory-only stdin auth,
+actual-capture helper/binary qualification and runtime gates. Stack's 900-second
+total/300-second cleanup reserve, 100-descendant/1,000 combined charged HTTP
+ceilings include authentication, previews, reads, writes and cleanup. Preserve
+explicit command HTTP/time caps, `--max-pages 1`, final process-exit proof after
+signout, one foreground operation, zero retries, global writer coordination and
+human-owned recovery. Reconcile uncertainty through scoped reads, never replay.
+
 ## Command interface
 
 ```text
