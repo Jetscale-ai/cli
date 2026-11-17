@@ -22,7 +22,7 @@ func TestCompaniesIDsBoundedProjection(t *testing.T) {
 		_, _ = io.WriteString(w, `{"data":[{"id":"`+testUnitID+`","contact_email":"foreign-metadata@example.invalid"},{"id":"`+testCompanyID+`","name":"foreign-metadata"}],"meta":{"total_count":2}}`)
 	})
 	stdout, stderr, code := executeBounded(t, context.Background(), server.URL, strings.NewReader("synthetic-password\n"),
-		"--login", "fixture@example.invalid", "--password-stdin", "--max-http-requests", "6", "companies", "ids", "--require-superuser", "--max-pages=1")
+		"--login", "fixture@example.invalid", "--password-stdin", "--max-http-requests", "4", "companies", "ids", "--require-superuser", "--max-pages=1")
 	var got []api.Record
 	want := []api.Record{{"id": testCompanyID}, {"id": testUnitID}}
 	if code != 0 || json.Unmarshal([]byte(stdout), &got) != nil || !reflect.DeepEqual(got, want) ||
@@ -32,8 +32,8 @@ func TestCompaniesIDsBoundedProjection(t *testing.T) {
 	f.mu.Lock()
 	requests := len(f.requests)
 	f.mu.Unlock()
-	if requests != 6 || f.count("GET /api/v2/organization/companies") != 1 || f.count("POST /api/v2/auth/sign-out") != 1 {
-		t.Fatalf("expected six-request lifecycle with cleanup, got %d requests", requests)
+	if requests != 4 || f.count("GET /api/v2/organization/companies") != 1 || f.count("POST /api/v2/auth/sign-out") != 1 {
+		t.Fatalf("expected four-request lifecycle with cleanup, got %d requests", requests)
 	}
 }
 
@@ -53,7 +53,7 @@ func TestCompaniesIDsInvalidCollectionsPrintNoPartialData(t *testing.T) {
 				_, _ = io.WriteString(w, test.body)
 			})
 			stdout, stderr, code := executeBounded(t, context.Background(), server.URL, strings.NewReader("synthetic-password\n"),
-				"--login", "fixture@example.invalid", "--password-stdin", "--max-http-requests", "6", "companies", "ids", "--require-superuser", "--max-pages=1")
+				"--login", "fixture@example.invalid", "--password-stdin", "--max-http-requests", "4", "companies", "ids", "--require-superuser", "--max-pages=1")
 			var failure map[string]any
 			if code != ExitFailure || json.Unmarshal([]byte(stdout), &failure) != nil || failure["error"] == nil ||
 				strings.Contains(stdout, testCompanyID) || strings.Contains(stdout+stderr, "foreign-metadata") ||
@@ -69,7 +69,7 @@ func TestCompaniesIDsExhaustionReservesCleanup(t *testing.T) {
 		t.Errorf("exhausted command dispatched resource read: %s", r.URL)
 	})
 	stdout, stderr, code := executeBounded(t, context.Background(), server.URL, strings.NewReader("synthetic-password\n"),
-		"--login", "fixture@example.invalid", "--password-stdin", "--max-http-requests", "5", "companies", "ids", "--require-superuser", "--max-pages=1")
+		"--login", "fixture@example.invalid", "--password-stdin", "--max-http-requests", "3", "companies", "ids", "--require-superuser", "--max-pages=1")
 	if code != ExitFailure || !strings.Contains(stdout, `"reason": "http_request_bound"`) ||
 		f.count("GET /api/v2/organization/companies") != 0 || f.count("POST /api/v2/auth/sign-out") != 1 {
 		t.Fatalf("request ceiling or reserved cleanup changed: code=%d stdout=%s stderr=%s", code, stdout, stderr)

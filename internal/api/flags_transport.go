@@ -29,5 +29,5 @@ func (c *Client) flagsBoundedClient() (*Client, error) {
 	}
 	gen := *base
 	gen.Client = &bounded
-	return &Client{gen: &generated.ClientWithResponses{ClientInterface: &gen}, baseURL: c.baseURL}, nil
+	return &Client{gen: &generated.ClientWithResponses{ClientInterface: &gen}, baseURL: c.baseURL, actor: c.actor}, nil
 }

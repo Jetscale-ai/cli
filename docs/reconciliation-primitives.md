@@ -78,20 +78,28 @@ atomic server snapshot; writer coordination remains necessary.
 ### Measured request costs
 
 With stdin login and `--require-superuser`, the ordinary successful lifecycle
-has **five overhead requests**: sign-in, login-verification `me`, exact-login
-second `me`, required-superuser `me`, and signout. Command-specific checks,
-selector lookups, each page, pre-write reads, mutations, and readbacks are
-additional. Five is not a sufficient total cap for a command that calls an API.
+has **three overhead requests**: sign-in, one login-verification `me`, and
+signout. The verification reply also serves the exact-login identity match, the
+`--require-superuser` check and the `users` commands' ACTIVE-superuser check;
+none of them requests `me` again. Stored sessions, which this process did not
+verify, still read `me` for those checks. Command-specific checks, selector
+lookups, each page, pre-write reads, mutations, and readbacks are additional.
+Three is not a sufficient total cap for a command that calls an API. Offline
+`version -o json` publishes this overhead as `auth_lifecycle_requests`; a caller
+that sizes caps from it should refuse a build that reports a different value.
+`users ensure-superuser --yes` checks the actor in both its plan and apply
+passes, and both reuse the verification reply. After an interactive
+confirmation, which `--password-stdin` cannot answer, apply reads `me` again.
 
 | Fixture command                                                                      | Total HTTP requests | Additional command requests                                                    |
 | ------------------------------------------------------------------------------------ | ------------------- | ------------------------------------------------------------------------------ |
-| `companies list --require-superuser`                                                 | 6                   | One company-list page                                                          |
-| `companies ids --require-superuser --max-pages=1`                                    | 6                   | One count-backed ID-only company-list page                                     |
-| `users get EMAIL --require-superuser`                                                | 7                   | ACTIVE-superuser actor check and one user-list page                            |
-| `company-settings ensure KEY --company SLUG --yes --require-superuser` (missing row) | 10                  | Company lookup, initial setting read, pre-write setting read, create, readback |
+| `companies list --require-superuser`                                                 | 4                   | One company-list page                                                          |
+| `companies ids --require-superuser --max-pages=1`                                    | 4                   | One count-backed ID-only company-list page                                     |
+| `users get EMAIL --require-superuser`                                                | 4                   | One user-list page                                                             |
+| `company-settings ensure KEY --company SLUG --yes --require-superuser` (missing row) | 8                   | Company lookup, initial setting read, pre-write setting read, create, readback |
 
-For the last fixture, `N = 8` blocks the create before dispatch; `N = 9` allows
-the create but blocks its readback, yielding `outcome_uncertain`; `N = 10`
+For the last fixture, `N = 6` blocks the create before dispatch; `N = 7` allows
+the create but blocks its readback, yielding `outcome_uncertain`; `N = 8`
 completes the create, readback, and signout. Select caps from the full inspected
 path, not just the lifecycle overhead. These costs are local synthetic evidence,
 not deployed compatibility or live-execution authority.
@@ -120,8 +128,8 @@ writer coordination.
 
 The command inherits the transport, deadlines, HTTP cap, and reserved signout
 above. With stdin login, `--require-superuser`, and one complete page, its total
-cost is **six HTTP requests**: five lifecycle requests plus one ID-list GET.
-Stack's qualified wrapper may use `--max-http-requests 6 --max-pages 1` for that
+cost is **four HTTP requests**: three lifecycle requests plus one ID-list GET.
+Stack's qualified wrapper may use `--max-http-requests 4 --max-pages 1` for that
 path; additional pages cannot bypass either cap. Existing memory-only session,
 signout, zero-retry, and aggregate Stack execution limits remain unchanged. This
 command adds no live-execution authority.

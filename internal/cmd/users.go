@@ -122,7 +122,12 @@ Use --yes for noninteractive writes. Serialize all writers for this identity.`,
 			}
 			// Re-read after confirmation rather than treating the earlier plan as
 			// a lock. Backend still requires coordinated, serialized writers.
-			res, err = run.client.EnsureSuperuser(run.ctx, args[0], id.String(), false)
+			client := run.client
+			if !flagBool(cmd, "yes") {
+				// An interactive answer can take arbitrarily long; re-prove the actor.
+				client = client.WithoutVerifiedActor()
+			}
+			res, err = client.EnsureSuperuser(run.ctx, args[0], id.String(), false)
 			if err != nil {
 				return apiExit(err)
 			}

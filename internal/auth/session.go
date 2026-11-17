@@ -34,6 +34,21 @@ type Session struct {
 	jar         *sessionJar
 	entry       TokenEntry
 	environment bool
+	verified    *verifiedLogin
+}
+
+// LifecycleRequests is what one --password-stdin command spends on its session:
+// sign-in, one verification /auth/me (reused for the identity match and actor
+// checks) and signout. Callers that size --max-http-requests rely on it, so
+// `version -o json` publishes it as auth_lifecycle_requests.
+const LifecycleRequests = 3
+
+// verifiedLogin is the /auth/me reply that proved a sign-in in this process.
+// It is held in memory only so one command can reuse it for identity and
+// superuser checks instead of asking again.
+type verifiedLogin struct {
+	identity WhoamiResult
+	user     json.RawMessage
 }
 
 // LoginSession signs in using cookies, then verifies the session with auth/me.
@@ -98,13 +113,14 @@ func loginSessionContext(ctx context.Context, baseURL, login, password, caFile s
 	}
 	meRequest, _ := generated.NewMeApiV2AuthMeGetRequest(s.origin + "/")
 	hasVerificationCookie := len(s.jar.Cookies(meRequest.URL)) != 0
-	_, verifyErr := s.WhoamiContext(ctx)
+	who, user, verifyErr := s.whoami(ctx)
 	if verifyErr == nil && (!hasVerificationCookie || len(s.jar.Cookies(meRequest.URL)) == 0) {
 		verifyErr = errors.New("sign-in did not establish a cookie session")
 	}
 	if verifyErr != nil {
 		return nil, s.cleanupLoginFailure(fmt.Errorf("session verification failed: %w", verifyErr))
 	}
+	s.verified = &verifiedLogin{identity: who, user: user}
 	succeeded = true
 	return s, nil
 }
@@ -192,34 +208,51 @@ func (s *Session) Whoami() (WhoamiResult, error) {
 }
 
 func (s *Session) WhoamiContext(ctx context.Context) (WhoamiResult, error) {
+	who, _, err := s.whoami(ctx)
+	return who, err
+}
+
+// VerifiedLogin returns the identity and raw /auth/me user object captured when
+// this process signed in. ok is false for stored or token sessions, which were
+// never verified here.
+func (s *Session) VerifiedLogin() (WhoamiResult, json.RawMessage, bool) {
+	if s == nil || s.verified == nil {
+		return WhoamiResult{}, nil, false
+	}
+	return s.verified.identity, append(json.RawMessage(nil), s.verified.user...), true
+}
+
+func (s *Session) whoami(ctx context.Context) (WhoamiResult, json.RawMessage, error) {
 	resp, err := s.gen.MeApiV2AuthMeGet(ctx)
 	if err != nil {
 		if errors.Is(err, ErrHTTPRequestBound) {
-			return WhoamiResult{}, ErrHTTPRequestBound
+			return WhoamiResult{}, nil, ErrHTTPRequestBound
 		}
-		return WhoamiResult{}, errors.Join(errors.New("whoami request failed (network, TLS, cancellation, or redirect policy)"), ctx.Err())
+		return WhoamiResult{}, nil, errors.Join(errors.New("whoami request failed (network, TLS, cancellation, or redirect policy)"), ctx.Err())
 	}
 	defer func() { _ = resp.Body.Close() }()
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
-		return WhoamiResult{}, fmt.Errorf("whoami failed (HTTP %d)", resp.StatusCode)
+		return WhoamiResult{}, nil, fmt.Errorf("whoami failed (HTTP %d)", resp.StatusCode)
 	}
 	const maxBody = 1 << 20
 	body, err := io.ReadAll(io.LimitReader(resp.Body, maxBody+1))
 	if err != nil || len(body) > maxBody {
-		return WhoamiResult{}, errors.Join(errors.New("read whoami response failed"), ctx.Err())
+		return WhoamiResult{}, nil, errors.Join(errors.New("read whoami response failed"), ctx.Err())
 	}
 	var envelope struct {
 		Data struct {
-			User *struct {
-				Email    string `json:"email"`
-				Username string `json:"username"`
-			} `json:"user"`
+			User json.RawMessage `json:"user"`
 		} `json:"data"`
 	}
-	if json.Unmarshal(body, &envelope) != nil || envelope.Data.User == nil || (envelope.Data.User.Email == "" && envelope.Data.User.Username == "") {
-		return WhoamiResult{}, errors.New("invalid whoami response")
+	var user struct {
+		Email    string `json:"email"`
+		Username string `json:"username"`
 	}
-	return WhoamiResult{Email: envelope.Data.User.Email, Username: envelope.Data.User.Username}, nil
+	if json.Unmarshal(body, &envelope) != nil || len(envelope.Data.User) == 0 || string(envelope.Data.User) == "null" ||
+		json.Unmarshal(envelope.Data.User, &user) != nil || (user.Email == "" && user.Username == "") {
+		return WhoamiResult{}, nil, errors.New("invalid whoami response")
+	}
+	return WhoamiResult{Email: user.Email, Username: user.Username}, envelope.Data.User, nil
 }
 
 // SignOut requires a 2xx response to confirm server-side invalidation, then

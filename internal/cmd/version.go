@@ -2,6 +2,9 @@ package cmd
 
 import (
 	"fmt"
+	"strconv"
+
+	"github.com/Jetscale-ai/cli/internal/auth"
 
 	"github.com/Jetscale-ai/cli/internal/buildinfo"
 	"github.com/Jetscale-ai/cli/internal/output"
@@ -19,6 +22,8 @@ type versionInfo struct {
 	APIVersion   string `json:"api_version" yaml:"api_version"`
 	SourceSHA256 string `json:"source_sha256" yaml:"source_sha256"`
 	SourceDirty  string `json:"source_dirty" yaml:"source_dirty"`
+	// Structured output only; the text format is kept byte-compatible.
+	AuthLifecycleRequests string `json:"auth_lifecycle_requests" yaml:"auth_lifecycle_requests"`
 }
 
 func newVersionCmd() *cobra.Command {
@@ -36,7 +41,8 @@ func newVersionCmd() *cobra.Command {
 				Channel:    buildinfo.Channel,
 				BackendSHA: provenance(buildinfo.BackendSHA), SchemaSHA256: provenance(buildinfo.SchemaSHA256),
 				APIVersion: provenance(buildinfo.APIVersion), SourceSHA256: provenance(buildinfo.SourceSHA256),
-				SourceDirty: provenance(buildinfo.SourceDirty),
+				SourceDirty:           provenance(buildinfo.SourceDirty),
+				AuthLifecycleRequests: strconv.Itoa(auth.LifecycleRequests),
 			}
 			if p.Format != output.Table {
 				return p.Print(info, nil)
