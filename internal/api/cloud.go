@@ -152,16 +152,18 @@ func DomainState(freshness Record, domain string) (state string, summary Record)
 	return "", nil
 }
 
-var RecommendationFields = []string{"id", "cloud_account", "title", "status", "category", "resource_type", "estimated_monthly_savings", "currency", "created_at", "updated_at", "version", "generation_status"}
+var RecommendationFields = []string{"id", "cloud_account", "title", "status", "category", "resource_type", "estimated_monthly_savings", "currency", "created_at", "updated_at", "version", "generation_status", "freshness_status", "stale_at", "resource_version_id"}
 
-func (c *Client) LatestRecommendations(ctx context.Context, accountID string) ([]Record, error) {
+// LatestRecommendations lists the latest recommendation versions for one account.
+// filters are raw model-field query params; nil leaves the list unfiltered.
+func (c *Client) LatestRecommendations(ctx context.Context, accountID string, filters map[string]string) ([]Record, error) {
 	id, ok := resourceUUID(accountID)
 	if !ok {
 		return nil, &NotFoundError{Resource: "cloud account", Selector: accountID}
 	}
 	return c.listAll(ctx, func(ctx context.Context, editors ...generated.RequestEditorFn) (*http.Response, error) {
 		return c.gen.ListLatestCustomRecommendationsForAccountApiV2CloudCloudAccountsCloudAccountIdCustomRecommendationsLatestGet(ctx, id, editors...)
-	}, nil)
+	}, filters)
 }
 
 func (c *Client) GetCustomRecommendation(ctx context.Context, recommendationID string) (Record, error) {
