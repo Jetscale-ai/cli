@@ -423,6 +423,15 @@
         "title": "AzureBlobCostDataSourceWriteConfig",
         "type": "object"
       },
+      "AzureCommitmentType": {
+        "description": "Reservations come from Microsoft.Capacity, savings plans from Microsoft.BillingBenefits.\n\nStored as the member NAME, the `Enum(..., native_enum=False)` convention.",
+        "enum": [
+          "reservation",
+          "savings_plan"
+        ],
+        "title": "AzureCommitmentType",
+        "type": "string"
+      },
       "AzureCostExplorerLoadRequestBody": {
         "description": "Request body for pulling Azure Cost Explorer data.",
         "properties": {
@@ -638,156 +647,6 @@
         ],
         "title": "BillingInterval",
         "type": "string"
-      },
-      "BitbucketConnectRequestBody": {
-        "properties": {
-          "api_token": {
-            "title": "Api Token",
-            "type": "string"
-          },
-          "email": {
-            "title": "Email",
-            "type": "string"
-          },
-          "server_url": {
-            "title": "Server Url",
-            "type": "string"
-          }
-        },
-        "required": [
-          "server_url",
-          "email",
-          "api_token"
-        ],
-        "title": "BitbucketConnectRequestBody",
-        "type": "object"
-      },
-      "BitbucketCreatePullRequestRequestBody": {
-        "properties": {
-          "close_source_branch": {
-            "default": false,
-            "nullable": true,
-            "title": "Close Source Branch",
-            "type": "boolean"
-          },
-          "commit_message": {
-            "description": "Commit message for file changes (required if files are provided)",
-            "nullable": true,
-            "title": "Commit Message",
-            "type": "string"
-          },
-          "description": {
-            "nullable": true,
-            "title": "Description",
-            "type": "string"
-          },
-          "destination_branch": {
-            "title": "Destination Branch",
-            "type": "string"
-          },
-          "files": {
-            "description": "List of files to push to the source branch before creating the PR",
-            "items": {
-              "$ref": "#/components/schemas/BitbucketFileData"
-            },
-            "nullable": true,
-            "title": "Files",
-            "type": "array"
-          },
-          "repository_slug": {
-            "title": "Repository Slug",
-            "type": "string"
-          },
-          "reviewers": {
-            "items": {
-              "type": "string"
-            },
-            "nullable": true,
-            "title": "Reviewers",
-            "type": "array"
-          },
-          "source_branch": {
-            "title": "Source Branch",
-            "type": "string"
-          },
-          "title": {
-            "title": "Title",
-            "type": "string"
-          },
-          "workspace": {
-            "nullable": true,
-            "title": "Workspace",
-            "type": "string"
-          }
-        },
-        "required": [
-          "repository_slug",
-          "title",
-          "source_branch",
-          "destination_branch"
-        ],
-        "title": "BitbucketCreatePullRequestRequestBody",
-        "type": "object"
-      },
-      "BitbucketCreateRepositoryRequestBody": {
-        "properties": {
-          "description": {
-            "nullable": true,
-            "title": "Description",
-            "type": "string"
-          },
-          "is_private": {
-            "default": true,
-            "title": "Is Private",
-            "type": "boolean"
-          },
-          "name": {
-            "title": "Name",
-            "type": "string"
-          },
-          "project_key": {
-            "nullable": true,
-            "title": "Project Key",
-            "type": "string"
-          },
-          "scm": {
-            "default": "git",
-            "title": "Scm",
-            "type": "string"
-          }
-        },
-        "required": [
-          "name"
-        ],
-        "title": "BitbucketCreateRepositoryRequestBody",
-        "type": "object"
-      },
-      "BitbucketFileData": {
-        "description": "Individual file data for pushing to Bitbucket",
-        "properties": {
-          "content": {
-            "description": "File content as string",
-            "title": "Content",
-            "type": "string"
-          },
-          "filename": {
-            "description": "Name of the file (e.g., main.tf)",
-            "title": "Filename",
-            "type": "string"
-          },
-          "path": {
-            "description": "Optional path where the file should be created (e.g., terraform/)",
-            "nullable": true,
-            "title": "Path",
-            "type": "string"
-          }
-        },
-        "required": [
-          "filename",
-          "content"
-        ],
-        "title": "BitbucketFileData",
-        "type": "object"
       },
       "Body_fulfill_api_v2_aws_marketplace_action_fulfill_post": {
         "properties": {
@@ -3197,30 +3056,14 @@
             "title": "Participants",
             "type": "array"
           },
-          "started_by": {
-            "description": "User ID who started the session.",
-            "format": "uuid",
-            "title": "Started By",
-            "type": "string"
-          },
           "started_on": {
             "description": "When the session started; defaults to now if omitted.",
             "format": "date-time",
             "nullable": true,
             "title": "Started On",
             "type": "string"
-          },
-          "thread_id": {
-            "description": "Optional thread ID (UUID, no FK for now).",
-            "format": "uuid",
-            "nullable": true,
-            "title": "Thread Id",
-            "type": "string"
           }
         },
-        "required": [
-          "started_by"
-        ],
         "title": "CreateRemediationSessionRequest",
         "type": "object"
       },
@@ -3532,6 +3375,373 @@
           "caching_enabled"
         ],
         "title": "FeatureInfo",
+        "type": "object"
+      },
+      "FocusCostAndUsageResponse": {
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/FocusCostAndUsageResult"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/FocusMeta"
+          }
+        },
+        "required": [
+          "meta",
+          "data"
+        ],
+        "title": "FocusCostAndUsageResponse",
+        "type": "object"
+      },
+      "FocusCostAndUsageResult": {
+        "properties": {
+          "cost_groups": {
+            "items": {
+              "$ref": "#/components/schemas/FocusCostGroup"
+            },
+            "title": "Cost Groups",
+            "type": "array"
+          },
+          "quantity_groups": {
+            "items": {
+              "$ref": "#/components/schemas/FocusQuantityGroup"
+            },
+            "title": "Quantity Groups",
+            "type": "array"
+          }
+        },
+        "required": [
+          "cost_groups",
+          "quantity_groups"
+        ],
+        "title": "FocusCostAndUsageResult",
+        "type": "object"
+      },
+      "FocusCostGroup": {
+        "properties": {
+          "BillingCurrency": {
+            "title": "Billingcurrency",
+            "type": "string"
+          },
+          "costs": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "title": "Costs",
+            "type": "object"
+          },
+          "dimensions": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "title": "Dimensions",
+            "type": "object"
+          },
+          "missing_value_counts": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "title": "Missing Value Counts",
+            "type": "object"
+          },
+          "row_count": {
+            "title": "Row Count",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "dimensions",
+          "BillingCurrency",
+          "row_count",
+          "costs",
+          "missing_value_counts"
+        ],
+        "title": "FocusCostGroup",
+        "type": "object"
+      },
+      "FocusCoverageResponse": {
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/FocusCoverageResult"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/FocusMeta"
+          }
+        },
+        "required": [
+          "meta",
+          "data"
+        ],
+        "title": "FocusCoverageResponse",
+        "type": "object"
+      },
+      "FocusCoverageResult": {
+        "properties": {
+          "complete_window": {
+            "const": false,
+            "default": false,
+            "title": "Complete Window",
+            "type": "boolean"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Limitations",
+            "type": "array"
+          },
+          "reporting_eligible": {
+            "description": "Stored accepted history is available; not reporting certification.",
+            "title": "Reporting Eligible",
+            "type": "boolean"
+          },
+          "selected_record_span": {
+            "$ref": "#/components/schemas/FocusRecordSpan"
+          },
+          "selected_row_count": {
+            "nullable": true,
+            "title": "Selected Row Count",
+            "type": "integer"
+          },
+          "source_profiles": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Source Profiles",
+            "type": "array"
+          },
+          "status": {
+            "enum": [
+              "missing",
+              "observed_records",
+              "accepted_records"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "reporting_eligible",
+          "source_profiles",
+          "selected_row_count",
+          "selected_record_span",
+          "limitations"
+        ],
+        "title": "FocusCoverageResult",
+        "type": "object"
+      },
+      "FocusLineItemsResponse": {
+        "properties": {
+          "data": {
+            "items": {
+              "additionalProperties": {
+                "nullable": true,
+                "type": "string"
+              },
+              "type": "object"
+            },
+            "title": "Data",
+            "type": "array"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/FocusMeta"
+          }
+        },
+        "required": [
+          "meta",
+          "data"
+        ],
+        "title": "FocusLineItemsResponse",
+        "type": "object"
+      },
+      "FocusMeta": {
+        "properties": {
+          "cloud_account_id": {
+            "title": "Cloud Account Id",
+            "type": "string"
+          },
+          "cloud_provider": {
+            "enum": [
+              "AWS",
+              "AZURE",
+              "GCP"
+            ],
+            "title": "Cloud Provider",
+            "type": "string"
+          },
+          "complete_selection": {
+            "const": false,
+            "default": false,
+            "title": "Complete Selection",
+            "type": "boolean"
+          },
+          "complete_window": {
+            "const": false,
+            "default": false,
+            "title": "Complete Window",
+            "type": "boolean"
+          },
+          "count": {
+            "default": 0,
+            "title": "Count",
+            "type": "integer"
+          },
+          "environment": {
+            "default": "RELEASE",
+            "title": "Environment",
+            "type": "string"
+          },
+          "fee_eligible": {
+            "const": false,
+            "default": false,
+            "title": "Fee Eligible",
+            "type": "boolean"
+          },
+          "limit": {
+            "default": 10,
+            "title": "Limit",
+            "type": "integer"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Limitations",
+            "type": "array"
+          },
+          "offset": {
+            "default": 0,
+            "title": "Offset",
+            "type": "integer"
+          },
+          "period_selection": {
+            "const": "fully_contained",
+            "default": "fully_contained",
+            "title": "Period Selection",
+            "type": "string"
+          },
+          "policy_version": {
+            "const": "focus-historical-records/v1",
+            "default": "focus-historical-records/v1",
+            "title": "Policy Version",
+            "type": "string"
+          },
+          "reporting_eligible": {
+            "description": "Stored accepted history is available; not reporting certification.",
+            "title": "Reporting Eligible",
+            "type": "boolean"
+          },
+          "resource": {
+            "default": "UNKNOWN",
+            "title": "Resource",
+            "type": "string"
+          },
+          "security": {
+            "$ref": "#/components/schemas/SecurityInfo",
+            "nullable": true
+          },
+          "selected_record_span": {
+            "$ref": "#/components/schemas/FocusRecordSpan"
+          },
+          "selection_reference": {
+            "nullable": true,
+            "title": "Selection Reference",
+            "type": "string"
+          },
+          "total_count": {
+            "default": 0,
+            "title": "Total Count",
+            "type": "integer"
+          },
+          "window_end": {
+            "format": "date-time",
+            "title": "Window End",
+            "type": "string"
+          },
+          "window_start": {
+            "format": "date-time",
+            "title": "Window Start",
+            "type": "string"
+          }
+        },
+        "required": [
+          "cloud_account_id",
+          "cloud_provider",
+          "window_start",
+          "window_end",
+          "reporting_eligible",
+          "limitations"
+        ],
+        "title": "FocusMeta",
+        "type": "object"
+      },
+      "FocusQuantityGroup": {
+        "properties": {
+          "dimensions": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "title": "Dimensions",
+            "type": "object"
+          },
+          "missing_value_count": {
+            "title": "Missing Value Count",
+            "type": "integer"
+          },
+          "quantity_type": {
+            "enum": [
+              "ConsumedQuantity",
+              "PricingQuantity"
+            ],
+            "title": "Quantity Type",
+            "type": "string"
+          },
+          "row_count": {
+            "title": "Row Count",
+            "type": "integer"
+          },
+          "unit": {
+            "nullable": true,
+            "title": "Unit",
+            "type": "string"
+          },
+          "value": {
+            "nullable": true,
+            "title": "Value",
+            "type": "string"
+          }
+        },
+        "required": [
+          "dimensions",
+          "quantity_type",
+          "unit",
+          "value",
+          "row_count",
+          "missing_value_count"
+        ],
+        "title": "FocusQuantityGroup",
+        "type": "object"
+      },
+      "FocusRecordSpan": {
+        "properties": {
+          "end": {
+            "format": "date-time",
+            "nullable": true,
+            "title": "End",
+            "type": "string"
+          },
+          "start": {
+            "format": "date-time",
+            "nullable": true,
+            "title": "Start",
+            "type": "string"
+          }
+        },
+        "title": "FocusRecordSpan",
         "type": "object"
       },
       "FreshnessAction": {
@@ -4076,6 +4286,16 @@
         "title": "GithubDisconnectRequestBody",
         "type": "object"
       },
+      "GovernanceGapOutcome": {
+        "description": "Which drill-down rows to return for a gap type.\n\n``unknown``: no rule failed, but at least one could not be decided because the\nprovider denied the read (insufficient permissions) or Jetscale lacks the data.",
+        "enum": [
+          "non_compliant",
+          "compliant",
+          "unknown"
+        ],
+        "title": "GovernanceGapOutcome",
+        "type": "string"
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -4335,80 +4555,6 @@
         "title": "InvocationDiagnosticsConnectorValidateRequest",
         "type": "object"
       },
-      "JiraConnectRequestBody": {
-        "properties": {
-          "api_token": {
-            "title": "Api Token",
-            "type": "string"
-          },
-          "email": {
-            "title": "Email",
-            "type": "string"
-          },
-          "server_url": {
-            "title": "Server Url",
-            "type": "string"
-          }
-        },
-        "required": [
-          "server_url",
-          "email",
-          "api_token"
-        ],
-        "title": "JiraConnectRequestBody",
-        "type": "object"
-      },
-      "JiraCreateIssueRequestBody": {
-        "properties": {
-          "assignee": {
-            "nullable": true,
-            "title": "Assignee",
-            "type": "string"
-          },
-          "description": {
-            "nullable": true,
-            "title": "Description",
-            "type": "string"
-          },
-          "issue_type": {
-            "title": "Issue Type",
-            "type": "string"
-          },
-          "labels": {
-            "items": {
-              "type": "string"
-            },
-            "nullable": true,
-            "title": "Labels",
-            "type": "array"
-          },
-          "priority": {
-            "nullable": true,
-            "title": "Priority",
-            "type": "string"
-          },
-          "project_key": {
-            "title": "Project Key",
-            "type": "string"
-          },
-          "recommendation_plan_session_id": {
-            "nullable": true,
-            "title": "Recommendation Plan Session Id",
-            "type": "string"
-          },
-          "summary": {
-            "title": "Summary",
-            "type": "string"
-          }
-        },
-        "required": [
-          "project_key",
-          "issue_type",
-          "summary"
-        ],
-        "title": "JiraCreateIssueRequestBody",
-        "type": "object"
-      },
       "LicenseStatus": {
         "description": "Status of a license.",
         "enum": [
@@ -4530,6 +4676,18 @@
         "title": "LivenessData",
         "type": "object"
       },
+      "MarkAllReadRequest": {
+        "properties": {
+          "category": {
+            "description": "ACTIVITY or ACTION_NEEDED. Omit to mark both.",
+            "nullable": true,
+            "title": "Category",
+            "type": "string"
+          }
+        },
+        "title": "MarkAllReadRequest",
+        "type": "object"
+      },
       "MessageFeedbackRequest": {
         "additionalProperties": false,
         "description": "User feedback on one assistant message, addressed by its stable message ID.",
@@ -4582,7 +4740,7 @@
             "type": "integer"
           },
           "environment": {
-            "default": "DEBUG",
+            "default": "RELEASE",
             "title": "Environment",
             "type": "string"
           },
@@ -5139,8 +5297,15 @@
         "type": "object"
       },
       "ResetPasswordRequest": {
-        "description": "Email and new password for reset-password.",
+        "description": "Email and new password for reset-password.\n\n``current_password`` is required when the authenticated caller resets their\nown account. Only a superuser may reset a different account, and that caller\nomits ``current_password``.",
         "properties": {
+          "current_password": {
+            "description": "Current password. Required when the caller resets their own account. Only a superuser may reset a different account, and that caller omits this field.",
+            "minLength": 1,
+            "nullable": true,
+            "title": "Current Password",
+            "type": "string"
+          },
           "email": {
             "description": "User email",
             "format": "email",
@@ -5229,11 +5394,14 @@
           "user:cloud-account:overview:overview:view",
           "user:cloud-account:overview:governance:view",
           "user:cloud-account:cost-breakdown:resources-health:view",
+          "user:cloud-account:focus:view",
+          "user:cloud-account:focus:line-items:view",
           "user:cloud-account:recommendation:view",
           "user:cloud-account:settings:root:view",
           "user:cloud-account:settings:action:edit-credentials:execute",
           "user:cloud-account:remediation-session:action:start-session:execute",
-          "user:cloud-account:remediation-session:action:send-chat-message:execute"
+          "user:cloud-account:remediation-session:action:send-chat-message:execute",
+          "user:notifications:inbox:view"
         ],
         "title": "RolePermissions",
         "type": "string"
@@ -6193,6 +6361,16 @@
         "title": "SystemSettingsUpdateRequest",
         "type": "object"
       },
+      "TagStatusFilter": {
+        "description": "Tagging rows only: where a resource stands against the required tag keys.",
+        "enum": [
+          "untagged",
+          "incomplete",
+          "compliant"
+        ],
+        "title": "TagStatusFilter",
+        "type": "string"
+      },
       "UiToolResultSidecar": {
         "additionalProperties": false,
         "description": "Client -\u003e server UI-tool result posted by the frontend scaffold.",
@@ -6979,7 +7157,7 @@
           },
           "status": {
             "$ref": "#/components/schemas/UserStatus",
-            "description": "User status (e.g. ACTIVE, PENDING_ACTIVATION); omit to leave unchanged",
+            "description": "Not accepted on user update. Sending status returns 422. Omit this field.",
             "nullable": true
           },
           "username": {
@@ -7034,10 +7212,27 @@
           "ACTIVE",
           "PENDING_ACTIVATION",
           "DEACTIVATED",
+          "CANCELLED",
           "TERMINATED"
         ],
         "title": "UserStatus",
         "type": "string"
+      },
+      "ValidateSignupTokenRequest": {
+        "description": "Raw signup token from the invitation link. It is not accepted on the query string.",
+        "properties": {
+          "token": {
+            "maxLength": 512,
+            "minLength": 1,
+            "title": "Token",
+            "type": "string"
+          }
+        },
+        "required": [
+          "token"
+        ],
+        "title": "ValidateSignupTokenRequest",
+        "type": "object"
       },
       "ValidationError": {
         "properties": {
@@ -7107,6 +7302,26 @@
         "title": "VersionData",
         "type": "object"
       },
+      "WatchTargetRequest": {
+        "properties": {
+          "target_id": {
+            "format": "uuid",
+            "title": "Target Id",
+            "type": "string"
+          },
+          "target_type": {
+            "description": "RECOMMENDATION or REMEDIATION",
+            "title": "Target Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "target_type",
+          "target_id"
+        ],
+        "title": "WatchTargetRequest",
+        "type": "object"
+      },
       "WorkosSsoDiscoverRequest": {
         "properties": {
           "email": {
@@ -7148,7 +7363,7 @@
   },
   "info": {
     "description": "JetScale Multi-agent AI system",
-    "title": "Jetscale Backend (Tilt)",
+    "title": "Jetscale Backend",
     "version": "1.0.0"
   },
   "openapi": "3.0.3",
@@ -7363,6 +7578,48 @@
         ]
       }
     },
+    "/api/v2/auth/action/validate-signup-token": {
+      "post": {
+        "description": "Public check that a signup token is still usable. Does not consume it.\n\nThe token is taken from the body so it is not written into the request URL.\nThe response does not say why a token is unusable.",
+        "operationId": "validate_signup_token_api_v2_auth_action_validate_signup_token_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidateSignupTokenRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Validate Signup Token",
+        "tags": [
+          "authentication"
+        ]
+      }
+    },
     "/api/v2/auth/local-session": {
       "post": {
         "description": "Issue normal auth cookies for an existing user in explicitly enabled local DEBUG environments.",
@@ -7409,7 +7666,7 @@
     },
     "/api/v2/auth/reset-password": {
       "post": {
-        "description": "Reset password by email and new password. Updates the user's password.\nThe caller must be resetting their own account, or be a superuser.",
+        "description": "Reset password by email and new password. Updates the user's password.\nThe caller must be resetting their own account, or be a superuser.\nWhen the email is the caller's own account, the body must include current_password\nand it must match the stored password. A superuser resetting a different account\ndoes not send current_password.",
         "operationId": "reset_password_api_v2_auth_reset_password_post",
         "requestBody": {
           "content": {
@@ -8679,7 +8936,7 @@
         ]
       },
       "patch": {
-        "description": "Update a user by UUID (partial). Only provided body fields are updated.\n\nA superuser may update any user. The user may update their own first name, last name,\nand phone number. An active owner of the user's company, or a same-company business-unit\nadmin on a business unit the user belongs to, may update those same fields for a non-superuser.\nReturns 404 if user not found.",
+        "description": "Update a user by UUID (partial). Only provided body fields are updated.\n\nA superuser may update any user. The user may update their own first name, last name,\nand phone number. An active owner of the user's company, or a same-company business-unit\nadmin on a business unit the user belongs to, may update those same fields for a non-superuser.\nA body that includes status is rejected with 422. Setting is_superuser from true to false\nrefuses the caller acting on their own account (403) and refuses clearing the last active\nsuperuser (409). Returns 404 if user not found.",
         "operationId": "update_user_api_v2_auth_users__user_id__patch",
         "parameters": [
           {
@@ -8734,7 +8991,7 @@
     },
     "/api/v2/auth/users/{user_id}/action/delete": {
       "post": {
-        "description": "Delete a user and all their role assignments. Caller must be a superuser, an active owner\nof the user's company, or a same-company business-unit admin on a business unit the user belongs to.\nOwners and business-unit admins cannot delete an owner or themselves.\nReturns 404 if user not found.",
+        "description": "Delete a user and all their role assignments. Caller must be a superuser, an active owner\nof the user's company, or a same-company business-unit admin on a business unit the user belongs to.\nOwners and business-unit admins cannot delete an owner or themselves.\nA caller cannot delete their own account (403). Deleting the last active superuser is 409.\nInvitations the user sent, and cloud accounts or business units assigned to them, are kept;\nthose pointers are cleared. Returns 404 if the user is not found.\nReturns 409 USER_HAS_AUDIT_HISTORY when audit or actor history still points at the user.\nThat history is left unchanged.",
         "operationId": "delete_user_api_v2_auth_users__user_id__action_delete_post",
         "parameters": [
           {
@@ -8777,9 +9034,54 @@
         ]
       }
     },
+    "/api/v2/auth/users/{user_id}/action/resend-invitation": {
+      "post": {
+        "description": "Cancel a pending user's signup invitations and send a new one.\n\nAllowed for a Jetscale superuser, an active owner of the user's company,\na same-company business-unit admin on a business unit the user belongs to,\nor a same-company user whose role grants invite-user. Unknown users and\nusers in another company are not found. A user who is not pending conflicts.\nA repeat inside 60 seconds is rate limited.",
+        "operationId": "resend_invitation_api_v2_auth_users__user_id__action_resend_invitation_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "User Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Resend Invitation",
+        "tags": [
+          "authentication",
+          "auth-users"
+        ]
+      }
+    },
     "/api/v2/auth/users/{user_id}/action/set-status": {
       "post": {
-        "description": "Set the user's status. Body: status (UserStatus). Caller must be a superuser, an active\nowner of the user's company, or a same-company business-unit admin on a business unit the user belongs to.\nOwners and business-unit admins cannot change an owner's status or their own status.\nIf status is DEACTIVATED or TERMINATED, all open sessions for that user are closed first, then the user is updated.\nReturns 404 if user not found. Returns the updated user data.",
+        "description": "Set the user's status. Body: status (UserStatus). Caller must be a superuser, an active\nowner of the user's company, or a same-company business-unit admin on a business unit the user belongs to.\nA superuser may move any user among ACTIVE, DEACTIVATED, and TERMINATED. Owners and\nbusiness-unit admins cannot change an owner's status or their own status. They may\ndeactivate or terminate, and may set ACTIVE only when signup is already complete and the\ncompany is still active. A superuser activation of an unfinished signup sets\nsignup_completed_at when it is null and cancels unused signup invitations. Deactivate and\nterminate never clear that timestamp. They close open sessions and cancel unused signup\nand password-reset invitations, and they do not require an active company. A caller cannot\ndeactivate or terminate their own account (403). Closing the last active superuser is 409.\nActivation into a missing company is 404. Activation into a company that is not active is\n409, including for a superuser. PENDING_ACTIVATION is rejected with 422. Deactivate and\nterminate return 409 when the locked status is no longer the status this call started from.\nReturns 404 if user not found. Returns the updated user data.",
         "operationId": "set_user_status_api_v2_auth_users__user_id__action_set_status_post",
         "parameters": [
           {
@@ -9436,6 +9738,716 @@
           "cloud",
           "aws",
           "aws-sourced-recommendations"
+        ]
+      }
+    },
+    "/api/v2/cloud/azure/commitments": {
+      "get": {
+        "description": "Every reservation and savings plan in the business unit, expiring soonest first.\n\nEach item carries its header and RI or SP detail, scope target, billing\naccount and profile, contract total, billed to date, the subscriptions\nthat used it in the last 90 days, and its shared-scope billing group.",
+        "operationId": "list_commitments_api_v2_cloud_azure_commitments_get",
+        "parameters": [
+          {
+            "description": "Business unit whose commitments to list",
+            "in": "query",
+            "name": "business_unit_id",
+            "required": true,
+            "schema": {
+              "description": "Business unit whose commitments to list",
+              "format": "uuid",
+              "title": "Business Unit Id",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Azure tenant (directory) id holding the commitment",
+            "in": "query",
+            "name": "tenant_id",
+            "required": false,
+            "schema": {
+              "description": "Azure tenant (directory) id holding the commitment",
+              "nullable": true,
+              "title": "Tenant Id",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Only commitments that covered this account",
+            "in": "query",
+            "name": "cloud_account_id",
+            "required": false,
+            "schema": {
+              "description": "Only commitments that covered this account",
+              "format": "uuid",
+              "nullable": true,
+              "title": "Cloud Account Id",
+              "type": "string"
+            }
+          },
+          {
+            "description": "reservation or savings_plan",
+            "in": "query",
+            "name": "commitment_type",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/AzureCommitmentType",
+              "description": "reservation or savings_plan",
+              "nullable": true,
+              "title": "Commitment Type"
+            }
+          },
+          {
+            "in": "query",
+            "name": "api_offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Api Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "api_limit",
+            "required": false,
+            "schema": {
+              "default": 100,
+              "maximum": 1000,
+              "minimum": 1,
+              "title": "Api Limit",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Commitments",
+        "tags": [
+          "cloud",
+          "azure",
+          "azure-commitments"
+        ]
+      }
+    },
+    "/api/v2/cloud/azure/commitments/changes": {
+      "get": {
+        "description": "Field changes of the business unit's commitments, oldest first.",
+        "operationId": "list_commitment_changes_api_v2_cloud_azure_commitments_changes_get",
+        "parameters": [
+          {
+            "description": "Business unit to read changes for",
+            "in": "query",
+            "name": "business_unit_id",
+            "required": true,
+            "schema": {
+              "description": "Business unit to read changes for",
+              "format": "uuid",
+              "title": "Business Unit Id",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Only changes at or after this time",
+            "in": "query",
+            "name": "since",
+            "required": false,
+            "schema": {
+              "description": "Only changes at or after this time",
+              "format": "date-time",
+              "nullable": true,
+              "title": "Since",
+              "type": "string"
+            }
+          },
+          {
+            "description": "One reservation or savings plan id",
+            "in": "query",
+            "name": "commitment_id",
+            "required": false,
+            "schema": {
+              "description": "One reservation or savings plan id",
+              "nullable": true,
+              "title": "Commitment Id",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Azure tenant (directory) id holding the commitment",
+            "in": "query",
+            "name": "tenant_id",
+            "required": false,
+            "schema": {
+              "description": "Azure tenant (directory) id holding the commitment",
+              "nullable": true,
+              "title": "Tenant Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "api_offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Api Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "api_limit",
+            "required": false,
+            "schema": {
+              "default": 100,
+              "maximum": 1000,
+              "minimum": 1,
+              "title": "Api Limit",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Commitment Changes",
+        "tags": [
+          "cloud",
+          "azure",
+          "azure-commitments"
+        ]
+      }
+    },
+    "/api/v2/cloud/azure/commitments/coverage": {
+      "get": {
+        "description": "One row per commitment x resource x cost basis: hours or benefit, coverage %, cost and their sources.\n\nEvery row names its ``cost_basis`` and ``coverage_source`` (``focus`` or\n``cost_data``). A row with no ``resource_id`` is a reservation's usage by\nsubscriptions not linked in the business unit.",
+        "operationId": "list_commitment_coverage_api_v2_cloud_azure_commitments_coverage_get",
+        "parameters": [
+          {
+            "description": "Business unit to read coverage for",
+            "in": "query",
+            "name": "business_unit_id",
+            "required": true,
+            "schema": {
+              "description": "Business unit to read coverage for",
+              "format": "uuid",
+              "title": "Business Unit Id",
+              "type": "string"
+            }
+          },
+          {
+            "description": "One reservation or savings plan id",
+            "in": "query",
+            "name": "commitment_id",
+            "required": false,
+            "schema": {
+              "description": "One reservation or savings plan id",
+              "nullable": true,
+              "title": "Commitment Id",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Only resources in this account",
+            "in": "query",
+            "name": "cloud_account_id",
+            "required": false,
+            "schema": {
+              "description": "Only resources in this account",
+              "format": "uuid",
+              "nullable": true,
+              "title": "Cloud Account Id",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Window start; default 90 days before end_date",
+            "in": "query",
+            "name": "start_date",
+            "required": false,
+            "schema": {
+              "description": "Window start; default 90 days before end_date",
+              "format": "date",
+              "nullable": true,
+              "title": "Start Date",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Window end; default yesterday",
+            "in": "query",
+            "name": "end_date",
+            "required": false,
+            "schema": {
+              "description": "Window end; default yesterday",
+              "format": "date",
+              "nullable": true,
+              "title": "End Date",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "api_offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Api Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "api_limit",
+            "required": false,
+            "schema": {
+              "default": 100,
+              "maximum": 1000,
+              "minimum": 1,
+              "title": "Api Limit",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Commitment Coverage",
+        "tags": [
+          "cloud",
+          "azure",
+          "azure-commitments"
+        ]
+      }
+    },
+    "/api/v2/cloud/azure/commitments/payments": {
+      "get": {
+        "description": "Every planned and billed payment of the business unit's commitment orders, by due date.",
+        "operationId": "list_commitment_payments_api_v2_cloud_azure_commitments_payments_get",
+        "parameters": [
+          {
+            "description": "Business unit to read payments for",
+            "in": "query",
+            "name": "business_unit_id",
+            "required": true,
+            "schema": {
+              "description": "Business unit to read payments for",
+              "format": "uuid",
+              "title": "Business Unit Id",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Azure tenant (directory) id holding the commitment",
+            "in": "query",
+            "name": "tenant_id",
+            "required": false,
+            "schema": {
+              "description": "Azure tenant (directory) id holding the commitment",
+              "nullable": true,
+              "title": "Tenant Id",
+              "type": "string"
+            }
+          },
+          {
+            "description": "One reservation or savings plan order id",
+            "in": "query",
+            "name": "order_id",
+            "required": false,
+            "schema": {
+              "description": "One reservation or savings plan order id",
+              "nullable": true,
+              "title": "Order Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "api_offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Api Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "api_limit",
+            "required": false,
+            "schema": {
+              "default": 100,
+              "maximum": 1000,
+              "minimum": 1,
+              "title": "Api Limit",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Commitment Payments",
+        "tags": [
+          "cloud",
+          "azure",
+          "azure-commitments"
+        ]
+      }
+    },
+    "/api/v2/cloud/azure/commitments/renewals": {
+      "get": {
+        "description": "Live commitments expiring within ``within_days``, with renew setting, utilization and monthly commitment.",
+        "operationId": "list_commitment_renewals_api_v2_cloud_azure_commitments_renewals_get",
+        "parameters": [
+          {
+            "description": "Business unit to read renewals for",
+            "in": "query",
+            "name": "business_unit_id",
+            "required": true,
+            "schema": {
+              "description": "Business unit to read renewals for",
+              "format": "uuid",
+              "title": "Business Unit Id",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Expiring within this many days",
+            "in": "query",
+            "name": "within_days",
+            "required": false,
+            "schema": {
+              "default": 90,
+              "description": "Expiring within this many days",
+              "maximum": 1825,
+              "minimum": 1,
+              "title": "Within Days",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Azure tenant (directory) id holding the commitment",
+            "in": "query",
+            "name": "tenant_id",
+            "required": false,
+            "schema": {
+              "description": "Azure tenant (directory) id holding the commitment",
+              "nullable": true,
+              "title": "Tenant Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "api_offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Api Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "api_limit",
+            "required": false,
+            "schema": {
+              "default": 100,
+              "maximum": 1000,
+              "minimum": 1,
+              "title": "Api Limit",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Commitment Renewals",
+        "tags": [
+          "cloud",
+          "azure",
+          "azure-commitments"
+        ]
+      }
+    },
+    "/api/v2/cloud/azure/commitments/status": {
+      "get": {
+        "description": "One row per tenant: freshness, each endpoint's grant status, and commitments seen only in cost data.",
+        "operationId": "list_commitment_status_api_v2_cloud_azure_commitments_status_get",
+        "parameters": [
+          {
+            "description": "Business unit to report fetch status for",
+            "in": "query",
+            "name": "business_unit_id",
+            "required": true,
+            "schema": {
+              "description": "Business unit to report fetch status for",
+              "format": "uuid",
+              "title": "Business Unit Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "api_offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Api Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "api_limit",
+            "required": false,
+            "schema": {
+              "default": 100,
+              "maximum": 1000,
+              "minimum": 1,
+              "title": "Api Limit",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Commitment Status",
+        "tags": [
+          "cloud",
+          "azure",
+          "azure-commitments"
+        ]
+      }
+    },
+    "/api/v2/cloud/azure/commitments/unused-capacity": {
+      "get": {
+        "description": "Reserved minus used hours per commitment over the window, most unused first.",
+        "operationId": "list_commitment_unused_capacity_api_v2_cloud_azure_commitments_unused_capacity_get",
+        "parameters": [
+          {
+            "description": "Business unit to read unused capacity for",
+            "in": "query",
+            "name": "business_unit_id",
+            "required": true,
+            "schema": {
+              "description": "Business unit to read unused capacity for",
+              "format": "uuid",
+              "title": "Business Unit Id",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Azure tenant (directory) id holding the commitment",
+            "in": "query",
+            "name": "tenant_id",
+            "required": false,
+            "schema": {
+              "description": "Azure tenant (directory) id holding the commitment",
+              "nullable": true,
+              "title": "Tenant Id",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Window start; default 90 days before end_date",
+            "in": "query",
+            "name": "start_date",
+            "required": false,
+            "schema": {
+              "description": "Window start; default 90 days before end_date",
+              "format": "date",
+              "nullable": true,
+              "title": "Start Date",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Window end; default yesterday",
+            "in": "query",
+            "name": "end_date",
+            "required": false,
+            "schema": {
+              "description": "Window end; default yesterday",
+              "format": "date",
+              "nullable": true,
+              "title": "End Date",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "api_offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Api Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "api_limit",
+            "required": false,
+            "schema": {
+              "default": 100,
+              "maximum": 1000,
+              "minimum": 1,
+              "title": "Api Limit",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Commitment Unused Capacity",
+        "tags": [
+          "cloud",
+          "azure",
+          "azure-commitments"
         ]
       }
     },
@@ -10650,7 +11662,7 @@
     },
     "/api/v2/cloud/cloud-accounts/{cloud_account_id}/action/freshness/refresh": {
       "post": {
-        "description": "Queue a cloud-account freshness warm request.\n\nOrdinary users may request inventory rediscovery when eligible. Super-admin\ndebug/operator requests may use ``force`` and other supported actions. The\nendpoint only records intent/status and enqueues Procrastinate work; provider\ndiscovery runs in the warm inventory worker (API-pod or dedicated).\n\nNon-force resources rediscover stays on cost-explorer view. That path is the\nviewer Refresh action, and ``RolePermissions`` has no refresh execute key.\nForce and other actions stay on business-unit root access plus the superuser\ncheck.",
+        "description": "Queue a cloud-account freshness warm request (\"Sync now\").\n\nOrdinary rediscover records intent and enqueues Procrastinate work;\nprovider discovery runs in the warm inventory worker. It requires V3\n``v3:cloud-accounts:link-edit`` on the account's Team: 404 when the account\nis not visible, 403 when it is visible without the grant. Super-admin\ndebug/operator requests (``force`` and other actions) stay superuser-only.",
         "operationId": "request_cloud_account_freshness_refresh_api_v2_cloud_cloud_accounts__cloud_account_id__action_freshness_refresh_post",
         "parameters": [
           {
@@ -10986,6 +11998,618 @@
         "tags": [
           "cloud",
           "cloud-accounts"
+        ]
+      }
+    },
+    "/api/v2/cloud/cloud-accounts/{cloud_account_id}/focus/cost-and-usage": {
+      "get": {
+        "operationId": "get_cost_and_usage_api_v2_cloud_cloud_accounts__cloud_account_id__focus_cost_and_usage_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "cloud_account_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Cloud Account Id",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Explicit UTC start of the fully-contained charge-period window.",
+            "in": "query",
+            "name": "window_start",
+            "required": true,
+            "schema": {
+              "description": "Explicit UTC start of the fully-contained charge-period window.",
+              "format": "date-time",
+              "title": "Window Start",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Explicit UTC end; the window is positive and at most 90 days.",
+            "in": "query",
+            "name": "window_end",
+            "required": true,
+            "schema": {
+              "description": "Explicit UTC end; the window is positive and at most 90 days.",
+              "format": "date-time",
+              "title": "Window End",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Repeated exact resource IDs (1–50).",
+            "in": "query",
+            "name": "resource_id",
+            "required": true,
+            "schema": {
+              "description": "Repeated exact resource IDs (1–50).",
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 50,
+              "minItems": 1,
+              "title": "Resource Id",
+              "type": "array"
+            }
+          },
+          {
+            "description": "Up to three comma-delimited dimensions: ResourceId, ServiceName, RegionId, ChargeCategory, PricingCategory.",
+            "in": "query",
+            "name": "group_by",
+            "required": false,
+            "schema": {
+              "description": "Up to three comma-delimited dimensions: ResourceId, ServiceName, RegionId, ChargeCategory, PricingCategory.",
+              "nullable": true,
+              "title": "Group By",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Comma-delimited fields, validated for the selected endpoint.",
+            "in": "query",
+            "name": "api_fields",
+            "required": false,
+            "schema": {
+              "description": "Comma-delimited fields, validated for the selected endpoint.",
+              "nullable": true,
+              "title": "Api Fields",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "api_limit",
+            "required": false,
+            "schema": {
+              "default": 100,
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Api Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "api_offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "maximum": 10000,
+              "minimum": 0,
+              "title": "Api Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "api_sort",
+            "required": false,
+            "schema": {
+              "const": "revision_id",
+              "default": "revision_id",
+              "title": "Api Sort",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "selection_reference",
+            "required": false,
+            "schema": {
+              "nullable": true,
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "title": "Selection Reference",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FocusCostAndUsageResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "summary": "Get Cost And Usage",
+        "tags": [
+          "cloud",
+          "focus"
+        ]
+      }
+    },
+    "/api/v2/cloud/cloud-accounts/{cloud_account_id}/focus/coverage": {
+      "get": {
+        "operationId": "get_coverage_api_v2_cloud_cloud_accounts__cloud_account_id__focus_coverage_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "cloud_account_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Cloud Account Id",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Explicit UTC start of the fully-contained charge-period window.",
+            "in": "query",
+            "name": "window_start",
+            "required": true,
+            "schema": {
+              "description": "Explicit UTC start of the fully-contained charge-period window.",
+              "format": "date-time",
+              "title": "Window Start",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Explicit UTC end; the window is positive and at most 90 days.",
+            "in": "query",
+            "name": "window_end",
+            "required": true,
+            "schema": {
+              "description": "Explicit UTC end; the window is positive and at most 90 days.",
+              "format": "date-time",
+              "title": "Window End",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Repeated exact resource IDs (1–50).",
+            "in": "query",
+            "name": "resource_id",
+            "required": true,
+            "schema": {
+              "description": "Repeated exact resource IDs (1–50).",
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 50,
+              "minItems": 1,
+              "title": "Resource Id",
+              "type": "array"
+            }
+          },
+          {
+            "description": "Up to three comma-delimited dimensions: ResourceId, ServiceName, RegionId, ChargeCategory, PricingCategory.",
+            "in": "query",
+            "name": "group_by",
+            "required": false,
+            "schema": {
+              "description": "Up to three comma-delimited dimensions: ResourceId, ServiceName, RegionId, ChargeCategory, PricingCategory.",
+              "nullable": true,
+              "title": "Group By",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Comma-delimited fields, validated for the selected endpoint.",
+            "in": "query",
+            "name": "api_fields",
+            "required": false,
+            "schema": {
+              "description": "Comma-delimited fields, validated for the selected endpoint.",
+              "nullable": true,
+              "title": "Api Fields",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "api_limit",
+            "required": false,
+            "schema": {
+              "default": 100,
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Api Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "api_offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "maximum": 10000,
+              "minimum": 0,
+              "title": "Api Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "api_sort",
+            "required": false,
+            "schema": {
+              "const": "revision_id",
+              "default": "revision_id",
+              "title": "Api Sort",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "selection_reference",
+            "required": false,
+            "schema": {
+              "nullable": true,
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "title": "Selection Reference",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FocusCoverageResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "summary": "Get Coverage",
+        "tags": [
+          "cloud",
+          "focus"
+        ]
+      }
+    },
+    "/api/v2/cloud/cloud-accounts/{cloud_account_id}/focus/line-items": {
+      "get": {
+        "operationId": "get_line_items_api_v2_cloud_cloud_accounts__cloud_account_id__focus_line_items_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "cloud_account_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Cloud Account Id",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Explicit UTC start of the fully-contained charge-period window.",
+            "in": "query",
+            "name": "window_start",
+            "required": true,
+            "schema": {
+              "description": "Explicit UTC start of the fully-contained charge-period window.",
+              "format": "date-time",
+              "title": "Window Start",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Explicit UTC end; the window is positive and at most 90 days.",
+            "in": "query",
+            "name": "window_end",
+            "required": true,
+            "schema": {
+              "description": "Explicit UTC end; the window is positive and at most 90 days.",
+              "format": "date-time",
+              "title": "Window End",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Repeated exact resource IDs (1–50).",
+            "in": "query",
+            "name": "resource_id",
+            "required": true,
+            "schema": {
+              "description": "Repeated exact resource IDs (1–50).",
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 50,
+              "minItems": 1,
+              "title": "Resource Id",
+              "type": "array"
+            }
+          },
+          {
+            "description": "Up to three comma-delimited dimensions: ResourceId, ServiceName, RegionId, ChargeCategory, PricingCategory.",
+            "in": "query",
+            "name": "group_by",
+            "required": false,
+            "schema": {
+              "description": "Up to three comma-delimited dimensions: ResourceId, ServiceName, RegionId, ChargeCategory, PricingCategory.",
+              "nullable": true,
+              "title": "Group By",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Comma-delimited fields, validated for the selected endpoint.",
+            "in": "query",
+            "name": "api_fields",
+            "required": false,
+            "schema": {
+              "description": "Comma-delimited fields, validated for the selected endpoint.",
+              "nullable": true,
+              "title": "Api Fields",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "api_limit",
+            "required": false,
+            "schema": {
+              "default": 100,
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Api Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "api_offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "maximum": 10000,
+              "minimum": 0,
+              "title": "Api Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "api_sort",
+            "required": false,
+            "schema": {
+              "const": "revision_id",
+              "default": "revision_id",
+              "title": "Api Sort",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "selection_reference",
+            "required": false,
+            "schema": {
+              "nullable": true,
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "title": "Selection Reference",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FocusLineItemsResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "summary": "Get Line Items",
+        "tags": [
+          "cloud",
+          "focus"
         ]
       }
     },
@@ -12339,7 +13963,7 @@
     },
     "/api/v2/cloud/custom-recommendations/{custom_recommendation_id}/action/regenerate": {
       "post": {
-        "description": "Regenerate a recommendation in place. Superuser-only diagnostics action.",
+        "description": "Regenerate a recommendation in place.\n\nAny user who can see the recommendation's cloud account may regenerate it.\nA live regeneration lease is 409 for every caller. A superuser skips the\nmanual cooldown floor and may exclude evidence sources.",
         "operationId": "regenerate_custom_recommendation_api_v2_cloud_custom_recommendations__custom_recommendation_id__action_regenerate_post",
         "parameters": [
           {
@@ -12395,7 +14019,7 @@
     },
     "/api/v2/cloud/custom-recommendations/{custom_recommendation_id}/action/regenerate/stream": {
       "post": {
-        "description": "Regenerate a recommendation in place with SSE progress. Superuser-only diagnostics action.",
+        "description": "Regenerate a recommendation in place with SSE progress.\n\nSame access as ``regenerate_custom_recommendation``.",
         "operationId": "stream_regenerate_custom_recommendation_api_v2_cloud_custom_recommendations__custom_recommendation_id__action_regenerate_stream_post",
         "parameters": [
           {
@@ -12573,7 +14197,7 @@
     },
     "/api/v2/cloud/custom-recommendations/{custom_recommendation_id}/sources/{source_key}/refresh": {
       "post": {
-        "description": "Request refresh for one recommendation source/dependency node.\n\nDR-034 source refresh is a bounded freshness request, so ordinary Cost\nExplorer viewers may request non-force refreshes and recommendation\nregeneration when eligible. That view gate stays: ``RolePermissions`` has\nno refresh execute key, and this POST is the viewer Refresh action. Forced\nrefreshes and account-wide cost attribution remain superuser-only\ndiagnostic operations.",
+        "description": "Request refresh for one recommendation source/dependency node.\n\nCost Explorer view is still required. Any role on the company may request\na non-force regenerate (``recommendation-generated``). Other sources need a\ncompany-role write, so a viewer is forbidden there. Forced refreshes and\naccount-wide cost attribution remain superuser-only diagnostic operations.",
         "operationId": "refresh_custom_recommendation_source_api_v2_cloud_custom_recommendations__custom_recommendation_id__sources__source_key__refresh_post",
         "parameters": [
           {
@@ -13774,33 +15398,32 @@
         ]
       }
     },
-    "/api/v2/cloud/governance-gaps/history": {
+    "/api/v2/cloud/governance-gaps/checks": {
       "get": {
-        "description": "Retrieve historical compliance snapshots.",
-        "operationId": "get_governance_history_api_v2_cloud_governance_gaps_history_get",
+        "description": "What each governance rule checks, with the provider's own reference for it.",
+        "operationId": "get_governance_checks_api_v2_cloud_governance_gaps_checks_get",
         "parameters": [
           {
-            "description": "Cloud account ID to query",
+            "description": "Cloud provider whose rules to list: aws, azure or gcp (any case)",
             "in": "query",
-            "name": "cloud_account",
+            "name": "cloud_provider_type",
             "required": true,
             "schema": {
-              "description": "Cloud account ID to query",
-              "format": "uuid",
-              "title": "Cloud Account",
+              "description": "Cloud provider whose rules to list: aws, azure or gcp (any case)",
+              "title": "Cloud Provider Type",
               "type": "string"
             }
           },
           {
+            "description": "Gap group or label, e.g. encryption or unencrypted",
             "in": "query",
-            "name": "days",
+            "name": "gap_type",
             "required": false,
             "schema": {
-              "default": 30,
-              "maximum": 365,
-              "minimum": 1,
-              "title": "Days",
-              "type": "integer"
+              "description": "Gap group or label, e.g. encryption or unencrypted",
+              "nullable": true,
+              "title": "Gap Type",
+              "type": "string"
             }
           }
         ],
@@ -13826,7 +15449,7 @@
             "description": "Validation Error"
           }
         },
-        "summary": "Get Governance History",
+        "summary": "Get Governance Checks",
         "tags": [
           "cloud",
           "governance-gaps"
@@ -13892,26 +15515,95 @@
         ]
       }
     },
-    "/api/v2/cloud/governance-gaps/snapshot": {
-      "post": {
-        "description": "Compute and persist a compliance snapshot for the given cloud account.",
-        "operationId": "save_governance_snapshot_api_v2_cloud_governance_gaps_snapshot_post",
+    "/api/v2/cloud/governance-gaps/resources": {
+      "get": {
+        "description": "One page of the resources behind a governance gap card, with the total across pages.",
+        "operationId": "get_governance_gap_resources_api_v2_cloud_governance_gaps_resources_get",
         "parameters": [
           {
-            "description": "Cloud account ID to snapshot",
+            "description": "Cloud account ID",
             "in": "query",
             "name": "cloud_account",
             "required": true,
             "schema": {
-              "description": "Cloud account ID to snapshot",
+              "description": "Cloud account ID",
               "format": "uuid",
               "title": "Cloud Account",
               "type": "string"
             }
+          },
+          {
+            "description": "Gap group or either of its labels, e.g. ``tagging`` or ``untagged``",
+            "in": "query",
+            "name": "gap_type",
+            "required": true,
+            "schema": {
+              "description": "Gap group or either of its labels, e.g. ``tagging`` or ``untagged``",
+              "title": "Gap Type",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Restrict rows to one category",
+            "in": "query",
+            "name": "category_code",
+            "required": false,
+            "schema": {
+              "description": "Restrict rows to one category",
+              "nullable": true,
+              "title": "Category Code",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Which rows to return",
+            "in": "query",
+            "name": "outcome",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/GovernanceGapOutcome",
+              "default": "non_compliant",
+              "description": "Which rows to return"
+            }
+          },
+          {
+            "description": "Keep only rows with this tag status; rows of other cards carry none and never match",
+            "in": "query",
+            "name": "tag_status",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/TagStatusFilter",
+              "description": "Keep only rows with this tag status; rows of other cards carry none and never match",
+              "nullable": true,
+              "title": "Tag Status"
+            }
+          },
+          {
+            "in": "query",
+            "name": "api_limit",
+            "required": false,
+            "schema": {
+              "default": 100,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Api Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "api_offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Api Offset",
+              "type": "integer"
+            }
           }
         ],
         "responses": {
-          "201": {
+          "200": {
             "content": {
               "application/json": {
                 "schema": {
@@ -13932,7 +15624,54 @@
             "description": "Validation Error"
           }
         },
-        "summary": "Save Governance Snapshot",
+        "summary": "Get Governance Gap Resources",
+        "tags": [
+          "cloud",
+          "governance-gaps"
+        ]
+      }
+    },
+    "/api/v2/cloud/governance-gaps/tagging-policy": {
+      "get": {
+        "description": "The required tag keys the account's tagging card is checked against, and which policy set them.",
+        "operationId": "get_governance_tagging_policy_api_v2_cloud_governance_gaps_tagging_policy_get",
+        "parameters": [
+          {
+            "description": "Cloud account whose tagging policy to read",
+            "in": "query",
+            "name": "cloud_account",
+            "required": true,
+            "schema": {
+              "description": "Cloud account whose tagging policy to read",
+              "format": "uuid",
+              "title": "Cloud Account",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseApiResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Governance Tagging Policy",
         "tags": [
           "cloud",
           "governance-gaps"
@@ -14950,6 +16689,1061 @@
         "summary": "Get Resource Type Categories",
         "tags": [
           "cloud"
+        ]
+      }
+    },
+    "/api/v2/cloud/v3-dashboard/business-units": {
+      "get": {
+        "description": "Visible business units. Each item previews its first accounts.",
+        "operationId": "list_business_units_api_v2_cloud_v3_dashboard_business_units_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "api_limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Api Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "api_offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Api Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "api_sort",
+            "required": false,
+            "schema": {
+              "nullable": true,
+              "title": "Api Sort",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Slug of the company being viewed",
+            "in": "query",
+            "name": "company",
+            "required": false,
+            "schema": {
+              "description": "Slug of the company being viewed",
+              "nullable": true,
+              "title": "Company",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Business Units",
+        "tags": [
+          "cloud",
+          "v3-dashboard"
+        ]
+      }
+    },
+    "/api/v2/cloud/v3-dashboard/category-spend-and-savings": {
+      "get": {
+        "description": "Spend and estimated savings for the tile window, split by currency.",
+        "operationId": "get_category_spend_and_savings_api_v2_cloud_v3_dashboard_category_spend_and_savings_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "schema": {
+              "format": "date",
+              "nullable": true,
+              "title": "Start",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "end",
+            "required": false,
+            "schema": {
+              "format": "date",
+              "nullable": true,
+              "title": "End",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "business_unit_ids",
+            "required": false,
+            "schema": {
+              "items": {
+                "format": "uuid",
+                "type": "string"
+              },
+              "nullable": true,
+              "title": "Business Unit Ids",
+              "type": "array"
+            }
+          },
+          {
+            "in": "query",
+            "name": "cloud_account_ids",
+            "required": false,
+            "schema": {
+              "items": {
+                "format": "uuid",
+                "type": "string"
+              },
+              "nullable": true,
+              "title": "Cloud Account Ids",
+              "type": "array"
+            }
+          },
+          {
+            "description": "Slug of the company being viewed",
+            "in": "query",
+            "name": "company",
+            "required": false,
+            "schema": {
+              "description": "Slug of the company being viewed",
+              "nullable": true,
+              "title": "Company",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Category Spend And Savings",
+        "tags": [
+          "cloud",
+          "v3-dashboard"
+        ]
+      }
+    },
+    "/api/v2/cloud/v3-dashboard/cost-breakdown": {
+      "get": {
+        "description": "Every primary and secondary cost group for the header range. Currencies stay apart.",
+        "operationId": "get_cost_breakdown_api_v2_cloud_v3_dashboard_cost_breakdown_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "cloud_provider_type",
+            "required": true,
+            "schema": {
+              "title": "Cloud Provider Type",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "group_by_primary",
+            "required": false,
+            "schema": {
+              "nullable": true,
+              "title": "Group By Primary",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "group_by_secondary",
+            "required": false,
+            "schema": {
+              "nullable": true,
+              "title": "Group By Secondary",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "schema": {
+              "format": "date",
+              "nullable": true,
+              "title": "Start",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "end",
+            "required": false,
+            "schema": {
+              "format": "date",
+              "nullable": true,
+              "title": "End",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "business_unit_ids",
+            "required": false,
+            "schema": {
+              "items": {
+                "format": "uuid",
+                "type": "string"
+              },
+              "nullable": true,
+              "title": "Business Unit Ids",
+              "type": "array"
+            }
+          },
+          {
+            "in": "query",
+            "name": "cloud_account_ids",
+            "required": false,
+            "schema": {
+              "items": {
+                "format": "uuid",
+                "type": "string"
+              },
+              "nullable": true,
+              "title": "Cloud Account Ids",
+              "type": "array"
+            }
+          },
+          {
+            "description": "Slug of the company being viewed",
+            "in": "query",
+            "name": "company",
+            "required": false,
+            "schema": {
+              "description": "Slug of the company being viewed",
+              "nullable": true,
+              "title": "Company",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Cost Breakdown",
+        "tags": [
+          "cloud",
+          "v3-dashboard"
+        ]
+      }
+    },
+    "/api/v2/cloud/v3-dashboard/governance-comparison": {
+      "get": {
+        "operationId": "get_governance_comparison_api_v2_cloud_v3_dashboard_governance_comparison_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "schema": {
+              "format": "date",
+              "nullable": true,
+              "title": "Start",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "end",
+            "required": false,
+            "schema": {
+              "format": "date",
+              "nullable": true,
+              "title": "End",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "api_limit",
+            "required": false,
+            "schema": {
+              "default": 100,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Api Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "api_offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Api Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "api_sort",
+            "required": false,
+            "schema": {
+              "nullable": true,
+              "title": "Api Sort",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Slug of the company being viewed",
+            "in": "query",
+            "name": "company",
+            "required": false,
+            "schema": {
+              "description": "Slug of the company being viewed",
+              "nullable": true,
+              "title": "Company",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Governance Comparison",
+        "tags": [
+          "cloud",
+          "v3-dashboard"
+        ]
+      }
+    },
+    "/api/v2/cloud/v3-dashboard/governance-gaps": {
+      "get": {
+        "operationId": "get_governance_gaps_api_v2_cloud_v3_dashboard_governance_gaps_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "schema": {
+              "format": "date",
+              "nullable": true,
+              "title": "Start",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "end",
+            "required": false,
+            "schema": {
+              "format": "date",
+              "nullable": true,
+              "title": "End",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Slug of the company being viewed",
+            "in": "query",
+            "name": "company",
+            "required": false,
+            "schema": {
+              "description": "Slug of the company being viewed",
+              "nullable": true,
+              "title": "Company",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Governance Gaps",
+        "tags": [
+          "cloud",
+          "v3-dashboard"
+        ]
+      }
+    },
+    "/api/v2/cloud/v3-dashboard/governance-gaps/resources": {
+      "get": {
+        "description": "One page of the resources behind a governance gap, across the scoped accounts.",
+        "operationId": "get_governance_gap_resources_api_v2_cloud_v3_dashboard_governance_gaps_resources_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "gap_type",
+            "required": true,
+            "schema": {
+              "title": "Gap Type",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "category_code",
+            "required": false,
+            "schema": {
+              "nullable": true,
+              "title": "Category Code",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "outcome",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/GovernanceGapOutcome",
+              "default": "non_compliant"
+            }
+          },
+          {
+            "in": "query",
+            "name": "tag_status",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/TagStatusFilter",
+              "nullable": true,
+              "title": "Tag Status"
+            }
+          },
+          {
+            "in": "query",
+            "name": "api_limit",
+            "required": false,
+            "schema": {
+              "default": 100,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Api Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "api_offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Api Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "business_unit_ids",
+            "required": false,
+            "schema": {
+              "items": {
+                "format": "uuid",
+                "type": "string"
+              },
+              "nullable": true,
+              "title": "Business Unit Ids",
+              "type": "array"
+            }
+          },
+          {
+            "in": "query",
+            "name": "cloud_account_ids",
+            "required": false,
+            "schema": {
+              "items": {
+                "format": "uuid",
+                "type": "string"
+              },
+              "nullable": true,
+              "title": "Cloud Account Ids",
+              "type": "array"
+            }
+          },
+          {
+            "description": "Slug of the company being viewed",
+            "in": "query",
+            "name": "company",
+            "required": false,
+            "schema": {
+              "description": "Slug of the company being viewed",
+              "nullable": true,
+              "title": "Company",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Governance Gap Resources",
+        "tags": [
+          "cloud",
+          "v3-dashboard"
+        ]
+      }
+    },
+    "/api/v2/cloud/v3-dashboard/progress": {
+      "get": {
+        "operationId": "get_progress_api_v2_cloud_v3_dashboard_progress_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "schema": {
+              "format": "date",
+              "nullable": true,
+              "title": "Start",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "end",
+            "required": false,
+            "schema": {
+              "format": "date",
+              "nullable": true,
+              "title": "End",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Slug of the company being viewed",
+            "in": "query",
+            "name": "company",
+            "required": false,
+            "schema": {
+              "description": "Slug of the company being viewed",
+              "nullable": true,
+              "title": "Company",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Progress",
+        "tags": [
+          "cloud",
+          "v3-dashboard"
+        ]
+      }
+    },
+    "/api/v2/cloud/v3-dashboard/recommendations": {
+      "get": {
+        "description": "Overall top 10 open recommendations.\n\n``start`` and ``end`` are accepted so the dashboard picker can keep sending\nthem. A reversed or over-long span is still rejected. The dates do not\nfilter this card.",
+        "operationId": "get_recommendations_api_v2_cloud_v3_dashboard_recommendations_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "schema": {
+              "format": "date",
+              "nullable": true,
+              "title": "Start",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "end",
+            "required": false,
+            "schema": {
+              "format": "date",
+              "nullable": true,
+              "title": "End",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Slug of the company being viewed",
+            "in": "query",
+            "name": "company",
+            "required": false,
+            "schema": {
+              "description": "Slug of the company being viewed",
+              "nullable": true,
+              "title": "Company",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Recommendations",
+        "tags": [
+          "cloud",
+          "v3-dashboard"
+        ]
+      }
+    },
+    "/api/v2/cloud/v3-dashboard/resources-by-category": {
+      "get": {
+        "description": "Current resource counts. ``start`` and ``end`` are accepted and ignored.",
+        "operationId": "get_resources_by_category_api_v2_cloud_v3_dashboard_resources_by_category_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "schema": {
+              "format": "date",
+              "nullable": true,
+              "title": "Start",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "end",
+            "required": false,
+            "schema": {
+              "format": "date",
+              "nullable": true,
+              "title": "End",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "business_unit_ids",
+            "required": false,
+            "schema": {
+              "items": {
+                "format": "uuid",
+                "type": "string"
+              },
+              "nullable": true,
+              "title": "Business Unit Ids",
+              "type": "array"
+            }
+          },
+          {
+            "in": "query",
+            "name": "cloud_account_ids",
+            "required": false,
+            "schema": {
+              "items": {
+                "format": "uuid",
+                "type": "string"
+              },
+              "nullable": true,
+              "title": "Cloud Account Ids",
+              "type": "array"
+            }
+          },
+          {
+            "description": "Slug of the company being viewed",
+            "in": "query",
+            "name": "company",
+            "required": false,
+            "schema": {
+              "description": "Slug of the company being viewed",
+              "nullable": true,
+              "title": "Company",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Resources By Category",
+        "tags": [
+          "cloud",
+          "v3-dashboard"
+        ]
+      }
+    },
+    "/api/v2/cloud/v3-dashboard/savings-league": {
+      "get": {
+        "operationId": "get_savings_league_api_v2_cloud_v3_dashboard_savings_league_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "schema": {
+              "format": "date",
+              "nullable": true,
+              "title": "Start",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "end",
+            "required": false,
+            "schema": {
+              "format": "date",
+              "nullable": true,
+              "title": "End",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "api_limit",
+            "required": false,
+            "schema": {
+              "default": 100,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Api Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "api_offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Api Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "api_sort",
+            "required": false,
+            "schema": {
+              "nullable": true,
+              "title": "Api Sort",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Slug of the company being viewed",
+            "in": "query",
+            "name": "company",
+            "required": false,
+            "schema": {
+              "description": "Slug of the company being viewed",
+              "nullable": true,
+              "title": "Company",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Savings League",
+        "tags": [
+          "cloud",
+          "v3-dashboard"
+        ]
+      }
+    },
+    "/api/v2/cloud/v3-dashboard/savings-progress": {
+      "get": {
+        "operationId": "get_savings_progress_api_v2_cloud_v3_dashboard_savings_progress_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "schema": {
+              "format": "date",
+              "nullable": true,
+              "title": "Start",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "end",
+            "required": false,
+            "schema": {
+              "format": "date",
+              "nullable": true,
+              "title": "End",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Slug of the company being viewed",
+            "in": "query",
+            "name": "company",
+            "required": false,
+            "schema": {
+              "description": "Slug of the company being viewed",
+              "nullable": true,
+              "title": "Company",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Savings Progress",
+        "tags": [
+          "cloud",
+          "v3-dashboard"
+        ]
+      }
+    },
+    "/api/v2/cloud/v3-dashboard/tiles": {
+      "get": {
+        "operationId": "get_tiles_api_v2_cloud_v3_dashboard_tiles_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "schema": {
+              "format": "date",
+              "nullable": true,
+              "title": "Start",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "end",
+            "required": false,
+            "schema": {
+              "format": "date",
+              "nullable": true,
+              "title": "End",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Slug of the company being viewed",
+            "in": "query",
+            "name": "company",
+            "required": false,
+            "schema": {
+              "description": "Slug of the company being viewed",
+              "nullable": true,
+              "title": "Company",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Tiles",
+        "tags": [
+          "cloud",
+          "v3-dashboard"
         ]
       }
     },
@@ -16036,270 +18830,6 @@
         ]
       }
     },
-    "/api/v2/integrations/bitbucket/me": {
-      "get": {
-        "operationId": "getCurrentUserBitbucketConnection_api_v2_integrations_bitbucket_me_get",
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BaseApiResponse"
-                }
-              }
-            },
-            "description": "Successful Response"
-          }
-        },
-        "summary": "Getcurrentuserbitbucketconnection",
-        "tags": [
-          "bitbucket"
-        ]
-      }
-    },
-    "/api/v2/integrations/bitbucket/me/action/connect": {
-      "post": {
-        "operationId": "connectToBitbucket_api_v2_integrations_bitbucket_me_action_connect_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BitbucketConnectRequestBody"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BaseApiResponse"
-                }
-              }
-            },
-            "description": "Successful Response"
-          },
-          "422": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            },
-            "description": "Validation Error"
-          }
-        },
-        "summary": "Connecttobitbucket",
-        "tags": [
-          "bitbucket"
-        ]
-      }
-    },
-    "/api/v2/integrations/bitbucket/pullrequests/action/create": {
-      "post": {
-        "operationId": "createBitbucketPullRequest_api_v2_integrations_bitbucket_pullrequests_action_create_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BitbucketCreatePullRequestRequestBody"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BaseApiResponse"
-                }
-              }
-            },
-            "description": "Successful Response"
-          },
-          "422": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            },
-            "description": "Validation Error"
-          }
-        },
-        "summary": "Createbitbucketpullrequest",
-        "tags": [
-          "bitbucket"
-        ]
-      }
-    },
-    "/api/v2/integrations/bitbucket/repositories": {
-      "get": {
-        "operationId": "fetchBitbucketRepositories_api_v2_integrations_bitbucket_repositories_get",
-        "parameters": [
-          {
-            "description": "Workspace slug/identifier to fetch repositories from. If not provided, uses the workspace from the user's connection.",
-            "in": "query",
-            "name": "workspace",
-            "required": false,
-            "schema": {
-              "description": "Workspace slug/identifier to fetch repositories from. If not provided, uses the workspace from the user's connection.",
-              "nullable": true,
-              "title": "Workspace",
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BaseApiResponse"
-                }
-              }
-            },
-            "description": "Successful Response"
-          },
-          "422": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            },
-            "description": "Validation Error"
-          }
-        },
-        "summary": "Fetchbitbucketrepositories",
-        "tags": [
-          "bitbucket"
-        ]
-      }
-    },
-    "/api/v2/integrations/bitbucket/repositories/action/create": {
-      "post": {
-        "operationId": "createBitbucketRepository_api_v2_integrations_bitbucket_repositories_action_create_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BitbucketCreateRepositoryRequestBody"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BaseApiResponse"
-                }
-              }
-            },
-            "description": "Successful Response"
-          },
-          "422": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            },
-            "description": "Validation Error"
-          }
-        },
-        "summary": "Createbitbucketrepository",
-        "tags": [
-          "bitbucket"
-        ]
-      }
-    },
-    "/api/v2/integrations/bitbucket/repositories/{repository_slug}/branches": {
-      "get": {
-        "operationId": "fetchBitbucketBranches_api_v2_integrations_bitbucket_repositories__repository_slug__branches_get",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "repository_slug",
-            "required": true,
-            "schema": {
-              "title": "Repository Slug",
-              "type": "string"
-            }
-          },
-          {
-            "description": "Workspace slug/identifier where the repository exists. If not provided, uses the workspace from the user's connection.",
-            "in": "query",
-            "name": "workspace",
-            "required": false,
-            "schema": {
-              "description": "Workspace slug/identifier where the repository exists. If not provided, uses the workspace from the user's connection.",
-              "nullable": true,
-              "title": "Workspace",
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BaseApiResponse"
-                }
-              }
-            },
-            "description": "Successful Response"
-          },
-          "422": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            },
-            "description": "Validation Error"
-          }
-        },
-        "summary": "Fetchbitbucketbranches",
-        "tags": [
-          "bitbucket"
-        ]
-      }
-    },
-    "/api/v2/integrations/bitbucket/workspaces": {
-      "get": {
-        "operationId": "fetchBitbucketWorkspaces_api_v2_integrations_bitbucket_workspaces_get",
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BaseApiResponse"
-                }
-              }
-            },
-            "description": "Successful Response"
-          }
-        },
-        "summary": "Fetchbitbucketworkspaces",
-        "tags": [
-          "bitbucket"
-        ]
-      }
-    },
     "/api/v2/integrations/github/action/confirm": {
       "post": {
         "description": "Persist the Nango connection ID returned by the frontend SDK after OAuth.\n\nThe Nango JS SDK ``nango.auth()`` call returns the generated ``connectionId``\ndirectly in its result object.  The frontend passes it here so we can store it\nimmediately without waiting for the Nango webhook to arrive.",
@@ -16630,172 +19160,6 @@
         ]
       }
     },
-    "/api/v2/integrations/jira/issues/action/create": {
-      "post": {
-        "operationId": "createJiraIssue_api_v2_integrations_jira_issues_action_create_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/JiraCreateIssueRequestBody"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "422": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            },
-            "description": "Validation Error"
-          },
-          "501": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BaseApiResponse"
-                }
-              }
-            },
-            "description": "Successful Response"
-          }
-        },
-        "summary": "Createjiraissue",
-        "tags": [
-          "jira"
-        ]
-      }
-    },
-    "/api/v2/integrations/jira/issues/priorities": {
-      "get": {
-        "operationId": "fetchJiraIssuePriorities_api_v2_integrations_jira_issues_priorities_get",
-        "responses": {
-          "501": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BaseApiResponse"
-                }
-              }
-            },
-            "description": "Successful Response"
-          }
-        },
-        "summary": "Fetchjiraissuepriorities",
-        "tags": [
-          "jira"
-        ]
-      }
-    },
-    "/api/v2/integrations/jira/issues/types": {
-      "get": {
-        "operationId": "fetchJiraIssueTypes_api_v2_integrations_jira_issues_types_get",
-        "responses": {
-          "501": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BaseApiResponse"
-                }
-              }
-            },
-            "description": "Successful Response"
-          }
-        },
-        "summary": "Fetchjiraissuetypes",
-        "tags": [
-          "jira"
-        ]
-      }
-    },
-    "/api/v2/integrations/jira/me": {
-      "get": {
-        "operationId": "getCurrentUserJiraConnection_api_v2_integrations_jira_me_get",
-        "responses": {
-          "501": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BaseApiResponse"
-                }
-              }
-            },
-            "description": "Successful Response"
-          }
-        },
-        "summary": "Getcurrentuserjiraconnection",
-        "tags": [
-          "jira"
-        ]
-      }
-    },
-    "/api/v2/integrations/jira/me/action/connect": {
-      "post": {
-        "operationId": "connectToJira_api_v2_integrations_jira_me_action_connect_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/JiraConnectRequestBody"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "422": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            },
-            "description": "Validation Error"
-          },
-          "501": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BaseApiResponse"
-                }
-              }
-            },
-            "description": "Successful Response"
-          }
-        },
-        "summary": "Connecttojira",
-        "tags": [
-          "jira"
-        ]
-      }
-    },
-    "/api/v2/integrations/jira/projects": {
-      "get": {
-        "operationId": "fetchJiraProjects_api_v2_integrations_jira_projects_get",
-        "responses": {
-          "501": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BaseApiResponse"
-                }
-              }
-            },
-            "description": "Successful Response"
-          }
-        },
-        "summary": "Fetchjiraprojects",
-        "tags": [
-          "jira"
-        ]
-      }
-    },
     "/api/v2/integrations/slack/action/cancel": {
       "post": {
         "operationId": "cancel_slack_api_v2_integrations_slack_action_cancel_post",
@@ -16983,7 +19347,7 @@
     },
     "/api/v2/license-and-billing/billing/action/create-checkout-session": {
       "post": {
-        "description": "Create a Stripe Checkout Session for a new subscription.",
+        "description": "Create a Stripe Checkout Session for the caller's company.",
         "operationId": "create_checkout_session_api_v2_license_and_billing_billing_action_create_checkout_session_post",
         "requestBody": {
           "content": {
@@ -17026,7 +19390,7 @@
     },
     "/api/v2/license-and-billing/billing/action/create-portal-session": {
       "post": {
-        "description": "Create a Stripe Customer Portal session (payment methods / upgrade / downgrade).",
+        "description": "Create a Stripe Customer Portal session for the caller's company.",
         "operationId": "create_portal_session_api_v2_license_and_billing_billing_action_create_portal_session_post",
         "requestBody": {
           "content": {
@@ -17751,6 +20115,218 @@
         ]
       }
     },
+    "/api/v2/notifications": {
+      "get": {
+        "operationId": "list_notifications_api_v2_notifications_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "category",
+            "required": false,
+            "schema": {
+              "nullable": true,
+              "title": "Category",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "unread_only",
+            "required": false,
+            "schema": {
+              "default": false,
+              "title": "Unread Only",
+              "type": "boolean"
+            }
+          },
+          {
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "nullable": true,
+              "title": "Cursor",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 20,
+              "title": "Limit",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Notifications",
+        "tags": [
+          "notifications"
+        ]
+      }
+    },
+    "/api/v2/notifications/action/mark-all-read": {
+      "post": {
+        "operationId": "mark_all_read_api_v2_notifications_action_mark_all_read_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MarkAllReadRequest",
+                "nullable": true,
+                "title": "Body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Mark All Read",
+        "tags": [
+          "notifications"
+        ]
+      }
+    },
+    "/api/v2/notifications/stream": {
+      "get": {
+        "operationId": "notification_stream_api_v2_notifications_stream_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "after",
+            "required": false,
+            "schema": {
+              "nullable": true,
+              "title": "After",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Notification Stream",
+        "tags": [
+          "notifications"
+        ]
+      }
+    },
+    "/api/v2/notifications/unread-counts": {
+      "get": {
+        "operationId": "unread_counts_api_v2_notifications_unread_counts_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Unread Counts",
+        "tags": [
+          "notifications"
+        ]
+      }
+    },
+    "/api/v2/notifications/{notification_id}/action/mark-read": {
+      "post": {
+        "operationId": "mark_read_api_v2_notifications__notification_id__action_mark_read_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "notification_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Notification Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Mark Read",
+        "tags": [
+          "notifications"
+        ]
+      }
+    },
     "/api/v2/one-click-onboarding/action/onboard": {
       "post": {
         "description": "Self-serve onboarding: create company, license, owner user, default business unit, and admin role assignment,\nthen sign the user in. Returns session/tokens plus a one-shot BU first-landing hint.\nPublic; gated by Origin / Referer allowlist.",
@@ -17963,8 +20539,21 @@
     },
     "/api/v2/organization/business-units": {
       "get": {
-        "description": "List business units with pagination, sort, field filters, and response field selection.",
+        "description": "List business units the caller can access.\n\nAn active superuser sees every company. Any other caller sees only their\ncompany. ``company_id`` for another company is forbidden. A malformed\n``company_id`` is rejected by request validation.",
         "operationId": "list_business_units_api_v2_organization_business_units_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "company_id",
+            "required": false,
+            "schema": {
+              "format": "uuid",
+              "nullable": true,
+              "title": "Company Id",
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "content": {
@@ -17975,6 +20564,16 @@
               }
             },
             "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
           }
         },
         "summary": "List Business Units",
@@ -17984,7 +20583,7 @@
         ]
       },
       "post": {
-        "description": "Create a new business unit. Returns 409 Conflict if (company, slug) already exists.",
+        "description": "Create a business unit; idempotent on (company, slug).\n\n201 with the new unit, 200 with the existing unit when an identical create is\nreplayed, or 409 Conflict when the company has the slug with different fields.",
         "operationId": "create_business_unit_api_v2_organization_business_units_post",
         "requestBody": {
           "content": {
@@ -18213,7 +20812,7 @@
         ]
       },
       "patch": {
-        "description": "Update a business unit by UUID (partial). 404 if not found, 409 if (company, slug) conflict.",
+        "description": "Update a business unit in a company the caller can access. 409 if (company, slug) conflict.",
         "operationId": "update_business_unit_api_v2_organization_business_units__business_unit_id__patch",
         "parameters": [
           {
@@ -18313,7 +20912,7 @@
     },
     "/api/v2/organization/companies": {
       "get": {
-        "description": "List companies with pagination, sort, field filters, and response field selection.\n\nA superuser receives every company. Any other caller receives only the\ncompany they belong to, or an empty page when they have none.",
+        "description": "List companies with pagination, sort, field filters, and response field selection.\n\nAn active superuser receives every company. A pending superuser receives\nonly their own company. Any other caller receives only the company they\nbelong to, or an empty page when they have none.",
         "operationId": "list_companies_api_v2_organization_companies_get",
         "responses": {
           "200": {
@@ -18420,7 +21019,7 @@
         ]
       },
       "get": {
-        "description": "Get a company by UUID.\n\nAllowed for a superuser, or for a caller whose company is this id.\n\n**Query params:**\n- BaseApiResponseQueryParams: api_fields, api_include (e.g. ?api_fields=id,name,slug).",
+        "description": "Get a company by UUID.\n\nAllowed for an active superuser, or for a caller whose company is this id.\nA pending superuser may get only their own company.\n\n**Query params:**\n- BaseApiResponseQueryParams: api_fields, api_include (e.g. ?api_fields=id,name,slug).",
         "operationId": "get_company_by_id_api_v2_organization_companies__company_id__get",
         "parameters": [
           {
@@ -18463,7 +21062,7 @@
         ]
       },
       "patch": {
-        "description": "Update a company by UUID (partial). Only provided body fields are updated.\n\nCaller must be an active owner of this company, or an active superuser.\n``is_root``, ``status``, and ``domain_emails`` are superuser-only.\nAn owner may change ``slug``. 404 if not found, 409 if slug/domain_emails conflict.",
+        "description": "Update a company by UUID (partial). Only provided body fields are updated.\n\nCaller must be an active owner of this company, or an active superuser.\n``is_root``, ``status``, ``domain_emails``, and ``slug`` are superuser-only.\n``slug`` is superuser-only to prevent SSO slug takeover.\n404 if not found, 409 if slug/domain_emails conflict.",
         "operationId": "update_company_api_v2_organization_companies__company_id__patch",
         "parameters": [
           {
@@ -18956,6 +21555,26 @@
               "title": "Thread Id",
               "type": "string"
             }
+          },
+          {
+            "in": "query",
+            "name": "api_limit",
+            "required": false,
+            "schema": {
+              "nullable": true,
+              "title": "Api Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "api_offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "title": "Api Offset",
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -19052,6 +21671,26 @@
               "format": "uuid",
               "title": "Thread Id",
               "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "api_limit",
+            "required": false,
+            "schema": {
+              "nullable": true,
+              "title": "Api Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "api_offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "title": "Api Offset",
+              "type": "integer"
             }
           }
         ],
@@ -22990,7 +25629,7 @@
     },
     "/api/v2/temp-dashboard/management-summary": {
       "get": {
-        "description": "Company or BU management KPIs: buckets, rates, quick wins, monthly series.",
+        "description": "Company or BU management KPIs: buckets, rates, quick wins, monthly series.\n\nEach ``attention.top_opportunities`` item (the same objects as\n``what_we_found`` and stalled items) adds nullable ``resource_name``,\n``estimated_saving_percent``, ``region``, ``current_instance_type``,\n``recommended_instance_type``, and ``recommendation_type``. See\n``ManagementOpportunityItem``.",
         "operationId": "get_management_summary_api_v2_temp_dashboard_management_summary_get",
         "parameters": [
           {
@@ -23334,6 +25973,134 @@
         "summary": "Get Savings Progress",
         "tags": [
           "temp-dashboard"
+        ]
+      }
+    },
+    "/api/v2/watches/action/unwatch": {
+      "post": {
+        "operationId": "unwatch_api_v2_watches_action_unwatch_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WatchTargetRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Unwatch",
+        "tags": [
+          "notifications"
+        ]
+      }
+    },
+    "/api/v2/watches/action/watch": {
+      "post": {
+        "operationId": "watch_api_v2_watches_action_watch_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WatchTargetRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Watch",
+        "tags": [
+          "notifications"
+        ]
+      }
+    },
+    "/api/v2/watches/state": {
+      "get": {
+        "operationId": "watch_state_api_v2_watches_state_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "target_type",
+            "required": true,
+            "schema": {
+              "title": "Target Type",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "target_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Target Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Watch State",
+        "tags": [
+          "notifications"
         ]
       }
     },
