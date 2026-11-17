@@ -166,36 +166,51 @@ and
 [seed procedure](https://github.com/Jetscale-AI/Stack/blob/main/docs/operations/unstable-cli-seed.md)
 own execution scope, ordering, exact session budgets, bounds and recovery.
 
-**Proposed five-seat amendment (2026-11-17):** The seed profile below uses
-minimum five-seat quota-only capacity, including Stack's default setup,
+**Five-seat amendment (2026-11-17):** The seed profile below uses minimum
+five-seat quota-only capacity, including Stack's default company/license setup,
 `capacity` and `sso_bootstrap`. Stack owns desired state and ordering; the
-generic CLI still requires explicit `--min-seats`; the proposed Stack profile
+generic CLI still requires explicit `--min-seats`; the five-seat Stack profile
 passes `5`, with no tenant-specific default or commercial pricing-plan change.
-This is proposed pending matching human-reviewed commits and publication of
+This preparation is pending human ratification and matching publication of
 Governance Constitution/secret-management, CLI law and Stack seed
-adoption/registration/procedure on their respective `main` branches. Preserve
-the 2026-11-14 acceptance, 2026-11-16 amendment and existing published grants;
-the published two-seat auth profile remains binding until then. Offline
-examples/tests do not authorize live five-seat execution or delivery. Rationale:
-reproducible five-seat unstable setup without changing billing terms (Business
-Goal; SOC 2 CC8.1).
+adoption/registration/procedure on their respective `main` branches. Five-seat
+scope becomes effective automatically upon that matching human-reviewed
+publication, without a later status edit, marker or activation ceremony. Local
+drafts grant no authority; human review and commit ratify the amendment.
+Preserve the 2026-11-14 acceptance, 2026-11-16 amendment and existing published
+grants; the published two-seat auth profile remains binding until matched
+publication. Offline examples/tests do not authorize live five-seat execution or
+delivery. Rationale: reproducible five-seat unstable setup without changing
+billing terms (Business Goal; SOC 2 CC8.1). Agents cannot ratify or publish this
+amendment. The exact minimum-seat line in the constitution is profile scope
+evidence, not an activation marker or execution grant; require matching
+published scope in both Governance seed-auth sections, CLI's auth section and
+Stack's base seed and seed-auth registrations for five-seat selections. Explicit
+legacy `auth.min_seats=2` remains supported within existing published stage
+grants; missing five-seat scope cannot disable those grants or silently upgrade
+them. Addatech remains unchanged. Default company/license setup retains its
+existing absent-company atomic setup/reconciliation rules; an existing company
+without a license stays blocked. Grow only eligible finite quotas below 5 to
+exactly 5; quotas of 5 or more and null (unlimited) and repeat applies are
+noops. Do not change catalog minimums, pricing terms or other quotas.
 
 The opt-in auth profile selects only `Unstable Jetscale` / `unstable-jetscale`,
 explicit pinned company UUID and `agent@jetscale.ai`. Require explicit human
 authorization for platform-wide superadmin privilege, invitation/email, seat,
 root-wide auth impact and full company cascades; company linkage does not
-contain privilege. The default nine stages remain unchanged; legacy auth
-selections cannot mix them. `sso_bootstrap` is opt-in and mutually exclusive
-with `capacity`, `auth_prepare`, `sso_activate` and those nine stages. The
-helper must fail closed for the new stage on old three-stage law, without
-re-disabling existing grants. Existing cloud/FOCUS and BU seed effects retain
-Stack's separate human-started/private-file and credential-transfer constraints,
-not new authority from this auth amendment.
+contain privilege. All nine default stage names and selection rules remain
+unchanged; only the default/license and auth seat minimum changes under the
+publication condition. Legacy auth selections cannot mix them. `sso_bootstrap`
+is opt-in and mutually exclusive with `capacity`, `auth_prepare`, `sso_activate`
+and those nine stages. The helper must fail closed for the new stage on old
+three-stage law, without re-disabling existing grants. Existing cloud/FOCUS and
+BU seed effects retain Stack's separate human-started/private-file and
+credential-transfer constraints, not new authority from this auth amendment.
 
-Under the proposed five-seat profile, follow the stage effects in the
-constitution: `capacity` fixes `auth.min_seats=5` with unlimited/larger capacity
-noop; `auth_prepare` creates only missing non-secret auth rows DISABLED and uses
-named user reconciliation, without mappings; `sso_activate` requires completed
+Once five-seat scope is effective, follow the stage effects in the constitution:
+`capacity` fixes `auth.min_seats=5` with unlimited/larger capacity noop;
+`auth_prepare` creates only missing non-secret auth rows DISABLED and uses named
+user reconciliation, without mappings; `sso_activate` requires completed
 identity/password-first proof, then effective MULTI, exact `OrganizationSSO`
 provider, existing `[Console] Jetscale` organization mapping and SSO. Use only
 the two named mapping keys; inspect required-SSO read-only, requiring deployed
@@ -242,7 +257,11 @@ sessions in memory. Auth commands must pass explicit HTTP/time caps and
 process exit; printed JSON is not cleanup proof. Stack owns per-command budgets
 and the 900-second overall limit with 300-second cleanup reserve,
 100-descendant/1,000 combined charged-request ceilings, including auth and
-cleanup. Larger topology may block; do not enlarge limits or retry
+cleanup. Charge each enforced command HTTP ceiling before invocation, including
+its signout slot, and reserve the worst-case remaining apply path before
+mutation. Include phase rechecks, cascade and final readbacks; never refund
+unused ceilings or reset accounting between phases. Lifecycle overhead is not
+the full command cost. Larger topology may block; do not enlarge limits or retry
 automatically.
 
 Login/signout can invalidate operator sessions and requires authorization and

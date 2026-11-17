@@ -163,7 +163,7 @@ functionality or authorize publication.
 CLI Engineering and Jetscale Platform Governance. **Rationale:** attributable,
 bounded non-secret setup without captured credentials (SOC 2 CC6.1 and CC8.1).
 The section heading retains its historical name for publication-parser and link
-compatibility; this status governs its lifecycle.
+compatibility; this status governs the original grant, not later proposals.
 
 **2026-11-16 amendment:** `sso_bootstrap` is accepted upon human review and
 commit of this text. **Rationale:** SOC 2 CC6.1/CC8.1; provision web/MCP SSO
@@ -175,11 +175,11 @@ later status edit, active marker or activation ceremony is required. Preserve
 the 2026-11-14 acceptance and existing published grants until that publication;
 this request authorizes preparation, not self-ratification or execution.
 
-**Proposed five-seat amendment (2026-11-17):** Stack's unstable seed profile
-starts with a minimum of five seats, including default setup, `capacity` and
+**Five-seat amendment (2026-11-17):** Stack's unstable seed profile starts with
+a minimum of five seats, including default company/license setup, `capacity` and
 `sso_bootstrap`. Stack owns tenant desired state and ordering; generic
 `licenses ensure-capacity` still requires an explicit `--min-seats` and has no
-tenant-specific default. The proposed profile passes `--min-seats 5`: grow only
+tenant-specific default. The five-seat profile passes `--min-seats 5`: grow only
 insufficient finite `max_seats` to 5; preserve 5, larger quotas and null
 (unlimited), commercial terms and all other quotas. Repeated capacity
 reconciliation is a noop. Do not change commercial pricing-plan minimums.
@@ -187,16 +187,37 @@ reconciliation is a noop. Do not change commercial pricing-plan minimums.
 reproducible unstable setup with five seats without changing billing terms
 (Business Goal; SOC 2 CC8.1).
 
-This amendment is proposed, not accepted or effective. It requires matching
-human-reviewed commits and publication of revised Governance
-Constitution/secret-management, CLI law and Stack seed
-adoption/registration/procedure on their respective `main` branches. Preserve
-the 2026-11-14 acceptance, the 2026-11-16 amendment and existing published
-grants; the published two-seat auth profile remains binding until matched
-publication. Local five-seat examples, source and tests grant no live five-seat
-authority, self-ratification or delivery permission.
+This preparation is pending human ratification and matching publication of
+revised Governance Constitution/secret-management, CLI law and Stack seed
+adoption/registration/procedure on their respective `main` branches.
+
+<!-- prettier-ignore -->
+Five-seat scope takes effect automatically upon matching human-reviewed publication on Governance, CLI and Stack main.
+
+Local drafts grant no authority. Human review and commit ratify this amendment;
+until matched publication existing two-seat grants govern. No later status edit,
+marker or activation ceremony. Preserve the 2026-11-14 acceptance, the
+2026-11-16 amendment and existing published grants. Local five-seat examples,
+source and tests grant no live five-seat authority, self-ratification or
+delivery permission. Agents cannot ratify or publish this amendment. Addatech
+remains unchanged.
 
 CLI seed auth stages: capacity, auth_prepare, sso_activate and sso_bootstrap.
+
+CLI seed minimum seats: 5.
+
+The minimum-seat line is profile scope evidence, not an activation marker or
+execution grant. Five-seat selections require its exact published match in both
+Governance seed-auth sections, this section and Stack's base seed and seed-auth
+registrations, plus all existing human/runtime gates. Explicit legacy
+`auth.min_seats=2` selections remain supported within their existing published
+stage grants; missing five-seat scope must not disable those grants or silently
+upgrade them. Old three-stage law still cannot authorize bootstrap. Default
+company/license setup establishes at least five seats only under the existing
+absent-company atomic setup and reconciliation rules; an existing company
+without a license stays blocked. Grow existing eligible finite quotas below 5 to
+exactly 5, preserve quotas of 5 or more and null (unlimited), and change no
+catalog minimums, pricing terms or other quotas.
 
 Source implements `--login EMAIL --password-stdin`, `prepare basics`,
 `flags show|plan|apply` and the resource primitives below. This permits only
@@ -228,17 +249,18 @@ Company linkage is not privilege containment: the target becomes a platform-wide
 superadmin. Require an explicit human grant covering that privilege,
 invitation/email and seat effects, application-wide root auth impact and full
 company cascades. The operator and credential source remain unchanged; no
-target-user login source is added. The default nine seed stages remain
-unchanged. `sso_bootstrap` is opt-in and mutually exclusive with `capacity`,
-`auth_prepare`, `sso_activate` and the nine default seed stages. Preserve the
-legacy auth stages as opt-in, including their password-first requirement and
-prohibition on mixing the nine default stages. Existing basics and legacy flags
-retain their scoped authorization. The helper must fail closed for the new stage
-on old three-stage law, without re-disabling existing grants. Assessment-only
-and test-only requests remain narrow.
+target-user login source is added. All nine default seed stage names and
+selection rules remain unchanged; only the default/license and auth seat minimum
+changes under the publication condition. `sso_bootstrap` is opt-in and mutually
+exclusive with `capacity`, `auth_prepare`, `sso_activate` and the nine default
+seed stages. Preserve the legacy auth stages as opt-in, including their
+password-first requirement and prohibition on mixing the nine default stages.
+Existing basics and legacy flags retain their scoped authorization. The helper
+must fail closed for the new stage on old three-stage law, without re-disabling
+existing grants. Assessment-only and test-only requests remain narrow.
 
-The auth stages below describe the proposed five-seat profile; the publication
-gate above preserves the existing effective profile until then:
+The auth stages below describe the five-seat profile under the publication
+condition; the existing effective profile governs until matched publication:
 
 - `capacity`: fixed `auth.min_seats=5` through `licenses ensure-capacity` on the
   existing eligible company license. Unlimited or larger/sufficient capacity is
@@ -311,11 +333,15 @@ Auth commands require explicit HTTP/time caps and `--max-pages 1`, with one
 reserved cleanup attempt per command and final process-exit verification after
 signout. Stack owns exact per-command budgets and the overall 900-second limit,
 including a 300-second cleanup reserve, 100-descendant ceiling and 1,000
-combined charged-request ceiling, including authentication and cleanup. These
-ceilings can block larger topology; per-command caps do not replace aggregate
-accounting. Use zero automatic retries and global exclusive-writer coordination.
-Reconcile uncertain writes through scoped reads, never replay; failed or
-unverified cleanup blocks further runtime work.
+combined charged-request ceiling, including authentication, previews, reads,
+writes and cleanup. Charge each enforced command HTTP ceiling before invocation,
+including its signout slot; reserve the worst-case remaining apply path before
+mutation, including phase rechecks, cascade and final readbacks. Never refund
+unused ceilings or reset accounting between phases. Lifecycle overhead is not
+the full command cost. These ceilings can block larger topology; per-command
+caps do not replace aggregate accounting. Use zero automatic retries and global
+exclusive-writer coordination. Reconcile uncertain writes through scoped reads,
+never replay; failed or unverified cleanup blocks further runtime work.
 
 Legacy auth completion requires fresh exact-email evidence of the pinned
 company, `is_superuser:true`, `status:ACTIVE` and non-null

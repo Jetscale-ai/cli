@@ -14,13 +14,14 @@ offline contracts and generated consistency; Stack wrapper validation belongs to
 its separate owner. Source, fixtures or offline validation are not proof of
 deployed compatibility, live helper qualification or readiness.
 
-For unstable, published browser-only registration remains binding. API execution
-requires human-ratified Stack registration and the proposed Supreme Constitution
-and secret-management protocol amendments for CLI authentication. Use the
-[Stack workflow](../../stack/docs/operations/unstable-cli-basics.md) and
-[separate Governance auth proposal](../../governance/docs/operations/unstable-cli-auth-proposal.md).
-Neither a CLI flag nor a secret reference grants authority. The exact proposed
-scope and publication gates are in the
+For unstable, API execution requires published
+[Governance CLI authentication law](https://github.com/Jetscale-AI/Governance/blob/main/AGENTS.md#registered-unstable-cli-authentication),
+its
+[secret-management protocol](https://github.com/Jetscale-AI/Governance/blob/main/.agents/codex/protocols/secret-management.md#registered-unstable-cli-authentication)
+and matching human-ratified Stack/CLI scope. Use the
+[Stack workflow](https://github.com/Jetscale-AI/Stack/blob/main/docs/operations/unstable-cli-basics.md).
+Unpublished proposals do not expand existing grants. Neither a CLI flag nor a
+secret reference grants authority. Exact scope and publication gates are in the
 [CLI constitution](../AGENTS.md#proposed-stack-mediated-temporary-cli-authentication).
 Basics and flags require separate bounded authorization. A local uncommitted
 unstable-channel build is allowed input, not provenance or authority. This
@@ -49,28 +50,47 @@ three-stage law. `sso_bootstrap` cannot be mixed with `capacity`,
 them, including legacy password-first requirements and their existing selection
 restrictions.
 
-**Proposed five-seat amendment (2026-11-17):** Stack's unstable seed desired
-state starts with minimum five-seat quota-only capacity, including default
+**Five-seat amendment (2026-11-17):** Stack's unstable seed desired state starts
+with minimum five-seat quota-only capacity, including default company/license
 setup, `capacity` and `sso_bootstrap`. Stack owns the profile and ordering;
 generic `licenses ensure-capacity` still requires explicit `--min-seats`; the
-proposed profile passes `5`, not a CLI-owned tenant default. Commercial
-pricing-plan minimums remain unchanged. This proposal requires matched
-human-reviewed commits and publication of Governance
+five-seat profile passes `5`, not a CLI-owned tenant default. Commercial
+pricing-plan minimums remain unchanged. This preparation is pending human
+ratification and matching publication of Governance
 Constitution/secret-management, CLI law and Stack seed
-adoption/registration/procedure on their respective `main` branches. Preserve
-the 2026-11-14 acceptance, 2026-11-16 amendment and existing grants; the
-published two-seat auth profile governs until then. Source/examples/tests grant
-no live five-seat authority. Rationale: reproducible five-seat unstable setup
-without changing billing terms (Business Goal; SOC 2 CC8.1).
+adoption/registration/procedure on their respective `main` branches. Five-seat
+scope becomes effective automatically upon that matching human-reviewed
+publication, without a later status edit, marker or activation ceremony. Local
+drafts grant no authority; human review and commit ratify the amendment.
+Preserve the 2026-11-14 acceptance, 2026-11-16 amendment and existing grants;
+the published two-seat auth profile governs until then. Source/examples/tests
+grant no live five-seat authority. Rationale: reproducible five-seat unstable
+setup without changing billing terms (Business Goal; SOC 2 CC8.1). Agents cannot
+ratify or publish this amendment. The exact minimum-seat line in the normative
+sections is profile scope evidence, not an activation marker or execution grant.
+Five-seat selections need matching published scope in both Governance seed-auth
+sections, CLI's auth section and Stack's base seed and seed-auth registrations.
+Explicit legacy `auth.min_seats=2` selections remain supported within existing
+published stage grants; missing five-seat scope must not disable those grants or
+silently upgrade them. Addatech remains unchanged. All nine default stage names
+and selection rules stay unchanged; only the default/license and auth seat
+minimum changes under the publication condition.
 
-Under that proposed profile, for only pinned `Unstable Jetscale` /
+Default company/license setup establishes at least five seats under its existing
+absent-company atomic setup/reconciliation rules; an existing company without a
+license stays blocked. The generic `prepare basics` manifest/catalog checks
+below are not a new tenant-specific seat default or permission to patch
+capacity. Stack uses the existing license-capacity primitive for eligible
+existing licenses, without changing catalog minimums or commercial terms.
+
+Once five-seat scope is effective, for only pinned `Unstable Jetscale` /
 `unstable-jetscale` and `agent@jetscale.ai`, always:
 
-1. Ensure minimum five seats on the existing eligible license, quota-only:
-   finite 1, 2 or 4 grows exactly to 5; 5, larger quotas and null (unlimited)
-   are noops. Repeated capacity applies write nothing. Grow only `max_seats`,
-   never change billing, plans, commercial terms or other quotas. This is not
-   occupancy proof.
+1. Ensure minimum five seats on the existing eligible license, quota-only: any
+   valid finite quota below 5 grows exactly to 5; 5, larger quotas and null
+   (unlimited) are noops. Repeated capacity applies write nothing. Grow only
+   `max_seats`, never change billing, plans, commercial terms or other quotas.
+   This is not occupancy proof.
 2. Create absent disabled non-secret `AUTH.MULTI` / `AUTH.SSO.WORKOS`
    root/company rows; never disable existing rows.
 3. Ensure the exact company-linked platform-wide superadmin: invite an absent
@@ -116,7 +136,12 @@ total/300-second cleanup reserve, 100-descendant/1,000 combined charged HTTP
 ceilings include authentication, previews, reads, writes and cleanup. Preserve
 explicit command HTTP/time caps, `--max-pages 1`, final process-exit proof after
 signout, one foreground operation, zero retries, global writer coordination and
-human-owned recovery. Reconcile uncertainty through scoped reads, never replay.
+human-owned recovery. Charge each enforced command HTTP ceiling before
+invocation, including its signout slot, and reserve the worst-case remaining
+apply path before mutation. Include phase rechecks, cascade and final readbacks;
+never refund unused ceilings or reset accounting between phases. Lifecycle
+overhead is not the full command cost. Reconcile uncertainty through scoped
+reads, never replay.
 
 ## Command interface
 

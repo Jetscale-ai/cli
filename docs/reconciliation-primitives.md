@@ -104,6 +104,18 @@ completes the create, readback, and signout. Select caps from the full inspected
 path, not just the lifecycle overhead. These costs are local synthetic evidence,
 not deployed compatibility or live-execution authority.
 
+Stack's aggregate seed ledger charges each enforced invocation ceiling before
+starting the command, including its reserved signout slot; it does not infer
+actual usage from lifecycle overhead or refund unused capacity. Reserve the
+worst-case remaining apply path before mutation, including phase rechecks,
+paired guards, writes, cascade and final readbacks. Preview charges remain in
+the same ledger; phases cannot reset it. Preserve the 1,000 combined charged
+request ceiling, 900-second total/300-second cleanup reserve, 100-descendant
+ceiling, `--max-pages 1`, one foreground operation, zero retries and human-owned
+recovery. Accounting repair must cover the entire path, not merely raise a
+per-command cap. These requirements are not a claim that the Stack repair has
+been validated or that live execution is authorized.
+
 ## Company IDs
 
 ```bash
@@ -186,12 +198,30 @@ jetscale licenses ensure-capacity --company acme --min-seats 5 --yes -o json
 
 `--min-seats` is required and must be an integer from 1 through 2147483647;
 there is no tenant-specific CLI default. Stack owns unstable seed desired state.
-Its proposed 2026-11-17 five-seat profile uses this explicit argument for
-default setup and auth stages, pending matched human-reviewed `main` publication
-as specified in the
+Its 2026-11-17 five-seat profile uses this explicit argument for default setup
+and auth stages. This preparation is pending human ratification and matching
+human-reviewed publication on Governance, CLI and Stack `main`, as specified in
+the
 [CLI constitution](../AGENTS.md#proposed-stack-mediated-temporary-cli-authentication).
-The published two-seat auth grant remains binding until then; these examples and
-offline tests authorize no live five-seat setup.
+Five-seat scope becomes effective automatically upon that matching publication;
+no later status edit, marker or activation ceremony is required. Local drafts
+grant no authority; human review and commit ratify the amendment. Agents cannot
+ratify or publish it. Preserve the 2026-11-14 acceptance, 2026-11-16 bootstrap
+grant and existing published two-seat grants until then. Explicit legacy
+`auth.min_seats=2` selections remain supported only within their published stage
+grants; missing five-seat scope must not disable those grants or silently
+upgrade them. The normative minimum-seat line is profile scope evidence, not an
+activation marker or execution grant. Addatech remains unchanged. These examples
+and offline tests authorize no live five-seat setup.
+
+Once five-seat scope is effective, default company/license setup, `capacity` and
+standalone `sso_bootstrap` use the same five-seat minimum: grow only valid
+finite quotas below 5 to exactly 5; 5 or more, null (unlimited) and repeat
+applies are noops. Default setup retains its existing absent-company atomic
+setup/reconciliation rules; an existing company without a license stays blocked.
+Preserve all nine default stage names and selection rules. Bootstrap does not
+require prior target password signup/login or web login, and provisioning grants
+no actual login or round-trip test authority.
 
 The command lists company-filtered licenses, rejects invalid/foreign list
 identities or unknown statuses, and requires exactly one `ACTIVE` license. Known
