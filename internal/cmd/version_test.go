@@ -154,6 +154,7 @@ func TestVersionStructuredProvenance(t *testing.T) {
 						"binary": "renamed-cli", "version": "1.2.3", "commit": "cli-commit", "date": "2026-09-14T00:00:00Z",
 						"channel": channel, "backend_sha": "backend-commit", "schema_sha256": "schema-digest",
 						"api_version": "2.0", "source_sha256": "source-digest", "source_dirty": dirty,
+						"auth_lifecycle_requests": "3",
 					}
 					if dirty == "" {
 						for _, key := range []string{"backend_sha", "schema_sha256", "api_version", "source_sha256", "source_dirty"} {

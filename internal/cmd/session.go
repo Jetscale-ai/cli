@@ -174,9 +174,10 @@ func commandSession(cmd *cobra.Command, instance, apiURL string) (*auth.Session,
 			return nil, err
 		}
 		rememberSession(cmd, session, instance, true)
-		who, verifyErr := session.WhoamiContext(cmd.Context())
-		if verifyErr != nil {
-			return nil, verifyErr
+		// Sign-in already verified the session with /auth/me; reuse that reply.
+		who, _, verified := session.VerifiedLogin()
+		if !verified {
+			return nil, errors.New("temporary login identity unverified; command not run")
 		}
 		// Retain only the matched field; later responses cannot verify its counterpart.
 		switch flagLogin {

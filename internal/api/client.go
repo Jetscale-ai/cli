@@ -97,6 +97,27 @@ type AccountTree struct {
 type Client struct {
 	gen     *generated.ClientWithResponses
 	baseURL string
+	actor   Record
+}
+
+// WithVerifiedActor returns a copy whose Actor reuses the /auth/me user object
+// that verified this command's own sign-in, saving a request per check. An
+// unusable object leaves Actor reading /auth/me as before.
+func (c *Client) WithVerifiedActor(user json.RawMessage) *Client {
+	var actor Record
+	if json.Unmarshal(user, &actor) != nil || actor == nil {
+		return c
+	}
+	clone := *c
+	clone.actor = actor
+	return &clone
+}
+
+// WithoutVerifiedActor returns a copy whose Actor reads /auth/me again.
+func (c *Client) WithoutVerifiedActor() *Client {
+	clone := *c
+	clone.actor = nil
+	return &clone
 }
 
 func NewClient(baseURL, accessToken string) *Client {

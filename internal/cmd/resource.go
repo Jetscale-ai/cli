@@ -82,6 +82,9 @@ func startResource(cmd *cobra.Command) (*resourceRun, error) {
 		cancel()
 		return nil, err
 	}
+	if _, user, verified := session.VerifiedLogin(); verified {
+		client = client.WithVerifiedActor(user)
+	}
 	if require, _ := cmd.Flags().GetBool("require-superuser"); require {
 		if err := requireSuperuser(ctx, client); err != nil {
 			cancel()

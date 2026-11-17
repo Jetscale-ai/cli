@@ -154,7 +154,7 @@ func TestStdinAuthIdentityOutputOnlyMatchedField(t *testing.T) {
 							http.SetCookie(w, &http.Cookie{Name: "session", Value: "synthetic-cookie", Path: "/"})
 						case "/api/v2/auth/me":
 							user := map[string]string{matched: login, counterpart: password}
-							if meCalls.Add(1) > 2 {
+							if meCalls.Add(1) > 1 {
 								// A later response must not replace the verified snapshot.
 								user[matched] = password
 							}
@@ -179,7 +179,7 @@ func TestStdinAuthIdentityOutputOnlyMatchedField(t *testing.T) {
 					if strings.Contains(stdout.String()+stderr.String(), password) {
 						t.Fatal("unverified identity reflected password in output")
 					}
-					if meCalls.Load() != 2 || logins.Load() != 1 || cleanups.Load() != 1 {
+					if meCalls.Load() != 1 || logins.Load() != 1 || cleanups.Load() != 1 {
 						t.Fatal("identity snapshot re-fetched or session lifecycle changed")
 					}
 					if format == "table" {
@@ -211,7 +211,8 @@ func TestStdinAuthIdentityOutputOnlyMatchedField(t *testing.T) {
 }
 
 func TestStdinAuthWhoamiCancellation(t *testing.T) {
-	for _, verification := range []int32{1, 2} {
+	// Sign-in verification is the only /auth/me request; identity reuses it.
+	for _, verification := range []int32{1} {
 		t.Run(fmt.Sprint(verification), func(t *testing.T) {
 			dir := stdinCommandTest(t)
 			ctx, cancel := context.WithCancel(context.Background())
@@ -252,7 +253,7 @@ func TestStdinAuthWhoamiCancellation(t *testing.T) {
 }
 
 func TestStdinAuthFailuresAndIdentity(t *testing.T) {
-	for _, scenario := range []string{"auth-login", "username", "command-error", "bad-login", "bad-me", "mismatch", "identity-check-error", "logout-error", "same-origin-redirect", "cross-origin-redirect", "command-redirect", "logout-redirect"} {
+	for _, scenario := range []string{"auth-login", "username", "command-error", "bad-login", "bad-me", "mismatch", "logout-error", "same-origin-redirect", "cross-origin-redirect", "command-redirect", "logout-redirect"} {
 		t.Run(scenario, func(t *testing.T) {
 			dir := stdinCommandTest(t)
 			const password, cookie = "synthetic-password-not-output", "synthetic-cookie-not-output"
@@ -281,7 +282,7 @@ func TestStdinAuthFailuresAndIdentity(t *testing.T) {
 					_, _ = fmt.Fprint(w, `{}`)
 				case "/api/v2/auth/me":
 					meCalls.Add(1)
-					if scenario == "bad-me" || (scenario == "identity-check-error" && meCalls.Load() == 2) {
+					if scenario == "bad-me" {
 						w.WriteHeader(500)
 						_, _ = fmt.Fprint(w, password+cookie)
 						return
@@ -344,7 +345,10 @@ func TestStdinAuthFailuresAndIdentity(t *testing.T) {
 			if loginCalls.Load() != 1 || logoutCalls.Load() != wantLogout || foreignCalls.Load() != 0 {
 				t.Fatal("wrong login/cleanup counts or foreign request")
 			}
-			if (scenario == "mismatch" || scenario == "bad-me" || scenario == "identity-check-error" || scenario == "auth-login") && accountCalls.Load() != 0 {
+			if wantSuccess && meCalls.Load() != 1 {
+				t.Fatal("identity re-fetched after sign-in verification")
+			}
+			if (scenario == "mismatch" || scenario == "bad-me" || scenario == "auth-login") && accountCalls.Load() != 0 {
 				t.Fatal("command ran before identity verification")
 			}
 			combined := stdout.String() + stderr.String() + fmt.Sprint(err)

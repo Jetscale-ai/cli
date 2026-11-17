@@ -15,6 +15,7 @@ import (
 	"time"
 
 	"github.com/Jetscale-ai/cli/internal/api"
+	"github.com/Jetscale-ai/cli/internal/auth"
 	"github.com/Jetscale-ai/cli/internal/buildinfo"
 )
 
@@ -56,8 +57,12 @@ func TestBoundedRootRequestCost(t *testing.T) {
 	}))
 	defer server.Close()
 	stdout, stderr, code := executeBounded(t, context.Background(), server.URL, strings.NewReader("synthetic-password\n"),
-		"--login", "fixture@example.invalid", "--password-stdin", "--max-http-requests", "6", "companies", "list", "--require-superuser")
-	want := []string{"POST /api/v2/auth/sign-in", "GET /api/v2/auth/me", "GET /api/v2/auth/me", "GET /api/v2/auth/me", "GET /api/v2/organization/companies", "POST /api/v2/auth/sign-out"}
+		"--login", "fixture@example.invalid", "--password-stdin", "--max-http-requests", "4", "companies", "list", "--require-superuser")
+	// Sign-in verification's /auth/me also serves the identity and superuser checks.
+	want := []string{"POST /api/v2/auth/sign-in", "GET /api/v2/auth/me", "GET /api/v2/organization/companies", "POST /api/v2/auth/sign-out"}
+	if len(want) != auth.LifecycleRequests+1 {
+		t.Fatalf("published lifecycle cost %d does not match the observed sequence", auth.LifecycleRequests)
+	}
 	mu.Lock()
 	defer mu.Unlock()
 	if code != 0 || strings.Join(requests, "\n") != strings.Join(want, "\n") {
@@ -92,7 +97,7 @@ func boundedTestServer(t *testing.T, handler http.HandlerFunc) (*fakeBackend, *h
 }
 
 func TestBoundedRootExhaustionNeverWritesAndReservesCleanup(t *testing.T) {
-	for _, limit := range []int{2, 3, 4, 5, 7, 8, 9, 10} {
+	for _, limit := range []int{2, 3, 4, 5, 6, 7, 8} {
 		t.Run(fmt.Sprint(limit), func(t *testing.T) {
 			var created bool
 			f, server := boundedTestServer(t, func(w http.ResponseWriter, r *http.Request) {
@@ -122,11 +127,11 @@ func TestBoundedRootExhaustionNeverWritesAndReservesCleanup(t *testing.T) {
 			if count > limit {
 				t.Fatalf("%d requests exceed %d", count, limit)
 			}
-			if limit < 9 {
+			if limit < 7 {
 				if code != ExitFailure || f.count("POST /api/v2/system/company-settings") != 0 || !strings.Contains(stdout, `"reason": "http_request_bound"`) || !strings.Contains(stdout, `"transient": false`) {
 					t.Fatalf("exhausted command wrote or failed unsafely: code=%d stdout=%s stderr=%s", code, stdout, stderr)
 				}
-			} else if limit == 9 {
+			} else if limit == 7 {
 				if code != ExitFailure || f.count("POST /api/v2/system/company-settings") != 1 || !strings.Contains(stdout, `"reason": "outcome_uncertain"`) {
 					t.Fatalf("readback exhaustion must remain uncertain after write: %d %s %s", code, stdout, stderr)
 				}
@@ -138,7 +143,7 @@ func TestBoundedRootExhaustionNeverWritesAndReservesCleanup(t *testing.T) {
 }
 
 func TestBoundedUsersActualRootLifecycleAndClone(t *testing.T) {
-	for _, limit := range []int{6, 7} {
+	for _, limit := range []int{3, 4} {
 		t.Run(fmt.Sprint(limit), func(t *testing.T) {
 			f, server := boundedTestServer(t, func(w http.ResponseWriter, r *http.Request) {
 				if r.URL.Path != "/api/v2/auth/users" || r.URL.Query().Get("email") != "eq "+usersTestEmail {
@@ -149,10 +154,10 @@ func TestBoundedUsersActualRootLifecycleAndClone(t *testing.T) {
 			})
 			stdout, stderr, code := executeBounded(t, context.Background(), server.URL, strings.NewReader("synthetic-password\n"),
 				"--login", "fixture@example.invalid", "--password-stdin", "--max-http-requests", fmt.Sprint(limit), "users", "get", usersTestEmail, "--require-superuser", "--max-pages=1")
-			if f.count("POST /api/v2/auth/sign-in") != 1 || f.count("POST /api/v2/auth/sign-out") != 1 || f.count("GET /api/v2/auth/me") != 4 {
+			if f.count("POST /api/v2/auth/sign-in") != 1 || f.count("POST /api/v2/auth/sign-out") != 1 || f.count("GET /api/v2/auth/me") != 1 {
 				t.Fatalf("root lifecycle missing: %d %s %s", code, stdout, stderr)
 			}
-			if limit == 6 {
+			if limit == 3 {
 				if code != ExitFailure || f.count("GET /api/v2/auth/users") != 0 || !strings.Contains(stdout, "http_request_bound") {
 					t.Fatalf("clone bypassed budget: %d %s %s", code, stdout, stderr)
 				}
@@ -342,7 +347,7 @@ func TestUncappedRootKeepsNormalStdinLifecycle(t *testing.T) {
 	})
 	stdout, stderr, code := executeBounded(t, context.Background(), server.URL, strings.NewReader("synthetic-password\n"),
 		"--login", "fixture@example.invalid", "--password-stdin", "companies", "list", "--require-superuser")
-	if code != 0 || f.count("POST /api/v2/auth/sign-in") != 1 || f.count("GET /api/v2/auth/me") != 3 || f.count("GET /api/v2/organization/companies") != 1 || f.count("POST /api/v2/auth/sign-out") != 1 {
+	if code != 0 || f.count("POST /api/v2/auth/sign-in") != 1 || f.count("GET /api/v2/auth/me") != 1 || f.count("GET /api/v2/organization/companies") != 1 || f.count("POST /api/v2/auth/sign-out") != 1 {
 		t.Fatalf("omitted cap changed lifecycle: %d %s %s", code, stdout, stderr)
 	}
 }

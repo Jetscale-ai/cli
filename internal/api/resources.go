@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"maps"
 	"net/http"
 	"sort"
 	"strconv"
@@ -403,8 +404,12 @@ func filterRecords(records []Record, keep func(Record) bool) []Record {
 	return out
 }
 
-// Actor reads the signed-in user from /auth/me.
+// Actor reads the signed-in user from /auth/me, or returns the user that
+// verified this command's sign-in when WithVerifiedActor supplied it.
 func (c *Client) Actor(ctx context.Context) (Record, error) {
+	if c.actor != nil {
+		return maps.Clone(c.actor), nil
+	}
 	body, err := c.read(ctx, func(ctx context.Context) (*http.Response, error) {
 		return c.gen.MeApiV2AuthMeGet(ctx)
 	})
