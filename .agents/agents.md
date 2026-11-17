@@ -166,6 +166,20 @@ and
 [seed procedure](https://github.com/Jetscale-AI/Stack/blob/main/docs/operations/unstable-cli-seed.md)
 own execution scope, ordering, exact session budgets, bounds and recovery.
 
+**Proposed five-seat amendment (2026-11-17):** The seed profile below uses
+minimum five-seat quota-only capacity, including Stack's default setup,
+`capacity` and `sso_bootstrap`. Stack owns desired state and ordering; the
+generic CLI still requires explicit `--min-seats`; the proposed Stack profile
+passes `5`, with no tenant-specific default or commercial pricing-plan change.
+This is proposed pending matching human-reviewed commits and publication of
+Governance Constitution/secret-management, CLI law and Stack seed
+adoption/registration/procedure on their respective `main` branches. Preserve
+the 2026-11-14 acceptance, 2026-11-16 amendment and existing published grants;
+the published two-seat auth profile remains binding until then. Offline
+examples/tests do not authorize live five-seat execution or delivery. Rationale:
+reproducible five-seat unstable setup without changing billing terms (Business
+Goal; SOC 2 CC8.1).
+
 The opt-in auth profile selects only `Unstable Jetscale` / `unstable-jetscale`,
 explicit pinned company UUID and `agent@jetscale.ai`. Require explicit human
 authorization for platform-wide superadmin privilege, invitation/email, seat,
@@ -178,17 +192,17 @@ re-disabling existing grants. Existing cloud/FOCUS and BU seed effects retain
 Stack's separate human-started/private-file and credential-transfer constraints,
 not new authority from this auth amendment.
 
-Follow the stage effects in the constitution: `capacity` fixes
-`auth.min_seats=2` with unlimited/larger capacity noop; `auth_prepare` creates
-only missing non-secret auth rows DISABLED and uses named user reconciliation,
-without mappings; `sso_activate` requires completed identity/password-first
-proof, then effective MULTI, exact `OrganizationSSO` provider, existing
-`[Console] Jetscale` organization mapping and SSO. Use only the two named
-mapping keys; inspect required-SSO read-only, requiring deployed false-default
-evidence if absent. Account for activation by mapping writes, not just flag
-writes.
+Under the proposed five-seat profile, follow the stage effects in the
+constitution: `capacity` fixes `auth.min_seats=5` with unlimited/larger capacity
+noop; `auth_prepare` creates only missing non-secret auth rows DISABLED and uses
+named user reconciliation, without mappings; `sso_activate` requires completed
+identity/password-first proof, then effective MULTI, exact `OrganizationSSO`
+provider, existing `[Console] Jetscale` organization mapping and SSO. Use only
+the two named mapping keys; inspect required-SSO read-only, requiring deployed
+false-default evidence if absent. Account for activation by mapping writes, not
+just flag writes.
 
-`sso_bootstrap` always ensures the same minimum two-seat quota-only capacity,
+`sso_bootstrap` always ensures the same minimum five-seat quota-only capacity,
 creates absent disabled non-secret MULTI/SSO root/company rows and ensures the
 exact company-linked superadmin through existing typed primitives. Invite an
 absent target once, reuse a matching `PENDING_ACTIVATION` identity and valid

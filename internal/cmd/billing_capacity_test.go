@@ -3,6 +3,7 @@ package cmd
 import (
 	"encoding/json"
 	"net/http"
+	"reflect"
 	"strings"
 	"testing"
 )
@@ -50,6 +51,82 @@ func TestLicenseCapacityCommandGrowThenNoop(t *testing.T) {
 	}
 	if f.count("PATCH /api/v2/license-and-billing/licenses/"+testUnitID) != 1 {
 		t.Fatal("rerun patched twice")
+	}
+}
+
+func TestLicenseCapacityCommandFiveSeats(t *testing.T) {
+	for _, tt := range []struct {
+		name      string
+		seats     any
+		wantSeats any
+		grows     bool
+	}{
+		{"one", 1, float64(5), true},
+		{"two", 2, float64(5), true},
+		{"four", 4, float64(5), true},
+		{"five", 5, float64(5), false},
+		{"ten", 10, float64(10), false},
+		{"unlimited", nil, nil, false},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			f, server := newFakeBackend(t)
+			row := commandCapacityLicense(tt.seats)
+			f.withCapacityLicense(row)
+			patch := "PATCH /api/v2/license-and-billing/licenses/" + testUnitID
+			f.on(patch, func(_ *http.Request, body []byte) (int, any) {
+				var payload map[string]any
+				if err := json.Unmarshal(body, &payload); err != nil {
+					t.Error(err)
+				}
+				if len(payload) != 1 || payload["max_seats"] != float64(5) {
+					t.Errorf("patch is not five-seat quota-only growth: %s", body)
+				}
+				row["max_seats"] = payload["max_seats"]
+				return item(row)
+			})
+			termsDigest := ""
+			for _, mode := range []string{"plan", "apply", "repeat"} {
+				args := []string{"licenses", "ensure-capacity", "--company", "unstable-jetscale", "--min-seats", "5", "-o", "json"}
+				wantStatus, wantWrites := "noop", 0
+				wantRow := commandCapacityLicense(tt.seats)
+				if mode == "plan" {
+					args = append(args, "--dry-run")
+					if tt.grows {
+						wantStatus = "planned"
+					}
+				} else {
+					args = append(args, "--yes")
+					if tt.grows {
+						wantWrites = 1
+						wantRow["max_seats"] = float64(5)
+						if mode == "apply" {
+							wantStatus = "updated"
+						}
+					}
+				}
+				stdout, stderr, code := run(t, server, args...)
+				result := decode(t, stdout).(map[string]any)
+				details, ok := result["details"].(map[string]any)
+				if code != 0 || stderr != "" || !ok || result["status"] != wantStatus || result["id"] != testUnitID || details["min_seats"] != float64(5) || details["max_seats"] != tt.wantSeats || details["unlimited"] != (tt.seats == nil) || strings.Contains(stdout, "synthetic-") {
+					t.Fatalf("%s: code=%d out=%s err=%s", mode, code, stdout, stderr)
+				}
+				if tt.grows && mode != "repeat" && details["previous_max_seats"] != float64(tt.seats.(int)) {
+					t.Fatalf("%s: incorrect previous capacity: %v", mode, details)
+				}
+				if mode == "plan" {
+					termsDigest, _ = details["terms_sha256"].(string)
+				}
+				if len(termsDigest) != 64 || details["terms_sha256"] != termsDigest {
+					t.Fatalf("%s: preserved-term fingerprint changed: %v", mode, details)
+				}
+				if f.count(patch) != wantWrites {
+					t.Fatalf("%s: want %d quota-only writes, got %d", mode, wantWrites, f.count(patch))
+				}
+				if !reflect.DeepEqual(row, wantRow) {
+					t.Fatalf("%s: license changed beyond expected seat growth", mode)
+				}
+			}
+		})
 	}
 }
 
@@ -114,7 +191,7 @@ func TestLicenseCapacityCommandPreflightAndHelp(t *testing.T) {
 	}
 	f, server := newFakeBackend(t)
 	stdout, stderr, code := run(t, server, "licenses", "ensure-capacity", "--help")
-	if code != 0 || stderr != "" || !strings.Contains(stdout, "--min-seats") || len(f.requests) != 0 {
+	if code != 0 || stderr != "" || !strings.Contains(stdout, "--min-seats 5") || len(f.requests) != 0 {
 		t.Fatalf("code=%d out=%s err=%s", code, stdout, stderr)
 	}
 }

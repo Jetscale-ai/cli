@@ -180,15 +180,24 @@ This command does not configure WorkOS, invite users, or grant roles.
 ## License capacity
 
 ```bash
-jetscale licenses ensure-capacity --company acme --min-seats 2 --dry-run -o json
-jetscale licenses ensure-capacity --company acme --min-seats 2 --yes -o json
+jetscale licenses ensure-capacity --company acme --min-seats 5 --dry-run -o json
+jetscale licenses ensure-capacity --company acme --min-seats 5 --yes -o json
 ```
 
-`--min-seats` must be an integer from 1 through 2147483647. The command lists
-company-filtered licenses, rejects invalid/foreign list identities or unknown
-statuses, and requires exactly one `ACTIVE` license. Known historical statuses
-are excluded from selection. The selected detail must match the company and ID,
-have a current validity interval, and expose explicit quota/commercial metadata.
+`--min-seats` is required and must be an integer from 1 through 2147483647;
+there is no tenant-specific CLI default. Stack owns unstable seed desired state.
+Its proposed 2026-11-17 five-seat profile uses this explicit argument for
+default setup and auth stages, pending matched human-reviewed `main` publication
+as specified in the
+[CLI constitution](../AGENTS.md#proposed-stack-mediated-temporary-cli-authentication).
+The published two-seat auth grant remains binding until then; these examples and
+offline tests authorize no live five-seat setup.
+
+The command lists company-filtered licenses, rejects invalid/foreign list
+identities or unknown statuses, and requires exactly one `ACTIVE` license. Known
+historical statuses are excluded from selection. The selected detail must match
+the company and ID, have a current validity interval, and expose explicit
+quota/commercial metadata.
 
 - `max_seats: null` means unlimited and is a `noop`.
 - A finite quota meeting the minimum is a `noop`; it is never reduced.
@@ -245,9 +254,9 @@ JSON/YAML writes use the existing result shape:
   "id": "33333333-3333-4333-8333-333333333333",
   "details": {
     "company": "11111111-1111-4111-8111-111111111111",
-    "min_seats": 2,
+    "min_seats": 5,
     "previous_max_seats": 1,
-    "max_seats": 2,
+    "max_seats": 5,
     "unlimited": false,
     "terms_sha256": "9056be3ded6b7396aeef5399adb82242c793d05ff669f9039c977718be3e407b",
     "operation": "grow"

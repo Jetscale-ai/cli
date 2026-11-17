@@ -110,7 +110,7 @@ terms are checked before and after. This is not a pricing-plan sandbox override.
 Writes require --yes or terminal confirmation. Serialize all writers of the
 license: the Backend has no atomic conditional update. An uncertain outcome
 stops without retry or rollback.`,
-		Example: `  jetscale licenses ensure-capacity --company acme --min-seats 2 --dry-run`,
+		Example: `  jetscale licenses ensure-capacity --company acme --min-seats 5 --dry-run`,
 		PreRunE: func(cmd *cobra.Command, _ []string) error {
 			seats, _ := cmd.Flags().GetInt("min-seats")
 			if !cmd.Flags().Changed("min-seats") {

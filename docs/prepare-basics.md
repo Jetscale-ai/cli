@@ -49,13 +49,28 @@ three-stage law. `sso_bootstrap` cannot be mixed with `capacity`,
 them, including legacy password-first requirements and their existing selection
 restrictions.
 
-For only pinned `Unstable Jetscale` / `unstable-jetscale` and
-`agent@jetscale.ai`, always:
+**Proposed five-seat amendment (2026-11-17):** Stack's unstable seed desired
+state starts with minimum five-seat quota-only capacity, including default
+setup, `capacity` and `sso_bootstrap`. Stack owns the profile and ordering;
+generic `licenses ensure-capacity` still requires explicit `--min-seats`; the
+proposed profile passes `5`, not a CLI-owned tenant default. Commercial
+pricing-plan minimums remain unchanged. This proposal requires matched
+human-reviewed commits and publication of Governance
+Constitution/secret-management, CLI law and Stack seed
+adoption/registration/procedure on their respective `main` branches. Preserve
+the 2026-11-14 acceptance, 2026-11-16 amendment and existing grants; the
+published two-seat auth profile governs until then. Source/examples/tests grant
+no live five-seat authority. Rationale: reproducible five-seat unstable setup
+without changing billing terms (Business Goal; SOC 2 CC8.1).
 
-1. Ensure minimum two seats on the existing eligible license, quota-only:
-   unlimited/sufficient capacity is a noop; grow only `max_seats`, never change
-   billing, plans, commercial terms or other quotas. This is not occupancy
-   proof.
+Under that proposed profile, for only pinned `Unstable Jetscale` /
+`unstable-jetscale` and `agent@jetscale.ai`, always:
+
+1. Ensure minimum five seats on the existing eligible license, quota-only:
+   finite 1, 2 or 4 grows exactly to 5; 5, larger quotas and null (unlimited)
+   are noops. Repeated capacity applies write nothing. Grow only `max_seats`,
+   never change billing, plans, commercial terms or other quotas. This is not
+   occupancy proof.
 2. Create absent disabled non-secret `AUTH.MULTI` / `AUTH.SSO.WORKOS`
    root/company rows; never disable existing rows.
 3. Ensure the exact company-linked platform-wide superadmin: invite an absent

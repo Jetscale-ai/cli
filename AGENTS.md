@@ -175,6 +175,27 @@ later status edit, active marker or activation ceremony is required. Preserve
 the 2026-11-14 acceptance and existing published grants until that publication;
 this request authorizes preparation, not self-ratification or execution.
 
+**Proposed five-seat amendment (2026-11-17):** Stack's unstable seed profile
+starts with a minimum of five seats, including default setup, `capacity` and
+`sso_bootstrap`. Stack owns tenant desired state and ordering; generic
+`licenses ensure-capacity` still requires an explicit `--min-seats` and has no
+tenant-specific default. The proposed profile passes `--min-seats 5`: grow only
+insufficient finite `max_seats` to 5; preserve 5, larger quotas and null
+(unlimited), commercial terms and all other quotas. Repeated capacity
+reconciliation is a noop. Do not change commercial pricing-plan minimums.
+**Owner:** CLI Engineering and Jetscale Platform Governance. **Rationale:**
+reproducible unstable setup with five seats without changing billing terms
+(Business Goal; SOC 2 CC8.1).
+
+This amendment is proposed, not accepted or effective. It requires matching
+human-reviewed commits and publication of revised Governance
+Constitution/secret-management, CLI law and Stack seed
+adoption/registration/procedure on their respective `main` branches. Preserve
+the 2026-11-14 acceptance, the 2026-11-16 amendment and existing published
+grants; the published two-seat auth profile remains binding until matched
+publication. Local five-seat examples, source and tests grant no live five-seat
+authority, self-ratification or delivery permission.
+
 CLI seed auth stages: capacity, auth_prepare, sso_activate and sso_bootstrap.
 
 Source implements `--login EMAIL --password-stdin`, `prepare basics`,
@@ -216,9 +237,10 @@ retain their scoped authorization. The helper must fail closed for the new stage
 on old three-stage law, without re-disabling existing grants. Assessment-only
 and test-only requests remain narrow.
 
-The auth stages use only these effects:
+The auth stages below describe the proposed five-seat profile; the publication
+gate above preserves the existing effective profile until then:
 
-- `capacity`: fixed `auth.min_seats=2` through `licenses ensure-capacity` on the
+- `capacity`: fixed `auth.min_seats=5` through `licenses ensure-capacity` on the
   existing eligible company license. Unlimited or larger/sufficient capacity is
   a noop; grow only `max_seats`, never reduce it or alter commercial terms or
   other quotas. This does not calculate occupancy or prove invitation
@@ -241,7 +263,7 @@ The auth stages use only these effects:
   Mapping creation can activate already-true SSO gates, so Stack must verify
   impact, effective multi-auth and password preservation before that write.
 
-- `sso_bootstrap`: always ensure `auth.min_seats=2` quota-only on the existing
+- `sso_bootstrap`: always ensure `auth.min_seats=5` quota-only on the existing
   eligible license, create absent disabled non-secret `AUTH.MULTI` and
   `AUTH.SSO.WORKOS` root/company rows, then ensure the exact company-linked
   superadmin using the existing typed primitives. Invite an absent target once
